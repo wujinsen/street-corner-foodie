@@ -1,0 +1,37 @@
+---
+/** Stat pill for gallery hero (design/alt-c/gallery.png). */
+interface Props {
+  value: number | string;
+  label: string;
+  icon: "dish" | "street" | "zine";
+}
+
+const { value, label, icon } = Astro.props as Props;
+---
+<span class="gallery-stat-chip">
+  <span class="gallery-stat-icon" aria-hidden="true">
+    {icon === "dish" && (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M4 14h16v2a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-2z" />
+        <path d="M8 6h8l1 4H7l1-4z" />
+      </svg>
+    )}
+    {icon === "street" && (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M3 21h18" />
+        <path d="M6 21V8l6-4v17" />
+        <path d="M14 21V11l4-3v13" />
+      </svg>
+    )}
+    {icon === "zine" && (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M5 4h12a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2V4z" />
+        <path d="M5 8h14" />
+      </svg>
+    )}
+  </span>
+  <span class="gallery-stat-text">
+    <b>{value}</b>
+    <span>{label}</span>
+  </span>
+</span>

@@ -1,0 +1,100 @@
+---
+description: 海报 3D Q版+时代服饰+人料按菜定+横木牌；alwaysApply；每slug仅_poster；禁止_no_char
+alwaysApply: true
+---
+
+# Gourmet recipe2 · 时代服饰（始终生效）
+
+在本仓库生成或修改 **`asserts/Gourmet recipe2/`** 海报时**自动**执行（版式全流程见 [meishi-food-poster.mdc](meishi-food-poster.mdc)）。**新对话、旧对话**下一条消息均加载，用户**不必**重复口述。
+
+## 锁定范围 · 每 slug 一张海报（2026-05-21 · 新旧对话必守）
+
+**仅** `{slug}_poster.png`（有人物）。**禁止** `_poster_no_char` → [asset-no-character-removed.md](../../docs/style/asset-no-character-removed.md)
+
+| 锁 | 不锁 |
+|----|------|
+| 同时代、布景、厨师人数、底行料名与器皿（全在一张 `_poster` 内） | 与 mini-zine **2 张** **不要求**同时代 |
+| | 用户说「跟 zine 一致」时才对齐 zine |
+| | **跨菜**：人数 3～5、料 4～6 **各按本菜表**（人料皆可变） |
+
+zine 每 slug **2 张**（story + recipe）→ [meishi-mini-zine-era.mdc](meishi-mini-zine-era.mdc)。
+
+## 用户怎么说
+
+| 用户说法 | 含义 |
+|----------|------|
+| `按 meishi-food-poster` / `美食海报` | **人料按菜定** + 时代服饰 + 横木牌 + 入库（见 [meishi-food-poster.mdc](meishi-food-poster.mdc)） |
+| **`按 boluo 清新风`** / `boluo 清晰风` / `清新风格` | 画风 → [food-poster-diorama.md §boluo 只锁/不锁](../../docs/style/food-poster-diorama.md#boluo-只锁什么--不锁什么2026-05-19--新旧对话必守)；**人料场景仍查本菜表**；底行必横木牌 |
+| `人料可变` / `人和料都可变` | 同 **按 meishi-food-poster**（人数与料件数各查本菜表） |
+| `按海报朝代` / `跟 mini-zine 一样的人物` | 强制与 [mini-zine-dynasty-chibi.md](../../docs/style/mini-zine-dynasty-chibi.md) 同决策 |
+| `按 mini-zine-dynasty-chibi` | zine 用；海报另做时**各自定代**，除非用户说「跟 zine 一致」 |
+
+## 必读（生成有人物版前）
+
+1. [docs/style/food-poster-dynasty-chibi.md](../../docs/style/food-poster-dynasty-chibi.md) — 海报专节  
+2. [docs/style/mini-zine-dynasty-chibi.md](../../docs/style/mini-zine-dynasty-chibi.md) — 时代代号、候选池、强锚定  
+3. [.cursor/skills/gourmet-recipe-mini-zine/dynasty-chibi.md](../../.cursor/skills/gourmet-recipe-mini-zine/dynasty-chibi.md) — 已收录表 + `{DynastyDressEN}`  
+4. [food-poster-diorama.md](../../docs/style/food-poster-diorama.md) · [food-poster-speech-bubbles.md](../../docs/style/food-poster-speech-bubbles.md) · [food-poster-ingredients.md](../../docs/style/food-poster-ingredients.md) §按菜定布局
+
+## 人料皆可变（2026-05 · 新旧对话必守）
+
+| 维度 | 规则 |
+|------|------|
+| **人物** | **按菜变**：3D chibi · **默认全员女性** · 人数 **3～5** 查本菜表 · 桌边/四角 · **不进主菜/锅** · 对白体 ≤ 人数 |
+| **食材展示** | **按菜变**：料 **4～6** 件、器皿按料、横放 **木牌** · **禁止**绿底矩形 · **禁止**全库统一六同款碗+五人模板 |
+| **同 slug** | **一张** `_poster` 锁定时代、布景、人数、料布局 |
+
+**出图前**：时代表 + `| 厨师人数 |` + `| 料名 | 容器 | 件数 |`（人数与料件数**可不等**，各查本菜表）。
+
+## 人物要求（替代「全员白帽绿围裙」）
+
+| 项 | 规则 |
+|----|------|
+| 造型 | **3D chibi**，禁止 2D 扁平 |
+| 性别 | **优先女性**：默认 **全员女性** chibi（`female` / `all female cooks` in prompt）；禁止默认全男；用户点名才可 ≤1 男 |
+| 时代 | 中国 `pre_qin`…`contemporary`；美国 **`us_*` 全集 13 档**；日本 **`jp_*` 古代至今 13 档**；与 mini-zine **同表** |
+| 定时代 | 食物 + 当地 + 国别；**与 zine 独立**（用户点名对齐除外） |
+| 锁定 | 同 slug **仅** `{slug}_poster.png` |
+| 人数 | **3～5**，桌边/四角，不挡主菜 |
+| 服饰 prompt | 粘贴 `dynasty-chibi.md` 对应 `{DynastyDressEN}` 行 |
+
+## 定时代流程（必做）
+
+1. 强锚定 → 不随机  
+2. 查 `dynasty-chibi.md` 已收录  
+3. 用户是否说「跟 zine / 跟海报 一致」？→ 是：对齐对侧；否：独立定代  
+4. 国别候选池 → `sum(ord(c) for c in slug) % len(pool)` 随机（**不必**与 zine 结果相同）  
+5. **出图前**表：`| 菜名 | 时代 | 性别 | 厨师人数 | 服饰 | 随机? |` + `| 料名 | 容器 | 件数 |`（人、料各按本菜表，可不等）
+
+## 构图 · 防穿模（2026-05-21 · 新旧对话必守）
+
+| 项 | 规则 |
+|----|------|
+| **主菜** | 画面中上 **45～55%**；锅/盘/碗 **完整露出**；禁止底行料碗压住炒饭/主菜（纠错例：`chaoshan_chaofan_poster_no_char`） |
+| **空隙** | 主菜下沿与料器皿顶之间 **明显留白** |
+| **底行料** | 仅占画面最底 **12～18%**；器皿 **小于** 主菜；横放木牌在器皿正下方 |
+| **防穿模** | 人物仅在 **四角**，体量约主场景 30% 偏小；**禁止**彼此重叠、身体/手探入主菜、贴碗沿 |
+| **prompt 必写** | `CRITICAL COMPOSITION` + `CRITICAL PLACEMENT` — 见 [food-poster-ingredients.md §写入 prompt](../../docs/style/food-poster-ingredients.md#写入-prompt-的格式底行料碗--中英文) |
+
+**版式金标准**：`asserts/Gourmet recipe2/cn/sichuan/mapo_doufu_poster.png` 或同省已定稿 `_poster.png`（居中主菜 + 底行横木牌 + 四角 chibi）。
+
+## 无人物版（已废除）
+
+**禁止**生成、入库、引用 `_poster_no_char`。磁盘旧文件可保留，新任务不得补无人物版。
+
+## 入库
+
+- `asserts/Gourmet recipe2/{cc}/{admin}/`（禁止画风根目录）  
+- 生成后 `Copy-Item` + 更新 `docs/china/*.md` / `docs/world/*.md`  
+- **禁止**用 mini-zine 羊皮纸版式；**禁止**用街景 brief；**禁止**按街景分区定竖牌/服饰（见 food-poster-diorama §与街景无关）
+
+## 历史稿与新作（legacy 并存）
+
+- **历史定稿**（如海南白帽绿围裙批）：**保留**，不自动删除或覆盖。  
+- **此后新作**（新菜、补图、试绘、用户未说沿用旧版）：**必须**按朝代规范；可与 legacy **同目录并存**。  
+- 试绘可加后缀：`_{era}_redraw`（例 `wenchang_jifan_poster_song_redraw.png`）。  
+- 用户说「替换定稿」→ 才覆盖原 `{slug}_poster.png`。
+
+## 旧对话
+
+线程内「海报=女厨师绿围裙」仅适用于 **legacy 文件**；**新文件**以本规则为准。

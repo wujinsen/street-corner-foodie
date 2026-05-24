@@ -1,0 +1,109 @@
+---
+description: 街景 3D 微缩沙盘 — 目录/geo/当地美食/金标准矩阵/场景原型；新旧对话自动生效，无需用户口述规范
+alwaysApply: true
+---
+
+# 街景 · 新规范（始终生效）
+
+> **新旧 Cursor 对话均自动加载。** 用户不必说「按规范」「入库」「加当地美食」。  
+> 与 [meishi-assets.mdc](meishi-assets.mdc) 同时生效；冲突时**本规则优先于对话记忆**。
+
+## 1 · 画风与目录
+
+| 项 | 要求 |
+|----|------|
+| 画风 | 3D 等距微缩沙盘 + Q 版小人；见 [street-view-diorama.md](../../docs/style/street-view-diorama.md) |
+| 保存 | `asserts/Street View/{cc}/{admin}/[{local}/]` |
+| 禁止 | 成品 PNG 放在 `Street View/` **根目录**；禁止混用 `Gourmet recipe2/`、`mini-zine/` |
+
+### 入库路径（生成后 MUST `Copy-Item`）
+
+| 地区 | 目录 | 文件名（新图推荐 / 已定稿） |
+|------|------|---------------------------|
+| 海口 | `Street View/cn/hainan/haikou/` | `cn_hainan_haikou_{slug}_…` 或 **`haikou_{slug}_…`** |
+| 石家庄 | `Street View/cn/hebei/shijiazhuang/` | **`cn_hebei_shijiazhuang_{slug}_…`** |
+| 东京（全城 9 区） | `Street View/jp/tokyo/` | **`tokyo_{slug}_…`**（27 张见 japan.md） |
+| 富士山·河口湖 | `Street View/jp/fuji/` | **`jp_fuji_kawaguchiko_…`** |
+| 纽约 | `Street View/us/nyc/` | **`us_nyc_{slug}_…`** |
+| 洛杉矶 | `Street View/us/la/` | **`us_la_{slug}_…`** |
+| 德州 BBQ | `Street View/us/tx/` | **`us_tx_{slug}_…`** |
+| 新奥尔良 | `Street View/us/nola/` | **`us_nola_{slug}_…`** |
+| 西安·长安 | `Street View/cn/shaanxi/xian/` | **`cn_shaanxi_xian_changan_…`** · **`cn_shaanxi_xian_tang_changan_…`** |
+| 杭州 | `Street View/cn/zhejiang/hangzhou/` | **`cn_zhejiang_hangzhou_{slug}_…`** |
+| 北京 | `Street View/cn/beijing/` | **`cn_beijing_{slug}_…`** |
+
+模板：`{geo}_{场景}_{day|night}_{wide|standard}[_no_char].png`
+
+## 2 · 金标准矩阵（每场景 3 张）
+
+| 画幅 | 后缀 | 用途 |
+|------|------|------|
+| 白天横幅 | `day_wide` | 21:9 主视觉 |
+| 夜景横幅 | `night_wide` | 21:9 夜景 |
+| 白天方图 | `day_standard` | 1:1 卡片/特写 |
+
+新场景默认做齐 **3 张**（除非用户只要其中一种）。可选追加 `_no_char`。
+
+## 2b · 默认加载夜景（Web + Agent · 2026）
+
+| 项 | 规范 |
+|----|------|
+| **默认时段** | 街景探索器 / 地区街景 Tab / 独立街景页：**优先 `night` + `wide`**（无 URL `?time=` 时） |
+| **代码** | `web/src/lib/streets.ts` → `STREET_VIEW_DEFAULT_VIEW` · `getStreetDefaultView()` · `streetPreferredImageUrl()` |
+| **缩略图** | 场景列表、矩阵预览：**先 `night_wide`，缺图再回退 `day_wide`** |
+| **主图** | `StreetExplorer` 首屏、`resolution="full"` 加载对应 PNG；**禁止**无参时默认日景 |
+| **URL** | 默认夜景时省略 `time=night`（与原先默认日景省略 `time=day` 同理） |
+| **覆盖** | 仅当地区 `StreetRegionConfig.defaultView` 或用户显式 `?time=day` / 矩阵点选日景时改用日图 |
+| **生成** | 金标准矩阵仍须 **day + night 两套** 资产；本规则只规定**展示默认**，不删日景文件 |
+
+## 3 · 当地美食（必遵）
+
+街景 **必须有饮食**，来自该地区文档的「风味图鉴 / 寻味地标」：
+
+| 要求 | 说明 |
+|------|------|
+| 表现方式 | 摊位、店面招牌、碗碟、蒸汽；食客 Q 版围坐 |
+| 禁止 | **海报风**巨型单品占满画面；**空古街**无饮食 |
+| 招牌 | 只选**本场景**美食（见 style 文档「场景招牌分区」），勿每张堆全菜名 |
+
+生成前 **MUST** 读对应场景原型（下表）或地区 md 街景矩阵中的「美食重点」列。
+
+### 场景原型索引
+
+| 城市·场景 | 文档 |
+|-----------|------|
+| 海口·府城 | [hainan-fucheng-prototype.md](../../docs/china/hainan-fucheng-prototype.md) |
+| 石家庄·全部街景 | [shijiazhuang-street-prototypes.md](../../docs/china/shijiazhuang-street-prototypes.md) |
+| 西安·长安 | [shaanxi-changan-street-prototype.md](../../docs/china/shaanxi-changan-street-prototype.md) |
+| 杭州 | [zhejiang-hangzhou-street-prototypes.md](../../docs/china/zhejiang-hangzhou-street-prototypes.md) |
+| 北京·南锣鼓巷 | [beijing-nanluoguxiang-street-prototype.md](../../docs/china/beijing-nanluoguxiang-street-prototype.md) |
+| 东京·全部街景 | [japan-tokyo-street-prototypes.md](../../docs/world/japan-tokyo-street-prototypes.md) |
+| 东京·电子专门学校 | [japan-denshi-senmon-prototype.md](../../docs/world/japan-denshi-senmon-prototype.md)（**多栋校舎**，非单一校门） |
+| 东京·池袋 | [japan-ikebukuro-prototype.md](../../docs/world/japan-ikebukuro-prototype.md) |
+| 富士山·河口湖 | [japan-fuji-prototype.md](../../docs/world/japan-fuji-prototype.md) |
+| 纽约 | [usa-nyc-street-prototypes.md](../../docs/world/usa-nyc-street-prototypes.md) |
+| 洛杉矶 | [usa-la-street-prototypes.md](../../docs/world/usa-la-street-prototypes.md) |
+| 德州 BBQ | [usa-tx-bbq-street-prototypes.md](../../docs/world/usa-tx-bbq-street-prototypes.md) |
+| 新奥尔良 | [usa-nola-street-prototypes.md](../../docs/world/usa-nola-street-prototypes.md) |
+
+清单与已定稿文件名 → `docs/china/hainan.md`、`shijiazhuang.md`、`docs/world/japan.md` 街景节。
+
+## 4 · 文案禁忌（易错）
+
+| 错误 | 正确 |
+|------|------|
+| 海口 **福城** | **府城**（府城镇、府城小吃街） |
+| 东京单一玻璃校园门 | 大久保 **多栋** 本館/号館街区 |
+| 石家庄街景配海南椰子骑楼 | 华北面食、缸炉烧饼、板面等 |
+| 东京街景配中文海南招牌 | **日文**店招（ラーメン、居酒屋等） |
+
+## 5 · 工作流（同回合完成）
+
+1. 读 [AGENTS.md](../../AGENTS.md) + [street-view-diorama.md](../../docs/style/street-view-diorama.md) + 上表场景原型  
+2. 查目标子目录与 md `street_view_approved` → **已齐则跳过**（除非用户要求重做）  
+3. `GenerateImage`（`filename` = 最终入库名）  
+4. **`Copy-Item`** Cursor `assets/` → 上表**子目录**（非根目录）  
+5. 更新对应 `docs/*.md` 资源表 + `street_view_approved`  
+6. 回复用户时写 **`asserts/Street View/...` 完整相对路径**
+
+Skill：`.cursor/skills/meishi-street-view/` · 英文模板：`prompt-templates.md`

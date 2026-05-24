@@ -1,0 +1,30 @@
+[
+  {
+    "name": "minScore",
+    "expected": 0.85,
+    "actual": 0.8,
+    "values": [
+      0.8
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditProperty": "accessibility",
+    "auditId": "categories",
+    "level": "warn",
+    "url": "http://127.0.0.1:4322/cn/hainan/"
+  },
+  {
+    "name": "minScore",
+    "expected": 0.85,
+    "actual": 0.8,
+    "values": [
+      0.8
+    ],
+    "operator": ">=",
+    "passed": false,
+    "auditProperty": "accessibility",
+    "auditId": "categories",
+    "level": "warn",
+    "url": "http://127.0.0.1:4322/us/ny/"
+  }
+]

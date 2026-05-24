@@ -1,0 +1,58 @@
+---
+import type { Lang } from "../lib/i18n";
+
+interface Props {
+  lang: Lang;
+  worldLabel: string;
+  hintWorld?: string;
+  landing?: boolean;
+}
+
+const { lang, worldLabel, hintWorld, landing = false } = Astro.props as Props;
+---
+
+<nav
+  class:list={[
+    "world-atlas-explorer__crumbs",
+    landing && "world-atlas-explorer__crumbs--landing",
+  ]}
+  data-world-atlas-crumbs
+  aria-label={lang === "en" ? "Map level" : lang === "ja" ? "マップ階層" : "地图层级"}
+>
+  <ol class="world-atlas-explorer__crumb-trail">
+    <li class="world-atlas-explorer__crumb-item">
+      <button type="button" class="world-atlas-explorer__crumb" data-atlas-level="world">
+        <span class="world-atlas-explorer__crumb-icon" aria-hidden="true">◎</span>
+        <span>{worldLabel}</span>
+      </button>
+    </li>
+    <li class="world-atlas-explorer__crumb-item" data-crumb-wrap="country" hidden>
+      <span class="world-atlas-explorer__crumb-sep" aria-hidden="true">›</span>
+      <button
+        type="button"
+        class="world-atlas-explorer__crumb"
+        data-atlas-level="country"
+        data-crumb="country"
+      ></button>
+    </li>
+    <li class="world-atlas-explorer__crumb-item" data-crumb-wrap="region" hidden>
+      <span class="world-atlas-explorer__crumb-sep" aria-hidden="true">›</span>
+      <button
+        type="button"
+        class="world-atlas-explorer__crumb"
+        data-atlas-level="region"
+        data-crumb="region"
+      ></button>
+    </li>
+    <li class="world-atlas-explorer__crumb-item" data-crumb-wrap="city" hidden>
+      <span class="world-atlas-explorer__crumb-sep" aria-hidden="true">›</span>
+      <span
+        class="world-atlas-explorer__crumb world-atlas-explorer__crumb--city"
+        data-crumb="city"
+      ></span>
+    </li>
+  </ol>
+  {landing && hintWorld && (
+    <span class="world-atlas-explorer__hint" data-world-atlas-hint>{hintWorld}</span>
+  )}
+</nav>

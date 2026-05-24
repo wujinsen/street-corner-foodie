@@ -1,0 +1,22 @@
+---
+/**
+ * Reserved left-column slot for a future landing map (v0.6.9).
+ * Replaces WorldMapHero until the next map is integrated.
+ */
+import { UI, t } from "../lib/i18n";
+import type { Lang } from "../lib/i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props as Props;
+---
+
+<div
+  class="tile landing-map-slot map-hero map-hero--map-only"
+  aria-label={t(UI.landing.map_label, lang)}
+  data-landing-map-slot
+>
+  <div class="landing-map-slot__inner" aria-hidden="true"></div>
+</div>

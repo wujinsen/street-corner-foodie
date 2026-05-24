@@ -1,0 +1,2555 @@
+<!doctype html>
+<html lang="zh-CN" data-country="cn" data-tab="poster" data-char="with" data-time="day" data-frame="wide">
+<head>
+<meta charset="utf-8" />
+<title>Street Corner Foodie · 街角食客</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Street Corner Foodie — a diorama atlas of world street food &amp; cityscapes. 街角食客：世界美食与城市风貌的微缩沙盘图鉴。" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+JP:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,700&family=Roboto+Slab:wght@500;700;900&family=Lobster&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   Meishi Atlas · prototype index.html (v2)
+   - Google Fonts loaded above
+   - Stronger CN/JP/US ornamentation
+   - Polished easing curves
+   - Tokyo SVG placeholder posters & zines
+   - Search overlay / Favorites panel / Detail lightbox
+   ============================================================ */
+
+:root {
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft: cubic-bezier(0.4, 0.0, 0.2, 1);
+
+  --primary: #C0392B;
+  --primary-soft: #E55B4B;
+  --surface: #F4EBD8;
+  --surface-2: #ECE0C4;
+  --surface-3: #DFD0AC;
+  --text: #2B2B2B;
+  --muted: #6B5E47;
+  --accent: #C9A14F;
+  --line: rgba(43,43,43,.12);
+  --line-strong: rgba(43,43,43,.28);
+  --shadow-card: 0 10px 30px -14px rgba(43,43,43,.22), 0 2px 6px -2px rgba(43,43,43,.08);
+  --shadow-elev: 0 28px 70px -22px rgba(43,43,43,.38), 0 6px 16px -6px rgba(43,43,43,.12);
+  --shadow-modal: 0 60px 120px -30px rgba(0,0,0,.55), 0 20px 40px -10px rgba(0,0,0,.25);
+  --radius: 16px;
+  --radius-lg: 22px;
+
+  --font-display: "Noto Serif SC", "Songti SC", "STSong", serif;
+  --font-body:    "Noto Sans SC", "PingFang SC", "Microsoft YaHei", -apple-system, sans-serif;
+  --font-en-display: "Playfair Display", "Noto Serif SC", serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --paper-texture: radial-gradient(circle at 12% 18%, rgba(176,128,72,.06) 0, transparent 28%),
+                   radial-gradient(circle at 88% 82%, rgba(176,128,72,.05) 0, transparent 32%);
+}
+
+html[data-country="jp"] {
+  --primary: #E60012;
+  --primary-soft: #FF6B9D;
+  --surface: #0F0F12;
+  --surface-2: #18181C;
+  --surface-3: #232328;
+  --text: #F5F5F5;
+  --muted: #9CA3AF;
+  --accent: #00D9E0;
+  --line: rgba(255,255,255,.10);
+  --line-strong: rgba(255,255,255,.25);
+  --shadow-card: 0 10px 30px -8px rgba(0,0,0,.6), 0 0 0 1px rgba(255,107,157,.18);
+  --shadow-elev: 0 30px 80px -20px rgba(0,0,0,.75), 0 0 24px -8px rgba(0,217,224,.18);
+  --font-display: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-body:    "Noto Sans JP", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-en-display: "Noto Serif JP", "Playfair Display", serif;
+  --paper-texture:
+    repeating-linear-gradient(0deg, transparent 0 2px, rgba(255,255,255,.012) 2px 3px),
+    radial-gradient(ellipse at 50% 0%, rgba(230,0,18,.06), transparent 50%);
+}
+
+html[data-country="us"] {
+  --primary: #1B3A6B;
+  --primary-soft: #3A6BB3;
+  --surface: #FFF8E7;
+  --surface-2: #F2E6C4;
+  --surface-3: #E6D49A;
+  --text: #1A1A2E;
+  --muted: #5C5343;
+  --accent: #E8B842;
+  --line: rgba(26,26,46,.14);
+  --line-strong: rgba(26,26,46,.28);
+  --font-display: "Roboto Slab", "Playfair Display", Georgia, serif;
+  --font-body:    "Inter", "Noto Sans SC", -apple-system, sans-serif;
+  --font-en-display: "Lobster", "Roboto Slab", serif;
+  --paper-texture:
+    radial-gradient(circle at 20% 10%, rgba(27,58,107,.04), transparent 40%),
+    radial-gradient(circle at 80% 90%, rgba(232,184,66,.10), transparent 40%);
+}
+
+/* ============================================================
+   GLOBAL
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--surface);
+  background-image: var(--paper-texture);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  transition: background-color .5s var(--ease-soft), color .5s var(--ease-soft);
+}
+
+img { display: block; max-width: 100%; }
+button { font: inherit; color: inherit; cursor: pointer; background: none; border: none; padding: 0; }
+a { color: inherit; text-decoration: none; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 8px; }
+::selection { background: var(--primary); color: #fff; }
+
+/* ============================================================
+   TOPBAR
+   ============================================================ */
+.topbar {
+  display: grid;
+  grid-template-columns: 280px 1fr 560px;
+  align-items: center;
+  padding: 14px 28px;
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 50;
+  backdrop-filter: saturate(160%) blur(10px);
+  transition: background-color .4s var(--ease-soft);
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+.logo-mark {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--primary); color: #fff;
+  display: grid; place-items: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 4px 14px -4px var(--primary);
+  position: relative;
+  transition: transform .6s var(--ease-out-expo), box-shadow .35s var(--ease-soft);
+}
+.logo-mark svg { width: 22px; height: 22px; }
+.logo-mark:hover { transform: rotate(-6deg) scale(1.05); }
+/* CN: seal-stamp gold dot */
+html[data-country="cn"] .logo-mark::after {
+  content: ""; position: absolute; top: -3px; right: -3px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+html[data-country="jp"] .logo-mark { border-radius: 4px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.2), 0 0 16px -4px var(--primary-soft); }
+html[data-country="us"] .logo-mark { border-radius: 4px; }
+
+.logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-zh { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: .06em; }
+.logo-en { font-size: 10px; letter-spacing: .24em; color: var(--muted); text-transform: uppercase; font-family: var(--font-mono); margin-top: 2px; }
+
+.tabs { display: flex; justify-content: center; gap: 4px; }
+.tab {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  border-radius: 999px;
+  position: relative;
+  transition: color .25s var(--ease-soft), background-color .25s var(--ease-soft);
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); font-weight: 600; }
+.tab.active::after {
+  content: "";
+  position: absolute; left: 20px; right: 20px; bottom: -1px;
+  height: 2px; background: var(--primary);
+  border-radius: 2px;
+  animation: underlineGrow .4s var(--ease-out-expo);
+}
+@keyframes underlineGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+html[data-country="jp"] .tab.active { color: #fff; }
+html[data-country="jp"] .tab.active::after {
+  background: var(--primary-soft);
+  box-shadow: 0 0 8px var(--primary-soft), 0 0 18px var(--primary-soft);
+}
+html[data-country="us"] .tab.active {
+  background: var(--accent); color: var(--primary);
+  box-shadow: 0 4px 12px -4px var(--accent);
+}
+html[data-country="us"] .tab.active::after { display: none; }
+
+.actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; }
+
+.pill-group {
+  display: inline-flex; align-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px;
+  transition: background-color .35s var(--ease-soft);
+}
+.pill-group button {
+  padding: 6px 12px;
+  font-size: 12px;
+  color: var(--muted);
+  border-radius: 999px;
+  transition: all .25s var(--ease-out-expo);
+  position: relative;
+}
+.pill-group button.active {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 0 0 1px var(--line);
+}
+html[data-country="jp"] .pill-group button.active { background: var(--surface-3); color: var(--accent); }
+html[data-country="us"] .pill-group button.active { background: var(--accent); color: var(--primary); font-weight: 700; }
+
+.country-switcher button { font-size: 16px; padding: 5px 10px; }
+.lang-switcher button { font-family: var(--font-display); font-weight: 600; }
+
+.icon-btn {
+  width: 38px; height: 38px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  display: grid; place-items: center;
+  font-size: 16px;
+  color: var(--muted);
+  transition: all .25s var(--ease-out-expo);
+  position: relative;
+}
+.icon-btn:hover { color: var(--primary); border-color: var(--primary); transform: translateY(-1px); }
+
+.fav-count {
+  position: absolute; top: -3px; right: -3px;
+  min-width: 16px; height: 16px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  display: grid; place-items: center;
+  padding: 0 4px;
+  border: 2px solid var(--surface);
+  transform: scale(0);
+  transition: transform .3s var(--ease-out-expo);
+}
+.fav-count.show { transform: scale(1); }
+
+/* ============================================================
+   BREADCRUMB
+   ============================================================ */
+.breadcrumb {
+  padding: 12px 28px;
+  font-size: 11px;
+  letter-spacing: .22em;
+  color: var(--muted);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+  display: flex; gap: 8px; align-items: center;
+  font-family: var(--font-mono);
+}
+.breadcrumb .crumb-sep { opacity: .4; }
+.breadcrumb .crumb-end { color: var(--text); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  margin: 24px 28px 14px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 280px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-elev);
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: saturate(.95);
+  transition: opacity .8s var(--ease-soft), transform 1.2s var(--ease-out-expo);
+}
+.hero-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,.65) 100%),
+              linear-gradient(90deg, rgba(0,0,0,.35) 0, transparent 50%);
+}
+.hero-body {
+  position: relative; z-index: 2;
+  padding: 40px 40px 32px;
+  display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: end;
+  min-height: 280px;
+  color: #fff;
+}
+.hero-label {
+  font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+  opacity: .9;
+  font-family: var(--font-mono);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.hero-label::before {
+  content: ""; width: 24px; height: 1px; background: var(--accent);
+  display: inline-block;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: 56px; line-height: 1.02;
+  margin: 8px 0 12px;
+  font-weight: 900;
+  letter-spacing: .01em;
+  text-shadow: 0 4px 28px rgba(0,0,0,.5);
+  animation: heroTitleIn .8s var(--ease-out-expo);
+}
+@keyframes heroTitleIn {
+  from { opacity: 0; transform: translateY(20px); letter-spacing: -.02em; }
+  to   { opacity: 1; transform: none; letter-spacing: .01em; }
+}
+.hero-sub { font-size: 15px; opacity: .92; max-width: 600px; line-height: 1.7; }
+.hero-stats {
+  display: flex; gap: 24px;
+  background: rgba(0,0,0,.4);
+  backdrop-filter: blur(14px);
+  padding: 14px 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.18);
+}
+.hero-stats .stat { text-align: center; min-width: 70px; }
+.hero-stats .stat-num { font-family: var(--font-display); font-size: 26px; font-weight: 700; line-height: 1; }
+.hero-stats .stat-label { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; opacity: .8; margin-top: 4px; font-family: var(--font-mono); }
+
+/* ---- THEME-SPECIFIC HERO ORNAMENTS ---- */
+/* CN: red seal stamp + vertical Chinese strip */
+html[data-country="cn"] .hero::after {
+  content: "印"; position: absolute; top: 24px; right: 28px; z-index: 3;
+  width: 56px; height: 56px;
+  background: var(--primary);
+  color: #fff;
+  font-family: var(--font-display); font-weight: 900; font-size: 26px;
+  display: grid; place-items: center;
+  border-radius: 4px;
+  transform: rotate(-6deg);
+  box-shadow: 0 6px 18px -6px rgba(0,0,0,.4), inset 0 0 0 2px rgba(255,255,255,.35);
+  letter-spacing: 0;
+}
+html[data-country="cn"] .hero .vstrip {
+  position: absolute; left: 28px; top: 32px; z-index: 3;
+  writing-mode: vertical-rl;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: rgba(255,255,255,.9);
+  letter-spacing: .4em;
+  text-shadow: 0 2px 8px rgba(0,0,0,.6);
+}
+html[data-country="cn"] .hero .vstrip::before {
+  content: ""; display: block; width: 2px; height: 18px; background: var(--accent); margin-bottom: 8px;
+}
+
+/* JP: noren saw-tooth top + vertical neon kanji */
+html[data-country="jp"] .hero::before {
+  content: "";
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 32px;
+  background: var(--primary);
+  z-index: 3;
+  clip-path: polygon(0 0, 100% 0, 100% 50%,
+    96% 100%, 92% 50%, 88% 100%, 84% 50%, 80% 100%, 76% 50%, 72% 100%,
+    68% 50%, 64% 100%, 60% 50%, 56% 100%, 52% 50%, 48% 100%, 44% 50%,
+    40% 100%, 36% 50%, 32% 100%, 28% 50%, 24% 100%, 20% 50%, 16% 100%,
+    12% 50%, 8% 100%, 4% 50%, 0 100%);
+  box-shadow: 0 6px 14px -6px rgba(230,0,18,.5);
+}
+html[data-country="jp"] .hero::after {
+  content: "本日のおすすめ"; position: absolute; top: 40px; right: 32px; z-index: 3;
+  font-family: var(--font-display); font-weight: 900; font-size: 13px;
+  color: #fff;
+  letter-spacing: .25em;
+  padding: 5px 12px;
+  background: rgba(0,0,0,.55);
+  border-left: 2px solid var(--primary);
+  backdrop-filter: blur(6px);
+}
+html[data-country="jp"] .hero .vstrip {
+  position: absolute; left: 24px; top: 56px; z-index: 3;
+  writing-mode: vertical-rl;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 13px;
+  color: var(--primary-soft);
+  letter-spacing: .35em;
+  text-shadow: 0 0 6px var(--primary-soft), 0 0 16px rgba(255,107,157,.6);
+}
+
+/* US: chrome marquee + checker accent */
+html[data-country="us"] .hero::before {
+  content: "OPEN 24 HRS · NOW SERVING AMERICAN CLASSICS · OPEN 24 HRS";
+  position: absolute; top: 16px; left: 50%; transform: translateX(-50%); z-index: 3;
+  background: linear-gradient(180deg, #fff 0%, #d8e4f2 50%, #fff 100%);
+  color: var(--primary);
+  font-family: var(--font-en-display);
+  font-size: 14px;
+  letter-spacing: .25em;
+  padding: 6px 22px;
+  border-radius: 999px;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 0 3px var(--accent), 0 6px 16px -6px rgba(0,0,0,.4);
+  font-weight: 700;
+  white-space: nowrap;
+}
+html[data-country="us"] .hero::after {
+  content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 8px; z-index: 3;
+  background: repeating-linear-gradient(90deg, var(--primary) 0 16px, #fff 16px 32px);
+}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr 320px;
+  gap: 18px;
+  padding: 6px 28px 60px;
+  align-items: start;
+}
+
+/* ============================================================
+   FILTER RAIL
+   ============================================================ */
+.rail {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  position: sticky; top: 96px;
+  transition: background-color .4s var(--ease-soft);
+}
+.rail h4 {
+  margin: 0 0 10px;
+  font-size: 11px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--muted); font-weight: 600;
+  font-family: var(--font-mono);
+}
+.rail .section { padding: 12px 0; border-bottom: 1px dashed var(--line); }
+.rail .section:last-child { border-bottom: none; }
+
+.region-list { display: flex; flex-direction: column; gap: 4px; }
+.region-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all .25s var(--ease-out-expo);
+}
+.region-item:hover { background: var(--surface); transform: translateX(2px); }
+.region-item.active {
+  background: var(--surface);
+  color: var(--primary);
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--primary), 0 1px 3px rgba(0,0,0,.05);
+}
+.region-item .count { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+.region-item.active .count { color: var(--primary); }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  padding: 5px 12px;
+  font-size: 12px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .25s var(--ease-out-expo);
+}
+.chip:hover { color: var(--text); border-color: var(--line-strong); transform: translateY(-1px); }
+.chip.active {
+  color: #fff; background: var(--primary); border-color: var(--primary);
+  box-shadow: 0 4px 12px -4px var(--primary);
+}
+html[data-country="us"] .chip.active { background: var(--accent); color: var(--primary); border-color: var(--accent); }
+
+.toggle-row { display: flex; gap: 4px; background: var(--surface); border-radius: 999px; padding: 3px; border: 1px solid var(--line); }
+.toggle-row button {
+  flex: 1; padding: 8px 10px; font-size: 12px; color: var(--muted); border-radius: 999px;
+  transition: all .25s var(--ease-out-expo);
+}
+.toggle-row button.active { background: var(--primary); color: #fff; box-shadow: 0 2px 8px -2px var(--primary); }
+html[data-country="us"] .toggle-row button.active { background: var(--accent); color: var(--primary); font-weight: 700; }
+
+.rail-stat {
+  margin-top: 10px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  background: var(--surface);
+  border-radius: 8px;
+  border: 1px dashed var(--line);
+}
+
+/* ============================================================
+   CONTENT
+   ============================================================ */
+.content { min-width: 0; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeUp .45s var(--ease-out-expo); }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ---- POSTER GRID ---- */
+.poster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* Card frame: country-specific "matting" + inner card */
+.poster-card {
+  position: relative;
+  cursor: pointer;
+  perspective: 1000px;
+  transition: transform .4s var(--ease-out-expo);
+}
+.poster-card .frame {
+  position: relative;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform .4s var(--ease-out-expo), box-shadow .4s var(--ease-out-expo);
+  transform-style: preserve-3d;
+}
+.poster-card:hover .frame {
+  transform: translateY(-5px) rotateX(0.6deg);
+  box-shadow: var(--shadow-elev);
+}
+
+.poster-card .img-wrap {
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--surface-3);
+  position: relative;
+}
+.poster-card img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .9s var(--ease-out-cubic), filter .4s var(--ease-soft);
+}
+.poster-card:hover img { transform: scale(1.05); }
+
+/* Shine sweep on hover */
+.poster-card .img-wrap::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform .9s var(--ease-out-cubic);
+  z-index: 3;
+  pointer-events: none;
+}
+.poster-card:hover .img-wrap::before { transform: translateX(100%); }
+
+/* Hover info overlay (slide-up glass band with tags) */
+.poster-card .hover-info {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 28px 14px 14px;
+  background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.55) 55%, rgba(0,0,0,.85) 100%);
+  color: #fff;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .35s var(--ease-out-expo), transform .35s var(--ease-out-expo);
+  z-index: 2;
+  pointer-events: none;
+}
+.poster-card:hover .hover-info { opacity: 1; transform: none; }
+.poster-card .hover-info .h-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.poster-card .hover-info .h-tags span {
+  font-size: 11px; padding: 3px 9px;
+  background: rgba(255,255,255,.18);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 4px;
+  backdrop-filter: blur(6px);
+}
+.poster-card .hover-info .h-hint {
+  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+  font-family: var(--font-mono); opacity: .85;
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* Museum-plate caption */
+.poster-card .caption {
+  padding: 12px 14px 14px;
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.poster-card .caption .c-en {
+  font-family: var(--font-en-display);
+  font-size: 13px;
+  letter-spacing: .04em;
+  color: var(--text);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.poster-card .caption .c-pin {
+  font-size: 10px;
+  letter-spacing: .14em;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Pin badge — small metal stamp */
+.poster-card .pin {
+  position: absolute; top: 12px; left: 12px;
+  font-size: 10px;
+  padding: 5px 11px;
+  background: rgba(15,15,18,.7);
+  color: #fff;
+  border-radius: 4px;
+  backdrop-filter: blur(10px);
+  font-family: var(--font-mono);
+  letter-spacing: .14em;
+  border: 1px solid rgba(255,255,255,.2);
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px -4px rgba(0,0,0,.5);
+  z-index: 3;
+  display: flex; align-items: center; gap: 5px;
+}
+.poster-card .pin .pin-flag { font-size: 12px; line-height: 1; }
+.poster-card .pin::before {
+  content: ""; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 6px var(--accent);
+}
+
+.poster-card .fav-btn {
+  position: absolute; top: 12px; right: 12px;
+  width: 32px; height: 32px;
+  border-radius: 999px;
+  background: rgba(15,15,18,.65);
+  color: rgba(255,255,255,.85);
+  font-size: 15px;
+  display: grid; place-items: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,.2);
+  transition: all .3s var(--ease-out-expo);
+  z-index: 4;
+  box-shadow: 0 4px 12px -4px rgba(0,0,0,.5);
+}
+.poster-card .fav-btn:hover { color: var(--primary-soft); transform: scale(1.12); }
+.poster-card .fav-btn.active { color: var(--primary); background: rgba(255,255,255,.96); border-color: var(--primary); }
+
+.poster-card .preview-badge {
+  position: absolute; top: 12px; right: 54px;
+  font-size: 9px;
+  letter-spacing: .22em;
+  font-family: var(--font-mono);
+  background: rgba(0,217,224,.22);
+  color: var(--accent);
+  padding: 5px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--accent);
+  text-transform: uppercase;
+  z-index: 3;
+  backdrop-filter: blur(8px);
+  font-weight: 600;
+}
+
+/* ----- CN: scroll-mount (cream card + gold inner border + red corner ribbon) ----- */
+html[data-country="cn"] .poster-card .frame {
+  background: var(--surface-2);
+  padding: 5px;
+  border: 1px solid var(--line);
+}
+html[data-country="cn"] .poster-card .frame::after {
+  content: "";
+  position: absolute; top: 5px; left: 5px; right: 5px; bottom: 5px;
+  border: 1px solid var(--accent);
+  pointer-events: none;
+  z-index: 5;
+  border-radius: 2px;
+}
+html[data-country="cn"] .poster-card .img-wrap { border-radius: 2px 2px 0 0; }
+html[data-country="cn"] .poster-card .caption {
+  background: var(--surface);
+  border-top: 1px solid var(--accent);
+  border-radius: 0 0 2px 2px;
+}
+html[data-country="cn"] .poster-card .caption .c-en { color: var(--primary); }
+html[data-country="cn"] .poster-card .pin {
+  background: var(--primary); color: #fff;
+  border-color: rgba(255,255,255,.3);
+}
+
+/* ----- JP: deep glass with neon glow ----- */
+html[data-country="jp"] .poster-card .frame {
+  background: linear-gradient(180deg, #14141a, #1d1d24);
+  border: 1px solid rgba(255,107,157,.18);
+}
+html[data-country="jp"] .poster-card:hover .frame {
+  box-shadow: 0 30px 80px -22px rgba(0,0,0,.7),
+              0 0 0 1px var(--primary-soft),
+              0 0 36px -6px var(--primary-soft);
+}
+html[data-country="jp"] .poster-card .caption {
+  background: #1a1a20;
+  border-top: 1px solid rgba(255,107,157,.2);
+}
+html[data-country="jp"] .poster-card .caption .c-en { color: var(--accent); }
+html[data-country="jp"] .poster-card .caption .c-pin { color: rgba(245,245,245,.55); }
+html[data-country="jp"] .poster-card .pin {
+  background: var(--primary); color: #fff;
+  border-color: rgba(255,255,255,.25);
+}
+
+/* ----- US: chrome double-border + vol badge ----- */
+html[data-country="us"] .poster-card .frame {
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-card);
+  border-radius: 8px;
+}
+html[data-country="us"] .poster-card:hover .frame {
+  box-shadow: 0 0 0 2px var(--accent), var(--shadow-elev);
+}
+html[data-country="us"] .poster-card .img-wrap { border-radius: 4px 4px 0 0; }
+html[data-country="us"] .poster-card .caption {
+  background: var(--surface);
+  border-top: 1px solid var(--primary);
+}
+html[data-country="us"] .poster-card .caption .c-en {
+  font-family: var(--font-en-display);
+  color: var(--primary);
+  letter-spacing: .02em;
+  font-style: normal;
+}
+html[data-country="us"] .poster-card .pin {
+  background: var(--primary); color: var(--accent);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.coming-card {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius);
+  background:
+    repeating-linear-gradient(45deg, var(--surface-2), var(--surface-2) 12px, var(--surface-3) 12px, var(--surface-3) 24px);
+  display: grid; place-items: center;
+  border: 1px dashed var(--line-strong);
+  color: var(--muted);
+  text-align: center;
+  padding: 16px;
+}
+.coming-card .big { font-family: var(--font-display); font-size: 22px; color: var(--text); margin-bottom: 6px; }
+.coming-card .sub { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; font-family: var(--font-mono); }
+
+/* ---- ZINE READER ---- */
+.zine-reader {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+.zine-tools {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.zine-tools .left, .zine-tools .right { display: flex; gap: 8px; align-items: center; }
+.zine-tools .page-no { font-family: var(--font-mono); font-size: 12px; color: var(--muted); padding: 0 12px; }
+.zine-spread {
+  display: grid; grid-template-columns: 1fr 1fr;
+  background: var(--surface);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-elev);
+  position: relative;
+  min-height: 360px;
+  cursor: zoom-in;
+}
+.zine-spread::before {
+  content: "";
+  position: absolute; top: 0; bottom: 0; left: 50%;
+  width: 4px; margin-left: -2px;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.22) 50%, transparent);
+  z-index: 2;
+  pointer-events: none;
+}
+.zine-spread img { width: 100%; height: 100%; object-fit: cover; min-height: 360px; transition: opacity .5s var(--ease-soft); }
+.zine-thumbs {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 18px;
+}
+.zine-thumb {
+  aspect-ratio: 4 / 3; border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--line); cursor: pointer; transition: all .3s var(--ease-out-expo);
+  background: var(--surface-3);
+}
+.zine-thumb:hover { transform: translateY(-2px); }
+.zine-thumb.active { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary), 0 4px 12px -4px var(--primary); }
+.zine-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---- STREET EXPLORER ---- */
+.street-stage {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #0a0a0a;
+  aspect-ratio: 21 / 9;
+  box-shadow: var(--shadow-elev);
+  cursor: zoom-in;
+}
+.street-stage img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: opacity .4s var(--ease-soft);
+}
+.street-stage::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,.5) 0, transparent 30%, transparent 70%, rgba(0,0,0,.4) 100%);
+  pointer-events: none;
+}
+.street-controls {
+  position: absolute; right: 16px; top: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+  align-items: flex-end;
+  z-index: 3;
+}
+.street-controls .glass {
+  background: rgba(15,15,18,.6);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: #fff;
+  min-width: 160px;
+}
+.street-controls .glass .glass-label { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; opacity: .7; margin-bottom: 8px; font-family: var(--font-mono); }
+.street-controls .glass .pill-group { background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.12); width: 100%; }
+.street-controls .glass .pill-group button { color: rgba(255,255,255,.65); flex: 1; }
+.street-controls .glass .pill-group button.active { background: var(--accent); color: #111; font-weight: 600; }
+
+.street-scenes {
+  position: absolute; left: 16px; top: 16px; bottom: 16px; width: 240px;
+  background: rgba(15,15,18,.6);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  padding: 14px;
+  color: #fff;
+  overflow-y: auto;
+  z-index: 3;
+}
+.street-scenes h5 {
+  margin: 0 0 12px;
+  font-size: 10px; letter-spacing: .24em; text-transform: uppercase;
+  color: var(--accent); font-family: var(--font-mono);
+}
+.scene-item {
+  display: grid; grid-template-columns: 52px 1fr;
+  gap: 10px; align-items: center;
+  padding: 7px; border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 6px;
+  transition: all .25s var(--ease-out-expo);
+}
+.scene-item:hover { background: rgba(255,255,255,.08); transform: translateX(2px); }
+.scene-item.active { background: rgba(255,255,255,.14); box-shadow: inset 3px 0 0 var(--accent); }
+.scene-item .thumb { width: 52px; height: 38px; border-radius: 4px; background-size: cover; background-position: center; }
+.scene-item .name { font-size: 13px; font-weight: 500; }
+.scene-item .tag { font-size: 10px; color: rgba(255,255,255,.55); margin-top: 1px; }
+
+.eat-here {
+  margin-top: 18px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.eat-here .head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+.eat-here .head h4 { margin: 0; font-family: var(--font-display); font-size: 18px; }
+.eat-here .head .more { font-size: 12px; color: var(--primary); }
+.eat-strip { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; }
+.eat-card {
+  flex: 0 0 140px;
+  border-radius: 10px; overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: all .3s var(--ease-out-expo);
+}
+.eat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
+.eat-card .img-wrap { aspect-ratio: 1 / 1; overflow: hidden; }
+.eat-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease-out-cubic); }
+.eat-card:hover img { transform: scale(1.05); }
+.eat-card .label { padding: 8px 10px 4px; font-size: 12px; font-weight: 600; }
+.eat-card .chips { padding: 0 10px 10px; display: flex; gap: 4px; }
+.eat-card .chips span { font-size: 9px; padding: 1px 6px; background: var(--surface-2); border-radius: 4px; color: var(--muted); }
+
+/* ============================================================
+   EDITOR PICK
+   ============================================================ */
+.editor {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  position: sticky; top: 96px;
+  transition: background-color .4s var(--ease-soft);
+}
+.editor .header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 14px;
+}
+.editor .header h3 { margin: 0; font-family: var(--font-display); font-size: 16px; font-weight: 700; }
+.editor .header .badge {
+  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--primary); padding: 2px 8px;
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+}
+.editor .featured-img {
+  aspect-ratio: 3 / 4; border-radius: 12px;
+  overflow: hidden; background: var(--surface-3);
+  margin-bottom: 14px;
+  cursor: zoom-in;
+  position: relative;
+}
+.editor .featured-img img { width: 100%; height: 100%; object-fit: cover; transition: opacity .4s var(--ease-soft); }
+.editor .featured-title { font-family: var(--font-display); font-size: 22px; font-weight: 700; margin: 0 0 4px; }
+.editor .featured-sub { font-size: 11px; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 10px; font-family: var(--font-mono); }
+.editor .featured-desc { font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.6; }
+.editor .actions-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.editor .actions-row button {
+  font-size: 12px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--text);
+  transition: all .25s var(--ease-out-expo);
+}
+.editor .actions-row button.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+html[data-country="us"] .editor .actions-row button.primary { background: var(--accent); color: var(--primary); }
+.editor .actions-row button:hover { border-color: var(--primary); transform: translateY(-1px); }
+.editor .actions-row button.primary.fav-active { background: #fff; color: var(--primary); border-color: var(--primary); }
+
+.editor .compare { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line); }
+.editor .compare h5 { margin: 0 0 10px; font-size: 10px; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); font-family: var(--font-mono); }
+.editor .compare-pair { display: grid; grid-template-columns: 1fr 18px 1fr; gap: 8px; align-items: center; }
+.editor .compare-pair .arrow { text-align: center; color: var(--muted); font-size: 16px; }
+.editor .compare-pair img { aspect-ratio: 3 / 4; object-fit: cover; border-radius: 6px; width: 100%; cursor: zoom-in; transition: transform .3s var(--ease-out-expo); }
+.editor .compare-pair img:hover { transform: scale(1.03); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  padding: 28px 28px 60px;
+  border-top: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--muted);
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 40px;
+}
+footer .mono { font-family: var(--font-mono); font-size: 11px; }
+
+/* ============================================================
+   SEARCH OVERLAY
+   ============================================================ */
+.overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 8vh;
+  opacity: 0;
+  transition: opacity .3s var(--ease-soft);
+}
+.overlay.show { display: flex; opacity: 1; }
+
+.search-panel {
+  width: min(680px, 92vw);
+  background: var(--surface);
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
+  transform: translateY(20px) scale(.98);
+  transition: transform .35s var(--ease-out-expo);
+}
+.overlay.show .search-panel { transform: none; }
+.search-input-row {
+  display: flex; align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  gap: 12px;
+}
+.search-input-row svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--muted); }
+.search-input-row input {
+  flex: 1;
+  border: none; outline: none;
+  background: transparent;
+  font-size: 17px;
+  font-family: var(--font-body);
+  color: var(--text);
+}
+.search-input-row input::placeholder { color: var(--muted); }
+.search-input-row .esc {
+  padding: 3px 8px; font-size: 11px; font-family: var(--font-mono);
+  border: 1px solid var(--line); border-radius: 4px; color: var(--muted);
+}
+
+.search-results {
+  max-height: 60vh; overflow-y: auto;
+  padding: 8px;
+}
+.search-result {
+  display: grid; grid-template-columns: 56px 1fr auto;
+  gap: 12px; align-items: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color .2s;
+}
+.search-result:hover, .search-result.focus { background: var(--surface-2); }
+.search-result .thumb { width: 56px; height: 56px; border-radius: 8px; background-size: cover; background-position: center; background-color: var(--surface-3); }
+.search-result .info { min-width: 0; }
+.search-result .name { font-size: 14px; font-weight: 600; }
+.search-result .meta { font-size: 11px; color: var(--muted); font-family: var(--font-mono); letter-spacing: .12em; text-transform: uppercase; margin-top: 2px; }
+.search-result .kind { font-size: 10px; padding: 3px 8px; border-radius: 999px; background: var(--surface-2); color: var(--muted); font-family: var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+.search-empty { padding: 30px; text-align: center; color: var(--muted); font-size: 13px; }
+
+/* ============================================================
+   FAVORITES PANEL
+   ============================================================ */
+.fav-panel {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 380px; z-index: 180;
+  background: var(--surface);
+  border-left: 1px solid var(--line);
+  box-shadow: -20px 0 40px -10px rgba(0,0,0,.18);
+  transform: translateX(100%);
+  transition: transform .4s var(--ease-out-expo);
+  display: flex; flex-direction: column;
+}
+.fav-panel.open { transform: none; }
+.fav-panel .head {
+  padding: 18px 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+}
+.fav-panel .head h3 { margin: 0; font-family: var(--font-display); font-size: 20px; font-weight: 700; }
+.fav-panel .head .close { font-size: 22px; color: var(--muted); cursor: pointer; }
+.fav-panel .body {
+  flex: 1; overflow-y: auto; padding: 14px 18px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.fav-item {
+  display: grid; grid-template-columns: 64px 1fr auto;
+  gap: 12px; align-items: center;
+  padding: 10px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  transition: all .2s var(--ease-out-expo);
+}
+.fav-item:hover { transform: translateX(-2px); border-color: var(--primary); }
+.fav-item .thumb { width: 64px; height: 64px; border-radius: 8px; background-size: cover; background-position: center; }
+.fav-item .name { font-size: 14px; font-weight: 600; }
+.fav-item .meta { font-size: 11px; color: var(--muted); font-family: var(--font-mono); margin-top: 2px; letter-spacing: .1em; }
+.fav-item .remove { color: var(--muted); font-size: 14px; padding: 4px 8px; }
+.fav-item .remove:hover { color: var(--primary); }
+.fav-empty { padding: 60px 20px; text-align: center; color: var(--muted); }
+.fav-empty .icon { font-size: 40px; margin-bottom: 8px; opacity: .5; }
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+.lightbox {
+  position: fixed; inset: 0; z-index: 220;
+  background: rgba(0,0,0,.88);
+  backdrop-filter: blur(8px);
+  display: none;
+  opacity: 0;
+  transition: opacity .35s var(--ease-soft);
+}
+.lightbox.show { display: flex; opacity: 1; }
+.lightbox-inner {
+  margin: auto;
+  width: min(1200px, 96vw);
+  height: min(86vh, 800px);
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 0;
+  background: var(--surface);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-modal);
+  transform: scale(.94) translateY(20px);
+  transition: transform .45s var(--ease-out-expo);
+}
+.lightbox.show .lightbox-inner { transform: none; }
+.lightbox-img {
+  background: #0a0a0a;
+  display: grid; place-items: center;
+  overflow: hidden;
+  position: relative;
+}
+.lightbox-img img {
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
+  object-fit: contain;
+  animation: lightboxImgIn .5s var(--ease-out-expo);
+}
+@keyframes lightboxImgIn { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+.lightbox-side {
+  padding: 26px;
+  display: flex; flex-direction: column; gap: 14px;
+  overflow-y: auto;
+}
+.lightbox-side .title { font-family: var(--font-display); font-size: 28px; font-weight: 700; margin: 0; line-height: 1.15; }
+.lightbox-side .sub { font-size: 11px; letter-spacing: .16em; color: var(--muted); text-transform: uppercase; font-family: var(--font-mono); }
+.lightbox-side .desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.lightbox-side .lb-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.lightbox-side .lb-tags span {
+  font-size: 11px; padding: 3px 9px; background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 4px; color: var(--muted);
+}
+.lightbox-side .view-switch {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 4px;
+}
+.lightbox-side .view-switch button {
+  padding: 8px 4px;
+  font-size: 11px;
+  color: var(--muted);
+  border-radius: 8px;
+  transition: all .2s var(--ease-out-expo);
+  font-family: var(--font-mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.lightbox-side .view-switch button.active { background: var(--primary); color: #fff; }
+.lightbox-side .lb-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
+.lightbox-side .lb-actions button {
+  padding: 11px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  transition: all .25s var(--ease-out-expo);
+}
+.lightbox-side .lb-actions button.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.lightbox-side .lb-actions button:hover { border-color: var(--primary); }
+.lightbox-close {
+  position: absolute; top: 18px; right: 22px;
+  width: 40px; height: 40px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.55);
+  color: #fff;
+  display: grid; place-items: center;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 4;
+  transition: all .25s var(--ease-out-expo);
+  border: 1px solid rgba(255,255,255,.2);
+}
+.lightbox-close:hover { background: var(--primary); transform: rotate(90deg); }
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--text); color: var(--surface);
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transition: all .35s var(--ease-out-expo);
+  box-shadow: 0 8px 24px -8px rgba(0,0,0,.4);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1280px) {
+  .layout { grid-template-columns: 220px 1fr 280px; }
+  .topbar { grid-template-columns: 240px 1fr 480px; }
+}
+@media (max-width: 980px) {
+  .topbar { grid-template-columns: auto 1fr; padding: 12px 16px; }
+  .actions { grid-column: 1 / -1; justify-content: space-between; padding-top: 8px; }
+  .tabs { grid-column: 1 / -1; order: 3; padding-top: 6px; }
+  .layout { grid-template-columns: 1fr; padding: 6px 16px 60px; }
+  .rail, .editor { position: static; }
+  .poster-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .hero { margin: 16px; }
+  .hero-title { font-size: 36px; }
+  .hero-body { grid-template-columns: 1fr; padding: 28px 24px; }
+  .lightbox-inner { grid-template-columns: 1fr; height: 92vh; }
+  .lightbox-img { aspect-ratio: 4/3; }
+  .fav-panel { width: 88vw; }
+}
+</style>
+</head>
+<body>
+
+<!-- 旧版单页原型：世界地图与 landing 布局已迁至 web/（Astro）。请在该目录执行 npm run dev，打开 http://localhost:4321/ -->
+<div id="legacy-migrate-banner" style="position:fixed;inset:0 auto auto 0;right:0;z-index:99999;padding:10px 16px;background:#1a0a0a;color:#fff;font:600 13px/1.4 'Noto Sans SC',sans-serif;text-align:center;border-bottom:2px solid #e60012;box-shadow:0 4px 24px rgba(0,0,0,.35)">
+  此文件为旧原型，不含 landing.png 左侧世界地图。请使用 <strong>web</strong> 站点：<code style="opacity:.9">cd web &amp;&amp; npm run dev</code> → <a href="http://localhost:4321/" style="color:#ffb4a8">http://localhost:4321/</a>
+</div>
+<style>#legacy-migrate-banner ~ .topbar{margin-top:48px}</style>
+
+<!-- =================== TOPBAR =================== -->
+<header class="topbar">
+  <div class="brand">
+    <div class="logo-mark" title="Street Corner Foodie">
+      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7 7 L7 25 L25 25"/>
+        <circle cx="20" cy="11.5" r="3.2" fill="currentColor" stroke="none"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-zh" data-zh="街角食客" data-en="Street Corner Foodie" data-ja="街角フーディー">街角食客</span>
+      <span class="logo-en">STREET · CORNER · FOODIE</span>
+    </div>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="poster">
+      <span data-zh="海报" data-en="Posters" data-ja="ポスター">海报</span>
+    </button>
+    <button class="tab" data-tab="zine">
+      <span data-zh="小志" data-en="Mini-Zine" data-ja="ミニ誌">小志</span>
+    </button>
+    <button class="tab" data-tab="street">
+      <span data-zh="街景" data-en="Street View" data-ja="ストリート">街景</span>
+    </button>
+  </nav>
+
+  <div class="actions">
+    <div class="pill-group country-switcher" id="country-switcher">
+      <button data-country="cn" class="active" title="China">🇨🇳</button>
+      <button data-country="jp" title="Japan">🇯🇵</button>
+      <button data-country="us" title="USA">🇺🇸</button>
+    </div>
+    <div class="pill-group lang-switcher" id="lang-switcher">
+      <button data-lang="zh" class="active">中</button>
+      <button data-lang="en">EN</button>
+      <button data-lang="ja">日</button>
+    </div>
+    <button class="icon-btn" id="search-btn" title="Search">⌕</button>
+    <button class="icon-btn" id="fav-btn" title="Favorites">
+      ♡<span class="fav-count" id="fav-count">0</span>
+    </button>
+  </div>
+</header>
+
+<!-- =================== BREADCRUMB =================== -->
+<div class="breadcrumb" id="breadcrumb">
+  <span data-zh="世界" data-en="World" data-ja="世界">世界</span>
+  <span class="crumb-sep">▸</span>
+  <span id="crumb-country">🇨🇳 <span data-zh="中国" data-en="China" data-ja="中国">中国</span></span>
+  <span class="crumb-sep">▸</span>
+  <span id="crumb-region" data-zh="海南" data-en="Hainan" data-ja="海南">海南</span>
+  <span class="crumb-sep">▸</span>
+  <span class="crumb-end" id="crumb-tab" data-zh="海报" data-en="Posters" data-ja="ポスター">海报</span>
+</div>
+
+<!-- =================== HERO =================== -->
+<section class="hero">
+  <div class="hero-bg" id="hero-bg"></div>
+  <div class="vstrip" id="hero-vstrip">中華風味 · 海南</div>
+  <div class="hero-body">
+    <div>
+      <div class="hero-label" id="hero-label">STREET CORNER FOODIE · MAY 2026 · 🇨🇳 CHINA</div>
+      <h1 class="hero-title" id="hero-title">海南 · HAINAN</h1>
+      <p class="hero-sub" id="hero-sub">热带海岛上的清甜与椰香 — 文昌鸡、海南粉、清补凉、椰子鸡，从骑楼到老爸茶。</p>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num" id="stat-poster">12</div><div class="stat-label" data-zh="海报" data-en="Posters" data-ja="ポスター">海报</div></div>
+      <div class="stat"><div class="stat-num" id="stat-zine">23</div><div class="stat-label" data-zh="小志" data-en="Zines" data-ja="ミニ誌">小志</div></div>
+      <div class="stat"><div class="stat-num" id="stat-street">6</div><div class="stat-label" data-zh="街景" data-en="Scenes" data-ja="街景">街景</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== MAIN LAYOUT =================== -->
+<main class="layout">
+
+  <!-- ===== FILTER RAIL ===== -->
+  <aside class="rail">
+    <div class="section">
+      <h4 data-zh="地区" data-en="Region" data-ja="地域">地区</h4>
+      <div class="region-list" id="region-list"></div>
+    </div>
+    <div class="section">
+      <h4 data-zh="风味" data-en="Flavor" data-ja="味">风味</h4>
+      <div class="chip-row" id="flavor-list"></div>
+    </div>
+    <div class="section">
+      <h4 data-zh="人物" data-en="Character" data-ja="人物">人物</h4>
+      <div class="toggle-row" id="char-toggle">
+        <button data-char="with" class="active" data-zh="有人物" data-en="With Chef" data-ja="人物あり">有人物</button>
+        <button data-char="no" data-zh="无人物" data-en="No Char" data-ja="人物なし">无人物</button>
+      </div>
+      <div class="rail-stat" data-zh="↻ 切换看 no-char 大堂版" data-en="↻ Toggle no-char variant" data-ja="↻ 人物なし版">↻ 切换看 no-char 大堂版</div>
+    </div>
+  </aside>
+
+  <!-- ===== CONTENT ===== -->
+  <section class="content">
+
+    <!-- POSTER PANEL -->
+    <div class="tab-panel active" data-panel="poster">
+      <div class="poster-grid" id="poster-grid"></div>
+    </div>
+
+    <!-- ZINE PANEL -->
+    <div class="tab-panel" data-panel="zine">
+      <div class="zine-reader">
+        <div class="zine-tools">
+          <div class="left">
+            <button class="icon-btn" id="zine-prev">‹</button>
+            <span class="page-no" id="zine-page">01 / 04</span>
+            <button class="icon-btn" id="zine-next">›</button>
+          </div>
+          <div class="right">
+            <div class="pill-group" id="zine-mode">
+              <button data-mode="story" class="active" data-zh="故事" data-en="Story" data-ja="物語">故事</button>
+              <button data-mode="recipe" data-zh="做法" data-en="Recipe" data-ja="作り方">做法</button>
+            </div>
+          </div>
+        </div>
+        <div class="zine-spread" id="zine-spread">
+          <img id="zine-img-left" alt="zine left page" />
+          <img id="zine-img-right" alt="zine right page" />
+        </div>
+        <div class="zine-thumbs" id="zine-thumbs"></div>
+      </div>
+    </div>
+
+    <!-- STREET PANEL -->
+    <div class="tab-panel" data-panel="street">
+      <div class="street-stage" id="street-stage">
+        <img id="street-img" alt="street view" />
+        <aside class="street-scenes" id="street-scenes"></aside>
+        <div class="street-controls">
+          <div class="glass">
+            <div class="glass-label" data-zh="时段 TIME" data-en="TIME OF DAY" data-ja="時間帯">时段 TIME</div>
+            <div class="pill-group" id="time-toggle">
+              <button data-time="day" class="active" data-zh="白天" data-en="Day" data-ja="昼">白天</button>
+              <button data-time="night" data-zh="夜景" data-en="Night" data-ja="夜">夜景</button>
+            </div>
+          </div>
+          <div class="glass">
+            <div class="glass-label" data-zh="画幅 FRAME" data-en="FRAME RATIO" data-ja="画幅">画幅 FRAME</div>
+            <div class="pill-group" id="frame-toggle">
+              <button data-frame="wide" class="active">21:9</button>
+              <button data-frame="standard">1:1</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="eat-here">
+        <div class="head">
+          <h4 data-zh="🍜 这条街吃什么" data-en="🍜 Eat Here" data-ja="🍜 ここで食べる">🍜 这条街吃什么</h4>
+          <a class="more" href="#" data-zh="查看全部 →" data-en="See all →" data-ja="すべて見る →">查看全部 →</a>
+        </div>
+        <div class="eat-strip" id="eat-strip"></div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== EDITOR PICK ===== -->
+  <aside class="editor">
+    <div class="header">
+      <h3 data-zh="今日推荐" data-en="Editor's Pick" data-ja="今日の一押し">今日推荐</h3>
+      <span class="badge">PICK</span>
+    </div>
+    <div class="featured-img" id="featured-img-wrap"><img id="featured-img" alt="featured" /></div>
+    <h2 class="featured-title" id="featured-title">文昌鸡</h2>
+    <div class="featured-sub" id="featured-sub">WENCHANG CHICKEN · 海南·文昌</div>
+    <p class="featured-desc" id="featured-desc">海南四大名菜之首，皮黄爽脆，肉嫩骨香。配姜蓉、沙姜与青桔，灵魂在蘸料。</p>
+    <div class="actions-row">
+      <button class="primary" id="featured-fav" data-zh="♥ 收藏" data-en="♥ Save" data-ja="♥ 保存">♥ 收藏</button>
+      <button id="featured-download" data-zh="↓ 下载" data-en="↓ Download" data-ja="↓ DL">↓ 下载</button>
+      <button id="featured-see-zine" data-zh="📖 看小志" data-en="📖 See Zine" data-ja="📖 ミニ誌">📖 看小志</button>
+      <button id="featured-see-street" data-zh="🏙 看街景" data-en="🏙 See Street" data-ja="🏙 街景">🏙 看街景</button>
+    </div>
+    <div class="compare">
+      <h5 data-zh="对照版 NO-CHAR" data-en="No-Char Variant" data-ja="人物なし版">对照版 NO-CHAR</h5>
+      <div class="compare-pair">
+        <img id="compare-with" alt="with chef" />
+        <div class="arrow">⇆</div>
+        <img id="compare-without" alt="no chef" />
+      </div>
+    </div>
+  </aside>
+
+</main>
+
+<footer>
+  <div>© 2026 Street Corner Foodie · <span data-zh="拐进世界的每个街角，看食物与城市如何一起呼吸" data-en="Turn into every street corner of the world — taste the city, see the bite" data-ja="世界の街角を曲がるたび、味と街が立ち上がる">拐进世界的每个街角，看食物与城市如何一起呼吸</span></div>
+  <div class="mono">scf · prototype · build 2026.05 · v2</div>
+</footer>
+
+<!-- =================== SEARCH OVERLAY =================== -->
+<div class="overlay" id="search-overlay">
+  <div class="search-panel">
+    <div class="search-input-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="search-input" type="text" placeholder="搜索菜名 · 地区 · 风味…" autocomplete="off" />
+      <span class="esc">ESC</span>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+
+<!-- =================== FAVORITES PANEL =================== -->
+<aside class="fav-panel" id="fav-panel">
+  <div class="head">
+    <h3 data-zh="我的收藏" data-en="My Favorites" data-ja="お気に入り">我的收藏</h3>
+    <span class="close" id="fav-close">✕</span>
+  </div>
+  <div class="body" id="fav-body"></div>
+</aside>
+
+<!-- =================== LIGHTBOX =================== -->
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightbox-close">✕</span>
+  <div class="lightbox-inner">
+    <div class="lightbox-img">
+      <img id="lightbox-img" alt="" />
+    </div>
+    <div class="lightbox-side">
+      <div class="sub" id="lightbox-sub">WENCHANG CHICKEN · 海南·文昌</div>
+      <h2 class="title" id="lightbox-title">文昌鸡</h2>
+      <div class="lb-tags" id="lightbox-tags"></div>
+      <p class="desc" id="lightbox-desc">…</p>
+      <div>
+        <div style="font-size:10px; letter-spacing:.22em; color:var(--muted); text-transform:uppercase; font-family:var(--font-mono); margin-bottom:6px;" data-zh="切换视图" data-en="VIEW" data-ja="ビュー">切换视图</div>
+        <div class="view-switch" id="lb-view-switch">
+          <button data-view="poster" class="active" data-zh="海报" data-en="Poster" data-ja="ポスター">海报</button>
+          <button data-view="poster_nochar" data-zh="无人版" data-en="No-Char" data-ja="人物なし">无人版</button>
+          <button data-view="zine_story" data-zh="故事" data-en="Story" data-ja="物語">故事</button>
+          <button data-view="zine_recipe" data-zh="做法" data-en="Recipe" data-ja="作り方">做法</button>
+        </div>
+      </div>
+      <div class="lb-actions">
+        <button class="primary" id="lb-fav" data-zh="♥ 收藏" data-en="♥ Save" data-ja="♥ 保存">♥ 收藏</button>
+        <button id="lb-download" data-zh="↓ 下载图片" data-en="↓ Download" data-ja="↓ ダウンロード">↓ 下载图片</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =================== TOAST =================== -->
+<div class="toast" id="toast">已收藏</div>
+
+<!-- =================== DATA & LOGIC =================== -->
+<script>
+/* ============================================================
+   PATHS
+   ============================================================ */
+const A_POSTER = encodeURI("asserts/Gourmet recipe2/");
+const A_ZINE   = "asserts/mini-zine/";
+const A_STREET = encodeURI("asserts/Street View/");
+
+/* ============================================================
+   PLACEHOLDER SVG GENERATOR
+   ============================================================ */
+function makePoster(opts) {
+  // opts: { emoji, name, romaji, location, bg1, bg2, ribbon }
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400' preserveAspectRatio='xMidYMid slice'>
+    <defs>
+      <linearGradient id='g' x1='0' y1='0' x2='0' y2='1'>
+        <stop offset='0' stop-color='${opts.bg1}'/>
+        <stop offset='1' stop-color='${opts.bg2}'/>
+      </linearGradient>
+      <radialGradient id='glow' cx='50%' cy='42%' r='60%'>
+        <stop offset='0' stop-color='${opts.glow || "rgba(255,180,120,.45)"}'/>
+        <stop offset='1' stop-color='rgba(0,0,0,0)'/>
+      </radialGradient>
+    </defs>
+    <rect width='300' height='400' fill='url(#g)'/>
+    <rect width='300' height='400' fill='url(#glow)'/>
+    <text x='150' y='205' font-size='150' text-anchor='middle' dominant-baseline='middle'>${opts.emoji}</text>
+    <rect x='30' y='270' width='240' height='1' fill='rgba(255,255,255,.4)'/>
+    <text x='150' y='305' font-size='30' text-anchor='middle' fill='white' font-family='Noto Serif JP, serif' font-weight='900'>${opts.name}</text>
+    <text x='150' y='330' font-size='11' text-anchor='middle' fill='rgba(255,255,255,.75)' font-family='monospace' letter-spacing='3px'>${(opts.romaji||"").toUpperCase()}</text>
+    <text x='150' y='362' font-size='10' text-anchor='middle' fill='rgba(255,255,255,.55)' font-family='monospace' letter-spacing='3px'>📍 ${opts.location}</text>
+    ${opts.ribbon ? `<rect x='10' y='10' width='80' height='22' rx='3' fill='${opts.ribbon}'/>
+    <text x='50' y='25' font-size='10' text-anchor='middle' fill='white' font-family='monospace' font-weight='700' letter-spacing='2px'>PREVIEW</text>` : ""}
+  </svg>`;
+  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+}
+
+function makeZinePage(opts) {
+  // a 2x2 comic-panel-ish placeholder
+  const panels = opts.panels || ["🥢","🍳","🍲","😋"];
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 540' preserveAspectRatio='xMidYMid slice'>
+    <rect width='400' height='540' fill='${opts.bg || "#f5ede0"}'/>
+    <text x='200' y='38' font-size='20' text-anchor='middle' font-family='Noto Serif JP, serif' font-weight='900' fill='${opts.fg || "#2b2b2b"}'>${opts.title || ""}</text>
+    <text x='200' y='62' font-size='11' text-anchor='middle' font-family='monospace' letter-spacing='3px' fill='${opts.sub || "#7a6e55"}'>${(opts.subtitle||"").toUpperCase()}</text>
+    <g transform='translate(28,84)'>
+      <rect width='160' height='200' rx='6' fill='${opts.panelBg || "#fff"}' stroke='rgba(0,0,0,.12)'/>
+      <text x='80' y='115' font-size='80' text-anchor='middle' dominant-baseline='middle'>${panels[0]}</text>
+      <text x='80' y='180' font-size='10' font-family='monospace' text-anchor='middle' fill='#888'>01</text>
+      <rect x='184' width='160' height='200' rx='6' fill='${opts.panelBg || "#fff"}' stroke='rgba(0,0,0,.12)'/>
+      <text x='264' y='115' font-size='80' text-anchor='middle' dominant-baseline='middle'>${panels[1]}</text>
+      <text x='264' y='180' font-size='10' font-family='monospace' text-anchor='middle' fill='#888'>02</text>
+      <rect y='216' width='160' height='200' rx='6' fill='${opts.panelBg || "#fff"}' stroke='rgba(0,0,0,.12)'/>
+      <text x='80' y='331' font-size='80' text-anchor='middle' dominant-baseline='middle'>${panels[2]}</text>
+      <text x='80' y='396' font-size='10' font-family='monospace' text-anchor='middle' fill='#888'>03</text>
+      <rect x='184' y='216' width='160' height='200' rx='6' fill='${opts.panelBg || "#fff"}' stroke='rgba(0,0,0,.12)'/>
+      <text x='264' y='331' font-size='80' text-anchor='middle' dominant-baseline='middle'>${panels[3]}</text>
+      <text x='264' y='396' font-size='10' font-family='monospace' text-anchor='middle' fill='#888'>04</text>
+    </g>
+    <text x='200' y='500' font-size='11' text-anchor='middle' font-family='monospace' letter-spacing='4px' fill='${opts.sub || "#7a6e55"}'>${opts.footer || "PREVIEW · MINI-ZINE"}</text>
+  </svg>`;
+  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+}
+
+/* ============================================================
+   COUNTRIES & REGIONS
+   ============================================================ */
+const COUNTRIES = {
+  cn: { flag: "🇨🇳", name: {zh:"中国",en:"China",ja:"中国"}, vstrip: "中華風味" },
+  jp: { flag: "🇯🇵", name: {zh:"日本",en:"Japan",ja:"日本"}, vstrip: "ニッポンの味" },
+  us: { flag: "🇺🇸", name: {zh:"美国",en:"USA",ja:"アメリカ"}, vstrip: "AMERICAN CLASSICS" },
+};
+
+const REGIONS = {
+  cn: [
+    { id:"hainan",   name:{zh:"海南",en:"Hainan",ja:"海南"},     count: 8, hero:"haikou_qilou_day_wide.png", heroPath:"cn/hainan/haikou/",
+      tagline:{zh:"热带海岛上的清甜与椰香 — 文昌鸡、海南粉、清补凉、椰子鸡，从骑楼到老爸茶。",en:"Tropical sweetness — coconut, seafood and sweet rice from arcade streets to morning tea.",ja:"熱帯海島のココナッツと海鮮 — 文昌鶏、海南粉、清補涼。"},
+      flavors:{zh:["清甜","椰香","酸辣","海鲜","清淡"],en:["Sweet","Coconut","Sour-spicy","Seafood","Light"],ja:["甘み","ココナッツ","酸辣","海鮮","あっさり"]},
+      stats:{poster:8, zine:6, street:6} },
+    { id:"hebei",    name:{zh:"河北",en:"Hebei",ja:"河北"},      count: 1, hero:"cn_hebei_shijiazhuang_zhengding_day_wide.png", heroPath:"cn/hebei/shijiazhuang/",
+      tagline:{zh:"华北面食与重卤的烟火日常 — 板面、卤味、缸炉烧饼。",en:"Hearty northern noodles & smoked classics from the Hebei plain.",ja:"華北の麺と燻製。板麺と煮込みの日常。"},
+      flavors:{zh:["咸香","重辣","面食","卤味"],en:["Savory","Spicy","Noodle","Braised"],ja:["塩辛","辛口","麺","煮込み"]},
+      stats:{poster:1, zine:1, street:3} },
+    { id:"zhejiang", name:{zh:"浙江",en:"Zhejiang",ja:"浙江"},   count: 1, hero:"haikou_wanlv_day_wide.png", heroPath:"cn/hainan/haikou/",
+      tagline:{zh:"江南酸甜与时令的精致 — 西湖醋鱼、龙井虾仁、东坡肉。",en:"Jiangnan sweet-sour delicacy — seasonal and refined.",ja:"江南の酸甘と季節の繊細さ。"},
+      flavors:{zh:["酸甜","清淡","时令"],en:["Sweet-sour","Light","Seasonal"],ja:["酸甘","あっさり","旬"]},
+      stats:{poster:1, zine:0, street:0} },
+  ],
+  jp: [
+    { id:"tokyo",  name:{zh:"东京",en:"Tokyo",ja:"東京"}, count: 8, hero:"tokyo_shinjuku_night_wide.png", heroPath:"jp/tokyo/",
+      tagline:{zh:"霓虹与暖簾下的深夜味觉 — 拉面、寿司、天妇罗、屋台。",en:"Late-night flavors under neon and noren — ramen, sushi, tempura, yatai.",ja:"ネオンと暖簾の夜の味覚 — ラーメン、寿司、天ぷら、屋台。"},
+      flavors:{zh:["うま味","醤油","とんこつ","屋台","辛口"],en:["Umami","Shoyu","Tonkotsu","Yatai","Spicy"],ja:["うま味","醤油","とんこつ","屋台","辛口"]},
+      stats:{poster:8, zine:4, street:9} },
+    { id:"fuji",   name:{zh:"富士",en:"Fuji",ja:"富士"}, count: 0, hero:"jp_fuji_kawaguchiko_day_wide.png", heroPath:"jp/fuji/",
+      tagline:{zh:"湖光山色，乡土与温泉 — 蕎麦、湯豆腐、ほうとう。",en:"Lakes, mountains, hot-spring fare — soba, yudofu, hoto.",ja:"湖と山、郷土と温泉 — 蕎麦、湯豆腐、ほうとう。"},
+      flavors:{zh:["乡土","蕎麦","湯豆腐","季節"],en:["Rustic","Soba","Yudofu","Seasonal"],ja:["郷土","蕎麦","湯豆腐","季節"]},
+      stats:{poster:0, zine:0, street:1} },
+  ],
+  us: [
+    { id:"ny", name:{zh:"纽约",en:"New York",ja:"ニューヨーク"}, count: 0, hero:null, heroPath:null,
+      tagline:{zh:"Diner、披萨与街头热狗的城市旋律 — 24 小时不打烊。",en:"Diners, slices and street-side dogs — open 24 hours.",ja:"ダイナーとピザとストリートフード。"},
+      flavors:{zh:["Smoky","Cheesy","Spicy","Buttery"],en:["Smoky","Cheesy","Spicy","Buttery"],ja:["スモーキー","チーズ","スパイシー","バター"]},
+      stats:{poster:0, zine:0, street:0} },
+    { id:"tx", name:{zh:"德州",en:"Texas",ja:"テキサス"}, count: 0, hero:null, heroPath:null,
+      tagline:{zh:"烟熏 BBQ 与西南风情 — 牛胸、Brisket、Tex-Mex。",en:"Smoked BBQ and Tex-Mex.",ja:"スモーク BBQ とテックスメックス。"},
+      flavors:{zh:["BBQ","Smoky","Spicy"],en:["BBQ","Smoky","Spicy"],ja:["BBQ","スモーキー","スパイシー"]},
+      stats:{poster:0, zine:0, street:0} },
+    { id:"la", name:{zh:"路易斯安那",en:"Louisiana",ja:"ルイジアナ"}, count: 0, hero:null, heroPath:null,
+      tagline:{zh:"Cajun 与 Creole 的辛辣浓汤 — Gumbo、Jambalaya。",en:"Cajun & Creole bold stews — gumbo, jambalaya.",ja:"ケイジャン&クレオール — ガンボ、ジャンバラヤ。"},
+      flavors:{zh:["Spicy","Bold","Stew"],en:["Spicy","Bold","Stew"],ja:["スパイシー","濃厚","煮込み"]},
+      stats:{poster:0, zine:0, street:0} },
+  ],
+};
+
+/* ============================================================
+   POSTERS · CN real, JP svg-placeholder
+   ============================================================ */
+const POSTERS = {
+  cn: {
+    hainan: [
+      { slug:"wenchang_jifan",   path:"cn/hainan/", file:"wenchang_jifan_poster.png",  fileNoChar:"wenchang_jifan_poster_no_char.png",
+        name:{zh:"文昌鸡",en:"Wenchang Chicken",ja:"文昌チキン"}, tags:{zh:["清甜","皮爽"],en:["Sweet","Silky"],ja:["甘み","つるん"]}, pin:"海南·文昌",
+        desc:{zh:"海南四大名菜之首，皮黄爽脆，肉嫩骨香。配姜蓉、沙姜与青桔，灵魂在蘸料。",en:"Top of Hainan's four classics — golden silky skin, tender chicken, ginger-lime dip.",ja:"海南四大名菜の筆頭。黄金の皮としっとり肉。"} },
+      { slug:"qingbuliang",      path:"cn/hainan/", file:"qingbuliang_poster.png",     fileNoChar:"qingbuliang_poster_no_char.png",
+        name:{zh:"清补凉",en:"Qingbuliang",ja:"チンプーリャン"}, tags:{zh:["椰奶","解暑"],en:["Coconut","Cooling"],ja:["ココナッツ","暑気払い"]}, pin:"海南·海口",
+        desc:{zh:"海南消暑神器，椰奶/糖水浇红豆、芋头、西瓜、绿豆、薏米。",en:"Hainan's iconic cooler — coconut milk over taro, beans, fruits.",ja:"海南の夏の定番。ココナッツミルクと豆と芋。"} },
+      { slug:"yezi_ji",          path:"cn/hainan/", file:"yezi_ji_poster.png",         fileNoChar:null,
+        name:{zh:"椰子鸡",en:"Coconut Chicken",ja:"ココナッツチキン"}, tags:{zh:["椰香","清润"],en:["Coconut","Mellow"],ja:["ココナッツ","まろやか"]}, pin:"海南·海口",
+        desc:{zh:"用文昌鸡与新鲜椰青同煮，汤色清澈，椰香入肉，蘸豉油与小米辣。",en:"Wenchang chicken simmered in young coconut — clear broth, fragrant.",ja:"文昌鶏とココナッツの澄まし鍋。"} },
+      { slug:"houan_fen",        path:"cn/hainan/", file:"houan_fen_poster.png",       fileNoChar:"houan_fen_poster_no_char.png",
+        name:{zh:"后安粉",en:"Houan Fen",ja:"フーアン米麺"}, tags:{zh:["清汤","白胡椒"],en:["Clear-soup","Pepper"],ja:["澄まし","白胡椒"]}, pin:"海南·万宁",
+        desc:{zh:"万宁后安镇粉汤，骨汤清亮，白胡椒香气足，配粗米粉与肉片。",en:"Wanning's clear-broth rice noodles — peppery, clean.",ja:"万寧後安の澄まし米麺、白胡椒の香り。"} },
+      { slug:"lingshui_suanfen", path:"cn/hainan/", file:"lingshui_suanfen_poster.png",fileNoChar:"lingshui_suanfen_poster_no_char.png",
+        name:{zh:"陵水酸粉",en:"Lingshui Suanfen",ja:"陵水酸粉"}, tags:{zh:["酸辣","粉嫩"],en:["Sour-spicy","Tender"],ja:["酸辣","しなやか"]}, pin:"海南·陵水",
+        desc:{zh:"陵水代表小吃，酸甜辣三味交织，配花生、芝麻与海味。",en:"Lingshui's sour-spicy noodles, tossed with peanuts & seafood.",ja:"陵水の酸甘辛麺、ピーナッツ＆海鮮。"} },
+      { slug:"dingan_heizhu",    path:"cn/hainan/", file:"dingan_heizhu_poster.png",   fileNoChar:"dingan_heizhu_poster_no_char.png",
+        name:{zh:"定安黑猪",en:"Dingan Black Pork",ja:"定安黒豚"}, tags:{zh:["浓香","本地"],en:["Rich","Local"],ja:["濃厚","地元"]}, pin:"海南·定安",
+        desc:{zh:"定安特产黑猪，肉质紧实甘香，常做白切或卤味。",en:"Dingan's heritage black pork — firm, fragrant, classic boiled.",ja:"定安名物の黒豚、白切が定番。"} },
+      { slug:"huangliu_laoya",   path:"cn/hainan/", file:"huangliu_laoya_poster.png",  fileNoChar:null,
+        name:{zh:"黄流老鸭",en:"Huangliu Old Duck",ja:"黄流老鴨"}, tags:{zh:["醇香","汤鲜"],en:["Mellow","Broth"],ja:["まろやか","出汁"]}, pin:"海南·乐东",
+        desc:{zh:"乐东黄流镇老鸭名菜，慢炖入味，汤清肉香。",en:"Ledong Huangliu's aged-duck classic, slow-simmered.",ja:"楽東黄流の老鴨、じっくり煮込み。"} },
+      { slug:"lingao_kaoruzhu",  path:"cn/hainan/", file:"lingao_kaoruzhu_poster.png", fileNoChar:null,
+        name:{zh:"临高烤乳猪",en:"Lingao Suckling Pig",ja:"臨高子豚焼"}, tags:{zh:["脆皮","炭烤"],en:["Crispy","Charcoal"],ja:["パリパリ","炭火"]}, pin:"海南·临高",
+        desc:{zh:"临高名菜，乳猪炭火慢烤至皮脆肉嫩，金黄油亮。",en:"Lingao's whole-roast suckling pig, crackling-skinned.",ja:"臨高の子豚炭火焼、パリパリ。"} },
+    ],
+    hebei: [
+      { slug:"bannianmian", path:"cn/hebei/", file:"cn_hebei_bannianmian_poster.png", fileNoChar:"cn_hebei_bannianmian_poster_no_char.png",
+        name:{zh:"安徽牛肉板面",en:"Bannianmian",ja:"板麺"}, tags:{zh:["咸香","重辣"],en:["Savory","Spicy"],ja:["塩辛","辛口"]}, pin:"河北·石家庄",
+        desc:{zh:"名为安徽实成于石家庄，重红油辣子覆盖手扯宽面与牛肉。",en:"Named after Anhui but perfected in Shijiazhuang — chili oil over hand-pulled noodles.",ja:"安徽の名を冠する石家荘の麺、辣油たっぷり。"} },
+    ],
+    zhejiang: [
+      { slug:"xihu_cuyu", path:"cn/zhejiang/", file:"xihu_cuyu_poster.png", fileNoChar:"xihu_cuyu_poster_no_char.png",
+        name:{zh:"西湖醋鱼",en:"West Lake Vinegar Fish",ja:"西湖酢魚"}, tags:{zh:["酸甜","嫩滑"],en:["Sweet-sour","Tender"],ja:["酸甘","しっとり"]}, pin:"浙江·杭州",
+        desc:{zh:"杭帮名菜，活草鱼以镇江醋糖汁浇成琥珀色，嫩中带甜酸。",en:"Hangzhou's classic — amber sweet-vinegar glaze over grass carp.",ja:"杭州の名菜、酢と砂糖の琥珀色。"} },
+    ],
+  },
+  jp: {
+    tokyo: [
+      { slug:"ramen",     path:"_svg/", file:null, fileNoChar:null, placeholder:true,
+        name:{zh:"东京拉面",en:"Tokyo Ramen",ja:"ラーメン"}, romaji:"ramen", emoji:"🍜",
+        bg1:"#3A1F0E", bg2:"#1A0B0B", glow:"rgba(255,140,80,.4)", ribbon:"#E60012",
+        tags:{zh:["豚骨","こってり"],en:["Tonkotsu","Rich"],ja:["豚骨","こってり"]}, pin:"東京·新宿",
+        desc:{zh:"东京拉面以醤油为底，叉烧、味玉、海苔、葱花，是深夜与归宿。",en:"Tokyo ramen — shoyu base, chashu, ajitama, nori, scallion.",ja:"東京の醤油ラーメン。チャーシュー、味玉、海苔。"} },
+      { slug:"sushi",     path:"_svg/", file:null, fileNoChar:null, placeholder:true,
+        name:{zh:"江户前寿司",en:"Edomae Sushi",ja:"寿司"}, romaji:"sushi", emoji:"🍣",
+        bg1:"#0F2C1A", bg2:"#031A11", glow:"rgba(180,255,200,.18)", ribbon:"#E60012",
+        tags:{zh:["江戸前","鮮魚"],en:["Edomae","Fresh"],ja:["江戸前","鮮魚"]}, pin:"東京·築地",
+        desc:{zh:"江户前握寿司讲究熟成与海苔香，米饭微温与鱼脂相融。",en:"Edomae nigiri — aged fish, warm rice, balance of vinegar and sea.",ja:"江戸前握り。熟成と酢飯の調和。"} },
+      { slug:"tempura",   path:"_svg/", file:null, fileNoChar:null, placeholder:true,
+        name:{zh:"天妇罗",en:"Tempura",ja:"天ぷら"}, romaji:"tempura", emoji:"🍤",
+        bg1:"#3A2A12", bg2:"#1A1A1A", glow:"rgba(255,220,140,.35)", ribbon:"#E60012",
+        tags:{zh:["サクサク","海老"],en:["Crisp","Shrimp"],ja:["サクサク","海老"]}, pin:"東京·浅草",
+        desc:{zh:"轻薄面衣油炸，蔬果海鲜原味放大；蘸萝卜泥与天つゆ。",en:"Light tempura — vegetables & seafood, dashi-radish dip.",ja:"薄衣の天ぷら、天つゆと大根おろし。"} },
+      { slug:"tonkatsu",  path:"_svg/", file:null, fileNoChar:null, placeholder:true,
+        name:{zh:"猪排饭",en:"Tonkatsu",ja:"とんかつ"}, romaji:"tonkatsu", emoji:"🍱",
+        bg1:"#2A1505", bg2:"#4A2A12", glow:"rgba(255,200,120,.32)", ribbon:"#E60012",
+        tags:{zh:["ロース","カリッ"],en:["Loin","Crispy"],ja:["ロース","カリッ"]}, pin:"東京·上野",
+        desc:{zh:"厚切里脊裹面包糠炸至金黄，配高丽菜丝与中浓酱。",en:"Thick pork loin fried to gold — shredded cabbage, tonkatsu sauce.",ja:"厚切ロース、千切キャベツ、ソース。"} },
+      { slug:"takoyaki",  path:"_svg/", file:null, fileNoChar:null, placeholder:true,
+        name:{zh:"章鱼烧",en:"Takoyaki",ja:"たこ焼き"}, romaji:"takoyaki", emoji:"🐙",
+        bg1:"#5A1A05", bg2:"#2A0A02", glow:"rgba(255,170,90,.4)", ribbon:"#FF6B9D",
+        tags:{zh:["屋台","鰹節"],en:["Yatai","Bonito"],ja:["屋台","鰹節"]}, pin:"東京·渋谷",
+        desc:{zh:"圆球面糊裹章鱼粒，外脆内糯；木鱼花和酱汁是灵魂。",en:"Crispy-outside, gooey-inside octopus balls — bonito flakes & sauce.",ja:"外カリ中トロのたこ焼き、鰹節と濃ソース。"} },
+      { slug:"gyudon",    path:"_svg/", file:null, fileNoChar:null, placeholder:true,
+        name:{zh:"牛丼",en:"Gyudon",ja:"牛丼"}, romaji:"gyudon", emoji:"🍚",
+        bg1:"#2A1505", bg2:"#3A2A12", glow:"rgba(255,180,90,.32)", ribbon:"#E60012",
+        tags:{zh:["旨味","早"],en:["Umami","Quick"],ja:["旨味","早"]}, pin:"東京·渋谷",
+        desc:{zh:"薄切牛肉与洋葱以酱油味汁炖煮，盖热饭，撒七味。",en:"Thin beef simmered in shoyu broth over rice — quick & comforting.",ja:"牛肉と玉ねぎの煮汁、丼飯に。"} },
+      { slug:"curry",     path:"_svg/", file:null, fileNoChar:null, placeholder:true,
+        name:{zh:"日式咖喱饭",en:"Japanese Curry",ja:"カレー"}, romaji:"kare-raisu", emoji:"🍛",
+        bg1:"#5A2D0A", bg2:"#3A1A0A", glow:"rgba(255,170,80,.4)", ribbon:"#E60012",
+        tags:{zh:["スパイス","欧風"],en:["Spice","European"],ja:["スパイス","欧風"]}, pin:"東京·秋葉原",
+        desc:{zh:"日式咖喱浓稠香甜，蔬果与肉慢炖；秋叶原是咖喱店密度之冠。",en:"Thick, mellow-spiced curry — Akihabara's curry alley.",ja:"濃厚な日本式カレー、秋葉原の聖地。"} },
+      { slug:"monja",     path:"_svg/", file:null, fileNoChar:null, placeholder:true,
+        name:{zh:"文字烧",en:"Monjayaki",ja:"もんじゃ焼き"}, romaji:"monjayaki", emoji:"🥘",
+        bg1:"#2A2A2A", bg2:"#0A0A0A", glow:"rgba(255,200,140,.28)", ribbon:"#FF6B9D",
+        tags:{zh:["铁板","下町"],en:["Teppan","Downtown"],ja:["鉄板","下町"]}, pin:"東京·月島",
+        desc:{zh:"东京下町独有，铁板上糊状面汁与馅料拌炒，焦边香脆。",en:"Tokyo's downtown teppanyaki — runny batter, crispy edges.",ja:"月島の鉄板焼き、ヘラで食べる。"} },
+    ],
+    fuji: [],
+  },
+  us: { ny: [], tx: [], la: [] },
+};
+
+/* ============================================================
+   ZINES
+   ============================================================ */
+const ZINES = {
+  cn: {
+    hainan: [
+      { slug:"wenchang_jifan",   path:"cn/hainan/", name:{zh:"文昌鸡",en:"Wenchang Chicken",ja:"文昌チキン"} },
+      { slug:"qingbuliang",      path:"cn/hainan/", name:{zh:"清补凉",en:"Qingbuliang",ja:"チンプーリャン"} },
+      { slug:"yezi_ji",          path:"cn/hainan/", name:{zh:"椰子鸡",en:"Coconut Chicken",ja:"ココナッツチキン"} },
+      { slug:"laobacha",         path:"cn/hainan/", name:{zh:"老爸茶",en:"Laobacha Tea",ja:"老爸茶"} },
+      { slug:"lingshui_suanfen", path:"cn/hainan/", name:{zh:"陵水酸粉",en:"Lingshui Suanfen",ja:"陵水酸粉"} },
+      { slug:"shaguozhou",       path:"cn/hainan/", name:{zh:"砂锅粥",en:"Clay-pot Congee",ja:"土鍋粥"} },
+    ],
+    hebei: [
+      { slug:"cn_hebei_bannianmian", path:"cn/hebei/", name:{zh:"安徽牛肉板面",en:"Bannianmian",ja:"板麺"} },
+    ],
+    zhejiang: [],
+  },
+  jp: {
+    tokyo: [
+      { slug:"ramen",    placeholder:true, name:{zh:"东京拉面",en:"Tokyo Ramen",ja:"ラーメン"}, panels:["🍥","🍜","🥢","😋"], bg:"#1a0c0c", fg:"#FFE0CC", sub:"#FF6B9D", panelBg:"#241818" },
+      { slug:"sushi",    placeholder:true, name:{zh:"江户前寿司",en:"Edomae Sushi",ja:"寿司"}, panels:["🐟","🔪","🍣","🍵"], bg:"#0a1a13", fg:"#CFEED9", sub:"#7DD3C0", panelBg:"#13241e" },
+      { slug:"tempura",  placeholder:true, name:{zh:"天妇罗",en:"Tempura",ja:"天ぷら"}, panels:["🍤","🥣","🔥","🍱"], bg:"#1a1408", fg:"#FFE9B3", sub:"#FFCB66", panelBg:"#241d10" },
+      { slug:"takoyaki", placeholder:true, name:{zh:"章鱼烧",en:"Takoyaki",ja:"たこ焼き"}, panels:["🐙","🥣","🔥","🍡"], bg:"#1f0a05", fg:"#FFD4B0", sub:"#FF8C5A", panelBg:"#2a120a" },
+    ],
+    fuji: [],
+  },
+  us: { ny: [], tx: [], la: [] },
+};
+
+/* ============================================================
+   STREETS
+   ============================================================ */
+const STREETS = {
+  cn: {
+    hainan: { path: "cn/hainan/haikou/",
+      scenes: [
+        { id:"qilou",       name:{zh:"骑楼老街",en:"Qilou Arcade",ja:"騎楼老街"}, tag:{zh:"百年商埠",en:"Century arcade",ja:"百年商埠"} },
+        { id:"fucheng",     name:{zh:"府城",en:"Fucheng",ja:"府城"},           tag:{zh:"明清古城",en:"Ming-Qing town",ja:"明清古城"} },
+        { id:"laobacha",    name:{zh:"老爸茶",en:"Laobacha",ja:"老爸茶"},      tag:{zh:"早茶街巷",en:"Morning-tea lanes",ja:"朝茶の路地"} },
+        { id:"bay",         name:{zh:"海口湾",en:"Haikou Bay",ja:"海口湾"},    tag:{zh:"落日栈桥",en:"Sunset pier",ja:"夕景桟橋"} },
+        { id:"jiari_haitan",name:{zh:"假日海滩",en:"Holiday Beach",ja:"ホリデービーチ"}, tag:{zh:"椰风海岸",en:"Palm coast",ja:"椰子の海岸"} },
+        { id:"wanlv",       name:{zh:"湾绿",en:"Bay Park",ja:"湾緑"},           tag:{zh:"城市绿廊",en:"Green corridor",ja:"緑の回廊"} },
+      ],
+      filePattern: id => `haikou_${id}_{TIME}_{FRAME}.png` },
+    hebei: { path: "cn/hebei/shijiazhuang/",
+      scenes: [
+        { id:"zhengding",   name:{zh:"正定古城",en:"Zhengding",ja:"正定古城"}, tag:{zh:"千年古郡",en:"Ancient town",ja:"千年古郡"} },
+        { id:"meiji_yeshi", name:{zh:"美吉夜市",en:"Meiji Night Market",ja:"美吉夜市"}, tag:{zh:"灯火夜食",en:"Night eats",ja:"夜の屋台"} },
+        { id:"bannianmian", name:{zh:"板面街",en:"Bannianmian St.",ja:"板麺通り"}, tag:{zh:"面食日常",en:"Noodle daily",ja:"麺の日常"} },
+      ],
+      filePattern: id => `cn_hebei_shijiazhuang_${id}_{TIME}_{FRAME}.png` },
+    zhejiang: { path:"", scenes:[], filePattern: () => "" },
+  },
+  jp: {
+    tokyo: { path: "jp/tokyo/",
+      scenes: [
+        { id:"shinjuku",      name:{zh:"新宿",en:"Shinjuku",ja:"新宿"},     tag:{zh:"霓虹都心",en:"Neon heart",ja:"ネオンの中心"} },
+        { id:"shibuya",       name:{zh:"涩谷",en:"Shibuya",ja:"渋谷"},      tag:{zh:"十字路口",en:"Crossing",ja:"スクランブル"} },
+        { id:"ikebukuro",     name:{zh:"池袋",en:"Ikebukuro",ja:"池袋"},    tag:{zh:"亚文化街",en:"Subculture",ja:"サブカル"} },
+        { id:"akihabara",     name:{zh:"秋叶原",en:"Akihabara",ja:"秋葉原"}, tag:{zh:"电器与漫",en:"Electric town",ja:"電気街"} },
+        { id:"asakusa",       name:{zh:"浅草",en:"Asakusa",ja:"浅草"},      tag:{zh:"古寺下町",en:"Old town",ja:"下町"} },
+        { id:"harajuku",      name:{zh:"原宿",en:"Harajuku",ja:"原宿"},     tag:{zh:"潮流前线",en:"Fashion",ja:"ファッション"} },
+        { id:"ueno",          name:{zh:"上野",en:"Ueno",ja:"上野"},         tag:{zh:"市场公园",en:"Market & park",ja:"アメ横と公園"} },
+        { id:"tsukiji",       name:{zh:"筑地",en:"Tsukiji",ja:"築地"},      tag:{zh:"鱼市早食",en:"Fish market",ja:"魚河岸"} },
+        { id:"denshi_senmon", name:{zh:"电子学院街",en:"Denshi School",ja:"電子専門学校"}, tag:{zh:"大久保学区",en:"School area",ja:"大久保学校街"} },
+      ],
+      filePattern: id => `tokyo_${id}_{TIME}_{FRAME}.png` },
+    fuji: { path: "jp/fuji/",
+      scenes: [
+        { id:"kawaguchiko", name:{zh:"河口湖",en:"Kawaguchiko",ja:"河口湖"}, tag:{zh:"富士山下",en:"Below Fuji",ja:"富士山麓"} },
+      ],
+      filePattern: id => `jp_fuji_${id}_{TIME}_{FRAME}.png` },
+  },
+  us: { ny:{path:"",scenes:[],filePattern:()=>""}, tx:{path:"",scenes:[],filePattern:()=>""}, la:{path:"",scenes:[],filePattern:()=>""} },
+};
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  lang: "zh",
+  country: "cn",
+  region: "hainan",
+  tab: "poster",
+  char: "with",
+  flavor: null,
+  zineSlug: "wenchang_jifan",
+  zineMode: "story",
+  scene: "qilou",
+  time: "day",
+  frame: "wide",
+  featured: null,
+  lightboxPoster: null,
+  lightboxView: "poster",
+  favorites: loadFavs(),
+};
+
+function loadFavs() {
+  try { return JSON.parse(localStorage.getItem("meishi_favs") || "[]"); }
+  catch { return []; }
+}
+function saveFavs() { localStorage.setItem("meishi_favs", JSON.stringify(state.favorites)); }
+
+/* ============================================================
+   UTILS
+   ============================================================ */
+function $(s, r) { return (r||document).querySelector(s); }
+function $$(s, r) { return Array.from((r||document).querySelectorAll(s)); }
+
+function posterUrl(p, useNoChar) {
+  if (p.placeholder) {
+    return makePoster({
+      emoji: p.emoji,
+      name: p.name.ja || p.name.zh,
+      romaji: p.romaji || p.slug,
+      location: p.pin,
+      bg1: p.bg1, bg2: p.bg2, glow: p.glow, ribbon: p.ribbon
+    });
+  }
+  const f = useNoChar && p.fileNoChar ? p.fileNoChar : p.file;
+  return A_POSTER + encodeURI(p.path + f);
+}
+
+function zineUrl(z, mode, noChar) {
+  if (z.placeholder) {
+    return makeZinePage({
+      title: z.name.ja || z.name.zh,
+      subtitle: (mode === "story" ? "STORY · EATING" : "RECIPE · HOW TO"),
+      panels: z.panels,
+      bg: z.bg, fg: z.fg, sub: z.sub, panelBg: z.panelBg,
+      footer: noChar ? "PREVIEW · NO-CHAR" : "PREVIEW · MINI-ZINE"
+    });
+  }
+  const suffix = noChar ? "_no_char" : "";
+  const file = `${z.slug}_${mode === "story" ? "story_eating" : "recipe"}_mini_zine${suffix}.png`;
+  return A_ZINE + encodeURI(z.path + file);
+}
+
+function streetUrl(country, region, sceneId, time, frame) {
+  const r = STREETS[country] && STREETS[country][region];
+  if (!r || !r.path) return null;
+  const pattern = r.filePattern(sceneId).replace("{TIME}", time).replace("{FRAME}", frame);
+  return A_STREET + encodeURI(r.path + pattern);
+}
+
+function isFav(slug) { return state.favorites.some(f => f.slug === slug); }
+function toggleFav(p, region, country) {
+  const idx = state.favorites.findIndex(f => f.slug === p.slug);
+  if (idx >= 0) {
+    state.favorites.splice(idx, 1);
+    toast(t({zh:"已取消收藏",en:"Removed",ja:"削除しました"}));
+  } else {
+    state.favorites.unshift({
+      slug: p.slug, name: p.name, pin: p.pin,
+      country, region, thumb: posterUrl(p, false)
+    });
+    toast(t({zh:"已收藏",en:"Saved",ja:"保存しました"}));
+  }
+  saveFavs();
+  updateFavCount();
+  renderFavPanel();
+  renderPosterGrid();
+}
+
+function t(obj) { return obj[state.lang] || obj.zh; }
+
+/* ============================================================
+   I18N
+   ============================================================ */
+function applyLang() {
+  document.documentElement.lang = state.lang === "zh" ? "zh-CN" : (state.lang === "ja" ? "ja-JP" : "en");
+  $$("[data-zh]").forEach(el => {
+    const v = el.dataset[state.lang];
+    if (v) el.textContent = v;
+  });
+  // search placeholder
+  const ph = {zh:"搜索菜名 · 地区 · 风味…", en:"Search dishes · regions · flavors…", ja:"料理・地域・味で検索…"};
+  $("#search-input").placeholder = ph[state.lang];
+}
+
+/* ============================================================
+   RENDER · HERO
+   ============================================================ */
+function renderHero() {
+  const region = REGIONS[state.country].find(r => r.id === state.region);
+  const heroBg = $("#hero-bg");
+  if (region.hero) {
+    heroBg.style.backgroundImage = `url("${A_STREET}${encodeURI(region.heroPath + region.hero)}")`;
+    heroBg.style.opacity = 1;
+  } else {
+    heroBg.style.backgroundImage = "linear-gradient(135deg, var(--surface-3), var(--surface-2), var(--surface-3))";
+  }
+  $("#hero-title").textContent = `${t(region.name)} · ${region.name.en.toUpperCase()}`;
+  $("#hero-sub").textContent = t(region.tagline);
+  $("#hero-label").textContent = `STREET CORNER FOODIE · MAY 2026 · ${COUNTRIES[state.country].flag} ${t(COUNTRIES[state.country].name).toUpperCase()}`;
+  $("#hero-vstrip").textContent = `${COUNTRIES[state.country].vstrip} · ${t(region.name)}`;
+  $("#stat-poster").textContent = region.stats.poster;
+  $("#stat-zine").textContent = region.stats.zine;
+  $("#stat-street").textContent = region.stats.street;
+
+  $("#crumb-country").innerHTML = `${COUNTRIES[state.country].flag} <span>${t(COUNTRIES[state.country].name)}</span>`;
+  $("#crumb-region").textContent = t(region.name);
+  const tabLabel = {
+    poster: {zh:"海报",en:"Posters",ja:"ポスター"},
+    zine:   {zh:"小志",en:"Mini-Zine",ja:"ミニ誌"},
+    street: {zh:"街景",en:"Street View",ja:"ストリート"},
+  }[state.tab];
+  $("#crumb-tab").textContent = t(tabLabel);
+}
+
+/* ============================================================
+   RENDER · RAIL
+   ============================================================ */
+function renderRail() {
+  const list = $("#region-list");
+  list.innerHTML = "";
+  REGIONS[state.country].forEach(r => {
+    const el = document.createElement("div");
+    el.className = "region-item" + (r.id === state.region ? " active" : "");
+    el.innerHTML = `<span>${t(r.name)}</span><span class="count">${r.count}</span>`;
+    el.addEventListener("click", () => {
+      state.region = r.id;
+      const firstScene = (STREETS[state.country][r.id]?.scenes || [])[0];
+      state.scene = firstScene ? firstScene.id : null;
+      const firstZine = (ZINES[state.country][r.id] || [])[0];
+      state.zineSlug = firstZine ? firstZine.slug : null;
+      renderAll();
+    });
+    list.appendChild(el);
+  });
+
+  const flavorBox = $("#flavor-list");
+  flavorBox.innerHTML = "";
+  const region = REGIONS[state.country].find(r => r.id === state.region);
+  (t(region.flavors) || []).forEach(f => {
+    const c = document.createElement("span");
+    c.className = "chip";
+    c.textContent = f;
+    c.addEventListener("click", () => c.classList.toggle("active"));
+    flavorBox.appendChild(c);
+  });
+}
+
+/* ============================================================
+   RENDER · POSTER GRID
+   ============================================================ */
+function renderPosterGrid() {
+  const grid = $("#poster-grid");
+  grid.innerHTML = "";
+  const list = (POSTERS[state.country][state.region]) || [];
+
+  if (list.length === 0) {
+    for (let i = 0; i < 6; i++) {
+      const c = document.createElement("div");
+      c.className = "coming-card";
+      const labels = {
+        zh:{big:"敬请期待",sub:"COMING SOON"},
+        en:{big:"Coming Soon",sub:"NEW POSTERS"},
+        ja:{big:"近日公開",sub:"NEW POSTERS"},
+      }[state.lang];
+      c.innerHTML = `<div><div class="big">${labels.big}</div><div class="sub">${labels.sub}</div></div>`;
+      grid.appendChild(c);
+    }
+    return;
+  }
+
+  list.forEach(p => {
+    const useNoChar = state.char === "no";
+    const url = posterUrl(p, useNoChar);
+    const card = document.createElement("article");
+    card.className = "poster-card";
+    const tags = t(p.tags);
+    const fav = isFav(p.slug);
+    const flag = COUNTRIES[state.country].flag;
+    const hint = t({zh:"点击放大",en:"Click to view",ja:"クリックで拡大"});
+    card.innerHTML = `
+      <div class="frame">
+        <div class="img-wrap">
+          <img loading="lazy" src="${url}" alt="${t(p.name)}" />
+          <div class="pin"><span class="pin-flag">${flag}</span>${p.pin}</div>
+          ${p.placeholder ? '<div class="preview-badge">preview</div>' : ''}
+          <button class="fav-btn ${fav?'active':''}" data-fav title="favorite">${fav?'♥':'♡'}</button>
+          <div class="hover-info">
+            <div class="h-tags">${tags.map(x => `<span>${x}</span>`).join("")}</div>
+            <div class="h-hint">⛶ ${hint}</div>
+          </div>
+        </div>
+        <div class="caption">
+          <span class="c-en">${(p.name.en || t(p.name))}</span>
+          <span class="c-pin">${p.pin}</span>
+        </div>
+      </div>`;
+    card.addEventListener("click", e => {
+      if (e.target.closest("[data-fav]")) {
+        e.stopPropagation();
+        toggleFav(p, state.region, state.country);
+        return;
+      }
+      openLightbox(p);
+    });
+    grid.appendChild(card);
+  });
+
+  if (list[0]) setFeatured(list[0]);
+}
+
+function setFeatured(p) {
+  state.featured = { p, region: state.region, country: state.country };
+  $("#featured-img").src = posterUrl(p, false);
+  $("#featured-title").textContent = t(p.name);
+  $("#featured-sub").textContent = `${(p.name.en || "").toUpperCase()} · ${p.pin}`;
+  if (p.desc) $("#featured-desc").textContent = t(p.desc);
+  $("#compare-with").src = posterUrl(p, false);
+  $("#compare-without").src = p.fileNoChar || p.placeholder ? posterUrl(p, true) : posterUrl(p, false);
+
+  // sync fav button state
+  const favBtn = $("#featured-fav");
+  if (isFav(p.slug)) {
+    favBtn.classList.add("fav-active");
+    favBtn.textContent = ({zh:"♥ 已收藏",en:"♥ Saved",ja:"♥ 保存済"})[state.lang];
+  } else {
+    favBtn.classList.remove("fav-active");
+    favBtn.textContent = ({zh:"♥ 收藏",en:"♥ Save",ja:"♥ 保存"})[state.lang];
+  }
+}
+
+/* ============================================================
+   RENDER · ZINE
+   ============================================================ */
+function renderZine() {
+  const zines = ZINES[state.country][state.region] || [];
+  const thumbs = $("#zine-thumbs");
+  thumbs.innerHTML = "";
+
+  if (zines.length === 0) {
+    $("#zine-img-left").removeAttribute("src");
+    $("#zine-img-right").removeAttribute("src");
+    $("#zine-page").textContent = "—";
+    const empty = document.createElement("div");
+    empty.className = "coming-card";
+    empty.style.aspectRatio = "4/3";
+    empty.style.gridColumn = "1 / -1";
+    empty.innerHTML = `<div><div class="big">${t({zh:"敬请期待",en:"Coming Soon",ja:"近日公開"})}</div><div class="sub">NEW ZINES</div></div>`;
+    thumbs.appendChild(empty);
+    return;
+  }
+
+  if (!zines.find(z => z.slug === state.zineSlug)) state.zineSlug = zines[0].slug;
+  const cur = zines.find(z => z.slug === state.zineSlug);
+
+  $("#zine-img-left").src  = zineUrl(cur, state.zineMode, false);
+  $("#zine-img-right").src = zineUrl(cur, state.zineMode, true);
+  const idx = zines.indexOf(cur) + 1;
+  $("#zine-page").textContent = `${String(idx).padStart(2,"0")} / ${String(zines.length).padStart(2,"0")}`;
+
+  zines.forEach(z => {
+    const tEl = document.createElement("div");
+    tEl.className = "zine-thumb" + (z.slug === state.zineSlug ? " active" : "");
+    tEl.innerHTML = `<img loading="lazy" src="${zineUrl(z, state.zineMode, false)}" alt="${t(z.name)}" />`;
+    tEl.title = t(z.name);
+    tEl.addEventListener("click", () => { state.zineSlug = z.slug; renderZine(); });
+    thumbs.appendChild(tEl);
+  });
+}
+
+/* ============================================================
+   RENDER · STREET
+   ============================================================ */
+function renderStreet() {
+  const r = STREETS[state.country] && STREETS[state.country][state.region];
+  const scenesBox = $("#street-scenes");
+  scenesBox.innerHTML = "";
+  if (!r || r.scenes.length === 0) {
+    $("#street-img").removeAttribute("src");
+    scenesBox.innerHTML = `<h5>SCENES</h5><div style="color: rgba(255,255,255,.6); font-size: 12px; padding: 10px;">${t({zh:"敬请期待",en:"Coming Soon",ja:"近日公開"})}</div>`;
+    $("#eat-strip").innerHTML = "";
+    return;
+  }
+  if (!r.scenes.find(s => s.id === state.scene)) state.scene = r.scenes[0].id;
+
+  $("#street-img").src = streetUrl(state.country, state.region, state.scene, state.time, state.frame) || "";
+
+  const h = document.createElement("h5");
+  h.textContent = "SCENES · " + (t(REGIONS[state.country].find(x=>x.id===state.region)?.name) || "");
+  scenesBox.appendChild(h);
+
+  r.scenes.forEach(s => {
+    const thumbUrl = streetUrl(state.country, state.region, s.id, "day", "wide");
+    const item = document.createElement("div");
+    item.className = "scene-item" + (s.id === state.scene ? " active" : "");
+    item.innerHTML = `
+      <div class="thumb" style="background-image:url('${thumbUrl}')"></div>
+      <div>
+        <div class="name">${t(s.name)}</div>
+        <div class="tag">${t(s.tag)}</div>
+      </div>`;
+    item.addEventListener("click", () => { state.scene = s.id; renderStreet(); });
+    scenesBox.appendChild(item);
+  });
+
+  const eatStrip = $("#eat-strip");
+  eatStrip.innerHTML = "";
+  const posters = POSTERS[state.country][state.region] || [];
+  if (posters.length === 0) {
+    eatStrip.innerHTML = `<div style="padding: 24px; color: var(--muted); font-size: 13px;">${t({zh:"敬请期待",en:"Coming soon",ja:"近日公開"})}</div>`;
+  } else {
+    posters.slice(0, 8).forEach(p => {
+      const card = document.createElement("div");
+      card.className = "eat-card";
+      const tags = t(p.tags);
+      card.innerHTML = `
+        <div class="img-wrap"><img loading="lazy" src="${posterUrl(p, false)}" alt="${t(p.name)}" /></div>
+        <div class="label">${t(p.name)}</div>
+        <div class="chips">${tags.slice(0,2).map(x=>`<span>${x}</span>`).join("")}</div>`;
+      card.addEventListener("click", () => { setFeatured(p); openLightbox(p); });
+      eatStrip.appendChild(card);
+    });
+  }
+}
+
+/* ============================================================
+   TAB SWITCH
+   ============================================================ */
+function setTab(tab) {
+  state.tab = tab;
+  document.documentElement.dataset.tab = tab;
+  $$(".tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
+  $$(".tab-panel").forEach(p => p.classList.toggle("active", p.dataset.panel === tab));
+  renderHero();
+}
+
+/* ============================================================
+   COUNTRY / LANG
+   ============================================================ */
+function setCountry(c) {
+  state.country = c;
+  document.documentElement.dataset.country = c;
+  state.region = REGIONS[c][0].id;
+  const firstScene = (STREETS[c][state.region]?.scenes || [])[0];
+  state.scene = firstScene ? firstScene.id : null;
+  const firstZine = (ZINES[c][state.region] || [])[0];
+  state.zineSlug = firstZine ? firstZine.slug : null;
+  $$("#country-switcher button").forEach(b => b.classList.toggle("active", b.dataset.country === c));
+  renderAll();
+}
+
+function setLang(l) {
+  state.lang = l;
+  $$("#lang-switcher button").forEach(b => b.classList.toggle("active", b.dataset.lang === l));
+  applyLang();
+  renderAll();
+}
+
+/* ============================================================
+   SEARCH
+   ============================================================ */
+function buildSearchIndex() {
+  const idx = [];
+  Object.keys(POSTERS).forEach(country => {
+    Object.keys(POSTERS[country]).forEach(region => {
+      (POSTERS[country][region] || []).forEach(p => {
+        idx.push({
+          kind: "dish",
+          slug: p.slug, country, region, p,
+          haystack: [p.name.zh, p.name.en, p.name.ja, p.pin, (t(p.tags)||[]).join(" "), p.slug].join(" ").toLowerCase()
+        });
+      });
+    });
+  });
+  Object.keys(REGIONS).forEach(country => {
+    REGIONS[country].forEach(r => {
+      idx.push({
+        kind: "region",
+        country, region: r.id, regionObj: r,
+        haystack: [r.name.zh, r.name.en, r.name.ja, COUNTRIES[country].name.zh].join(" ").toLowerCase()
+      });
+    });
+  });
+  Object.keys(STREETS).forEach(country => {
+    Object.keys(STREETS[country]).forEach(region => {
+      (STREETS[country][region]?.scenes || []).forEach(s => {
+        idx.push({
+          kind: "scene",
+          country, region, scene: s,
+          haystack: [s.name.zh, s.name.en, s.name.ja, s.tag.zh].join(" ").toLowerCase()
+        });
+      });
+    });
+  });
+  return idx;
+}
+const SEARCH_INDEX = buildSearchIndex();
+
+function runSearch(q) {
+  const box = $("#search-results");
+  box.innerHTML = "";
+  if (!q.trim()) {
+    box.innerHTML = `<div class="search-empty">${t({zh:"输入菜名、地区或风味词…",en:"Try a dish, region, or flavor…",ja:"料理名、地域、味で検索…"})}</div>`;
+    return;
+  }
+  const tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const results = SEARCH_INDEX.filter(item => tokens.every(tk => item.haystack.includes(tk))).slice(0, 30);
+  if (results.length === 0) {
+    box.innerHTML = `<div class="search-empty">${t({zh:"未找到 · 试试 拉面/海口/酸辣",en:"No matches · try 'ramen' / 'haikou'",ja:"見つかりません · 「ラーメン」「海口」など"})}</div>`;
+    return;
+  }
+  results.forEach((item, i) => {
+    const el = document.createElement("div");
+    el.className = "search-result" + (i === 0 ? " focus" : "");
+    let thumbUrl = "", name = "", meta = "", kindLabel = "";
+    if (item.kind === "dish") {
+      thumbUrl = posterUrl(item.p, false);
+      name = t(item.p.name);
+      meta = `${COUNTRIES[item.country].flag} ${item.p.pin}`;
+      kindLabel = "DISH";
+    } else if (item.kind === "region") {
+      name = t(item.regionObj.name);
+      meta = `${COUNTRIES[item.country].flag} ${t(COUNTRIES[item.country].name)}`;
+      kindLabel = "REGION";
+    } else if (item.kind === "scene") {
+      thumbUrl = streetUrl(item.country, item.region, item.scene.id, "day", "wide");
+      name = t(item.scene.name);
+      meta = `${COUNTRIES[item.country].flag} ${t(REGIONS[item.country].find(r=>r.id===item.region)?.name)} · ${t(item.scene.tag)}`;
+      kindLabel = "SCENE";
+    }
+    el.innerHTML = `
+      <div class="thumb" style="background-image:url('${thumbUrl}')"></div>
+      <div class="info">
+        <div class="name">${name}</div>
+        <div class="meta">${meta}</div>
+      </div>
+      <div class="kind">${kindLabel}</div>`;
+    el.addEventListener("click", () => goToSearchItem(item));
+    box.appendChild(el);
+  });
+}
+function goToSearchItem(item) {
+  closeSearch();
+  if (item.country !== state.country) setCountry(item.country); else { /* */ }
+  state.country = item.country;
+  document.documentElement.dataset.country = item.country;
+  $$("#country-switcher button").forEach(b => b.classList.toggle("active", b.dataset.country === item.country));
+  state.region = item.region;
+  if (item.kind === "dish") {
+    state.tab = "poster";
+    renderAll();
+    setTimeout(() => openLightbox(item.p), 350);
+  } else if (item.kind === "scene") {
+    state.tab = "street";
+    state.scene = item.scene.id;
+    setTab("street");
+    renderAll();
+  } else {
+    renderAll();
+  }
+}
+
+function openSearch() {
+  $("#search-overlay").classList.add("show");
+  setTimeout(() => $("#search-input").focus(), 50);
+  runSearch("");
+}
+function closeSearch() {
+  $("#search-overlay").classList.remove("show");
+  $("#search-input").value = "";
+}
+
+/* ============================================================
+   FAVORITES PANEL
+   ============================================================ */
+function updateFavCount() {
+  const el = $("#fav-count");
+  el.textContent = state.favorites.length;
+  el.classList.toggle("show", state.favorites.length > 0);
+}
+function openFavPanel() {
+  renderFavPanel();
+  $("#fav-panel").classList.add("open");
+}
+function closeFavPanel() {
+  $("#fav-panel").classList.remove("open");
+}
+function renderFavPanel() {
+  const body = $("#fav-body");
+  body.innerHTML = "";
+  if (state.favorites.length === 0) {
+    body.innerHTML = `<div class="fav-empty">
+      <div class="icon">♡</div>
+      <div>${t({zh:"还没有收藏 · 点击菜品卡片右上心型按钮",en:"No favorites yet — tap the heart on any card",ja:"まだお気に入りなし — カードのハートをタップ"})}</div>
+    </div>`;
+    return;
+  }
+  state.favorites.forEach(f => {
+    const el = document.createElement("div");
+    el.className = "fav-item";
+    el.innerHTML = `
+      <div class="thumb" style="background-image:url('${f.thumb}')"></div>
+      <div>
+        <div class="name">${t(f.name)}</div>
+        <div class="meta">${COUNTRIES[f.country].flag} ${f.pin}</div>
+      </div>
+      <button class="remove" data-slug="${f.slug}" title="remove">✕</button>`;
+    el.addEventListener("click", e => {
+      if (e.target.matches(".remove")) {
+        e.stopPropagation();
+        state.favorites = state.favorites.filter(x => x.slug !== f.slug);
+        saveFavs();
+        updateFavCount();
+        renderFavPanel();
+        renderPosterGrid();
+        return;
+      }
+      const p = POSTERS[f.country]?.[f.region]?.find(x => x.slug === f.slug);
+      if (p) { closeFavPanel(); openLightbox(p); }
+    });
+    body.appendChild(el);
+  });
+}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+function openLightbox(p) {
+  state.lightboxPoster = p;
+  state.lightboxView = "poster";
+  renderLightbox();
+  $("#lightbox").classList.add("show");
+}
+function closeLightbox() {
+  $("#lightbox").classList.remove("show");
+  state.lightboxPoster = null;
+}
+function renderLightbox() {
+  const p = state.lightboxPoster;
+  if (!p) return;
+  // image src by view
+  let imgSrc = "";
+  let viewLabel = "";
+  switch (state.lightboxView) {
+    case "poster":         imgSrc = posterUrl(p, false); viewLabel = "POSTER"; break;
+    case "poster_nochar":  imgSrc = posterUrl(p, true);  viewLabel = "POSTER · NO-CHAR"; break;
+    case "zine_story":     imgSrc = makeZineForPoster(p, "story"); viewLabel = "ZINE · STORY"; break;
+    case "zine_recipe":    imgSrc = makeZineForPoster(p, "recipe"); viewLabel = "ZINE · RECIPE"; break;
+  }
+  $("#lightbox-img").src = imgSrc;
+  $("#lightbox-title").textContent = t(p.name);
+  $("#lightbox-sub").textContent = `${(p.name.en || "").toUpperCase()} · ${p.pin} · ${viewLabel}`;
+  $("#lightbox-desc").textContent = p.desc ? t(p.desc) : "";
+  const tagsBox = $("#lightbox-tags");
+  tagsBox.innerHTML = "";
+  (t(p.tags) || []).forEach(x => {
+    const s = document.createElement("span"); s.textContent = x; tagsBox.appendChild(s);
+  });
+  // toggle disabled state for views that don't exist
+  $$("#lb-view-switch button").forEach(b => {
+    b.classList.toggle("active", b.dataset.view === state.lightboxView);
+    let dim = false;
+    if (b.dataset.view === "poster_nochar" && !(p.fileNoChar || p.placeholder)) dim = true;
+    b.style.opacity = dim ? .35 : 1;
+    b.style.pointerEvents = dim ? "none" : "auto";
+  });
+  // fav button state
+  const favBtn = $("#lb-fav");
+  if (isFav(p.slug)) {
+    favBtn.textContent = ({zh:"♥ 已收藏",en:"♥ Saved",ja:"♥ 保存済"})[state.lang];
+    favBtn.classList.add("fav-active");
+  } else {
+    favBtn.textContent = ({zh:"♥ 收藏",en:"♥ Save",ja:"♥ 保存"})[state.lang];
+    favBtn.classList.remove("fav-active");
+  }
+}
+function makeZineForPoster(p, mode) {
+  // try real zine first, else placeholder
+  const zineList = ZINES[state.country]?.[state.region] || [];
+  const z = zineList.find(x => x.slug === p.slug);
+  if (z) return zineUrl(z, mode, false);
+  // placeholder
+  return makeZinePage({
+    title: t(p.name),
+    subtitle: mode === "story" ? "STORY · EATING" : "RECIPE · HOW TO",
+    panels: mode === "story" ? ["🌅","🍳","🍽","😋"] : ["🥢","🔪","🥣","🔥"],
+    footer: "PREVIEW · " + (mode === "story" ? "STORY" : "RECIPE"),
+  });
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+let toastTimer = null;
+function toast(msg) {
+  const el = $("#toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 1800);
+}
+
+/* ============================================================
+   DOWNLOAD
+   ============================================================ */
+function downloadCurrentImage(src, filename) {
+  const a = document.createElement("a");
+  a.href = src;
+  a.download = filename || "meishi-image";
+  a.target = "_blank";
+  document.body.appendChild(a); a.click(); a.remove();
+  toast(t({zh:"已下载",en:"Downloaded",ja:"ダウンロード"}));
+}
+
+/* ============================================================
+   RENDER ALL
+   ============================================================ */
+function renderAll() {
+  applyLang();
+  renderHero();
+  renderRail();
+  renderPosterGrid();
+  renderZine();
+  renderStreet();
+  updateFavCount();
+}
+
+/* ============================================================
+   EVENT WIRING
+   ============================================================ */
+function wire() {
+  $$(".tab").forEach(b => b.addEventListener("click", () => setTab(b.dataset.tab)));
+  $$("#country-switcher button").forEach(b => b.addEventListener("click", () => setCountry(b.dataset.country)));
+  $$("#lang-switcher button").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+  $$("#char-toggle button").forEach(b => b.addEventListener("click", () => {
+    state.char = b.dataset.char;
+    $$("#char-toggle button").forEach(x => x.classList.toggle("active", x === b));
+    renderPosterGrid(); renderZine();
+  }));
+  $$("#zine-mode button").forEach(b => b.addEventListener("click", () => {
+    state.zineMode = b.dataset.mode;
+    $$("#zine-mode button").forEach(x => x.classList.toggle("active", x === b));
+    renderZine();
+  }));
+  $$("#time-toggle button").forEach(b => b.addEventListener("click", () => {
+    state.time = b.dataset.time;
+    $$("#time-toggle button").forEach(x => x.classList.toggle("active", x === b));
+    renderStreet();
+  }));
+  $$("#frame-toggle button").forEach(b => b.addEventListener("click", () => {
+    state.frame = b.dataset.frame;
+    $$("#frame-toggle button").forEach(x => x.classList.toggle("active", x === b));
+    renderStreet();
+  }));
+  $("#zine-prev").addEventListener("click", () => stepZine(-1));
+  $("#zine-next").addEventListener("click", () => stepZine(+1));
+
+  // Search
+  $("#search-btn").addEventListener("click", openSearch);
+  $("#search-input").addEventListener("input", e => runSearch(e.target.value));
+  $("#search-overlay").addEventListener("click", e => { if (e.target.id === "search-overlay") closeSearch(); });
+
+  // Favorites
+  $("#fav-btn").addEventListener("click", openFavPanel);
+  $("#fav-close").addEventListener("click", closeFavPanel);
+  $("#featured-fav").addEventListener("click", () => {
+    if (!state.featured) return;
+    toggleFav(state.featured.p, state.featured.region, state.featured.country);
+    setFeatured(state.featured.p);
+  });
+  $("#featured-download").addEventListener("click", () => {
+    if (!state.featured) return;
+    downloadCurrentImage(posterUrl(state.featured.p, false), state.featured.p.slug + "_poster.png");
+  });
+  $("#featured-see-zine").addEventListener("click", () => setTab("zine"));
+  $("#featured-see-street").addEventListener("click", () => setTab("street"));
+
+  // Lightbox
+  $("#lightbox-close").addEventListener("click", closeLightbox);
+  $("#lightbox").addEventListener("click", e => { if (e.target.id === "lightbox") closeLightbox(); });
+  $$("#lb-view-switch button").forEach(b => b.addEventListener("click", () => {
+    state.lightboxView = b.dataset.view;
+    renderLightbox();
+  }));
+  $("#lb-fav").addEventListener("click", () => {
+    if (!state.lightboxPoster) return;
+    toggleFav(state.lightboxPoster, state.region, state.country);
+    renderLightbox();
+  });
+  $("#lb-download").addEventListener("click", () => {
+    if (!state.lightboxPoster) return;
+    downloadCurrentImage($("#lightbox-img").src, state.lightboxPoster.slug + "_" + state.lightboxView + ".png");
+  });
+  $("#featured-img-wrap").addEventListener("click", () => {
+    if (state.featured) openLightbox(state.featured.p);
+  });
+
+  // Featured big image: zoom in on click
+  $("#zine-spread").addEventListener("click", () => {
+    // open lightbox of current zine if it maps to a poster
+    const z = (ZINES[state.country][state.region] || []).find(x => x.slug === state.zineSlug);
+    if (!z) return;
+    const p = (POSTERS[state.country][state.region] || []).find(x => x.slug === z.slug);
+    if (p) { state.lightboxView = "zine_story"; openLightbox(p); }
+  });
+  $("#street-stage").addEventListener("click", e => {
+    if (e.target.closest(".street-scenes") || e.target.closest(".street-controls")) return;
+    const url = $("#street-img").src;
+    if (!url) return;
+    // create a temporary "poster"-like object for the lightbox
+    const scene = (STREETS[state.country][state.region].scenes || []).find(s => s.id === state.scene);
+    state.lightboxPoster = {
+      slug: "scene_" + state.scene,
+      name: scene ? scene.name : {zh:"街景",en:"Scene",ja:"街景"},
+      pin: t(REGIONS[state.country].find(r=>r.id===state.region).name) + " · " + (scene ? t(scene.tag) : ""),
+      tags: { zh:[state.time === "day" ? "白天":"夜景", state.frame === "wide"?"21:9":"1:1"],
+              en:[state.time === "day" ? "Day":"Night", state.frame === "wide"?"21:9":"1:1"],
+              ja:[state.time === "day" ? "昼":"夜", state.frame === "wide"?"21:9":"1:1"] },
+      desc: scene ? scene.tag : {zh:"",en:"",ja:""},
+      _customSrc: url
+    };
+    state.lightboxView = "scene";
+    $("#lightbox-img").src = url;
+    $("#lightbox-title").textContent = scene ? t(scene.name) : "";
+    $("#lightbox-sub").textContent = `${(state.scene||"").toUpperCase()} · ${state.time.toUpperCase()} · ${state.frame.toUpperCase()}`;
+    $("#lightbox-desc").textContent = scene ? t(scene.tag) : "";
+    $("#lightbox-tags").innerHTML = "";
+    $$("#lb-view-switch button").forEach(b => { b.style.opacity = .35; b.style.pointerEvents = "none"; });
+    $("#lightbox").classList.add("show");
+  });
+
+  // Keyboard
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+      if ($("#lightbox").classList.contains("show")) closeLightbox();
+      else if ($("#search-overlay").classList.contains("show")) closeSearch();
+      else if ($("#fav-panel").classList.contains("open")) closeFavPanel();
+    }
+    if (e.key === "/" && document.activeElement.tagName !== "INPUT") {
+      e.preventDefault();
+      openSearch();
+    }
+    if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      openSearch();
+    }
+  });
+}
+function stepZine(delta) {
+  const zines = ZINES[state.country][state.region] || [];
+  if (zines.length === 0) return;
+  const idx = zines.findIndex(z => z.slug === state.zineSlug);
+  const next = (idx + delta + zines.length) % zines.length;
+  state.zineSlug = zines[next].slug;
+  renderZine();
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+wire();
+renderAll();
+</script>
+</body>
+</html>

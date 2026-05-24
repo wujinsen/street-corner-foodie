@@ -1,0 +1,80 @@
+name: scf-web
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "web/**"
+      - "docs/**"
+      - "asserts/**"
+      - ".github/workflows/scf-web.yml"
+  pull_request:
+    paths:
+      - "web/**"
+      - "docs/**"
+      - "asserts/**"
+      - ".github/workflows/scf-web.yml"
+
+defaults:
+  run:
+    working-directory: web
+
+jobs:
+  check-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Link asserts into public
+        run: ln -sf ../../asserts public/asserts
+
+      - name: Sync web_posters (bundle + md)
+        run: npm run sync:web-posters
+
+      - name: Optimize images (AVIF/WebP)
+        run: npm run images:quick
+
+      - name: Astro check
+        run: npm run check
+
+      - name: Production build
+        run: npm run build
+
+      - name: alt-c smoke (v0.6 regression)
+        run: npm run test:altc
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    needs: check-build
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install
+        run: npm ci
+
+      - name: Link asserts into public
+        run: ln -sf ../../asserts public/asserts
+
+      - name: Sync + images + build
+        run: |
+          npm run sync:web-posters
+          npm run images:quick
+          npm run build
+
+      - name: Lighthouse CI
+        run: npm run lhci

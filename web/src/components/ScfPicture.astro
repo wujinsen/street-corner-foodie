@@ -1,0 +1,102 @@
+---
+/**
+ * Responsive AVIF/WebP + PNG fallback (v0.7 image pipeline).
+ * - responsive: grid cards (320–720w)
+ * - display: reader/detail — srcset up to 1280/1920w; `data-full-src` = original PNG for download/zoom
+ * - banner: country gallery hero strip — full rail width (1280–1536w)
+ */
+import {
+  getScfPicture,
+  scfLargestVariant,
+  scfLargestWebpVariant,
+  scfOriginalSrc,
+  SCF_BANNER_SIZES,
+  SCF_DISPLAY_SIZES,
+} from "../lib/scf-image";
+
+interface Props {
+  src: string | null | undefined;
+  alt: string;
+  class?: string;
+  loading?: "lazy" | "eager";
+  decoding?: "async" | "sync" | "auto";
+  fetchpriority?: "high" | "low" | "auto";
+  sizes?: string;
+  resolution?: "responsive" | "display" | "banner" | "full";
+  /** Skip AVIF for text-heavy posters (WebP preserves small labels better). */
+  preferWebp?: boolean;
+}
+
+const {
+  src,
+  alt,
+  class: className,
+  loading = "lazy",
+  decoding = "async",
+  fetchpriority,
+  sizes: sizesOverride,
+  resolution = "responsive",
+  preferWebp = false,
+} = Astro.props;
+
+const original = scfOriginalSrc(src);
+const pic = getScfPicture(src);
+const useFull = resolution === "full";
+const useDisplay = resolution === "display";
+const useBanner = resolution === "banner";
+const useResponsive = resolution === "responsive" || useDisplay || useBanner;
+const hasAlt =
+  !useFull &&
+  useResponsive &&
+  Boolean(preferWebp ? pic?.webp : pic?.avif || pic?.webp);
+const hiResSrc =
+  useDisplay || useBanner
+    ? preferWebp
+      ? (scfLargestWebpVariant(src) ?? scfLargestVariant(src) ?? original)
+      : (scfLargestVariant(src) ?? original)
+    : null;
+const imgSrc = useFull
+  ? (original ?? src)
+  : useDisplay || useBanner
+    ? hiResSrc
+    : (pic?.fallback ?? src);
+const sizes =
+  sizesOverride ??
+  (useBanner
+    ? (pic?.sizesBanner ?? SCF_BANNER_SIZES)
+    : useDisplay
+      ? (pic?.sizesDisplay ?? SCF_DISPLAY_SIZES)
+      : useFull
+        ? SCF_DISPLAY_SIZES
+        : (pic?.sizes ?? "100vw"));
+---
+{imgSrc && (
+  hasAlt ? (
+    <picture class:list={className}>
+      {!preferWebp && pic?.avif && (
+        <source type="image/avif" srcset={pic.avif} sizes={sizes} />
+      )}
+      {pic?.webp && <source type="image/webp" srcset={pic.webp} sizes={sizes} />}
+      <img
+        src={imgSrc}
+        data-full-src={original ?? undefined}
+        data-display-src={hiResSrc ?? undefined}
+        alt={alt}
+        loading={loading}
+        decoding={decoding}
+        fetchpriority={fetchpriority}
+      />
+    </picture>
+  ) : (
+    <img
+      class:list={className}
+      src={imgSrc}
+      data-full-src={original ?? undefined}
+      data-display-src={hiResSrc ?? imgSrc}
+      alt={alt}
+      loading={loading}
+      decoding={decoding}
+      fetchpriority={fetchpriority}
+    />
+  )
+)}

@@ -1,0 +1,28 @@
+---
+import ScfPicture from "./ScfPicture.astro";
+interface Props {
+  href: string;
+  nameZh: string;
+  thumbUrl: string | null;
+}
+
+const { href, nameZh, thumbUrl } = Astro.props as Props;
+---
+<a class="street-eat-card tile sm" href={href}>
+  <div class="street-eat-card__photo">
+    {thumbUrl ? (
+      <ScfPicture
+        src={thumbUrl}
+        alt={nameZh}
+        loading="lazy"
+        decoding="async"
+        sizes="(max-width: 560px) 50vw, 220px"
+      />
+    ) : (
+      <span class="street-eat-card__ph" aria-hidden="true">📖</span>
+    )}
+  </div>
+  <span class="street-eat-card__cap">
+    <strong class="h-serif-dish">{nameZh}</strong>
+  </span>
+</a>

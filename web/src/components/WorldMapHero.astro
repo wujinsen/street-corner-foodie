@@ -1,0 +1,109 @@
+---
+/**
+ * v0.6 · alt-c · Landing world map — 1:1 design art from design/alt-c/landing.png.
+ * Art: npm run map:design (crop → public/design/alt-c/world-map-*.png).
+ * Pins live inside `data-map-zoom-stage` so pan/zoom stays aligned with art.
+ */
+import { UI, t } from "../lib/i18n";
+import { COUNTRIES } from "../lib/countries";
+import {
+  buildLandingMapSpots,
+  LANDING_MAP_DEFAULT,
+  type LandingMapSpot,
+} from "../lib/landing-map-spots";
+import { DESIGN_MAP_HOTSPOTS } from "../lib/design-map-pins";
+import type { Lang } from "../lib/i18n";
+
+interface Props {
+  lang: Lang;
+  defaultCountry?: LandingMapSpot["id"];
+}
+
+const { lang, defaultCountry = LANDING_MAP_DEFAULT } = Astro.props as Props;
+const spots = buildLandingMapSpots(lang);
+const MAP_DARK = "/design/alt-c/world-map-dark.png";
+const MAP_LIGHT = "/design/alt-c/world-map-light.png";
+/** world-map-dark.png crop size (807×318) — keeps aspect when scaling */
+const MAP_ART_W = 807;
+const MAP_ART_H = 318;
+const mapHint =
+  lang === "en"
+    ? "Scroll · drag · pin → street"
+    : lang === "ja"
+      ? "スクロール · ドラッグ · pin→街景"
+      : "滚轮缩放 · 拖动平移 · 光点进街景";
+---
+
+<div
+  id="map-hero"
+  class="tile map-hero map-hero--map-only map-hero--design"
+  data-active-country={defaultCountry}
+  data-country={defaultCountry}
+  data-map-art-w={MAP_ART_W}
+  data-map-art-h={MAP_ART_H}
+  aria-label={t(UI.landing.map_label, lang)}
+  title={lang === "en" ? "Scroll to zoom out for full world · drag to pan · double-click to reset" : lang === "ja" ? "スクロールで世界全図まで縮小 · ドラッグで移動 · ダブルクリックでリセット" : "滚轮缩小可看全世界 · 拖动平移 · 双击重置"}
+>
+  <div class="map-layers" data-map-zoom-stage style={`--map-art-ratio: ${MAP_ART_W} / ${MAP_ART_H}`}>
+    <img
+      class="map-design-art"
+      src={MAP_DARK}
+      alt=""
+      width={MAP_ART_W}
+      height={MAP_ART_H}
+      data-map-art-dark={MAP_DARK}
+      data-map-art-light={MAP_LIGHT}
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+
+    <div class="map-stage-ambient" aria-hidden="true"></div>
+    <div class="map-stage-scanline" aria-hidden="true"></div>
+
+    <div class="map-hit-layer">
+      {
+        spots.map((spot) => {
+          const box = DESIGN_MAP_HOTSPOTS[spot.id];
+          return (
+            <button
+              type="button"
+              class:list={["map-zone", "map-zone-hit", spot.id === defaultCountry && "is-active"]}
+              data-country={spot.id}
+              style={`left:${box.x}%;top:${box.y}%;width:${box.w}%;height:${box.h}%`}
+              aria-label={t(COUNTRIES[spot.id].name, lang)}
+            />
+          );
+        })
+      }
+    </div>
+
+    {
+      spots.map((spot) => (
+        <a
+          href={spot.streetHref}
+          class:list={["map-pin", spot.id, spot.id === defaultCountry && "is-active"]}
+          data-country={spot.id}
+          style={`left:${spot.pin.x}%;top:${spot.pin.y}%`}
+          title={t(COUNTRIES[spot.id].name, lang)}
+          aria-label={t(COUNTRIES[spot.id].name, lang)}
+          aria-current={spot.id === defaultCountry ? "true" : undefined}
+        >
+          <span class="map-pin-glow" aria-hidden="true" />
+          <span class="map-pin-ring" aria-hidden="true" />
+          <span class="map-pin-ring map-pin-ring--2" aria-hidden="true" />
+          <span class="map-pin-ring map-pin-ring--3" aria-hidden="true" />
+          <span class="map-pin-core" aria-hidden="true" />
+          <span class="map-pin-badge">{spot.pinCount}</span>
+        </a>
+      ))
+    }
+  </div>
+
+  <div class="map-stage-chrome" aria-hidden="true">
+    <span class="map-stage-hint" data-map-hint>{mapHint}</span>
+    <span class="map-zoom-readout" data-map-zoom-readout>100%</span>
+  </div>
+
+  <span class="map-hero-label h-track" aria-hidden="true">{t(UI.landing.map_label, lang)}</span>
+</div>

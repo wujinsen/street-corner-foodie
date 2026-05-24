@@ -1,0 +1,22 @@
+---
+/**
+ * Filter row: label + horizontally scrollable pills (or wrapped grid when many).
+ * Use when country / province / flavor lists can grow (v0.6.8).
+ */
+interface Props {
+  label: string;
+  /** When pill count exceeds this, use multi-line wrap instead of single-line scroll. */
+  wrapOver?: number;
+  class?: string;
+}
+
+const { label, wrapOver = 8, class: className } = Astro.props as Props;
+---
+<div class:list={["gallery-filter-row", className]} data-wrap-over={wrapOver}>
+  <span class="gallery-filter-label h-track">{label}</span>
+  <div class="filter-pill-track" data-filter-track>
+    <div class="switch-glass filter-pill-scroll" role="group">
+      <slot />
+    </div>
+  </div>
+</div>

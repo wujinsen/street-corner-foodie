@@ -1,0 +1,16 @@
+---
+/** Client boot for /world-atlas (independent ECharts world atlas). */
+---
+<script>
+  import { initWorldAtlasExplorer } from "../scripts/world-atlas-echarts";
+
+  function bootWorldAtlas(): void {
+    document
+      .querySelectorAll<HTMLElement>("[data-world-atlas-explorer]")
+      .forEach((root) => {
+        initWorldAtlasExplorer(root);
+      });
+  }
+
+  bootWorldAtlas();
+</script>

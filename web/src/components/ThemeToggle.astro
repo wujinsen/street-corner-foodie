@@ -1,0 +1,28 @@
+---
+/**
+ * v0.6 · alt-c · ThemeToggle
+ * Sun / moon icon button. Cycles dark -> light -> auto on click.
+ * Effective theme is applied by Base.astro's inline FOUC script BEFORE this hydrates,
+ * so first paint is always correct.
+ */
+---
+<button
+  type="button"
+  id="theme-toggle"
+  class="icon-btn-glass theme-toggle-btn"
+  aria-label="Toggle theme"
+  title="Toggle theme (Ctrl+Shift+L)"
+>
+  <svg class="sun-ic" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2 M12 20v2 M4.93 4.93l1.41 1.41 M17.66 17.66l1.41 1.41 M2 12h2 M20 12h2 M4.93 19.07l1.41-1.41 M17.66 6.34l1.41-1.41" />
+  </svg>
+  <svg class="moon-ic" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z" />
+  </svg>
+</button>
+
+<script>
+  import { initThemeToggle } from "../scripts/theme-toggle";
+  initThemeToggle();
+</script>

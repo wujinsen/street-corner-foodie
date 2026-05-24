@@ -1,0 +1,397 @@
+---
+import ScfPicture from "./ScfPicture.astro";
+import StreetEatPanel from "./StreetEatPanel.astro";
+import { UI, t, type Lang } from "../lib/i18n";
+import { COUNTRIES, findRegion } from "../lib/countries";
+import { GALLERY_UI, gt } from "../lib/gallery-ui";
+import { getStreetConfig } from "../lib/streets";
+import {
+  buildStreetExplorerPayload,
+  initialStreetViewFromUrl,
+} from "../lib/street-explorer-payload";
+import { localePath, regionGalleryHref } from "../lib/locale-path";
+import { scfBestSrc, scfSpreadUrls } from "../lib/scf-image";
+import {
+  streetViewImageUrl,
+  countUniqueStreetPhotoUrlsForScene,
+  type StreetFrameMode,
+  type StreetMood,
+} from "../lib/streets";
+import type { CountryId } from "../lib/types";
+
+interface Props {
+  country: CountryId;
+  regionId: string;
+  lang: Lang;
+  /** Gallery tab embed: hide in-page crumb, sync ?region= + #streets */
+  embedded?: boolean;
+  showCrumb?: boolean;
+  /** Route or parent-resolved scene (`?scene=` on country gallery). */
+  sceneId?: string;
+  url?: URL;
+}
+
+const {
+  country,
+  regionId,
+  lang,
+  embedded = false,
+  showCrumb = true,
+  sceneId: sceneIdProp,
+  url = Astro.url,
+} = Astro.props as Props;
+
+const region = findRegion(country, regionId);
+const payload = region ? buildStreetExplorerPayload(country, regionId, lang, region.name) : null;
+
+if (!payload) {
+  return null;
+}
+
+const config = getStreetConfig(country, regionId)!;
+const { sceneId: initialSceneId, view: initialView } = initialStreetViewFromUrl(
+  url,
+  payload.defaultSceneId,
+  payload.defaultView,
+  config,
+  sceneIdProp,
+);
+const c = COUNTRIES[country];
+const scene = payload.scenes.find((s) => s.id === initialSceneId) ?? payload.scenes[0]!;
+const mainSrc = streetViewImageUrl(config, scene.id, initialView);
+const mainUrls = scfSpreadUrls(mainSrc);
+const mainDisplay = mainUrls.display ?? mainSrc;
+const mainFull = mainUrls.full ?? mainSrc;
+const matrix = payload.matrixByScene[scene.id] ?? [];
+const gridCells = matrix.filter(
+  (cell, idx, arr) =>
+    cell.available && cell.url && arr.findIndex((c) => c.url === cell.url) === idx,
+);
+const eatHere = payload.eatHereByScene[scene.id] ?? [];
+/** ≤4 张：SSR 居中；>4 张：SSR 左对齐可滚，避免刷新布局跳变 */
+const eatTrackFitsSsr = eatHere.length > 0 && eatHere.length <= 4;
+const eatTrackScrollSsr = eatHere.length > 4;
+const sceneUniqueCount = countUniqueStreetPhotoUrlsForScene(config, scene.id);
+const photosMeta = t(UI.street.photos_meta, lang)
+  .replace("{unique}", String(sceneUniqueCount))
+  .replace("{views}", String(matrix.length));
+const exportFilename = `${country}_${regionId}_${scene.id}_${initialView.mood}_${initialView.frame}.png`;
+
+const moods: StreetMood[] = payload.moods;
+const frames: StreetFrameMode[] = payload.frames;
+
+const postersMoreHref = regionGalleryHref(lang, country, regionId, { hash: "posters" });
+---
+<section
+  class:list={["alt-street", embedded && "alt-street--embed"]}
+  id={embedded ? undefined : "street-explorer-root"}
+  data-street-explorer
+  data-embedded={embedded ? "true" : undefined}
+  data-route-scene-id={embedded ? undefined : initialSceneId}
+>
+  {showCrumb && (
+    <nav class="alt-crumb container-wide" aria-label="breadcrumbs">
+      <a href={localePath(lang, "/")}>{t(UI.nav.world, lang).toUpperCase()}</a>
+      <span class="sep">›</span>
+      <a href={localePath(lang, `/${country}`)}>{t(c.name, lang).toUpperCase()}</a>
+      <span class="sep">›</span>
+      <a href={regionGalleryHref(lang, country, regionId, { hash: "streets" })}>
+        {payload.regionName.toUpperCase()}
+      </a>
+      <span class="sep">›</span>
+      <span class="active">{scene.name}</span>
+    </nav>
+  )}
+
+  <script type="application/json" data-street-explorer-config set:html={JSON.stringify(payload)} />
+
+  <div
+    class="alt-street-stage"
+    data-frame={initialView.frame}
+    data-mood={initialView.mood}
+    data-scene-id={scene.id}
+  >
+    <div
+      class="alt-street-bg"
+      data-street-main
+      role={mainDisplay ? "button" : undefined}
+      tabindex={mainDisplay ? 0 : undefined}
+      aria-label={mainDisplay ? `${scene.name} · ${t(UI.street.zoom_hint, lang)}` : undefined}
+      data-zoom-hint={mainDisplay ? t(UI.street.zoom_tap, lang) : undefined}
+      data-full-src={mainFull ?? undefined}
+      data-display-src={mainDisplay ?? undefined}
+      style={mainDisplay ? { backgroundImage: `url("${mainDisplay}")` } : undefined}
+    />
+
+    <dialog class="zine-lightbox street-lightbox" data-street-lightbox aria-label={t(UI.street.zoom, lang)}>
+      <div class="zine-lightbox-bar">
+        <div class="zine-lightbox-zoom-controls" role="group" aria-label={t(UI.street.zoom, lang)}>
+          <button type="button" class="zine-lightbox-zoom-btn" data-street-zoom-out aria-label={t(UI.street.zoom_out, lang)}>−</button>
+          <span class="zine-lightbox-zoom-pct h-track" data-street-zoom-pct>100%</span>
+          <button type="button" class="zine-lightbox-zoom-btn" data-street-zoom-in aria-label={t(UI.street.zoom_in, lang)}>+</button>
+          <button type="button" class="zine-lightbox-zoom-btn zine-lightbox-zoom-reset" data-street-zoom-reset>
+            {t(UI.street.zoom_reset, lang)}
+          </button>
+          <button
+            type="button"
+            class="zine-lightbox-zoom-btn street-lightbox-fullscreen-btn"
+            data-street-zoom-fullscreen
+            aria-label={t(UI.street.zoom_fullscreen, lang)}
+            aria-pressed="false"
+          >
+            {t(UI.street.zoom_fullscreen, lang)}
+          </button>
+        </div>
+        <button type="button" class="zine-lightbox-close" data-street-zoom-close aria-label={t(UI.street.zoom_close, lang)}>
+          ×
+        </button>
+      </div>
+      <div class="zine-lightbox-scroll">
+        <div class="zine-lightbox-stage" data-street-zoom-stage>
+          <div class="street-lightbox-img-wrap" data-street-zoom-mood data-mood={initialView.mood}>
+            <img
+              class="zine-lightbox-img street-lightbox-img"
+              data-street-lightbox-img
+              src={mainDisplay ?? ""}
+              data-display-src={mainDisplay ?? undefined}
+              data-full-src={mainFull ?? undefined}
+              alt={scene.name}
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
+    </dialog>
+
+    <aside class="alt-street-scenes" aria-label={t(UI.street.scenes, lang)} data-street-scenes>
+      <h2 class="h-track">{t(UI.street.scenes, lang)} · {payload.regionName}</h2>
+      <p class="alt-street-scenes-meta h-track">
+        {payload.sceneCount} {t(UI.street.scenes, lang).toUpperCase()} · {payload.photoCount}{" "}
+        {t(UI.street.photos_available, lang)}
+      </p>
+      {payload.scenes.map((s) => (
+        <button
+          type="button"
+          class:list={["scene-item", s.id === scene.id && "active"]}
+          data-scene-id={s.id}
+          aria-current={s.id === scene.id ? "true" : undefined}
+        >
+          <span class="scene-item__thumb">
+            {s.thumbUrl ? (
+              <ScfPicture
+                src={s.thumbUrl}
+                alt={s.name}
+                loading="lazy"
+                decoding="async"
+                sizes="286px"
+              />
+            ) : (
+              <span class="scene-item__ph" aria-hidden="true" />
+            )}
+          </span>
+          <span class="scene-item__cap">
+            <strong class="h-serif-dish">{s.name}</strong>
+            <span class="scene-item__tag h-track">{s.tag}</span>
+          </span>
+        </button>
+      ))}
+    </aside>
+
+    <aside class="alt-street-matrix street-matrix-panel" aria-label={t(UI.street.matrix_view, lang)} data-street-matrix>
+      <nav class="street-geo-minimap tile" aria-label={t(UI.street.minimap, lang)} data-street-minimap>
+        <span class="street-geo-minimap__water" aria-hidden="true"></span>
+        {payload.scenes.map((s) => (
+          <button
+            type="button"
+            class:list={["street-geo-pin", s.id === scene.id && "active"]}
+            style={`left:${s.mapPin.x}%;top:${s.mapPin.y}%`}
+            title={s.name}
+            data-scene-id={s.id}
+            aria-current={s.id === scene.id ? "true" : undefined}
+          />
+        ))}
+      </nav>
+      <h2 class="h-track">{t(UI.street.matrix_view, lang)}</h2>
+
+      <div class="matrix-block">
+        <span class="matrix-block-label h-track">{t(UI.street.time, lang)}</span>
+        <div class="matrix-time-arc" role="group" data-street-moods>
+          {moods.map((m) => (
+            <button
+              type="button"
+              class:list={["matrix-pill", initialView.mood === m && "active"]}
+              data-mood={m}
+            >
+              {payload.moodLabels[m]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="matrix-block">
+        <span class="matrix-block-label h-track">{t(UI.street.frame, lang)}</span>
+        <div class="matrix-frame-pills switch-glass" role="group" data-street-frames>
+          {frames.map((fr) => (
+            <button
+              type="button"
+              class:list={["matrix-pill", initialView.frame === fr && "active"]}
+              data-frame={fr}
+            >
+              {payload.frameLabels[fr]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div
+        class="matrix-block matrix-block-export"
+        data-street-export
+        data-image-url={mainSrc ?? ""}
+        data-page-url={url.href}
+        data-filename={exportFilename}
+      >
+        <span class="matrix-block-label h-track">{t(UI.street.export, lang)}</span>
+        <div class="matrix-export-btns">
+          {mainDisplay && (
+            <button type="button" class="btn-glass sm" data-street-zoom-open>
+              {t(UI.street.zoom, lang)}
+            </button>
+          )}
+          <button type="button" class="btn-glass sm" data-export="png">{t(UI.street.export_png, lang)}</button>
+          <button type="button" class="btn-glass sm" data-export="wallpaper">{t(UI.street.export_wallpaper, lang)}</button>
+          <button type="button" class="btn-glass sm" data-export="share" data-share-title={scene.name}>
+            {t(UI.street.export_share, lang)}
+          </button>
+        </div>
+      </div>
+
+      <div class="matrix-block" data-street-available>
+        <span class="matrix-block-label h-track">{t(UI.street.available, lang)}</span>
+        <p class="matrix-available-meta h-track" data-street-available-meta>
+          {photosMeta} · {payload.regionName}
+        </p>
+        <div class="matrix-available-grid" data-street-available-grid>
+          {gridCells.map((cell) => {
+            const active = cell.mood === initialView.mood && cell.frame === initialView.frame;
+            const cellThumb = cell.url ? scfBestSrc(cell.url) : null;
+            return cell.available ? (
+              <button
+                type="button"
+                class:list={["matrix-available-cell", active && "active"]}
+                data-mood={cell.mood}
+                data-frame={cell.frame}
+                aria-label={cell.label}
+                title={cell.label}
+              >
+                {cellThumb && <span class="thumb" style={`background-image:url('${cellThumb}')`} />}
+                <span class="matrix-check" aria-hidden="true">✓</span>
+              </button>
+            ) : (
+              <span class="matrix-available-cell is-missing" aria-label={cell.label} title={cell.label}>
+                {cellThumb && <span class="thumb" style={`background-image:url('${cellThumb}')`} />}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+
+      {!embedded && (
+        <p class="street-explorer-deep-link">
+          <a class="btn-glass sm" href={scene.deepLink} data-street-deep-link>
+            {gt(GALLERY_UI.explore_scene, lang)} →
+          </a>
+        </p>
+      )}
+    </aside>
+
+    {!embedded && (
+      <StreetEatPanel
+        lang={lang}
+        eatHere={eatHere}
+        postersMoreHref={postersMoreHref}
+        eatTrackFitsSsr={eatTrackFitsSsr}
+        eatTrackScrollSsr={eatTrackScrollSsr}
+      />
+    )}
+  </div>
+
+  {embedded && (
+    <StreetEatPanel
+      lang={lang}
+      eatHere={eatHere}
+      postersMoreHref={postersMoreHref}
+      eatTrackFitsSsr={eatTrackFitsSsr}
+      eatTrackScrollSsr={eatTrackScrollSsr}
+      below
+    />
+  )}
+</section>
+
+{embedded && (
+  <script is:inline>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var sceneId = params.get("scene");
+      if (!sceneId) return;
+      var script = document.currentScript;
+      var root = script && script.previousElementSibling;
+      if (!root || !root.matches || !root.matches('[data-street-explorer][data-embedded="true"]')) return;
+      var stage = root.querySelector(".alt-street-stage");
+      var main = root.querySelector("[data-street-main]");
+      if (!stage || !main) return;
+
+      var mood = params.get("time");
+      if (!params.has("time")) mood = "night";
+      else if (mood !== "night" && mood !== "day" && mood !== "sunset" && mood !== "dawn") mood = "night";
+
+      var frame = params.get("frame");
+      if (!params.has("frame")) frame = "wide";
+      else if (frame !== "standard" && frame !== "sunset_wide") frame = "wide";
+
+      stage.setAttribute("data-scene-id", sceneId);
+      stage.setAttribute("data-mood", mood);
+      stage.setAttribute("data-frame", frame);
+
+      var sceneBtn = root.querySelector('.scene-item[data-scene-id="' + sceneId + '"]');
+      if (sceneBtn) {
+        root.querySelectorAll(".scene-item").forEach(function (el) {
+          var on = el === sceneBtn;
+          el.classList.toggle("active", on);
+          if (on) el.setAttribute("aria-current", "true");
+          else el.removeAttribute("aria-current");
+        });
+        var img = sceneBtn.querySelector("img[data-full-src], img");
+        var src = img && (img.getAttribute("data-full-src") || img.getAttribute("src"));
+        if (src) main.style.backgroundImage = 'url("' + src.split("?")[0] + '")';
+      }
+
+      root.querySelectorAll("[data-street-moods] .matrix-pill").forEach(function (pill) {
+        var on = pill.getAttribute("data-mood") === mood;
+        pill.classList.toggle("active", on);
+      });
+      root.querySelectorAll("[data-street-frames] .matrix-pill").forEach(function (pill) {
+        var on = pill.getAttribute("data-frame") === frame;
+        pill.classList.toggle("active", on);
+      });
+      root.querySelectorAll(".street-geo-pin").forEach(function (pin) {
+        var on = pin.getAttribute("data-scene-id") === sceneId;
+        pin.classList.toggle("active", on);
+        if (on) pin.setAttribute("aria-current", "true");
+        else pin.removeAttribute("aria-current");
+      });
+    })();
+  </script>
+)}
+
+{!embedded && (
+  <script>
+    import { initStreetExplorer } from "../scripts/street-explorer";
+    import { initStreetEatCarousel } from "../scripts/street-eat-carousel";
+    document.querySelectorAll<HTMLElement>("[data-street-explorer]:not([data-embedded])").forEach((root) => {
+      initStreetExplorer(root);
+      root.querySelectorAll<HTMLElement>("[data-street-eat-carousel]").forEach((el) => {
+        initStreetEatCarousel(el);
+      });
+    });
+  </script>
+)}

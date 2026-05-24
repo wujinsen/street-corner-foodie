@@ -1,0 +1,9 @@
+---
+import RegionGalleryRedirect from "../../../../views/RegionGalleryRedirect.astro";
+import { countryRegionGalleryStaticPaths } from "../../../../lib/static-paths";
+
+export function getStaticPaths() {
+  return countryRegionGalleryStaticPaths();
+}
+---
+<RegionGalleryRedirect />

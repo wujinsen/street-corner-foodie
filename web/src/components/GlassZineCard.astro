@@ -1,0 +1,75 @@
+---
+import { t, type Lang } from "../lib/i18n";
+import { zineImageUrl, zinePinLabel } from "../lib/zines";
+import type { ZineDish } from "../lib/types";
+import ScfPicture from "./ScfPicture.astro";
+
+interface Props {
+  zine: ZineDish;
+  lang: Lang;
+  href: string;
+  noChar?: boolean;
+  /** Progressive reveal: hide when index >= max visible */
+  galleryItemIndex?: number;
+  galleryRevealMax?: number;
+  galleryPageIndex?: number;
+  galleryActivePage?: number;
+  filterTags?: string;
+  galleryRegionId?: string;
+  galleryRegionHidden?: boolean;
+}
+
+const {
+  zine,
+  lang,
+  href,
+  noChar = false,
+  galleryItemIndex,
+  galleryRevealMax,
+  galleryPageIndex,
+  galleryActivePage = 0,
+  filterTags = "",
+  galleryRegionId,
+  galleryRegionHidden = false,
+} = Astro.props as Props;
+const useReveal = galleryRevealMax !== undefined && galleryItemIndex !== undefined;
+const pagHidden = useReveal
+  ? galleryItemIndex >= galleryRevealMax
+  : galleryPageIndex !== undefined && galleryPageIndex !== galleryActivePage;
+const thumb = zineImageUrl(zine, "story", noChar, 0);
+const title = t(zine.name, lang);
+const pin = zinePinLabel(zine);
+---
+<a
+  class:list={[
+    "tile",
+    "sm",
+    "glass-zine-card",
+    "is-link",
+    pagHidden && "is-gallery-page-hidden",
+    galleryRegionHidden && "is-gallery-region-hidden",
+  ]}
+  href={href}
+  {...(galleryItemIndex !== undefined ? { "data-gallery-item": galleryItemIndex } : {})}
+  {...(galleryPageIndex !== undefined ? { "data-gallery-page": galleryPageIndex } : {})}
+  {...(filterTags ? { "data-filter-tags": filterTags } : {})}
+  {...(galleryRegionId ? { "data-zine-region": galleryRegionId } : {})}
+>
+  <div class="glass-zine-photo">
+    {thumb ? (
+      <ScfPicture
+        src={thumb}
+        alt={title}
+        loading="lazy"
+        decoding="async"
+        sizes="(max-width: 560px) 50vw, 220px"
+      />
+    ) : (
+      <span class="glass-zine-ph" aria-hidden="true">📖</span>
+    )}
+    <span class="glass-poster-pin h-track">● {pin}</span>
+  </div>
+  <span class="glass-zine-cap">
+    <strong class="h-serif-dish">{title}</strong>
+  </span>
+</a>

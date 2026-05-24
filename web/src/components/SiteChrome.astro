@@ -1,0 +1,88 @@
+---
+import { UI, t, type Lang } from "../lib/i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props as Props;
+const settingsLabels = JSON.stringify({
+  title: t(UI.settings.title, lang),
+  theme: t(UI.settings.theme, lang),
+  dark: t(UI.settings.theme_dark, lang),
+  light: t(UI.settings.theme_light, lang),
+  auto: t(UI.settings.theme_auto, lang),
+});
+---
+<div
+  id="site-chrome"
+  data-lang={lang}
+  data-settings-labels={settingsLabels}
+  data-labels={JSON.stringify({
+    searchPh: t(UI.search.placeholder, lang),
+    searchEmpty: t(UI.search.empty, lang),
+    searchNone: t(UI.search.none, lang),
+    favTitle: t(UI.fav.title, lang),
+    favEmpty: t(UI.fav.empty, lang),
+    favSaved: t(UI.fav.saved, lang),
+    favRemoved: t(UI.fav.removed, lang),
+    kindDish: t(UI.search.kind_dish, lang),
+    kindRegion: t(UI.search.kind_region, lang),
+    kindScene: t(UI.search.kind_scene, lang),
+  })}
+>
+  <div class="overlay" id="search-overlay" hidden>
+    <div class="search-panel" role="dialog" aria-modal="true" aria-label={t(UI.search.title, lang)}>
+      <div class="search-input-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
+        </svg>
+        <input id="search-input" type="search" autocomplete="off" />
+        <span class="esc">ESC</span>
+      </div>
+      <div class="search-results" id="search-results"></div>
+    </div>
+  </div>
+
+  <aside class="fav-panel" id="fav-panel" aria-hidden="true">
+    <div class="head">
+      <h3>{t(UI.fav.title, lang)}</h3>
+      <button type="button" class="close" id="fav-close" aria-label="Close">X</button>
+    </div>
+    <div class="body" id="fav-body"></div>
+  </aside>
+
+  <div class="overlay settings-overlay" id="settings-overlay" hidden>
+    <aside
+      id="settings-panel"
+      class="settings-panel tile"
+      role="dialog"
+      aria-modal="true"
+      aria-hidden="true"
+      aria-label={t(UI.settings.title, lang)}
+    >
+      <div class="settings-head">
+        <h3>{t(UI.settings.title, lang)}</h3>
+        <button type="button" class="close" id="settings-close" aria-label="Close">×</button>
+      </div>
+      <div class="settings-body">
+        <p class="h-track settings-section-label">{t(UI.settings.theme, lang)}</p>
+        <div class="switch-glass settings-theme-picks" role="group">
+          <button type="button" data-theme-pick="dark">{t(UI.settings.theme_dark, lang)}</button>
+          <button type="button" data-theme-pick="light">{t(UI.settings.theme_light, lang)}</button>
+          <button type="button" data-theme-pick="auto">{t(UI.settings.theme_auto, lang)}</button>
+        </div>
+        <p class="settings-hint h-track">Ctrl+Shift+L</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="toast" id="scf-toast" role="status" aria-live="polite"></div>
+</div>
+
+<script>
+  import { initSiteChrome } from "../scripts/site-chrome";
+  import { initSettingsSheet } from "../scripts/settings-sheet";
+  initSiteChrome();
+  initSettingsSheet();
+</script>

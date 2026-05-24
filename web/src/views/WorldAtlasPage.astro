@@ -1,0 +1,33 @@
+---
+import Base from "../layouts/Base.astro";
+import BottomDock from "../components/BottomDock.astro";
+import WorldAtlasExplorer from "../components/WorldAtlasExplorer.astro";
+import { UI, t } from "../lib/i18n";
+import { localePath, resolveLang } from "../lib/locale-path";
+import { worldAtlasHasPins } from "../lib/world-atlas-payload";
+
+const lang = resolveLang(Astro.currentLocale);
+
+if (!worldAtlasHasPins()) {
+  return Astro.redirect(localePath(lang, "/"));
+}
+---
+<Base
+  lang={lang}
+  country="cn"
+  altc
+  worldAtlasActive
+  showWorldAtlasLink
+  title={t(UI.nav.world_atlas, lang)}
+  crumbs={[
+    { label: t(UI.nav.world, lang), href: localePath(lang, "/") },
+    { label: t(UI.nav.world_atlas, lang) },
+  ]}
+>
+  <div class="world-atlas-page">
+    <WorldAtlasExplorer lang={lang} />
+    <div class="gallery-bottom-stack">
+      <BottomDock lang={lang} active="map" />
+    </div>
+  </div>
+</Base>

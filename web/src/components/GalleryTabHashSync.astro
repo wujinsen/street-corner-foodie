@@ -1,0 +1,57 @@
+---
+/**
+ * Apply #posters | #zines | #streets before paint on country/region gallery pages.
+ * Legacy #map → redirect to /world-atlas (client).
+ */
+import type { GalleryTab } from "../scripts/gallery-tab-hash";
+
+interface Props {
+  fallbackTab?: GalleryTab;
+}
+
+const { fallbackTab = "posters" } = Astro.props as Props;
+---
+<script is:inline define:vars={{ fallbackTab }}>
+  (function () {
+    function worldAtlasPath() {
+      var path = location.pathname;
+      if (path.indexOf("/en/") === 0 || path === "/en") return "/en/world-atlas";
+      if (path.indexOf("/ja/") === 0 || path === "/ja") return "/ja/world-atlas";
+      return "/world-atlas";
+    }
+
+    function sync() {
+      var tab = (location.hash || "").replace("#", "");
+      if (tab === "map") {
+        location.replace(worldAtlasPath() + location.search);
+        return;
+      }
+      if (tab !== "zines" && tab !== "streets" && tab !== "posters") tab = fallbackTab;
+      var g = document.querySelector(".alt-gallery[data-gallery-tabs]");
+      if (!g) return;
+      g.setAttribute("data-active-tab", tab);
+      g.querySelectorAll(".gallery-tab-panel").forEach(function (p) {
+        p.hidden = p.getAttribute("data-tab") !== tab;
+      });
+      g.querySelectorAll("[data-gallery-crumb]").forEach(function (el) {
+        var on = el.getAttribute("data-gallery-crumb") === tab;
+        el.hidden = !on;
+        el.classList.toggle("active", on);
+      });
+      if (tab === "posters" || tab === "zines" || tab === "streets") {
+        document.body.setAttribute("data-nav-tab", tab);
+      }
+      if (tab === "posters" || tab === "zines") {
+        var hero = document.querySelector("[data-gallery-country-hero]");
+        if (hero) {
+          hero.querySelectorAll("[data-hero-layer]").forEach(function (layer) {
+            var on = layer.getAttribute("data-hero-layer") === tab;
+            layer.hidden = !on;
+            layer.classList.toggle("country-hero-scene__layer--off", !on);
+          });
+        }
+      }
+    }
+    sync();
+  })();
+</script>

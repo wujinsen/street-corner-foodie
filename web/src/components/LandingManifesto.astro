@@ -1,0 +1,102 @@
+---
+/**
+ * Landing · brand manifesto strip (tagline + live stats).
+ */
+import BrandMark from "./BrandMark.astro";
+import { UI, t, type Lang } from "../lib/i18n";
+import {
+  highlightManifestoLine,
+  manifestoHighlights,
+  splitManifestoTagline,
+} from "../lib/landing-manifesto";
+import { localePath } from "../lib/locale-path";
+import type { CountryId } from "../lib/types";
+
+interface Props {
+  lang: Lang;
+  countryId: CountryId;
+  posterTotal: number;
+  zineTotal: number;
+  streetTotal: number;
+  /** `bento-slot` = right column under weather chip on landing bento */
+  variant?: "billboard" | "bento-slot";
+}
+
+const { lang, countryId, posterTotal, zineTotal, streetTotal, variant = "billboard" } =
+  Astro.props as Props;
+
+const quote = t(UI.landing.bottom_tagline_en, lang);
+const { line1, line2 } = splitManifestoTagline(lang, quote);
+const hi = manifestoHighlights(lang);
+const parts1 = highlightManifestoLine(line1, hi.line1);
+const parts2 = highlightManifestoLine(line2, hi.line2);
+
+const galleryBase = localePath(lang, `/${countryId}/`);
+const statLinks = [
+  { n: posterTotal, label: t(UI.stats.poster, lang), href: `${galleryBase}#posters` },
+  { n: zineTotal, label: t(UI.stats.zine, lang), href: `${galleryBase}#zines` },
+  { n: streetTotal, label: t(UI.stats.street, lang), href: `${galleryBase}#streets` },
+] as const;
+---
+<section
+  class:list={["landing-manifesto", variant === "bento-slot" && "landing-manifesto--bento-slot"]}
+  aria-labelledby="landing-manifesto-quote"
+>
+  <div class="landing-manifesto__card tile">
+    <div class="landing-manifesto__glow" aria-hidden="true"></div>
+    <div class="landing-manifesto__stripe" aria-hidden="true"></div>
+
+    <div class="landing-manifesto__brand">
+      <span class="landing-manifesto__mark" aria-hidden="true">
+        <BrandMark />
+      </span>
+      <p class="landing-manifesto__kicker h-track">{t(UI.landing.manifesto_kicker, lang)}</p>
+      <p class="landing-manifesto__brand-name">{t(UI.brand, lang)}</p>
+    </div>
+
+    <div class="landing-manifesto__copy">
+      <blockquote class="landing-manifesto__quote" id="landing-manifesto-quote" cite="/BRAND.md">
+        <span class="landing-manifesto__line">
+          {
+            parts1.map((part) =>
+              part.startsWith("\0") ? (
+                <em class="landing-manifesto__accent">{part.slice(1, -1)}</em>
+              ) : (
+                part
+              ),
+            )
+          }
+        </span>
+        <span class="landing-manifesto__line">
+          {
+            parts2.map((part) =>
+              part.startsWith("\0") ? (
+                <em class="landing-manifesto__accent">{part.slice(1, -1)}</em>
+              ) : (
+                part
+              ),
+            )
+          }
+        </span>
+      </blockquote>
+      <p class="landing-manifesto__deck">{t(UI.hero.label, lang)}</p>
+    </div>
+
+    <div class="landing-manifesto__aside">
+      <div class="landing-manifesto__stats" role="list">
+        {
+          statLinks.map(({ n, label, href }) => (
+            <a class="landing-manifesto__stat" href={href} role="listitem">
+              <span class="landing-manifesto__stat-n">{n}</span>
+              <span class="landing-manifesto__stat-l h-track">{label}</span>
+            </a>
+          ))
+        }
+      </div>
+      <a class="landing-manifesto__cta" href={galleryBase}>
+        {t(UI.landing.manifesto_cta, lang)}
+        <span class="landing-manifesto__cta-arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>

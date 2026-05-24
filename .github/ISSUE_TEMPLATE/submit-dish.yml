@@ -1,0 +1,46 @@
+name: Submit a dish
+description: Propose a new street-food dish for posters, zine, or street scenes
+title: "[dish] "
+labels: ["content", "triage"]
+body:
+  - type: input
+    id: dish_zh
+    attributes:
+      label: 菜名（中文）
+      placeholder: 例如 德州牛腩
+    validations:
+      required: true
+  - type: input
+    id: region
+    attributes:
+      label: 地区（国家 / 省州 / 城市）
+      placeholder: 例如 us / tx / Austin
+    validations:
+      required: true
+  - type: checkboxes
+    id: asset_types
+    attributes:
+      label: 希望收录的画风
+      options:
+        - label: 美食海报（Gourmet recipe2）
+        - label: mini-zine 四套
+        - label: 街景矩阵（3 张）
+  - type: textarea
+    id: story
+    attributes:
+      label: 风味 / 故事 / 吃法（任意语言）
+      description: 可附参考链接、维基、短视频
+    validations:
+      required: true
+  - type: input
+    id: slug_hint
+    attributes:
+      label: 建议 slug（可选）
+      placeholder: texas_brisket
+  - type: checkboxes
+    id: agree
+    attributes:
+      label: 确认
+      options:
+        - label: 我知素材需符合仓库 AGENTS.md / 时代服饰规范，并愿意以 PR 或协作者生成方式入库
+          required: true

@@ -1,0 +1,203 @@
+---
+import type { Lang } from "../lib/i18n";
+import type { Poster } from "../lib/types";
+
+interface Props {
+  flavorLabels: string[];
+  lang: Lang;
+  poster?: Poster;
+  /** 0–100 per axis; when set, drives polygon shape (mini-zine sidebar). */
+  scores?: number[];
+  /** 1–5 per axis for legend rows */
+  stars?: number[];
+  altc?: boolean;
+  compact?: boolean;
+  showLegend?: boolean;
+}
+
+const {
+  poster,
+  flavorLabels,
+  scores,
+  stars: starsProp,
+  lang,
+  altc = false,
+  compact = false,
+  showLegend = false,
+} = Astro.props as Props;
+
+const tags = poster ? (poster.tags[lang] ?? poster.tags.zh).slice(0, 5) : [];
+const labels = flavorLabels.length ? flavorLabels : tags;
+const n = Math.max(labels.length, scores?.length ?? 0, tags.length, 3);
+const cx = 50;
+const cy = 50;
+const r = 36;
+
+function point(i: number, value: number): string {
+  const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+  const dist = (value / 100) * r;
+  return `${cx + Math.cos(angle) * dist},${cy + Math.sin(angle) * dist}`;
+}
+
+function scoreToStar(score: number): number {
+  return Math.max(1, Math.min(5, Math.round(score / 20)));
+}
+
+const values: number[] = scores?.length
+  ? scores.slice(0, n)
+  : flavorLabels.map((label) => {
+      const hit = tags.some(
+        (tag) => tag === label || tag.includes(label) || label.includes(tag),
+      );
+      return hit ? 88 : 28;
+    });
+
+if (!scores?.length) {
+  if (values.every((v) => v <= 28) && tags.length) {
+    tags.forEach((_, i) => {
+      if (i < values.length) values[i] = 72;
+      else values.push(72);
+    });
+  }
+  while (values.length < n) values.push(40);
+} else {
+  while (values.length < n) values.push(50);
+}
+
+const stars =
+  starsProp?.length === values.length
+    ? starsProp
+    : values.map(scoreToStar);
+
+const poly = values.map((v, i) => point(i, v)).join(" ");
+const grid = [100, 66, 33].map((pct) =>
+  Array.from({ length: n }, (_, i) => point(i, pct)).join(" "),
+);
+const rootClass = ["flavor-radar", altc && "is-altc", compact && "is-compact", showLegend && "has-legend"]
+  .filter(Boolean)
+  .join(" ");
+---
+<div class={rootClass} role="group" aria-label={labels.join(", ")}>
+  <svg viewBox="0 0 100 100" role="img" aria-hidden="true">
+    {grid.map((g) => (
+      <polygon points={g} fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.35" />
+    ))}
+    {labels.slice(0, n).map((label, i) => {
+      const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+      const lx = cx + Math.cos(angle) * (r + 10);
+      const ly = cy + Math.sin(angle) * (r + 10);
+      return (
+        <text x={lx} y={ly} text-anchor="middle" dominant-baseline="middle" class="radar-label">
+          {label.slice(0, 4)}
+        </text>
+      );
+    })}
+    <polygon
+      points={poly}
+      fill="color-mix(in srgb, var(--radar-fill) 35%, transparent)"
+      stroke="var(--radar-fill)"
+      stroke-width="1.2"
+    />
+  </svg>
+  {showLegend ? (
+    <ul class="radar-legend">
+      {labels.slice(0, n).map((label, i) => (
+        <li>
+          <span class="radar-legend-label">{label}</span>
+          <span class="radar-legend-stars" aria-label={`${stars[i]}/5`}>
+            {Array.from({ length: 5 }, (_, j) => (
+              <span class:list={[j < (stars[i] ?? 3) ? "on" : "off"]} aria-hidden="true">
+                ★
+              </span>
+            ))}
+          </span>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    !compact && (
+      <ul class="radar-tags">
+        {tags.map((tag) => (
+          <li>{tag}</li>
+        ))}
+      </ul>
+    )
+  )}
+</div>
+
+<style>
+.flavor-radar {
+  --radar-fill: var(--primary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  width: 100%;
+}
+.flavor-radar.is-altc {
+  --radar-fill: var(--accent-c);
+  color: var(--fg-weak);
+}
+.flavor-radar.is-compact svg { max-width: 160px; }
+.flavor-radar.has-legend { gap: 10px; }
+.flavor-radar svg { width: 100%; max-width: 200px; height: auto; }
+.radar-label {
+  font-size: 5px;
+  fill: currentColor;
+  font-family: var(--font-mono);
+}
+.radar-tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+.radar-tags li {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  font-family: var(--font-mono);
+}
+.flavor-radar.is-altc .radar-tags li {
+  border-color: var(--tile-border);
+}
+.radar-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.radar-legend li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+}
+.radar-legend-label {
+  flex: 0 0 auto;
+  color: var(--fg-weak);
+  font-weight: 500;
+}
+.radar-legend-stars {
+  display: inline-flex;
+  gap: 2px;
+  letter-spacing: 0;
+  font-size: 12px;
+  line-height: 1;
+}
+.radar-legend-stars .on {
+  color: var(--accent-c);
+}
+.radar-legend-stars .off {
+  color: color-mix(in oklab, var(--fg-mute) 55%, transparent);
+}
+</style>

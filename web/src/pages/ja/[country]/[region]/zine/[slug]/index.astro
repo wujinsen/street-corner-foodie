@@ -1,0 +1,9 @@
+---
+import ZineReaderPage from "../../../../../../views/ZineReaderPage.astro";
+import { zineStaticPaths } from "../../../../../../lib/static-paths";
+
+export function getStaticPaths() {
+  return zineStaticPaths();
+}
+---
+<ZineReaderPage />

@@ -1,0 +1,25 @@
+# Web
+web/node_modules/
+web/dist/
+web/.astro/
+web/.env
+web/.env.*
+!web/.env.example
+
+# Junctions → repo root asserts (never commit duplicate trees)
+web/public/asserts
+web/public/asserts/
+web/public/scf-img/
+web/public/scf-img/
+
+# Cursor image output (copy to asserts/ via workflow)
+assets/
+
+# OS / logs
+.DS_Store
+Thumbs.db
+*.log
+
+# Stray downloads at repo root
+*_format=jpg*.jpg
+HHttd*.jpg

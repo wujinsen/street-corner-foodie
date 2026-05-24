@@ -1,0 +1,141 @@
+---
+description: Street Corner Foodie web/ 工程口径 — Astro 4 + TS strict + 原生 CSS；三语 / 三主题 / 零 JS 默认；editing web/** 时自动加载
+globs: web/**
+alwaysApply: false
+---
+
+# scf-web · Web 工程口径（编辑 `web/` 时生效）
+
+> 凡是动 `web/` 下任何 `.astro` `.ts` `.css` `.json`、加新页面、新组件、改样式，**必须**先过本表 + 三份规范。
+
+## 必读（生成代码前）
+
+1. [web/docs/ARCHITECTURE.md](../../web/docs/ARCHITECTURE.md) — 技术栈 / 渲染 / 路由 / 数据 / 资源 / i18n / 主题 / 部署
+2. [web/docs/FRONTEND-STYLE.md](../../web/docs/FRONTEND-STYLE.md) — token / 组件 / CSS / 响应式 / a11y / 动画
+3. [web/docs/ROADMAP.md](../../web/docs/ROADMAP.md) — 版本边界（**别越过当前 milestone 做下一版的事**）
+4. **视觉真源**（v0.6+）：[design/alt-c/](../../design/alt-c/) + [design/alt-c/README.md](../../design/alt-c/README.md)（含 dark/light 双主题 + glass tile + bento + 3 国 accent）
+5. 配套品牌口径：[scf-brand.mdc](scf-brand.mdc) + [BRAND.md](../../BRAND.md)
+
+> **v0.6 工作期间**：新写组件直接对照 `design/alt-c/*.png`；旧 v0.5 组件保留到对应页面被 v0.6.x 子里程碑重写为止。两套 token 并存（参见 ROADMAP §v0.6.0）。
+
+## 0 · 工作目录
+
+新对话编辑 `web/` 时默认 cwd = `web/`；运行 `npm run dev` / `npm run check` 都在这里。
+不要把任何 web 项目文件搬到仓库根。
+
+## 1 · 栈 · 红线
+
+| 禁止 | 替代 |
+|---|---|
+| React / Vue / Svelte / Solid 等 UI 框架 | 纯 Astro 组件 + 必要时 vanilla island |
+| Tailwind / UnoCSS / styled-components / Emotion | 原生 CSS + tokens.css 变量 |
+| SCSS / Less / PostCSS 配置 | 原生 CSS 嵌套 + Astro scoped `<style>` |
+| 新增 npm 依赖（除 gray-matter @ v0.2） | 先 PR 改 ARCHITECTURE.md §1 才能加 |
+| 在 `lib/*.ts` 写 fetch / fs / window | `lib/*.ts` 必须**纯函数** |
+| 写死颜色 / 字号 / 间距 | 用 `var(--*)`；新 token 进 `tokens.css` |
+| `!important` / `#id` 选择器写样式 | 改组件层级或类名 |
+| `transition: all` / 默认 ease | 用 `--ease-*` 变量 + 具体属性 |
+| `output: "server"` 全站 SSR | 维持 `hybrid`；v0.3 切回 `static` |
+
+## 2 · 文件归位
+
+| 想加什么 | 放哪里 |
+|---|---|
+| 新页面 / 新路由 | `src/pages/.../*.astro` |
+| 跨页组件 | `src/components/X.astro` + `interface Props` |
+| 单页一次性小块 | 写页面同文件 `<style>`，**不**进 components/ |
+| 数据 / 业务 | `src/lib/*.ts` 纯函数 |
+| 全局样式 | `tokens.css` / `base.css` / `components.css` 三处之一 |
+| 组件私有样式 | `.astro` 内 `<style>`（自动 scoped） |
+| 临时实验 | `web/scratch/`（gitignored）；**不**塞 src/ |
+
+## 3 · 不变量（任何改动都必须保持）
+
+每个改动后**自查**：
+
+1. **三语等价**：每条 UI / 内容字段都 `{ zh, en, ja }` 三键齐；UI 文案改 `lib/i18n.ts` `UI` 对象同步改三键
+2. **三主题等价（country）**：CN / JP / US 切下来视觉都合理；新组件用 `var(--accent)`，老组件用 `var(--primary)`
+3. **双主题等价（theme，v0.6+）**：`<html data-theme="dark|light">` 翻面所有 v0.6 新组件都要好看；老 v0.5 组件不强求 light（默认沿用 surface 系列）
+4. **资源单源**：所有 PNG 引用都走 `/asserts/...`（NTFS junction），路径里含空格必须 `encodeURI()`；不复制副本到 `web/public/asserts/` 当真实文件
+
+## 4 · 组件模板
+
+```astro
+---
+import type { Lang } from "../lib/i18n";
+
+interface Props {
+  lang: Lang;
+  // ...每个 prop 都显式列出
+}
+
+const { lang } = Astro.props as Props;
+---
+<div class="x">...</div>
+
+<style>
+.x { color: var(--text); }
+</style>
+```
+
+| 项 | 必做 |
+|---|---|
+| `interface Props` | 显式 |
+| `as Props` 一次断言 | 然后正常解构 |
+| class | `kebab-case` + 浅层 BEM（`.x .child`）；不写 `.x__child` |
+| 颜色 / 字号 / 圆角 | `var(--*)` |
+
+## 5 · i18n / 主题 · 当前实现（v0.3）
+
+| 项 | 实现 |
+|---|---|
+| 语言切换 | 路径式 `/en/...` `/ja/...`（zh 默认无前缀）；`locale-path.ts` + `Astro.currentLocale` |
+| 遗留 `?lang=` | `middleware.ts`（dev）+ `Base.astro` 脚本（静态）→ 302 到路径式 |
+| `<html lang>` | `resolveLang(Astro.currentLocale)` |
+| 主题切换 | `<html data-country="cn|jp|us">` 驱 CSS 变量 |
+| 构建 | `output: "static"`，`npm run build` 可用 |
+
+新链接**禁止**再写 `?lang=`；筛选仍可用 `?char=` `?flavor=`。
+
+## 6 · 内容数据
+
+| 版本 | 数据源 |
+|---|---|
+| v0.2+ | `load-content.ts` 读 `docs/**/*.md` frontmatter；`countries.ts` 仅保留 `COUNTRIES` |
+| 菜名 overlay | `poster-meta.ts`（键 `cn/hainan/slug`）；v0.2.1 计划迁入 md `web_posters:` |
+
+**新增菜 / 新地区**：
+
+1. 更新 `docs/china/*.md` 或 `docs/world/*.md` 的 `gourmet_posters` + [ASSETS.md](../../docs/ASSETS.md) 资源表
+2. 在 `poster-meta.ts` 补三语 name/tags/pin/desc（无则回退 slug 占位）
+3. 可选：`web_editor_pick` 置顶；`region-registry.ts` 仅在新地区映射时改
+
+## 7 · 提交前 self-check（每次必跑）
+
+- [ ] `cd web && npm run check` → 0 errors / 0 warnings
+- [ ] dev server 三主题 + 三语切下来都没崩
+- [ ] 没加 npm 依赖（除非已在 ARCHITECTURE.md §1 登记）
+- [ ] 没动 `index.html` 原型（它是参照物；改 web/ 别"顺手"改它）
+- [ ] 没把工作越界做到 ROADMAP 下一个 milestone
+- [ ] 品牌字串遵循 [scf-brand.mdc](scf-brand.mdc)（**Street Corner Foodie / 街角食客 / 街角フーディー**）
+
+## 8 · 与既有规范的边界
+
+| 规范 | 管辖 | 与 web/ 关系 |
+|---|---|---|
+| [scf-brand.mdc](scf-brand.mdc) | 品牌字串 / logo / tagline | web/ UI 字串必遵 |
+| [meishi-assets.mdc](meishi-assets.mdc) 等 | `asserts/` 图片入库 | web/ 只**读**这些 PNG，不动 |
+| [docs/ASSETS.md](../../docs/ASSETS.md) | 资源命名 / 目录 | web/ 数据层契约的另一半 |
+| 本规则 | web/ 应用代码 | 不重复以上内容；冲突以本表 + 上述规范文本为准 |
+
+`docs/` `asserts/` 在 web/ 视角下都是**输入**，**不要**因为重构 web/ 而去重命名它们。
+
+## 9 · AI 自检 checklist（写代码前过一遍）
+
+- [ ] 我要做的事**在 ROADMAP 当前 milestone 范围内**吗？
+- [ ] 我会动到 `tokens.css` / `base.css` / `components.css` 哪一个？
+- [ ] 我加的样式在 JP 暗底下试过吗？
+- [ ] 我新增的 UI 文案三语都写了吗？
+- [ ] 我加了新依赖吗？是否已登记？
+- [ ] 我写的 `<img>` 有 `alt` 和 `loading="lazy"` 吗？
+- [ ] 我引用 asserts 路径有 `encodeURI()` 吗（有空格的目录）？

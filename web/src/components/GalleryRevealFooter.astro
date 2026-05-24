@@ -1,0 +1,72 @@
+---
+import { UI, t, type Lang } from "../lib/i18n";
+import {
+  formatGalleryShowing,
+  formatLoadMore,
+  GALLERY_REVEAL_INITIAL,
+  GALLERY_REVEAL_STEP,
+} from "../lib/gallery-reveal";
+
+interface Props {
+  lang: Lang;
+  total: number;
+  visible: number;
+  moreParam: "pmore" | "zmore";
+  scrollAnchor: string;
+  showSearch?: boolean;
+  initial?: number;
+  step?: number;
+}
+
+const {
+  lang,
+  total,
+  visible,
+  moreParam,
+  scrollAnchor,
+  showSearch = false,
+  initial = GALLERY_REVEAL_INITIAL,
+  step = GALLERY_REVEAL_STEP,
+} = Astro.props as Props;
+
+const showFooter = total > initial;
+const start = total === 0 ? 0 : 1;
+const end = Math.min(visible, total);
+const remaining = Math.max(0, total - visible);
+const moreChunk = Math.min(step, remaining);
+---
+{showFooter && (
+  <div
+    class="gallery-reveal-footer"
+    data-gallery-reveal
+    data-more-param={moreParam}
+    data-scroll-anchor={scrollAnchor}
+    data-total={total}
+    data-visible={visible}
+    data-initial={initial}
+    data-step={step}
+    data-lang={lang}
+  >
+    <p class="gallery-range-status h-track" data-gallery-range aria-live="polite">
+      {formatGalleryShowing(lang, start, end, total)}
+    </p>
+    <div class="gallery-reveal-actions">
+      {remaining > 0 && (
+        <button type="button" class="tile xs gallery-reveal-more" data-gallery-load-more>
+          {formatLoadMore(lang, moreChunk)}
+        </button>
+      )}
+      {remaining > 0 && (
+        <button type="button" class="gallery-reveal-all h-track" data-gallery-show-all>
+          {t(UI.gallery.show_all, lang)}
+        </button>
+      )}
+      {showSearch && (
+        <button type="button" class="gallery-search-open h-track" data-open-search>
+          <span>{t(UI.gallery.search_here, lang)}</span>
+          <kbd class="gallery-search-kbd" aria-hidden="true">⌘K</kbd>
+        </button>
+      )}
+    </div>
+  </div>
+)}

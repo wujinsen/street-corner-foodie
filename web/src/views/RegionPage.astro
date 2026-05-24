@@ -1,0 +1,337 @@
+---
+/**
+ * v0.6.1 · alt-c · Region gallery (posters bookcase).
+ * Visual source: design/alt-c/gallery.png
+ */
+import Base from "../layouts/Base.astro";
+import BottomDock from "../components/BottomDock.astro";
+import GlassPosterCard from "../components/GlassPosterCard.astro";
+import GlassZineCard from "../components/GlassZineCard.astro";
+import GalleryFeaturedRail from "../components/GalleryFeaturedRail.astro";
+import GalleryFilterPillRow from "../components/GalleryFilterPillRow.astro";
+import GalleryPagination from "../components/GalleryPagination.astro";
+import GalleryRevealFooter from "../components/GalleryRevealFooter.astro";
+import GalleryStatChip from "../components/GalleryStatChip.astro";
+import StreetExplorer from "../components/StreetExplorer.astro";
+import ScfPicture from "../components/ScfPicture.astro";
+import { GALLERY_ZINE_PAGE_SIZE, pageCountFor, pageFromSearch } from "../lib/gallery-page";
+import { moreFromSearch, revealVisibleCount } from "../lib/gallery-reveal";
+import { filterTagsAttr } from "../lib/flavor-match";
+import { getZines, zineReaderPath } from "../lib/zines";
+import { UI, t } from "../lib/i18n";
+import { GALLERY_UI, gt } from "../lib/gallery-ui";
+import { COUNTRIES, COUNTRY_ORDER, REGIONS, findRegion } from "../lib/countries";
+import { getRecipePosters, posterImageUrl } from "../lib/posters";
+import { localePath, resolveLang, samePageWithQuery } from "../lib/locale-path";
+import { countStreetPhotos, getStreetConfig, getStreetScenes } from "../lib/streets";
+import { formatAtmosphereLine } from "../lib/region-atmosphere";
+import { regionHeroImageUrl } from "../lib/region-hero";
+import { resolveOgImage } from "../lib/site-urls";
+import type { CountryId, Poster } from "../lib/types";
+
+const lang = resolveLang(Astro.currentLocale);
+const country = Astro.params.country as CountryId;
+const regionId = Astro.params.region!;
+const region = findRegion(country, regionId);
+
+if (!region) {
+  return Astro.redirect(localePath(lang, "/"));
+}
+
+const c = COUNTRIES[country];
+const search = Astro.url.search;
+const posters = getRecipePosters(country, regionId);
+const flavors = region.flavors[lang] ?? region.flavors.zh;
+const activeFlavor = Astro.url.searchParams.get("flavor");
+const posterPageSize = GALLERY_ZINE_PAGE_SIZE;
+const posterPageCount = pageCountFor(posters.length, posterPageSize);
+const posterPage = pageFromSearch(search, "page", posterPageCount);
+const zmore = moreFromSearch(search, "zmore");
+const zinesUnfiltered = getZines(country, regionId);
+const zines = zinesUnfiltered;
+const zineVisible = revealVisibleCount(zines.length, zmore);
+
+const zineFilterTags = (slug: string): string => {
+  const p = posters.find((x) => x.slug === slug);
+  return p ? filterTagsAttr(p.tags, lang) : "";
+};
+
+const featuredSlug = region.editorPick?.[0];
+const featured: Poster | undefined =
+  (featuredSlug ? posters.find((p) => p.slug === featuredSlug) : undefined) ?? posters[0];
+
+const heroUrlPosters = regionHeroImageUrl(country, region, "posters");
+const heroUrlZines = regionHeroImageUrl(country, region, "zines");
+const heroUrl = heroUrlPosters ?? heroUrlZines;
+const ogImage =
+  resolveOgImage(Astro.site, heroUrl) ??
+  (featured ? resolveOgImage(Astro.site, posterImageUrl(featured, false)) : undefined);
+
+const posterHref = (slug: string) =>
+  localePath(lang, `/${country}/${regionId}/poster/${slug}`);
+
+function chipHref(f: string | null): string {
+  return samePageWithQuery(Astro.url, (p) => {
+    if (f === null) p.delete("flavor");
+    else p.set("flavor", f);
+    p.delete("pmore");
+    p.delete("zmore");
+    p.delete("page");
+    p.delete("zpage");
+  });
+}
+
+const streetConfig = getStreetConfig(country, regionId);
+const streetScenes = getStreetScenes(country, regionId);
+const streetPhotoCount =
+  streetConfig && streetScenes.length > 0
+    ? countStreetPhotos(streetConfig, streetScenes)
+    : 0;
+const countryRegions = REGIONS[country];
+const zineHref = (slug: string) => localePath(lang, zineReaderPath(country, regionId, slug));
+
+const prefetchFeatured = featured
+  ? (posterImageUrl(featured, false) ?? undefined)
+  : undefined;
+---
+<Base
+  lang={lang}
+  country={country}
+  altc
+  navTab="posters"
+  tabRegionId={regionId}
+  title={`${t(region.name, lang)} · ${t(UI.nav.poster, lang)}`}
+  prefetchImages={[heroUrl, prefetchFeatured].filter((u): u is string => !!u)}
+  ogImage={ogImage}
+>
+  <div class="alt-gallery container-wide" data-gallery-tabs data-active-tab="posters" data-gallery-lang={lang}>
+    <nav class="alt-crumb h-track" aria-label="breadcrumbs">
+      <a href={localePath(lang, "/")}>{t(UI.nav.world, lang).toUpperCase()}</a>
+      <span class="sep">›</span>
+      <a href={localePath(lang, `/${country}`)}>{t(c.name, lang).toUpperCase()}</a>
+      <span class="sep">›</span>
+      <span>{t(region.name, lang).toUpperCase()}</span>
+      <span class="sep">›</span>
+      <span class="alt-crumb-tab active" data-gallery-crumb="posters">{gt(GALLERY_UI.breadcrumb_posters, lang)}</span>
+      <span class="alt-crumb-tab" data-gallery-crumb="zines" hidden>{gt(GALLERY_UI.breadcrumb_zines, lang)}</span>
+      <span class="alt-crumb-tab" data-gallery-crumb="streets" hidden>{gt(GALLERY_UI.breadcrumb_streets, lang)}</span>
+    </nav>
+
+    <header class="tile gallery-hero-strip">
+      <div class="gallery-hero-main">
+        <div class="gallery-hero-head">
+          <span class="gallery-hero-mark" aria-hidden="true">
+            {country === "cn" ? "🌴" : country === "jp" ? "🏮" : "🗽"}
+          </span>
+          <h1 class="gallery-hero-title gallery-hero-title--region">
+            <span class="gallery-hero-track">
+              {lang === "zh"
+                ? t(region.name, lang)
+                : `${t(region.name, "en").toUpperCase()} · ${t(region.name, lang)}`}
+            </span>
+          </h1>
+        </div>
+        <p class="gallery-hero-sub">{t(region.tagline, lang)}</p>
+        <div class="gallery-hero-chips">
+          <GalleryStatChip value={region.stats.poster} label={gt(GALLERY_UI.dishes, lang)} icon="dish" />
+          <GalleryStatChip value={region.stats.street} label={gt(GALLERY_UI.streets_count, lang)} icon="street" />
+          <GalleryStatChip value={region.stats.zine} label={gt(GALLERY_UI.zines_count, lang)} icon="zine" />
+        </div>
+      </div>
+      <div class="gallery-hero-meta">
+        {heroUrl && (
+          <div class="gallery-hero-thumb" aria-hidden="true">
+            <ScfPicture src={heroUrl} alt="" loading="lazy" />
+          </div>
+        )}
+        {region.atmosphere && (
+          <span
+            class="gallery-weather-chip"
+            title={t(UI.gallery.atmosphere_hint, lang)}
+          >
+            <svg class="gallery-weather-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2 M12 20v2 M4.93 4.93l1.41 1.41 M17.66 17.66l1.41 1.41 M2 12h2 M20 12h2" />
+            </svg>
+            {formatAtmosphereLine(region.atmosphere, lang)}
+          </span>
+        )}
+      </div>
+    </header>
+
+    <div class="gallery-filter-bar tile xs gallery-tab-posters-only">
+      <div class="gallery-filter-inner">
+      <div class="gallery-filter-rows">
+        <GalleryFilterPillRow label={gt(GALLERY_UI.filter_country, lang)} wrapOver={99}>
+          {COUNTRY_ORDER.map((cid) => (
+            <a
+              href={localePath(lang, `/${cid}`)}
+              class={cid === country ? "active" : ""}
+              title={t(COUNTRIES[cid].name, lang)}
+            >{COUNTRIES[cid].flag}</a>
+          ))}
+        </GalleryFilterPillRow>
+      {countryRegions.length > 1 && (
+          <GalleryFilterPillRow
+            label={gt(GALLERY_UI.filter_province, lang)}
+            wrapOver={6}
+            class="gallery-province-pills"
+          >
+            {countryRegions.map((r) => (
+              <a
+                href={localePath(lang, `/${country}/${r.id}`)}
+                class={r.id === regionId ? "active" : ""}
+              >{t(r.name, lang)}</a>
+            ))}
+          </GalleryFilterPillRow>
+      )}
+        <GalleryFilterPillRow label={t(UI.filters.flavor, lang)} wrapOver={6} class="gallery-flavor-pills">
+          <a href={chipHref(null)} class={!activeFlavor ? "active" : ""}>{t(UI.filters.all, lang)}</a>
+          {flavors.map((f) => (
+            <a href={chipHref(f)} class={activeFlavor === f ? "active" : ""}>{f}</a>
+          ))}
+        </GalleryFilterPillRow>
+      </div>
+      </div>
+    </div>
+
+    <div class="gallery-tab-panel" data-tab="posters">
+    <div class="gallery-layout">
+      <section id="posters" class="gallery-main gallery-anchor" aria-label={t(UI.nav.poster, lang)}>
+        <div class="gallery-grid">
+          {posters.map((p, i) => (
+              <GlassPosterCard
+                poster={p}
+                lang={lang}
+                href={posterHref(p.slug)}
+                galleryPageIndex={Math.floor(i / posterPageSize)}
+                galleryActivePage={posterPage}
+                filterTags={filterTagsAttr(p.tags, lang)}
+                featured={i === 0 && !!featured && p.slug === featured.slug}
+              />
+          ))}
+        </div>
+        {posters.length === 0 && (
+          <p class="gallery-empty">{t(UI.empty.coming, lang)}</p>
+        )}
+        <div class="gallery-main-foot">
+          <GalleryPagination
+            total={posters.length}
+            pageSize={posterPageSize}
+            pageParam="page"
+            scrollAnchor="posters"
+            pathname={Astro.url.pathname}
+            search={search}
+          />
+        </div>
+      </section>
+
+      {featured && (
+        <GalleryFeaturedRail
+          lang={lang}
+          country={country}
+          regionId={regionId}
+          poster={featured}
+        />
+      )}
+    </div>
+    </div>
+
+    {zinesUnfiltered.length > 0 && (
+    <div class="gallery-tab-panel" data-tab="zines" hidden>
+      <section id="zines" class="gallery-zines gallery-anchor gallery-zines--tab" aria-label={gt(GALLERY_UI.breadcrumb_zines, lang)}>
+        <div class="gallery-section-head gallery-section-head--tools-only">
+          <button type="button" class="gallery-search-open h-track" data-open-search>
+            <span>{t(UI.gallery.search_here, lang)}</span>
+            <kbd class="gallery-search-kbd" aria-hidden="true">⌘K</kbd>
+          </button>
+        </div>
+        <p
+          class="gallery-items-count h-track"
+          data-count-scope="zines"
+          data-total-all={zinesUnfiltered.length}
+          data-count-unit={gt(GALLERY_UI.zines_count, lang)}
+        >
+          {zines.length} {gt(GALLERY_UI.zines_count, lang)}
+          {activeFlavor ? ` · ${activeFlavor}` : ""}
+        </p>
+        <div class="gallery-grid">
+          {zines.map((z, i) => (
+              <GlassZineCard
+                zine={z}
+                lang={lang}
+                href={zineHref(z.slug)}
+                galleryItemIndex={i}
+                galleryRevealMax={zineVisible}
+                filterTags={zineFilterTags(z.slug)}
+              />
+          ))}
+        </div>
+        {zines.length === 0 && (
+          <p class="gallery-empty">{t(UI.empty.coming, lang)}</p>
+        )}
+        <GalleryRevealFooter
+          lang={lang}
+          total={zines.length}
+          visible={zineVisible}
+          moreParam="zmore"
+          scrollAnchor="zines"
+          showSearch
+        />
+      </section>
+    </div>
+    )}
+
+    {streetScenes.length > 0 && streetConfig && (
+    <div class="gallery-tab-panel" data-tab="streets" hidden>
+      <section id="streets" class="gallery-anchor alt-street-embed-host" aria-label={t(UI.nav.street, lang)}>
+        <StreetExplorer
+          country={country}
+          regionId={regionId}
+          lang={lang}
+          embedded
+          sceneId={Astro.url.searchParams.get("scene") ?? undefined}
+          showCrumb={false}
+        />
+      </section>
+    </div>
+    )}
+  </div>
+
+  <BottomDock lang={lang} active="explore" />
+</Base>
+
+<script>
+  import { initGalleryFlavorFilter } from "../scripts/gallery-flavor-filter";
+  import { initGalleryPagination } from "../scripts/gallery-pagination";
+  import { initGalleryReveal } from "../scripts/gallery-reveal";
+  import { initGalleryTabs } from "../scripts/gallery-tabs";
+  import { initStreetEatCarousel } from "../scripts/street-eat-carousel";
+  import { initEmbeddedStreetExplorers } from "../scripts/street-explorer";
+  initGalleryFlavorFilter();
+  initGalleryPagination();
+  initGalleryReveal();
+  initGalleryTabs();
+  document.querySelectorAll<HTMLElement>("[data-street-eat-carousel]").forEach((el) => {
+    initStreetEatCarousel(el);
+  });
+  initEmbeddedStreetExplorers();
+</script>
+
+<script is:inline>
+  (function () {
+    function preserveHashOnClick(sel) {
+      document.querySelectorAll(sel).forEach(function (a) {
+        a.addEventListener("click", function () {
+          var h = location.hash;
+          if (!h) return;
+          try {
+            var u = new URL(a.getAttribute("href") || "", location.href);
+            if (!u.hash) a.href = u.pathname + u.search + h;
+          } catch (e) {}
+        });
+      });
+    }
+    preserveHashOnClick(".gallery-filter-bar a");
+  })();
+</script>

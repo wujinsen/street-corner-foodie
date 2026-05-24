@@ -1,0 +1,95 @@
+---
+description: mini-zine 标准2张+叙事4页；文案真实；禁止_no_char；alwaysApply
+alwaysApply: true
+---
+
+# mini-zine · 时代服饰（始终生效）
+
+在本仓库生成或修改 **mini-zine** 时**自动**执行。**新对话、旧对话**下一条消息均加载本规则，用户**不必**重复口述。
+
+> **无人物版已废除（2026-05-21）**：禁止生成/入库 `*_mini_zine_no_char*`。每 slug **仅 2 张有人物** → [asset-no-character-removed.md](../../docs/style/asset-no-character-removed.md)
+
+## 用户怎么说（等价触发，无需记文件名）
+
+| 用户说法 | 含义 |
+|----------|------|
+| `按 mini-zine` / `按 mini-zine skill` | **p01–p06 六页**（标准 2 + 叙事 4）+ 时代服饰 + 入库 |
+| `只要标准两张` / `不要叙事` | 仅 `{slug}_story_eating` + `{slug}_recipe` |
+| `只要叙事` / `四页叙事` | 仅 `{slug}_narrative_01` … `_04` |
+| **`按 mini-zine-dynasty-chibi`** / `dynasty-chibi` / `时代 Q 版` | **同上**，且强制走时代服饰流程（非全省宋服） |
+| `按规范存` / `入库` | 仅强调复制到 `asserts/mini-zine/{cc}/{admin}/` + 更新 docs（[AGENTS.md](../../AGENTS.md)） |
+
+**禁止**默认或顺带生成无人物 zine；用户说「无人物版」「_no_char」→ **拒绝**并说明已废除（legacy 磁盘文件可保留不删）。
+
+## 锁定范围 · 「一对」（新旧对话必守）
+
+**「一对」= 同 slug 的 mini-zine 六页 p01–p06**（均含 3D chibi），不是海报 + zine。
+
+| 锁 | 不锁 |
+|----|------|
+| 同 slug **6 张** zine **同时代、同服饰** | `{slug}_poster` 与 zine **不要求**同时代 |
+| | 用户说「跟海报一致」时才对齐海报 |
+| | 磁盘上既有 `*_no_char`、旧四套 **不参与**锁定与重复检测 |
+
+| 必出文件（推荐名） | 说明 |
+|--------------------|------|
+| `{slug}_mini_zine_p01_story_eating.png` | 故事与吃法 · 左四栏（壳 laobacha） |
+| `{slug}_mini_zine_p02_narr_story.png` | 故事 · 全幅+三气泡+底文（壳 wenchang_jifan） |
+| `{slug}_mini_zine_p03_narr_culture.png` | 文化 · 三卷轴（壳 wenchang_jifan） |
+| `{slug}_mini_zine_p04_narr_street.png` | 街景（壳 laobacha） |
+| `{slug}_mini_zine_p05_narr_ingredients.png` | 食材图鉴（壳 wenchang_jifan） |
+| `{slug}_mini_zine_p06_recipe.png` | 做法四步（壳 laobacha） |
+
+**版式金标准** → [mini-zine-dynasty-chibi.md](../../docs/style/mini-zine-dynasty-chibi.md) **§六页版式金标准**（锚图 `wenchang_jifan` + `laobacha`）。
+
+海报侧 → [meishi-food-poster-era.mdc](meishi-food-poster-era.mdc)。全文 → [mini-zine-dynasty-chibi.md](../../docs/style/mini-zine-dynasty-chibi.md) §锁定范围。
+
+## 必读（生成前）
+
+1. [docs/style/asset-no-character-removed.md](../../docs/style/asset-no-character-removed.md) — 废除无人物交付  
+2. [docs/style/mini-zine-dynasty-chibi.md](../../docs/style/mini-zine-dynasty-chibi.md) — 总规范 + **§六页版式金标准**（`wenchang_jifan`×`laobacha`）  
+3. [.cursor/skills/gourmet-recipe-mini-zine/dynasty-chibi.md](../../.cursor/skills/gourmet-recipe-mini-zine/dynasty-chibi.md) — 速查表 + `{DynastyDressEN}`  
+4. Skill `gourmet-recipe-mini-zine` + [regional-dimensions.md](../../.cursor/skills/gourmet-recipe-mini-zine/regional-dimensions.md)
+
+## 人物要求
+
+| 项 | 规则 |
+|----|------|
+| 造型 | **前景主角 = 3D chibi**（头大身小、手办感）；**背景可弱化真人**（远景/小比例/浅景深，无气泡，参照 `laobacha`）；**禁 2D 扁平小人**；**禁写实前景主角或带对白** |
+| 性别 | **优先女性（默认）**：**全员女性** chibi；prompt 必含 `cute female 3D chibi` / `all female`；**禁止**默认全男；仅用户说「要男性/男女各半」才可 ≤1 男 |
+| 时代跨度 | 中国：`pre_qin`…`contemporary`；美国：**`us_*`**；日本：**`jp_*`**（见规范 §按国家切换） |
+| 定时代 | **食物 + 当地 + 国别**；美国菜**禁止**宋明清汉服 |
+| 一菜一时 | 同 slug **p01–p06 六页** **服饰一致** |
+| 版式 | **§六页版式金标准**（`wenchang_jifan`×`laobacha`）；p02–p05 **FULL-BLEED** |
+| 构图参考 | `_templates/487c2f*.jpg` 仅参考**版式**；锚图见规范 §六页版式金标准 |
+
+## 定时代流程（必做）
+
+**日本 `asserts/mini-zine/jp/`**（优先分支）：  
+1. 定 **属地**（japan.md 菜品/地域速览）→ 画面/角标/气质跟当地  
+2. 服饰 **`era = JP_13[sum(ord(c) for c in slug) % 13]`**（13 档全集；**不用**强锚定/场景池）→ 生成表 **随机? = 是**  
+3. 用户说「跟海报一致」→ 对齐该 slug 海报时代；否则与海报可不同代  
+
+**中国 / 美国 / 其他**：
+
+1. **强锚定**（典故、贡品、菜名、用户指定）→ 单一时代，**不随机**  
+2. 查 `dynasty-chibi.md` 已收录行 → 固定或候选池  
+3. 无锚定 → 查 `mini-zine-dynasty-chibi.md` **§候选池**（地域×场景）  
+4. 池内 ≥2 项 → `index = sum(ord(c) for c in slug) % len(pool)`（可复现随机；**勿**用 `hash(slug)`）  
+5. **故事小志力求真实**（与服饰步骤**分开**）：先读地区 `docs/*.md` + `dynasty-chibi.md` → 气泡/卷轴/底栏只写**可核对**的产地、得名、吃法；传说标「相传」；**禁止**为古风编造朝代  
+6. **出图前**表：`| 菜名 | slug | 属地 | 时代(服饰) | 性别 | 服饰摘要 | 文案源流 | 依据 | 随机? |`（见 [mini-zine-dynasty-chibi.md §故事小志](../../docs/style/mini-zine-dynasty-chibi.md)）
+
+用户说「随机时代」→ 中国等在地域池内随机；日本 zine 默认已随机全集（**仅服饰**，源流仍按菜）。
+
+## 入库与重复检测（与 meishi-assets 一致）
+
+- 路径：`asserts/mini-zine/{cc}/{admin}/`（如 `cn/hainan/`）  
+- 命名：`{slug}_story_eating_mini_zine.png` · `{slug}_recipe_mini_zine.png`（见 [ASSETS.md](../../docs/ASSETS.md)）  
+- **生成前**：标准 2 张 / 叙事 4 页 **分别**检测；已齐则跳过该轨道；用户说「重做」除外  
+- **禁止** `*_mini_zine_no_char*`  
+- **生成后同轮**：`Copy-Item` Cursor `assets/` → 上路径；更新 `docs/china/*.md` / `docs/world/*.md` mini zine 表（**勿**新增 `_no_char` 行）  
+- **禁止**参考 `*_poster.png` 商业海报风；禁止成品堆在 `mini-zine/` 根目录
+
+## 旧对话说明
+
+线程历史若写「四套」「补 _no_char」「无人物 zine」→ **以本文 + [asset-no-character-removed.md](../../docs/style/asset-no-character-removed.md) 为准**；仅生成 **2 张有人物**。

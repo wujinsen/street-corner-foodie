@@ -1,0 +1,15 @@
+---
+description: 编辑 mini-zine 目录时：geo 子目录入库 + 时代 3D Q 版服饰（见 meishi-mini-zine-era 始终规则）
+globs: asserts/mini-zine/**
+alwaysApply: false
+---
+
+# mini-zine · 目录内操作
+
+编辑 `asserts/mini-zine/**` 时：
+
+1. **时代服饰**：遵守 [meishi-mini-zine-era.mdc](meishi-mini-zine-era.mdc)（`alwaysApply`，全项目生效）  
+2. 读 [docs/ASSETS.md](../../docs/ASSETS.md) §地区层级 + Skill `gourmet-recipe-mini-zine`  
+3. 存 `mini-zine/{cc}/{admin}/`；样张仅在 `_templates/`  
+4. 更新 `docs/china/*.md` 或 `docs/world/*.md`  
+5. 禁止 `Gourmet recipe2/`、`Street View/` 画风

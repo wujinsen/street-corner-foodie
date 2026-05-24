@@ -1,0 +1,53 @@
+---
+import ScfPicture from "./ScfPicture.astro";
+import type { StreetFrame, StreetTime } from "../lib/streets";
+
+interface Props {
+  src: string;
+  alt: string;
+  time: StreetTime;
+  frame: StreetFrame;
+  priority?: boolean;
+}
+
+const { src, alt, time, frame, priority = false } = Astro.props as Props;
+const aspect = frame === "wide" ? "21 / 9" : "1 / 1";
+---
+<div
+  class="street-picture"
+  style={`--street-aspect: ${aspect}`}
+  data-time={time}
+  data-frame={frame}
+>
+  <ScfPicture
+    src={src}
+    alt={alt}
+    loading={priority ? "eager" : "lazy"}
+    fetchpriority={priority ? "high" : undefined}
+    decoding="async"
+  />
+</div>
+
+<style>
+.street-picture {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: var(--street-aspect, 21 / 9);
+  overflow: hidden;
+  background: #0a0a0a;
+}
+.street-picture :global(picture),
+.street-picture :global(img) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center;
+  transition: opacity 0.35s var(--ease-soft);
+}
+</style>

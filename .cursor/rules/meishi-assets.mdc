@@ -1,0 +1,90 @@
+---
+description: meishi 资源入库 — 画风三分 + cn/hebei 等子目录；自动复制入库，用户无需口述规范
+alwaysApply: true
+---
+
+# meishi · 资源入库（始终生效）
+
+生成或保存 `asserts/` 图片时**自动**执行，禁止等用户说「按规范」。**新旧对话**均 `alwaysApply`；关键词见 [AGENTS.md](../../AGENTS.md)（如 `按 mini-zine-dynasty-chibi`、`按 meishi-street-view`）。
+
+## 重复检测（不必重做）
+
+生成前检查目标子目录是否已有该菜**完整文件集**（zine **标准 2 + 叙事 4** / 海报 **1 张**）。已齐全 → **跳过**；仅缺标准或叙事某一轨 → 只补缺失；**勿**补 `_no_char`。
+
+## 目录（必读 [AGENTS.md](../../AGENTS.md) / [docs/ASSETS.md](../../docs/ASSETS.md)）
+
+| 类型 | 保存目录 |
+|------|----------|
+| 海报 | `asserts/Gourmet recipe2/{cc}/{admin}/` — **禁止** `{cc}/` 根目录堆 PNG（例：炒饭→`cn/jiangsu/`，川菜→`cn/sichuan/`） |
+| zine | `asserts/mini-zine/{cc}/{admin}/`（样张 `mini-zine/_templates/`） |
+| 街景 | `asserts/Street View/{cc}/{admin}/{local}/` |
+
+**禁止**成品 PNG 放在画风文件夹根目录。
+
+## 推断子目录
+
+| 文档 / 地区 | 海报·zine | 街景 |
+|-------------|-----------|------|
+| 海南 / hainan.md | `cn/hainan` | `cn/hainan/haikou` |
+| 陕西西安 / shaanxi.md | `cn/shaanxi` | `cn/shaanxi/xian` |
+| 浙江杭州 / zhejiang.md | `cn/zhejiang` | `cn/zhejiang/hangzhou` |
+| 北京 / beijing.md | `cn/beijing` | `cn/beijing` |
+| 石家庄 / shijiazhuang.md | `cn/hebei` | `cn/hebei/shijiazhuang` |
+| 浙江 / zhejiang.md | `cn/zhejiang` | `cn/zhejiang` |
+| 日本 / japan.md | `jp` | `jp/tokyo` · 富士 `jp/fuji` |
+| 美国 / usa.md | `us` | `us/`（`nyc`、`la` 等待建） |
+| 富士山 / japan.md §富士 | `jp` | `jp/fuji` |
+| 纽约 / usa.md | `us` | `us/nyc` |
+| 洛杉矶 / usa.md | `us` | `us/la` |
+| 德州 BBQ / usa.md | `us` | `us/tx` |
+
+## 完成后 MUST
+
+1. **Shell `Copy-Item`** → 对应**子目录**（非根目录）  
+2. 更新 `docs/china/*.md` 或 `docs/world/*.md` 资源表  
+3. 同画风内参考图只读**同一 `{cc}/{admin}`** 或 `_templates`  
+
+禁止跨 `Gourmet recipe2` / `mini-zine` / `Street View` 混风格。
+
+## 街景附加（`alwaysApply` · [meishi-street-view-spec.mdc](meishi-street-view-spec.mdc)）
+
+- 每场景 **day_wide + night_wide + day_standard**，画面含**当地美食**（摊/招牌/碗碟，非海报巨型主菜）  
+- **Web 默认展示**：探索器 / 街景 Tab **优先 `night_wide`**（§2b · `STREET_VIEW_DEFAULT_VIEW`）  
+- 生成前读场景原型 md（府城 / 石家庄 / 东京 见该规则索引表）  
+- 新旧对话**无需**用户重复「加美食」「按规范」
+
+## 海报人物时代 + 布局 + 气泡（Gourmet recipe2 · 新旧对话必遵）
+
+生成或重制海报时读 [food-poster-dynasty-chibi.md](../../docs/style/food-poster-dynasty-chibi.md) + [food-poster-ingredients.md](../../docs/style/food-poster-ingredients.md) §按菜定布局 + [food-poster-diorama.md](../../docs/style/food-poster-diorama.md)：
+
+- **海报版式**：主菜居中上不挡 · 底行 12～18% · 横木牌 · 防穿模 → [meishi-food-poster.mdc](meishi-food-poster.mdc) · [§总览](../../docs/style/food-poster-ingredients.md#新旧对话必守--海报版式总览2026-05-21)
+- **boluo 清新风**：`按 boluo 清新风` / `清新风格` → 画风主锚 `boluo_chaofan_poster.png`；**人料场景按菜表** → [food-poster-diorama.md §boluo 只锁/不锁](../../docs/style/food-poster-diorama.md#boluo-只锁什么--不锁什么2026-05-19--新旧对话必守)
+- **人料皆可变**：厨师 3～5、底行料 4～6 **均按本菜表**（可不等）· 横放木牌 · **禁止**全库五人+六同款碗 → [meishi-food-poster-era.mdc](meishi-food-poster-era.mdc) §人料皆可变
+- **时代锁定**：海报每 slug **1** 张 `_poster`；zine 每 slug **2** 张同时代；**禁止** `_no_char`；**海报↔zine 不强制同代**
+- 定时代：`dynasty-chibi.md` 已收录 → 候选池 → `hash(slug)` 随机
+- **禁止**默认全员白帽绿围裙（除非 `contemporary` 围裙/马甲）
+- **优先女性**：默认 **全员女性** chibi
+- 规则：`meishi-food-poster-era.mdc`（`alwaysApply`）
+
+## 海报人物气泡（Gourmet recipe2）
+
+生成或重制 **有人物海报** 时读 [food-poster-speech-bubbles.md](../../docs/style/food-poster-speech-bubbles.md)：
+
+- **对白体** `dialogue`：默认，边做边说（第一人称绑动作）
+- **标语体** `slogan`：旧版卖点词，仍可用
+- 同图不混用；条数 ≤ 厨师人数（3～5）
+
+用户未指定时新图用 **对白体**；说「保留旧气泡/标语体」则用 **标语体**。
+
+**legacy 并存**：历史 `{slug}_poster.png` **保留不覆盖**；新作按朝代服+木牌料签，可 `_{era}_redraw` 并存。仅用户说「替换定稿」才覆盖。
+
+## mini-zine（另见 alwaysApply 规则）
+
+生成 mini-zine 时**必须**遵守 [meishi-mini-zine-era.mdc](meishi-mini-zine-era.mdc) + [asset-no-character-removed.md](../../docs/style/asset-no-character-removed.md)：
+
+- 每 slug **仅 2 张**：`story_eating` + `recipe`，**均含** 3D chibi · **禁止** `*_mini_zine_no_char*`  
+- **优先女性**（默认全员女性）· 时代 `pre_qin`→`contemporary`（2026）· 由**食物+当地**定  
+- 无锚定 → 候选池 + `sum(ord(slug))%len(pool)` 随机 · 出图前报 `时代|性别|服饰|随机?` 表  
+- 全文：[mini-zine-dynasty-chibi.md](../../docs/style/mini-zine-dynasty-chibi.md)
+
+**新旧对话均生效**，无需用户重复口述。

@@ -1,0 +1,9 @@
+---
+import PosterDetailPage from "../../../../../../views/PosterDetailPage.astro";
+import { posterStaticPaths } from "../../../../../../lib/static-paths";
+
+export function getStaticPaths() {
+  return posterStaticPaths();
+}
+---
+<PosterDetailPage />

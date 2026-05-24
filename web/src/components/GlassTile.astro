@@ -1,0 +1,57 @@
+---
+/**
+ * v0.6 · alt-c · GlassTile
+ * Generic frosted-glass surface. Slot in any content.
+ * Use `as="a"` for link tiles (hoverable lift).
+ */
+
+interface Props {
+  as?: "div" | "a" | "article";
+  href?: string;
+  variant?: "default" | "feature" | "chip" | "street" | "tagline";
+  span?: 2 | 3 | 4 | 6;
+  rowSpan?: 2 | 3;
+  radius?: "default" | "sm" | "xs";
+  ariaLabel?: string;
+  title?: string;
+  class?: string;
+}
+
+const {
+  as = "div",
+  href,
+  variant = "default",
+  span,
+  rowSpan,
+  radius = "default",
+  ariaLabel,
+  title,
+  class: className,
+} = Astro.props as Props;
+
+const classes = [
+  "tile",
+  variant !== "default" && `t-${variant}`,
+  href && "is-link",
+  span && `b-${span}`,
+  rowSpan && `b-r${rowSpan}`,
+  radius === "sm" && "sm",
+  radius === "xs" && "xs",
+  className,
+].filter(Boolean).join(" ");
+---
+{as === "a" ? (
+  <a class={classes} href={href} aria-label={ariaLabel} title={title}>
+    <span class="tile-glint" aria-hidden="true"></span>
+    <span class="tile-edge" aria-hidden="true"></span>
+    <slot />
+  </a>
+) : as === "article" ? (
+  <article class={classes} aria-label={ariaLabel} title={title}>
+    <slot />
+  </article>
+) : (
+  <div class={classes} aria-label={ariaLabel} title={title}>
+    <slot />
+  </div>
+)}

@@ -1,0 +1,75 @@
+---
+description: Street Corner Foodie 品牌口径 — 名称三语、tagline、视觉、技术路径解耦；所有新对话自动生效
+alwaysApply: true
+---
+
+# Street Corner Foodie · 品牌口径（始终生效）
+
+> 项目名称已于 2026-05-18 定为 **Street Corner Foodie / 街角食客 / 街角フーディー**，取代旧称「Meishi Atlas / 美食图鉴 / 美食図鑑」。 
+> **新旧对话**均自动加载。无需用户说"按品牌"；写代码、写文档、写 UI 文案前先读本文与 [BRAND.md](../../BRAND.md)。
+
+## 1 · 名称（必遵）
+
+| 语种 | **正名** | 不允许写法 |
+|------|----------|------------|
+| 英文 | **Street Corner Foodie** | `Meishi Atlas` / `Street Corner Foody` / `Street Corner Foodies` / 全小写 / 全大写（caps 字标除外） |
+| 中文 | **街角食客** | `美食图鉴` / `街角馋客` / `街角的食客` / `街角食客们` |
+| 日文 | **街角フーディー** | `美食図鑑` / `街角フーディ`（缺长音）/ `街角フーディーズ` |
+| 缩写 | **scf**（小写，仅技术语境，如 `scf-web`、`@scf/data`、commit prefix） | `SCF` 作正式品牌、对外宣发禁用 |
+
+**caps 字标**仅在 UI 视觉装饰位允许：`STREET · CORNER · FOODIE`。
+
+## 2 · Tagline（必遵；不可改写）
+
+| 语种 | 文案 |
+|------|------|
+| EN | *Turn into every street corner of the world — taste the city, see the bite.* |
+| ZH | *拐进世界的每个街角，看食物与城市如何一起呼吸。* |
+| JA | *世界の街角を曲がるたび、味と街が立ち上がる。* |
+
+副定位（一行）：**A diorama atlas of world street food & cityscapes** / **世界街角的美食与街景图鉴**。
+
+新场景要新口号时**追加**到 [BRAND.md](../../BRAND.md) §2，不要直接编。
+
+## 3 · Logo / 视觉
+
+- Logo mark = SVG "L 形街角 + 咬一口的圆点"，白笔画 + 国家主题色填底（CN 朱红 / JP 红 / US 蓝）
+- 三国主题 token 见 [BRAND.md](../../BRAND.md) §3.3 与 `index.html` 内 `:root[data-country=...]`
+- 字体：英文 Playfair Display / JetBrains Mono caps；中文 Noto Serif/Sans SC；日文 Noto Serif/Sans JP
+- **不允许**自行替换 logo 字标、改色板、改字体而不更新 BRAND.md
+
+## 4 · 技术路径解耦（**不要**因品牌改名而动）
+
+以下都是技术路径与工作流约定，与品牌名**无关**，请勿"顺手"重命名：
+
+| 路径 / 标识 | 说明 |
+|------------|------|
+| `asserts/Gourmet recipe2/` · `asserts/mini-zine/` · `asserts/Street View/` | 三大画风目录 |
+| `docs/china/*.md` · `docs/world/*.md` | 地区文档 |
+| 文件名前缀 `cn_hainan_…` `jp_tokyo_…` `us_nyc_…` 等 | geo schema |
+| frontmatter 字段 `geo_prefix: cn_` 等 | 内容契约 |
+| `AGENTS.md` · `.cursor/rules/meishi-*.mdc` | 资产规范（描述流程，与品牌名解耦） |
+
+**例外**：如果要把仓库/包名/CI 重命名为 `scf-*`，需在 [BRAND.md](../../BRAND.md) §5 登记后再改。
+
+## 5 · 写代码 / 文档时（必做）
+
+1. **新建 UI/文案** → 显示文字用上表正名；提供三语字段时 `data-zh="街角食客" data-en="Street Corner Foodie" data-ja="街角フーディー"`
+2. **页面 `<title>`** → `Street Corner Foodie · 街角食客`（其它派生页可后缀 ` · 海南` 等）
+3. **footer/版权** → `© 2026 Street Corner Foodie`
+4. **commit / PR 标题** → 内部技术语境可写 `scf:` 前缀；面向用户的 changelog 写正名
+5. **回复用户**：自然语境用 **Street Corner Foodie** 或 **街角食客**；不要再写 "美食图鉴" / "Meishi Atlas"（除非引用历史决策）
+
+## 6 · 其它语种（先登记再用）
+
+要将名称翻译成法、西、德、韩等任何语言之前，**先在 [BRAND.md](../../BRAND.md) §1 登记**该语种的官方写法；不允许会话临时翻译（如自造 "Foodie du Coin"、"Comida de Esquina" 等）。
+
+## 7 · AI 自检 checklist（生成内容前过一遍）
+
+- [ ] 没有写错 "Foodies/Foody"（应为 **Foodie** 单数）
+- [ ] 中文没写成 "美食图鉴"（应为 **街角食客**）
+- [ ] 日文写 "**街角フーディー**"（长音 `ー` 不能丢）
+- [ ] 没改动 `asserts/`、`docs/`、`geo_prefix` 等技术路径
+- [ ] 新口号 / 视觉 / 翻译变更已登记到 [BRAND.md](../../BRAND.md)
+
+详尽手册：[BRAND.md](../../BRAND.md)

@@ -1,0 +1,157 @@
+---
+import FlavorRadar from "./FlavorRadar.astro";
+import GlassTile from "./GlassTile.astro";
+import LandingBentoCarousel from "./LandingBentoCarousel.astro";
+import { UI, t, type Lang } from "../lib/i18n";
+import { regionGalleryHref } from "../lib/locale-path";
+import { getRegionAtmosphereGeo } from "../lib/region-atmosphere-geo";
+import type { LandingSpotPayload } from "../lib/landing-spot-payload";
+
+interface Props {
+  lang: Lang;
+  payload: LandingSpotPayload;
+  bentoPrevLabel: string;
+  bentoNextLabel: string;
+}
+
+const { lang, payload, bentoPrevLabel, bentoNextLabel } = Astro.props as Props;
+
+const {
+  countryId,
+  regionId,
+  flag,
+  editorPick,
+  zinePick,
+  atmosphere,
+  dishSlides,
+  zineSlides,
+  radarHeadline,
+} = payload;
+
+const posterListHref = regionGalleryHref(lang, countryId, regionId, { hash: "posters" });
+const zineListHref = regionGalleryHref(lang, countryId, regionId, { hash: "zines" });
+const atmosphereGeo = getRegionAtmosphereGeo(countryId, regionId);
+const weatherConfigJson =
+  atmosphere && atmosphereGeo
+    ? JSON.stringify({
+        lat: atmosphereGeo.lat,
+        lon: atmosphereGeo.lon,
+        timezone: atmosphereGeo.timezone,
+        regionKey: `${countryId}/${regionId}`,
+        lang,
+      })
+    : null;
+---
+
+<div class="right-bento landing-bento-mosaic landing-bento-mosaic--4" data-landing-bento-mosaic>
+  {editorPick && (
+    <GlassTile
+      as="a"
+      href={posterListHref}
+      variant="feature"
+      class="bento-dish bento-dish--proto"
+      ariaLabel={`${t(editorPick.name, lang)} · ${t(UI.nav.poster, lang)}`}
+    >
+      <div class="photo">
+        {dishSlides.length > 0 && (
+          <LandingBentoCarousel
+            slides={dishSlides}
+            variant="photo"
+            eager
+            prevLabel={bentoPrevLabel}
+            nextLabel={bentoNextLabel}
+          />
+        )}
+        <span class="bento-flag" aria-hidden="true">{flag}</span>
+      </div>
+      <div class="bento-media-grad" aria-hidden="true"></div>
+      <div class="bento-dish-copy">
+        <div class="n-zh h-serif-dish">{dishSlides[0]?.title ?? t(editorPick.name, lang)}</div>
+      </div>
+    </GlassTile>
+  )}
+
+  {zinePick && (
+    <GlassTile
+      as="a"
+      href={zineListHref}
+      variant="feature"
+      class="bento-zine bento-zine--proto"
+      ariaLabel={`${t(zinePick.name, lang)} · ${t(UI.nav.zine, lang)}`}
+    >
+      <div class="photo">
+        {zineSlides.length > 0 && (
+          <LandingBentoCarousel
+            slides={zineSlides}
+            variant="photo"
+            prevLabel={bentoPrevLabel}
+            nextLabel={bentoNextLabel}
+          />
+        )}
+      </div>
+      <div class="bento-media-grad" aria-hidden="true"></div>
+      <span class="bento-flag" aria-hidden="true">{flag}</span>
+      <div class="bento-zine-copy">
+        <div class="n-zh h-serif-dish">{zineSlides[0]?.title ?? t(zinePick.name, lang)}</div>
+        <span class="bento-zine-read">
+          {t(UI.landing.read_short, lang)} &rarr;
+        </span>
+      </div>
+    </GlassTile>
+  )}
+
+  {editorPick && (
+    <GlassTile variant="chip" class="bento-radar bento-radar--proto t-radar" ariaLabel={t(UI.detail.flavors, lang)}>
+      {radarHeadline && <div class="bento-radar-head">{radarHeadline}</div>}
+      <FlavorRadar poster={editorPick} flavorLabels={payload.flavorLabels} lang={lang} altc compact />
+    </GlassTile>
+  )}
+
+  <div class="landing-bento-right-col">
+    {atmosphere && (
+      <GlassTile
+        variant="chip"
+        class="bento-weather bento-weather--proto"
+        ariaLabel={t(UI.gallery.atmosphere_hint, lang)}
+        title={t(UI.gallery.atmosphere_hint, lang)}
+      >
+        <div
+          class="bento-weather-live"
+          data-landing-weather={weatherConfigJson ? "" : undefined}
+          data-weather-config={weatherConfigJson ?? undefined}
+        >
+          <div class="bento-weather-bg" aria-hidden="true" />
+          <div class="bento-weather-body">
+            <span class="bento-weather-icon" aria-hidden="true">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="14" cy="14" r="6" stroke="currentColor" stroke-width="1.5" />
+                <path
+                  d="M8 28c2.5-4 6-6 10-6s7.5 2 10 6"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M26 12h10M31 7v10"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </span>
+            <div class="bento-weather-copy">
+              <div class="bento-weather-main" data-bento-weather-main>
+                {t(atmosphere.climate, lang)} · <span data-bento-weather-temp>{atmosphere.tempC}</span>°
+              </div>
+              <div class="bento-weather-sub" data-bento-weather-sub>
+                <span data-bento-weather-mood>{t(atmosphere.mood, lang)}</span>{" "}
+                <span data-bento-weather-sunset>{atmosphere.sunsetLocal}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </GlassTile>
+    )}
+    <slot name="manifesto" />
+  </div>
+</div>

@@ -1,0 +1,42 @@
+{
+  "name": "scf-web",
+  "version": "0.6.0",
+  "private": true,
+  "type": "module",
+  "description": "Street Corner Foodie - web (Astro)",
+  "scripts": {
+    "vendor:echarts": "node scripts/vendor-echarts.mjs",
+    "dev": "npm run vendor:echarts && npm run images:quick && astro dev",
+    "dev:clean": "node scripts/clean-vite-cache.mjs && npm run dev",
+    "build": "npm run vendor:echarts && npm run images && astro build",
+    "preview": "astro preview",
+    "check": "npm run vendor:echarts && npm run map:design && npm run map:particles && npm run images:quick && astro check",
+    "test:altc": "node scripts/altc-smoke.mjs && node scripts/country-poster-order.mjs",
+    "test:altc:full": "npm run build && node scripts/altc-smoke.mjs",
+    "images": "node scripts/optimize-images.mjs",
+    "images:quick": "node scripts/optimize-images.mjs --quick",
+    "map:data": "node scripts/build-world-map-data.mjs",
+    "map:particles": "node scripts/build-map-land-particles.mjs",
+    "map:design": "node scripts/crop-landing-map-art.mjs",
+    "lhci": "lhci autorun",
+    "deploy:cf": "wrangler pages deploy dist --project-name=street-corner-foodie --branch=main",
+    "sync:web-posters": "python scripts/export-poster-meta-bundle.py && node scripts/sync-web-posters-to-md.mjs"
+  },
+  "dependencies": {
+    "astro": "^4.16.0",
+    "echarts": "^5.6.0",
+    "gray-matter": "^4.0.3",
+    "suncalc": "^1.9.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@lhci/cli": "^0.14.0",
+    "@types/suncalc": "^1.9.2",
+    "d3-geo": "^3.1.1",
+    "sharp": "^0.33.5",
+    "topojson-client": "^3.1.0",
+    "typescript": "^5.6.3",
+    "world-atlas": "^2.0.2",
+    "wrangler": "^3.114.17"
+  }
+}

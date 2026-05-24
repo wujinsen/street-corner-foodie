@@ -1,0 +1,38 @@
+---
+import WorldAtlasBoot from "./WorldAtlasBoot.astro";
+import WorldAtlasCrumbs from "./WorldAtlasCrumbs.astro";
+import { UI, t, type Lang } from "../lib/i18n";
+import { buildWorldAtlasPayload, type WorldAtlasPayload } from "../lib/world-atlas-payload";
+
+interface Props {
+  lang: Lang;
+  payload?: WorldAtlasPayload | null;
+}
+
+const { lang, payload: payloadProp } = Astro.props as Props;
+const payload = payloadProp ?? buildWorldAtlasPayload(lang);
+
+if (!payload) {
+  return null;
+}
+---
+
+<section
+  class="world-atlas-explorer"
+  data-world-atlas-explorer
+  data-atlas-view="world"
+  aria-label={t(UI.nav.world_atlas, lang)}
+>
+  <script type="application/json" data-world-atlas-config set:html={JSON.stringify(payload)} />
+
+  <WorldAtlasCrumbs lang={lang} worldLabel={payload.i18n.crumb_world} />
+
+  <div
+    class="world-atlas-explorer__stage"
+    data-world-atlas-host
+    role="img"
+    aria-label={payload.title}
+  ></div>
+
+  <WorldAtlasBoot />
+</section>

@@ -1,0 +1,71 @@
+---
+import ScfPicture from "./ScfPicture.astro";
+import type { LandingBentoSlide } from "../lib/landing-bento-slides";
+
+interface Props {
+  slides: LandingBentoSlide[];
+  variant: "photo" | "bg";
+  eager?: boolean;
+  prevLabel: string;
+  nextLabel: string;
+}
+
+const { slides, variant, eager = false, prevLabel, nextLabel } = Astro.props as Props;
+const canNav = slides.length > 1;
+---
+
+<div
+  class:list={[
+    "bento-carousel",
+    `bento-carousel--${variant}`,
+    !canNav && "bento-carousel--single",
+  ]}
+  data-landing-bento-carousel
+>
+  <div class="bento-carousel__viewport">
+    <div class="bento-carousel__track">
+      {slides.map((slide, i) => (
+        <div
+          class:list={["bento-carousel__slide", i === 0 && "is-active"]}
+          data-slide-index={i}
+          data-href={slide.href}
+          data-title={slide.title}
+          data-sub={slide.sub ?? ""}
+          hidden={i !== 0 ? true : undefined}
+        >
+          <ScfPicture
+            src={slide.src}
+            alt={slide.alt}
+            loading={i === 0 && eager ? "eager" : "lazy"}
+            fetchpriority={i === 0 && eager ? "high" : undefined}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+  {canNav && (
+    <>
+      <button
+        type="button"
+        class="bento-carousel__nav bento-carousel__nav--prev"
+        data-bento-prev
+        aria-label={prevLabel}
+      >
+        <span aria-hidden="true">‹</span>
+      </button>
+      <button
+        type="button"
+        class="bento-carousel__nav bento-carousel__nav--next"
+        data-bento-next
+        aria-label={nextLabel}
+      >
+        <span aria-hidden="true">›</span>
+      </button>
+      <div class="tile-dots bento-tile-dots bento-carousel__dots" aria-hidden="true">
+        {slides.map((_, i) => (
+          <span class={i === 0 ? "is-active" : undefined} data-bento-dot={i} />
+        ))}
+      </div>
+    </>
+  )}
+</div>

@@ -1,0 +1,9 @@
+---
+import StreetPage from "../../../../../../views/StreetPage.astro";
+import { streetStaticPaths } from "../../../../../../lib/static-paths";
+
+export function getStaticPaths() {
+  return streetStaticPaths();
+}
+---
+<StreetPage />

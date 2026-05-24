@@ -1,0 +1,9 @@
+---
+import CountryPage from "../../../views/CountryPage.astro";
+import { countryStaticPaths } from "../../../lib/static-paths";
+
+export function getStaticPaths() {
+  return countryStaticPaths();
+}
+---
+<CountryPage />

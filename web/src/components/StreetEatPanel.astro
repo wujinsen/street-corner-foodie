@@ -1,0 +1,106 @@
+---
+import StreetEatCard from "./StreetEatCard.astro";
+import { UI, t, type Lang } from "../lib/i18n";
+import type { StreetExplorerEatCard } from "../lib/street-explorer-payload";
+
+interface Props {
+  lang: Lang;
+  eatHere: StreetExplorerEatCard[];
+  postersMoreHref: string;
+  eatTrackFitsSsr: boolean;
+  eatTrackScrollSsr: boolean;
+  /** Gallery embed: panel below the street stage (not overlaid on the panorama). */
+  below?: boolean;
+}
+
+const {
+  lang,
+  eatHere,
+  postersMoreHref,
+  eatTrackFitsSsr,
+  eatTrackScrollSsr,
+  below = false,
+} = Astro.props as Props;
+
+if (eatHere.length === 0) {
+  return null;
+}
+---
+<section
+  class:list={["alt-street-eat", below && "alt-street-eat--below"]}
+  data-street-eat
+>
+  <div class="street-eat-panel">
+    <header class="street-eat-panel__head">
+      <span class="street-eat-panel__head-spacer" aria-hidden="true"></span>
+      <div class="street-eat-panel__head-mid">
+        <h2 class="street-eat-panel__title">
+          <span class="h-track">{t(UI.street.eat_here_head_en, lang)}</span>
+          <span class="street-eat-panel__dot" aria-hidden="true">·</span>
+          <span>{t(UI.street.eat_here_head_zh, lang)}</span>
+        </h2>
+        <a class="street-eat-panel__more" href={postersMoreHref}>
+          {t(UI.street.view_all, lang)} &rarr;
+        </a>
+      </div>
+      <span class="street-eat-panel__head-spacer" aria-hidden="true"></span>
+    </header>
+    <div class="street-eat-carousel" data-street-eat-carousel>
+      <button
+        type="button"
+        class="street-eat-carousel__nav street-eat-carousel__nav--prev"
+        data-street-eat-prev
+        aria-label={lang === "ja" ? "前へ" : lang === "en" ? "Previous" : "向左滚动"}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <div
+        class:list={[
+          "street-eat-carousel__track",
+          eatTrackFitsSsr && "street-eat-carousel__track--fit",
+          eatTrackScrollSsr && "street-eat-carousel__track--scroll",
+        ]}
+        data-street-eat-track
+        tabindex="0"
+        role="region"
+        aria-label={t(UI.street.eat_here, lang)}
+      >
+        {eatHere.map((card) => (
+          <StreetEatCard href={card.href} nameZh={card.name} thumbUrl={card.thumbUrl} />
+        ))}
+      </div>
+      <button
+        type="button"
+        class="street-eat-carousel__nav street-eat-carousel__nav--next"
+        data-street-eat-next
+        aria-label={lang === "ja" ? "次へ" : lang === "en" ? "Next" : "向右滚动"}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+    <script is:inline>
+      (function () {
+        function layout(shell) {
+          var track = shell.querySelector("[data-street-eat-track]");
+          if (!track) return;
+          var max = Math.max(0, track.scrollWidth - track.clientWidth);
+          var fit = max <= 2;
+          track.classList.toggle("street-eat-carousel__track--fit", fit);
+          track.classList.toggle("street-eat-carousel__track--scroll", !fit);
+          if (fit) track.scrollLeft = 0;
+        }
+        function layoutAll() {
+          var script = document.currentScript;
+          var shell = script && script.previousElementSibling;
+          if (shell && shell.matches("[data-street-eat-carousel]")) layout(shell);
+        }
+        layoutAll();
+        window.addEventListener("load", layoutAll, { once: true });
+      })();
+    </script>
+  </div>
+</section>

@@ -1,0 +1,256 @@
+﻿---
+import BrandMark from "./BrandMark.astro";
+import ThemeToggle from "./ThemeToggle.astro";
+import { UI, LANG_LABELS, t, LANGS, type Lang } from "../lib/i18n";
+import { COUNTRIES, COUNTRY_ORDER, REGIONS } from "../lib/countries";
+import { COUNTRY_SPOTLIGHT } from "../lib/country-posters";
+import { localePath, regionGalleryHref, resolveLang, switchLocalePath } from "../lib/locale-path";
+import type { CountryId } from "../lib/types";
+
+interface Crumb { label: string; href?: string; }
+
+interface Props {
+  lang: Lang;
+  country: CountryId;
+  crumbs?: Crumb[];
+  /** v0.6: render the glass-styled topbar. v0.5 fallback if false. */
+  altc?: boolean;
+  navTab?: "posters" | "zines" | "streets";
+  /** Highlight world atlas link (/world-atlas). */
+  worldAtlasActive?: boolean;
+  /** Show world atlas link in top nav (default true on alt-c). */
+  showWorldAtlasLink?: boolean;
+  /** `country-overview` = /{country}/?region= · `region` = detail pages back to gallery */
+  tabScope?: "country-overview" | "region";
+  /** Region gallery anchors; defaults to first region with content. */
+  tabRegionId?: string;
+}
+
+const {
+  lang,
+  country,
+  crumbs = [],
+  altc = false,
+  navTab,
+  worldAtlasActive = false,
+  showWorldAtlasLink = altc,
+  tabScope = "region",
+  tabRegionId,
+} = Astro.props as Props;
+const pageLang = resolveLang(Astro.currentLocale ?? lang);
+
+const worldAtlasHref = localePath(pageLang, "/world-atlas");
+const homeHref = localePath(pageLang, "/");
+const logoAriaLabel = `${t(UI.brand, pageLang)} — ${t(UI.nav.home_hint, pageLang)}`;
+const logoTitle = t(UI.nav.home_hint, pageLang);
+
+/** v0.6.7: country page uses in-page anchors; region pages use primary region + hash. */
+function tabHref(kind: "posters" | "zines" | "streets"): string {
+  if (tabScope === "country-overview") {
+    const rid =
+      tabRegionId ??
+      COUNTRY_SPOTLIGHT[country] ??
+      (REGIONS[country] ?? [])[0]?.id;
+    const params = new URLSearchParams();
+    if (rid) params.set("region", rid);
+    const qs = params.toString();
+    const base = localePath(pageLang, `/${country}/`) + (qs ? `?${qs}` : "");
+    const hash = kind === "posters" ? "posters" : kind;
+    return `${base}#${hash}`;
+  }
+  const rid =
+    tabRegionId ??
+    COUNTRY_SPOTLIGHT[country] ??
+    (REGIONS[country] ?? [])[0]?.id;
+  if (!rid) return localePath(pageLang, `/${country}/`);
+  const hash = kind === "posters" ? "posters" : kind;
+  return regionGalleryHref(pageLang, country, rid, { hash });
+}
+---
+<header class={altc ? "topbar topbar-glass" : "topbar"}>
+  <div class="container-wide topbar-inner">
+    <a
+      class:list={["logo", altc && "logo--home"]}
+      href={homeHref}
+      aria-label={logoAriaLabel}
+      title={logoTitle}
+    >
+      <span class="logo-mark"><BrandMark /></span>
+      {altc ? (
+        <span class="logo-text logo-text--altc">
+          <span class="logo-title">{UI.brand.en}</span>
+          <span class="logo-sub">
+            {t(UI.brand, pageLang)}
+            <span class="logo-home-hint" aria-hidden="true">
+              {" · "}{t(UI.nav.home, pageLang)}
+            </span>
+          </span>
+        </span>
+      ) : (
+        <span class="logo-text">
+          <span>{t(UI.brand, pageLang)}</span>
+          {pageLang !== "ja" && <span class="ja">{UI.brand.ja}</span>}
+          {pageLang === "ja" && <span class="ja">{UI.brand.en}</span>}
+        </span>
+      )}
+    </a>
+
+    {altc && (
+      <nav class="topbar-center" aria-label="primary">
+        <a href={tabHref("posters")} class={`tab ${navTab === "posters" ? "active" : ""}`}>
+          {t(UI.nav.poster, pageLang)}
+        </a>
+        <a href={tabHref("zines")} class={`tab ${navTab === "zines" ? "active" : ""}`}>
+          {t(UI.nav.zine, pageLang)}
+        </a>
+        <a href={tabHref("streets")} class={`tab ${navTab === "streets" ? "active" : ""}`}>
+          {t(UI.nav.street, pageLang)}
+        </a>
+        {showWorldAtlasLink && (
+          <a href={worldAtlasHref} class={`tab ${worldAtlasActive ? "active" : ""}`} data-world-atlas-link>
+            {t(UI.nav.world_atlas, pageLang)}
+          </a>
+        )}
+      </nav>
+    )}
+
+    {!altc && crumbs.length > 0 && (
+      <nav class="crumbs" aria-label="breadcrumbs">
+        {crumbs.map((c, i) => (
+          <>
+            {i > 0 && <span class="sep">/</span>}
+            {c.href ? <a href={c.href}>{c.label}</a> : <span>{c.label}</span>}
+          </>
+        ))}
+      </nav>
+    )}
+
+    <div class="topbar-actions">
+      {altc ? (
+        <>
+          <div class="switch-glass" role="group" aria-label="country">
+            {COUNTRY_ORDER.map((cid) => (
+              <a
+                href={localePath(pageLang, `/${cid}/`)}
+                class={cid === country ? "active" : ""}
+                data-country-link={cid}
+                title={t(COUNTRIES[cid].name, pageLang)}
+              >{COUNTRIES[cid].flag}</a>
+            ))}
+          </div>
+          <div class="switch-glass" role="group" aria-label="language">
+            {LANGS.map((l) => (
+              <a
+                href={switchLocalePath(l, Astro.url)}
+                class={l === pageLang ? "active" : ""}
+              >{LANG_LABELS[l]}</a>
+            ))}
+          </div>
+          <button
+            type="button"
+            class="icon-btn-glass with-hint"
+            id="search-btn"
+            title="Search (Ctrl+K)"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>
+            </svg>
+            <span class="kbd-hint">&#8984;K</span>
+          </button>
+          <button type="button" class="icon-btn-glass" id="fav-btn" title="Favorites">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+            <span class="fav-count-glass" id="fav-count">0</span>
+          </button>
+          <span class="topbar-theme-desktop"><ThemeToggle /></span>
+        </>
+      ) : (
+        <>
+          <button type="button" class="icon-btn" id="search-btn" title="Search (Ctrl+K)">&#8981;</button>
+          <button type="button" class="icon-btn" id="fav-btn" title="Favorites">
+            &#9825;<span class="fav-count" id="fav-count">0</span>
+          </button>
+          <div class="switch" role="group" aria-label="country">
+            {COUNTRY_ORDER.map((cid) => (
+              <a
+                href={localePath(pageLang, `/${cid}/`)}
+                class={cid === country ? "active" : ""}
+                data-country-link={cid}
+              >{COUNTRIES[cid].flag}<span style="margin-left:6px">{cid.toUpperCase()}</span></a>
+            ))}
+          </div>
+          <div class="switch" role="group" aria-label="language">
+            {LANGS.map((l) => (
+              <a
+                href={switchLocalePath(l, Astro.url)}
+                class={l === pageLang ? "active" : ""}
+              >{LANG_LABELS[l]}</a>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  </div>
+</header>
+
+{altc && (
+  <script is:inline>
+    (function () {
+      function isStandaloneTab(el) {
+        return el.hasAttribute("data-world-atlas-link");
+      }
+
+      function setActiveTab(tab) {
+        document.querySelectorAll(".topbar-glass .topbar-center .tab").forEach(function (el) {
+          if (isStandaloneTab(el)) {
+            el.classList.remove("active");
+            return;
+          }
+          var href = el.getAttribute("href") || "";
+          var active =
+            (tab === "posters" && href.indexOf("#posters") !== -1) ||
+            (tab === "zines" && href.indexOf("#zines") !== -1) ||
+            (tab === "streets" && href.indexOf("#streets") !== -1);
+          el.classList.toggle("active", active);
+        });
+      }
+
+      function tabFromHref(href) {
+        if (href.indexOf("#zines") !== -1) return "zines";
+        if (href.indexOf("#streets") !== -1) return "streets";
+        if (href.indexOf("#posters") !== -1) return "posters";
+        return null;
+      }
+
+      function syncTabFromHash() {
+        var h = (location.hash || "").replace("#", "");
+        if (h === "zines" || h === "streets" || h === "posters") {
+          setActiveTab(h);
+          return;
+        }
+        var forced = document.body.getAttribute("data-nav-tab");
+        if (forced === "posters" || forced === "zines" || forced === "streets") {
+          setActiveTab(forced);
+          return;
+        }
+        if (
+          !document.querySelector(".topbar-glass .tab[data-world-atlas-link].active")
+        ) {
+          setActiveTab("posters");
+        }
+      }
+
+      document.querySelectorAll(".topbar-glass .topbar-center .tab").forEach(function (el) {
+        el.addEventListener("click", function () {
+          if (isStandaloneTab(el)) return;
+          var tab = tabFromHref(el.getAttribute("href") || "");
+          if (tab) setActiveTab(tab);
+        });
+      });
+
+      syncTabFromHash();
+      window.addEventListener("hashchange", syncTabFromHash);
+    })();
+  </script>
+)}

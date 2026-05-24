@@ -1,0 +1,69 @@
+---
+/**
+ * theme-cn / gallery.png · pill pagination (1 · 2 · 3 · 4 · →).
+ */
+import { galleryPageHref, pageFromSearch } from "../lib/gallery-page";
+
+interface Props {
+  total: number;
+  pageSize: number;
+  pageParam?: string;
+  scrollAnchor?: string;
+  pathname: string;
+  search: string;
+}
+
+const {
+  total,
+  pageSize,
+  pageParam = "page",
+  scrollAnchor = "posters",
+  pathname,
+  search,
+} = Astro.props as Props;
+
+const pageCount = Math.max(1, Math.ceil(total / pageSize));
+const currentPage = pageFromSearch(search, pageParam, pageCount);
+const showNav = pageCount > 1;
+const hash = scrollAnchor;
+---
+{showNav && (
+  <nav
+    class="gallery-pagination tile xs"
+    aria-label="gallery pages"
+    data-gallery-paginate
+    data-page-count={pageCount}
+    data-page-size={pageSize}
+    data-page-param={pageParam}
+    data-scroll-anchor={scrollAnchor}
+  >
+    {Array.from({ length: pageCount }, (_, i) => (
+      <>
+        {i > 0 && <span class="gallery-pagination-sep" aria-hidden="true">·</span>}
+        <a
+          href={galleryPageHref(pathname, search, pageParam, i, hash)}
+          class:list={[i === currentPage && "active"]}
+          data-gallery-page={i}
+          aria-current={i === currentPage ? "page" : undefined}
+        >
+          {i + 1}
+        </a>
+      </>
+    ))}
+    <span class="gallery-pagination-sep" aria-hidden="true">·</span>
+    <a
+      href={galleryPageHref(
+        pathname,
+        search,
+        pageParam,
+        Math.min(currentPage + 1, pageCount - 1),
+        hash,
+      )}
+      class:list={["next", currentPage >= pageCount - 1 && "is-gallery-page-hidden"]}
+      data-gallery-next
+      aria-label="Next page"
+    >
+      →
+    </a>
+  </nav>
+)}

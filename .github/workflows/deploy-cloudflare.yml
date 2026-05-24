@@ -1,0 +1,143 @@
+# Deploy web/dist → Cloudflare Pages
+# Secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID
+# Variables: SITE_URL (production canonical base, e.g. https://streetcornerfoodie.com)
+
+name: deploy-cloudflare
+
+on:
+  push:
+    branches: [main, master]
+    tags: ["v*"]
+    paths:
+      - "web/**"
+      - "docs/**"
+      - "asserts/**"
+      - ".github/workflows/deploy-cloudflare.yml"
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "web/**"
+      - "docs/**"
+      - "asserts/**"
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Deploy target"
+        required: true
+        default: "preview"
+        type: choice
+        options:
+          - preview
+          - production
+
+concurrency:
+  group: deploy-cf-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: web
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      site_url: ${{ steps.site.outputs.url }}
+      deploy_branch: ${{ steps.site.outputs.branch }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Resolve SITE_URL and deploy branch
+        id: site
+        env:
+          VAR_SITE_URL: ${{ vars.SITE_URL }}
+          EVENT: ${{ github.event_name }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+          PR_NUM: ${{ github.event.pull_request.number }}
+          INPUT_ENV: ${{ github.event.inputs.environment }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT" = "workflow_dispatch" ] && [ "$INPUT_ENV" = "production" ]; then
+            URL="${VAR_SITE_URL:-https://streetcornerfoodie.com}"
+            BRANCH="main"
+          elif [ "$REF_TYPE" = "tag" ]; then
+            URL="${VAR_SITE_URL:-https://streetcornerfoodie.com}"
+            BRANCH="main"
+          elif [ "$EVENT" = "pull_request" ]; then
+            URL="https://pr-${PR_NUM}.street-corner-foodie.pages.dev"
+            BRANCH="pr-${PR_NUM}"
+          else
+            # push to main → production
+            URL="${VAR_SITE_URL:-https://streetcornerfoodie.com}"
+            BRANCH="main"
+          fi
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "SITE_URL=$URL"
+          echo "Deploy branch: $BRANCH"
+
+      - name: Install
+        run: npm ci
+
+      - name: Link asserts into public
+        run: ln -sf ../../asserts public/asserts
+
+      - name: Sync web_posters
+        run: npm run sync:web-posters
+
+      - name: Optimize images (quick)
+        run: npm run images:quick
+
+      - name: Production build
+        env:
+          SITE_URL: ${{ steps.site.outputs.url }}
+        run: npm run build
+
+      - name: Upload dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: scf-web-dist
+          path: web/dist
+          retention-days: 7
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+      deployments: write
+    environment:
+      name: ${{ github.event_name == 'pull_request' && 'preview' || (github.ref_type == 'tag' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && 'production' || 'preview' }}
+      url: ${{ steps.deploy.outputs.deployment-url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download dist
+        uses: actions/download-artifact@v4
+        with:
+          name: scf-web-dist
+          path: web/dist
+
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=street-corner-foodie --branch=${{ needs.build.outputs.deploy_branch }}
+          workingDirectory: web
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deployment summary
+        run: |
+          echo "### Cloudflare Pages" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **SITE_URL (build):** ${{ needs.build.outputs.site_url }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Branch:** ${{ needs.build.outputs.deploy_branch }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **URL:** ${{ steps.deploy.outputs.deployment-url }}" >> "$GITHUB_STEP_SUMMARY"

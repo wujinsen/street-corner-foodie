@@ -1,0 +1,137 @@
+---
+/**
+ * v0.6 · alt-c · glass poster card for region gallery grid.
+ */
+import { UI, t, type Lang } from "../lib/i18n";
+import { posterImageUrl } from "../lib/posters";
+import ScfPicture from "./ScfPicture.astro";
+import type { Poster } from "../lib/types";
+
+interface Props {
+  poster: Poster;
+  lang: Lang;
+  noChar?: boolean;
+  href?: string;
+  /** First editor-pick tile in gallery grid (design/alt-c ribbon). */
+  featured?: boolean;
+  /** Progressive reveal or legacy page slice (gallery-reveal.ts / gallery-pagination.ts) */
+  galleryItemIndex?: number;
+  galleryRevealMax?: number;
+  galleryPageIndex?: number;
+  galleryActivePage?: number;
+  /** Pipe-separated tags for client ?flavor= filter (static SSG). */
+  filterTags?: string;
+  /** Country overview · client ?region= filter */
+  galleryRegionId?: string;
+  regionFeatured?: boolean;
+  /** SSR default for country overview ?region= */
+  galleryRegionHidden?: boolean;
+}
+
+const {
+  poster,
+  lang,
+  noChar = false,
+  href,
+  featured = false,
+  galleryItemIndex,
+  galleryRevealMax,
+  galleryPageIndex,
+  galleryActivePage = 0,
+  filterTags = "",
+  galleryRegionId,
+  regionFeatured = false,
+  galleryRegionHidden = false,
+} = Astro.props as Props;
+const useReveal = galleryRevealMax !== undefined && galleryItemIndex !== undefined;
+const pagHidden = useReveal
+  ? galleryItemIndex >= galleryRevealMax
+  : galleryPageIndex !== undefined && galleryPageIndex !== galleryActivePage;
+const url = posterImageUrl(poster, noChar);
+const titleZh = t(poster.name, lang);
+const titleEn = poster.romaji ?? poster.name.en;
+const tags = (poster.tags as Record<Lang, string[]>)[lang] ?? poster.tags.zh;
+/** 中文界面不显示拼音/英文副标题（见 design/alt-c/gallery.png 仅主标题） */
+const showEnSubtitle = lang === "en";
+
+function flavorAccent(tag: string): string {
+  if (/甜|sweet|椰|coco|甘/i.test(tag)) return "#E8A030";
+  if (/酸|辣|sour|spicy|辛/i.test(tag)) return "#6BBF6B";
+  if (/海|sea|鲜/i.test(tag)) return "#4BA3C7";
+  return "var(--accent-c)";
+}
+
+const flavorLine = flavorAccent(tags[0] ?? "");
+const countryCode = poster.countryId.toUpperCase();
+const Tag = href ? "a" : "article";
+---
+<Tag
+  class:list={[
+    "tile",
+    "glass-poster",
+    href && "is-link",
+    featured && "is-featured",
+    pagHidden && "is-gallery-page-hidden",
+    galleryRegionHidden && "is-gallery-region-hidden",
+  ]}
+  href={href}
+  aria-label={titleZh}
+  style={`--flavor-line: ${flavorLine}`}
+  {...(galleryItemIndex !== undefined ? { "data-gallery-item": galleryItemIndex } : {})}
+  {...(galleryPageIndex !== undefined ? { "data-gallery-page": galleryPageIndex } : {})}
+  {...(filterTags ? { "data-filter-tags": filterTags } : {})}
+  {...(galleryRegionId ? { "data-poster-region": galleryRegionId } : {})}
+  {...(regionFeatured ? { "data-region-featured": "true" } : {})}
+>
+  {href && (
+    <>
+      <span class="tile-glint" aria-hidden="true"></span>
+      <span class="tile-edge" aria-hidden="true"></span>
+    </>
+  )}
+  <div class="glass-poster-media">
+    {url && (
+      <div class="glass-poster-cover" aria-hidden="true">
+        <ScfPicture
+          src={url}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          sizes="(max-width: 560px) 50vw, (max-width: 1200px) 25vw, 360px"
+        />
+      </div>
+    )}
+    {!url && poster.placeholder && (
+      <div
+        class="glass-poster-ph"
+        style={`background: radial-gradient(circle at 30% 25%, ${poster.glow ?? "rgba(255,180,90,.35)"} 0%, transparent 50%), linear-gradient(160deg, ${poster.bg1 ?? "#2A1505"} 0%, ${poster.bg2 ?? "#0a0a0a"} 100%);`}
+      >
+        <span class="ph-emoji">{poster.emoji}</span>
+      </div>
+    )}
+    <span class="glass-poster-flag h-track" aria-hidden="true">{countryCode}</span>
+    <span class="glass-poster-pin h-track">● {poster.pin}</span>
+    <button
+      type="button"
+      class="glass-poster-fav"
+      data-fav-slug={poster.slug}
+      data-fav-country={poster.countryId}
+      data-fav-region={poster.regionId}
+      data-fav-name-zh={poster.name.zh}
+      data-fav-name-en={poster.name.en}
+      data-fav-name-ja={poster.name.ja}
+      data-fav-pin={poster.pin}
+      data-fav-thumb={url ?? ""}
+      aria-label="Favorite"
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+    </button>
+  </div>
+  <span class="glass-poster-cap">
+    <strong class="glass-poster-zh h-serif-dish">{titleZh}</strong>
+    {showEnSubtitle && <span class="glass-poster-en">{titleEn}</span>}
+  </span>
+  <span class="glass-poster-flavor" aria-hidden="true"></span>
+</Tag>

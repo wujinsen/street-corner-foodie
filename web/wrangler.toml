@@ -1,0 +1,10 @@
+# Cloudflare Pages · Street Corner Foodie web
+# Deploy: npx wrangler pages deploy dist --project-name=street-corner-foodie
+# Docs: web/docs/DEPLOY.md
+
+name = "street-corner-foodie"
+compatibility_date = "2024-11-01"
+pages_build_output_dir = "./dist"
+
+[vars]
+# Build-time SITE_URL is set in CI / Pages dashboard (not read from here).

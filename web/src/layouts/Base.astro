@@ -1,0 +1,172 @@
+---
+import "../styles/tokens.css";
+import "../styles/base.css";
+import "../styles/components.css";
+import "../styles/alt-c-refine.css";
+
+import Topbar from "../components/Topbar.astro";
+import SiteChrome from "../components/SiteChrome.astro";
+
+import { UI, HTML_LANG, t, type Lang } from "../lib/i18n";
+import { countryFavicon } from "../lib/favicon";
+import { googleFontsHref } from "../lib/google-fonts";
+import { pageCanonical, resolveOgImage } from "../lib/site-urls";
+import type { CountryId } from "../lib/types";
+
+interface Crumb { label: string; href?: string; }
+
+interface Props {
+  lang: Lang;
+  country: CountryId;
+  title?: string;
+  crumbs?: Crumb[];
+  description?: string;
+  prefetchImages?: string[];
+  /** v0.6: opt this page into the alt-c modern layout (glass / bento / dark default). */
+  altc?: boolean;
+  /** Which top-nav tab is current ("posters" | "zines" | "streets" | undefined). */
+  navTab?: "posters" | "zines" | "streets";
+  worldAtlasActive?: boolean;
+  showWorldAtlasLink?: boolean;
+  /** Topbar Posters/Zines/Streets tabs target country anchors vs primary region. */
+  tabScope?: "country-overview" | "region";
+  tabRegionId?: string;
+  /** Absolute URL for Open Graph / Twitter card image. */
+  ogImage?: string;
+  /** Home landing: emphasize center nav + bento theme. */
+  landingPage?: boolean;
+}
+
+const {
+  lang,
+  country,
+  title,
+  crumbs,
+  description,
+  prefetchImages,
+  altc = false,
+  navTab,
+  worldAtlasActive = false,
+  showWorldAtlasLink,
+  tabScope = "region",
+  tabRegionId,
+  ogImage: ogImageProp,
+  landingPage = false,
+} = Astro.props as Props;
+
+const pageTitle = title
+  ? `${title} · ${t(UI.brand, lang)}`
+  : `${t(UI.brand, lang)} · ${UI.brand.en}`;
+const desc = description ?? t(UI.tagline, lang);
+const bodyClass = [altc && "has-altc", landingPage && "landing-page"].filter(Boolean).join(" ");
+const canonical = pageCanonical(Astro.url, Astro.site);
+const ogImage = ogImageProp ?? resolveOgImage(Astro.site, "/favicon.svg");
+const ogLocale = lang === "zh" ? "zh_CN" : lang === "ja" ? "ja_JP" : "en_US";
+const faviconHref = countryFavicon(country);
+const fontsHref = googleFontsHref(lang, country);
+---
+<!doctype html>
+<html lang={HTML_LANG[lang]} data-country={country}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t(UI.brand, lang)} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={desc} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+    <link rel="icon" href={faviconHref} type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content={country === "cn" ? "#C0392B" : country === "jp" ? "#E60012" : "#1B3A6B"} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" href={fontsHref} as="style" />
+    <script is:inline define:vars={{ fontsHref }}>
+      (function () {
+        var l = document.createElement("link");
+        l.rel = "stylesheet";
+        l.href = fontsHref;
+        document.head.appendChild(l);
+      })();
+    </script>
+    <noscript>
+      <link rel="stylesheet" href={fontsHref} />
+    </noscript>
+    {prefetchImages?.map((href) => (
+      <link rel="prefetch" href={href} as="image" />
+    ))}
+    <slot name="head" />
+
+    {/* v0.6 · FOUC prevention: resolve theme before first paint */}
+    <script is:inline>
+      (function () {
+        try {
+          var k = "scf:theme";
+          var pref = localStorage.getItem(k);
+          if (pref !== "dark" && pref !== "light" && pref !== "auto") pref = "auto";
+          var eff = pref;
+          if (pref === "auto") {
+            eff = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+          }
+          var root = document.documentElement;
+          root.setAttribute("data-theme", eff);
+          root.setAttribute("data-theme-pref", pref);
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "dark");
+          document.documentElement.setAttribute("data-theme-pref", "auto");
+        }
+      })();
+    </script>
+
+    {/* Legacy ?lang= -> path-prefixed locale */}
+    <script is:inline>
+      (function () {
+        var q = new URLSearchParams(location.search);
+        var l = q.get("lang");
+        if (!l || (l !== "en" && l !== "ja" && l !== "zh")) return;
+        q.delete("lang");
+        var path = location.pathname.replace(/^\/(en|ja)(?=\/|$)/, "") || "/";
+        if (!path.startsWith("/")) path = "/" + path;
+        var target = l === "zh" ? path : "/" + l + (path === "/" ? "/" : path);
+        if (target.endsWith("//")) target = target.slice(0, -1);
+        var qs = q.toString();
+        location.replace(target + (qs ? "?" + qs : "") + (location.hash || ""));
+      })();
+    </script>
+    <script>
+      import "../scripts/alt-chrome-boot";
+    </script>
+  </head>
+  <body class={bodyClass} {...(navTab ? { "data-nav-tab": navTab } : {})}>
+    <Topbar
+      lang={lang}
+      country={country}
+      crumbs={crumbs}
+      altc={altc}
+      navTab={navTab}
+      worldAtlasActive={worldAtlasActive}
+      showWorldAtlasLink={showWorldAtlasLink}
+      tabScope={tabScope}
+      tabRegionId={tabRegionId}
+    />
+    <main>
+      <slot />
+    </main>
+    <SiteChrome lang={lang} />
+    <footer class={altc ? "footer footer-alt" : "footer"}>
+      <div class="container inner">
+        <span>{t(UI.footer.copy, lang)}</span>
+        <span>v0.6</span>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+---
+/**
+ * Legacy dedicated street route → canonical country gallery #streets tab.
+ * `/cn/hainan/street/sanyawan/` → `/cn/?region=hainan&scene=sanyawan#streets`
+ */
+import { findRegion } from "../lib/countries";
+import { localePath, regionGalleryHref, resolveLang, streetGalleryHref } from "../lib/locale-path";
+import { findStreetScene, getStreetConfig } from "../lib/streets";
+import type { CountryId } from "../lib/types";
+
+const lang = resolveLang(Astro.currentLocale);
+const country = Astro.params.country as CountryId;
+const regionId = Astro.params.region!;
+const sceneId = Astro.params.scene!;
+const region = findRegion(country, regionId);
+const config = getStreetConfig(country, regionId);
+const scene = findStreetScene(country, regionId, sceneId);
+
+if (!region || !config || !scene) {
+  return Astro.redirect(
+    region ? regionGalleryHref(lang, country, regionId, { hash: "streets" }) : localePath(lang, "/"),
+  );
+}
+
+return Astro.redirect(streetGalleryHref(lang, country, regionId, sceneId, Astro.url), 301);
+---

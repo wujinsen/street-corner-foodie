@@ -1,0 +1,71 @@
+---
+/**
+ * Landing left column · world street atlas (same payload as /world-atlas/).
+ * Visual shell matches design/alt-c/landing.png — borderless map bg + chrome.
+ */
+import WorldAtlasBoot from "./WorldAtlasBoot.astro";
+import WorldAtlasCrumbs from "./WorldAtlasCrumbs.astro";
+import { UI, t, type Lang } from "../lib/i18n";
+import { localePath } from "../lib/locale-path";
+import { buildWorldAtlasPayload, type WorldAtlasPayload } from "../lib/world-atlas-payload";
+
+interface Props {
+  lang: Lang;
+  payload?: WorldAtlasPayload | null;
+}
+
+const { lang, payload: payloadProp } = Astro.props as Props;
+const payload = payloadProp ?? buildWorldAtlasPayload(lang);
+
+if (!payload) {
+  return null;
+}
+
+const mapHint =
+  lang === "en"
+    ? "Scroll · drag · pin → street"
+    : lang === "ja"
+      ? "スクロール · ドラッグ · pin→街景"
+      : "滚轮缩放 · 拖动平移 · 光点进街景";
+const worldAtlasHref = localePath(lang, "/world-atlas");
+---
+
+<div
+  class="landing-world-atlas map-hero map-hero--map-only"
+  aria-label={t(UI.landing.map_label, lang)}
+  data-landing-world-atlas
+>
+  <section
+    class="world-atlas-explorer world-atlas-explorer--landing"
+    data-world-atlas-explorer
+    data-atlas-view="world"
+    aria-label={t(UI.nav.world_atlas, lang)}
+  >
+    <script type="application/json" data-world-atlas-config set:html={JSON.stringify(payload)} />
+
+    <WorldAtlasCrumbs
+      lang={lang}
+      worldLabel={payload.i18n.crumb_world}
+      hintWorld={payload.i18n.hint_world}
+      landing
+    />
+
+    <div
+      class="world-atlas-explorer__stage world-atlas-explorer__stage--landing"
+      data-world-atlas-host
+      role="img"
+      aria-label={payload.title}
+    ></div>
+
+    <div class="map-stage-chrome map-stage-chrome--landing" aria-hidden="true">
+      <span class="map-stage-hint" data-map-hint>{mapHint}</span>
+      <a class="map-stage-expand" href={worldAtlasHref} data-landing-atlas-expand>
+        {lang === "zh" ? "全屏探索" : lang === "ja" ? "全画面" : "Full map"} →
+      </a>
+    </div>
+
+    <span class="map-hero-label h-track map-hero-label--landing">{t(UI.landing.map_label, lang)}</span>
+  </section>
+
+  <WorldAtlasBoot />
+</div>

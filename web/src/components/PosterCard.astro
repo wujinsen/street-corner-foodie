@@ -1,0 +1,176 @@
+---
+
+import { t, type Lang } from "../lib/i18n";
+
+import { posterImageUrl } from "../lib/posters";
+
+import type { Poster } from "../lib/types";
+
+
+
+interface Props {
+
+  poster: Poster;
+
+  lang: Lang;
+
+  noChar?: boolean;
+
+  href?: string;
+
+}
+
+
+
+const { poster, lang, noChar = false, href } = Astro.props as Props;
+
+const url = posterImageUrl(poster, noChar);
+
+const titleZh = t(poster.name, lang);
+
+const titleEn = poster.name.en;
+
+const tags = (poster.tags as Record<Lang, string[]>)[lang] ?? poster.tags.zh;
+
+const Tag = href ? "a" : "div";
+
+---
+
+<Tag class="poster-card" href={href} aria-label={titleZh}>
+
+  <div class="img-wrap">
+
+    {url && <img loading="lazy" src={url} alt={titleZh} />}
+
+    {!url && poster.placeholder && (
+
+      <div
+
+        class="placeholder-poster"
+
+        style={`background: radial-gradient(circle at 30% 25%, ${poster.glow ?? "rgba(255,180,90,.35)"} 0%, transparent 50%), linear-gradient(160deg, ${poster.bg1 ?? "#2A1505"} 0%, ${poster.bg2 ?? "#0a0a0a"} 100%);`}
+
+      >
+
+        <div class="ph-emoji">{poster.emoji}</div>
+
+        <div class="ph-name">{poster.name.ja}</div>
+
+        <div class="ph-romaji">{poster.romaji}</div>
+
+      </div>
+
+    )}
+
+    <button
+
+      type="button"
+
+      class="fav-btn"
+
+      data-fav-slug={poster.slug}
+
+      data-fav-country={poster.countryId}
+
+      data-fav-region={poster.regionId}
+
+      data-fav-name-zh={poster.name.zh}
+
+      data-fav-name-en={poster.name.en}
+
+      data-fav-name-ja={poster.name.ja}
+
+      data-fav-pin={poster.pin}
+
+      data-fav-thumb={url ?? ""}
+
+      aria-label="Favorite"
+
+    >&#9825;</button>
+
+    <div class="pin">
+
+      <span class="flag">📍</span>{poster.pin}
+
+    </div>
+
+    {poster.placeholder && <div class="preview-badge">preview</div>}
+
+  </div>
+
+  <div class="caption">
+
+    <span class="c-zh">{titleZh}</span>
+
+    {lang !== "en" && <span class="c-en">{titleEn}</span>}
+
+    <div class="c-tags">{tags.map((tag) => <span>{tag}</span>)}</div>
+
+  </div>
+
+</Tag>
+
+
+
+<style>
+
+.placeholder-poster {
+
+  position: absolute; inset: 0;
+
+  display: flex; flex-direction: column;
+
+  align-items: center; justify-content: center;
+
+  color: #fff;
+
+  text-align: center;
+
+  padding: 24px;
+
+}
+
+.placeholder-poster .ph-emoji {
+
+  font-size: 72px;
+
+  line-height: 1;
+
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,.5));
+
+}
+
+.placeholder-poster .ph-name {
+
+  margin-top: 18px;
+
+  font-family: "Noto Serif JP", serif;
+
+  font-size: 22px;
+
+  font-weight: 700;
+
+  letter-spacing: .08em;
+
+  text-shadow: 0 2px 12px rgba(0,0,0,.55);
+
+}
+
+.placeholder-poster .ph-romaji {
+
+  margin-top: 6px;
+
+  font-family: "JetBrains Mono", monospace;
+
+  font-size: 10px;
+
+  letter-spacing: .35em;
+
+  text-transform: uppercase;
+
+  color: rgba(255,255,255,.6);
+
+}
+
+</style>
+

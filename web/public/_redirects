@@ -1,0 +1,10 @@
+# Cloudflare Pages · trailing slash + Astro static
+/cn/hainan /cn/hainan/ 301
+/cn/hebei /cn/hebei/ 301
+/cn/zhejiang /cn/zhejiang/ 301
+/jp/tokyo /jp/tokyo/ 301
+/jp/fuji /jp/fuji/ 301
+/us/ny /us/ny/ 301
+/us/tx /us/tx/ 301
+/us/la /us/la/ 301
+/us/nola /us/nola/ 301

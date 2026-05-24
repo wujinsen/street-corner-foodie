@@ -1,0 +1,43 @@
+---
+description: Gourmet recipe2 美食海报全流程 — 人料按菜定、横木牌、居中主菜、防穿模；alwaysApply 同步新旧对话
+alwaysApply: true
+---
+
+# Gourmet recipe2 · 美食海报（始终生效）
+
+在本仓库 **生成、重做或修改** `asserts/Gourmet recipe2/` 海报时**自动**执行。**新对话、旧对话**均加载，用户**不必**说「按规范」「入库」「木牌」「防穿模」。
+
+**无人物版已废除**（2026-05-21）：**只生成** `{slug}_poster.png`；**禁止** `_poster_no_char` → [asset-no-character-removed.md](../../docs/style/asset-no-character-removed.md)
+
+与 [meishi-food-poster-era.mdc](meishi-food-poster-era.mdc)（时代服饰）**同时生效**；冲突时 **版式与入库** 以本规则 + [food-poster-ingredients.md §总览](../../docs/style/food-poster-ingredients.md#新旧对话必守--海报版式总览2026-05-21) 为准。
+
+## 用户怎么说
+
+| 用户说法 | 含义 |
+|----------|------|
+| `按 meishi-food-poster` / `美食海报` / `人料可变` | 读 Skill + 本规则 + era 规则 + §人料皆可变 + 入库 |
+| **`按 boluo 清新风`** / `boluo 清晰风` / `boluo清晰风` / `清新风格` / `跟菠萝炒饭一样` | [food-poster-diorama.md §boluo](../../docs/style/food-poster-diorama.md#boluo-只锁什么--不锁什么2026-05-19--新旧对话必守)；画风主锚 `boluo_chaofan_poster.png`；**人料场景仍按本菜表**，禁止默认 4 人左二右二 |
+| `重做 {菜}` / `全部重做` | 覆盖 `{slug}_poster.png`（用户明确时）；否则 legacy 并存 |
+| `按海报朝代` | [food-poster-dynasty-chibi.md](../../docs/style/food-poster-dynasty-chibi.md) 定代 |
+
+## 必做流程（同回合）
+
+1. 读 [food-poster-ingredients.md §总览](../../docs/style/food-poster-ingredients.md#新旧对话必守--海报版式总览2026-05-21) + 本菜行（人数/料名）
+2. 定时代 + `{DynastyDressEN}` → [dynasty-chibi.md](../../.cursor/skills/gourmet-recipe-mini-zine/dynasty-chibi.md)
+3. **出图前表**：时代表 + `| 厨师人数 |` + `| 料名 | 容器 | 件数 |`（人、料**各按本菜表**）
+4. `GenerateImage`：**仅** `{slug}_poster.png`（有人物）；参考同省已定稿 `_poster.png`（例 `mapo_doufu_poster.png`）；**禁止**生成 `_poster_no_char`
+5. `Copy-Item` → `asserts/Gourmet recipe2/{cc}/{admin}/`（**禁止** `{cc}/` 根目录）
+6. 更新**对口** md（日本 → **仅** `japan.md`；禁止日本菜改 `hainan.md`）
+
+## 版式红线（2026-05-21）
+
+- **主菜居中上不挡** · 底行料 **不压主菜**（见 era 规则 §构图·防穿模）
+- **人料皆可变**：厨师 **3～5**、底行料 **4～6** 均**按本菜表**（可 3 女+4 料、5 女+5 料…）；**禁止**全库统一四人+六同款碗+左二右二对称
+- **横放木牌**、器皿按料、主菜居中不挡；默认 **全员女性** chibi；站位**按菜场景表**，**禁止**机械四角对称模板
+- **禁止**街景竖牌 / mini-zine 版式 / 默认白帽绿围裙（legacy 除外）
+
+## 必读
+
+- [food-poster-diorama.md](../../docs/style/food-poster-diorama.md)
+- [food-poster-speech-bubbles.md](../../docs/style/food-poster-speech-bubbles.md)
+- [.cursor/skills/meishi-food-poster/SKILL.md](../../.cursor/skills/meishi-food-poster/SKILL.md)

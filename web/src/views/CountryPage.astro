@@ -1,0 +1,511 @@
+---
+/**
+ * v0.6.6 · alt-c · Country theme (theme-cn/jp/us).
+ * Canonical gallery: `/{country}/?region={id}#zines` (legacy `/cn/hainan/` → 301).
+ */
+import Base from "../layouts/Base.astro";
+import GalleryTabHashSync from "../components/GalleryTabHashSync.astro";
+import GlassPosterCard from "../components/GlassPosterCard.astro";
+import GalleryFilterPillRow from "../components/GalleryFilterPillRow.astro";
+import GalleryBottomDock from "../components/GalleryBottomDock.astro";
+import GalleryPagination from "../components/GalleryPagination.astro";
+import StreetExplorer from "../components/StreetExplorer.astro";
+import GlassZineCard from "../components/GlassZineCard.astro";
+import ScfPicture from "../components/ScfPicture.astro";
+import { getCountryStreetSpots, getCountryZineCards } from "../lib/country-gallery";
+import { countStreetPhotos, getStreetConfig, getStreetScenes } from "../lib/streets";
+import { GALLERY_ZINE_PAGE_SIZE, pageCountFor, pageFromSearch } from "../lib/gallery-page";
+import { filterTagsAttr } from "../lib/flavor-match";
+import { zineReaderPath } from "../lib/zines";
+import { UI, t } from "../lib/i18n";
+import { GALLERY_UI, gt } from "../lib/gallery-ui";
+import { COUNTRIES, COUNTRY_ORDER, REGIONS, findRegion } from "../lib/countries";
+import {
+  COUNTRY_SPOTLIGHT,
+  pickCountryFeatured,
+  resolveCountryRegionId,
+} from "../lib/country-posters";
+import { findPoster, getRecipePosters, posterImageUrl } from "../lib/posters";
+import { localePath, regionGalleryHref, resolveLang, samePageWithQuery } from "../lib/locale-path";
+import { galleryTabFromHash } from "../scripts/gallery-tabs";
+import { regionHeroImageUrl } from "../lib/region-hero";
+import { scfBannerPrefetchSrc, scfBestSrc } from "../lib/scf-image";
+import { resolveOgImage } from "../lib/site-urls";
+import type { CountryId, Lang, Poster, Region } from "../lib/types";
+
+const lang = resolveLang(Astro.currentLocale);
+const country = Astro.params.country as CountryId;
+
+if (!COUNTRIES[country]) {
+  return Astro.redirect(localePath(lang, "/"));
+}
+
+const c = COUNTRIES[country];
+const regions = REGIONS[country];
+const spotlightId = COUNTRY_SPOTLIGHT[country];
+
+const regionFromQuery = Astro.url.searchParams.get("region");
+const sceneFromQuery = Astro.url.searchParams.get("scene");
+const activeRegionId = resolveCountryRegionId(country, regionFromQuery);
+
+const activeRegion = findRegion(country, activeRegionId);
+if (!activeRegion) {
+  return Astro.redirect(localePath(lang, "/"));
+}
+
+const activeGalleryTab = galleryTabFromHash(Astro.url.hash || "");
+
+const heroUrlPosters = regionHeroImageUrl(country, activeRegion, "posters");
+const heroUrlZines = regionHeroImageUrl(country, activeRegion, "zines");
+const hasCountryHero = !!(heroUrlPosters || heroUrlZines);
+const heroUrl =
+  activeGalleryTab === "zines"
+    ? (heroUrlZines ?? heroUrlPosters)
+    : (heroUrlPosters ?? heroUrlZines);
+
+function regionHeroTitle(r: Region, pageLang: Lang): { track: string; native: string | null } {
+  if (pageLang === "zh") {
+    return { track: t(r.name, pageLang), native: null };
+  }
+  return {
+    track: t(r.name, "en").toUpperCase(),
+    native: t(r.name, pageLang),
+  };
+}
+
+const activeHeroTitle = regionHeroTitle(activeRegion, lang);
+
+const search = Astro.url.search;
+const activeFlavor = Astro.url.searchParams.get("flavor");
+const activeRegionPosters = getRecipePosters(country, activeRegionId);
+const allCountryPosters = regions.flatMap((r) => getRecipePosters(country, r.id));
+const posterPageSize = GALLERY_ZINE_PAGE_SIZE;
+const posterPageCount = pageCountFor(activeRegionPosters.length, posterPageSize);
+const posterPage = pageFromSearch(search, "page", posterPageCount);
+const featured: Poster | undefined = pickCountryFeatured(activeRegionPosters, country);
+
+function isRegionFeaturedPoster(p: Poster): boolean {
+  const f = pickCountryFeatured(getRecipePosters(country, p.regionId), country);
+  return !!f && f.slug === p.slug && f.regionId === p.regionId;
+}
+
+const galleryDockBase = regionGalleryHref(lang, country, activeRegionId).replace(/#.*$/, "");
+
+const zineFilterTags = (regionId: string, slug: string): string => {
+  const p = findPoster(country, regionId, slug);
+  return p ? filterTagsAttr(p.tags, lang) : "";
+};
+
+const posterHref = (p: Poster) =>
+  localePath(lang, `/${country}/${p.regionId}/poster/${p.slug}`);
+
+function chipHref(f: string | null, regionId = activeRegionId): string {
+  return samePageWithQuery(Astro.url, (p) => {
+    p.set("region", regionId);
+    if (f === null) p.delete("flavor");
+    else p.set("flavor", f);
+    p.delete("page");
+    p.delete("zpage");
+  });
+}
+
+function regionChipHref(id: string): string {
+  return samePageWithQuery(Astro.url, (p) => {
+    p.set("region", id);
+    p.delete("page");
+    p.delete("zpage");
+  });
+}
+
+const prefetchFeatured = featured
+  ? (scfBestSrc(posterImageUrl(featured, false)) ?? undefined)
+  : undefined;
+const prefetchHeroUrls = [heroUrlPosters, heroUrlZines]
+  .map((u) => scfBannerPrefetchSrc(u))
+  .filter((u): u is string => !!u);
+const prefetchHero = prefetchHeroUrls[0];
+const ogImage =
+  resolveOgImage(Astro.site, heroUrl) ??
+  (featured ? resolveOgImage(Astro.site, posterImageUrl(featured, false)) : undefined);
+
+const countryZinesAll = getCountryZineCards(country);
+const countryZines = countryZinesAll.filter(({ region: zr }) => zr.id === activeRegionId);
+const zinePageSize = GALLERY_ZINE_PAGE_SIZE;
+const zinePageCount = pageCountFor(countryZines.length, zinePageSize);
+const zinePage = pageFromSearch(search, "zpage", zinePageCount);
+
+const maxRegionPosterCount = Math.max(
+  0,
+  ...regions.map((r) => getRecipePosters(country, r.id).length),
+);
+const maxRegionZineCount = Math.max(
+  0,
+  ...regions.map(
+    (r) => countryZinesAll.filter(({ region: zr }) => zr.id === r.id).length,
+  ),
+);
+const regionGalleryMeta = Object.fromEntries(
+  regions.map((r) => {
+    const ht = regionHeroTitle(r, lang);
+    return [
+      r.id,
+      {
+        kicker: `${c.flag} ${t(r.name, lang)}`,
+        track: ht.track,
+        native: ht.native,
+        sub: t(r.tagline, lang),
+        stats: r.stats,
+      },
+    ];
+  }),
+);
+
+const countryStreets = getCountryStreetSpots(country);
+const countryStreetPhotoCount = countryStreets.reduce(
+  (n, spot) => n + countStreetPhotos(spot.config, getStreetScenes(country, spot.region.id)),
+  0,
+);
+const streetRegionIds = regions
+  .map((r) => r.id)
+  .filter((id) => getStreetConfig(country, id));
+
+function embeddedSceneId(regionId: string): string | undefined {
+  if (!sceneFromQuery) return undefined;
+  const cfg = getStreetConfig(country, regionId);
+  if (cfg?.scenes.some((s) => s.id === sceneFromQuery)) return sceneFromQuery;
+  return undefined;
+}
+
+const zineHref = (regionId: string, zSlug: string) =>
+  localePath(lang, zineReaderPath(country, regionId, zSlug));
+---
+<Base
+  lang={lang}
+  country={country}
+  altc
+  navTab={activeGalleryTab}
+  tabScope="country-overview"
+  tabRegionId={activeRegionId}
+  title={t(c.name, lang)}
+  prefetchImages={[...prefetchHeroUrls, prefetchFeatured].filter((u): u is string => !!u)}
+  ogImage={ogImage}
+>
+  <div
+    class="alt-country alt-gallery container-wide"
+    data-gallery-tabs
+    data-active-tab={activeGalleryTab}
+    data-gallery-lang={lang}
+    data-gallery-region-overview=""
+    data-default-region={spotlightId}
+  >
+    <nav class="alt-crumb h-track" aria-label="breadcrumbs">
+      <a href={localePath(lang, "/")}>{t(UI.nav.world, lang).toUpperCase()}</a>
+      <span class="sep">›</span>
+      <span>{t(c.name, lang).toUpperCase()}</span>
+      <span class="sep">›</span>
+      <span class:list={["alt-crumb-tab", activeGalleryTab === "posters" && "active"]} data-gallery-crumb="posters" hidden={activeGalleryTab !== "posters"}>{gt(GALLERY_UI.breadcrumb_posters, lang)}</span>
+      <span class:list={["alt-crumb-tab", activeGalleryTab === "zines" && "active"]} data-gallery-crumb="zines" hidden={activeGalleryTab !== "zines"}>{gt(GALLERY_UI.breadcrumb_zines, lang)}</span>
+      <span class:list={["alt-crumb-tab", activeGalleryTab === "streets" && "active"]} data-gallery-crumb="streets" hidden={activeGalleryTab !== "streets"}>{gt(GALLERY_UI.breadcrumb_streets, lang)}</span>
+    </nav>
+
+    <header
+      class:list={["tile", "gallery-hero-strip", "country-hero", hasCountryHero && "country-hero--banner"]}
+      data-gallery-country-hero
+      data-region-id={activeRegionId}
+    >
+      <div class="country-hero-scene" aria-hidden="true" hidden={!hasCountryHero}>
+        {heroUrlPosters && (
+          <div
+            class:list={[
+              "country-hero-scene__layer",
+              activeGalleryTab !== "posters" && "country-hero-scene__layer--off",
+            ]}
+            data-hero-layer="posters"
+            hidden={activeGalleryTab !== "posters"}
+          >
+            <ScfPicture
+              src={heroUrlPosters}
+              alt=""
+              loading="eager"
+              fetchpriority="high"
+              resolution="banner"
+            />
+          </div>
+        )}
+        {heroUrlZines && (
+          <div
+            class:list={[
+              "country-hero-scene__layer",
+              activeGalleryTab !== "zines" && "country-hero-scene__layer--off",
+            ]}
+            data-hero-layer="zines"
+            hidden={activeGalleryTab !== "zines"}
+          >
+            <ScfPicture src={heroUrlZines} alt="" loading="eager" resolution="banner" />
+          </div>
+        )}
+      </div>
+      {country === "jp" && (
+        <span class="country-left-vstrip" aria-hidden="true">居酒屋 · ラーメン · 寿司 · 天ぷら</span>
+      )}
+      <span class="country-vstrip" aria-hidden="true">{c.vstrip}</span>
+      <div class="gallery-hero-main country-hero-overlay">
+        <p class="h-track gallery-country-kicker" data-hero-kicker>{c.flag} {t(activeRegion.name, lang)}</p>
+        <h1 class="gallery-hero-title country-hero-title gallery-hero-title--region">
+          <span class="gallery-hero-track" data-hero-track>{activeHeroTitle.track}</span>
+          {activeHeroTitle.native && (
+            <span class="gallery-hero-native" data-hero-native>{activeHeroTitle.native}</span>
+          )}
+        </h1>
+        <p class="gallery-hero-sub" data-hero-sub>{t(activeRegion.tagline, lang)}</p>
+        <div class="gallery-hero-chips">
+          <span class="gallery-stat-chip">
+            <b data-hero-stat-poster>{activeRegion.stats.poster}</b> {gt(GALLERY_UI.dishes, lang)}
+          </span>
+          <span class="gallery-stat-chip">
+            <b data-hero-stat-street>{activeRegion.stats.street}</b> {gt(GALLERY_UI.streets_count, lang)}
+          </span>
+          <span class="gallery-stat-chip">
+            <b data-hero-stat-zine>{activeRegion.stats.zine}</b> {gt(GALLERY_UI.zines_count, lang)}
+          </span>
+        </div>
+      </div>
+    </header>
+    <div class="gallery-filter-bar tile xs country-filter-bar gallery-tab-posters-only">
+      <div class="gallery-filter-inner">
+      <div class="gallery-filter-rows">
+        <GalleryFilterPillRow label={gt(GALLERY_UI.filter_country, lang)} wrapOver={99}>
+          {COUNTRY_ORDER.map((cid) => (
+            <a
+              href={localePath(lang, `/${cid}`)}
+              class={cid === country ? "active" : ""}
+              title={t(COUNTRIES[cid].name, lang)}
+            >{COUNTRIES[cid].flag}</a>
+          ))}
+        </GalleryFilterPillRow>
+        {regions.length > 0 && (
+          <GalleryFilterPillRow
+            label={gt(GALLERY_UI.filter_province, lang)}
+            wrapOver={6}
+            class="gallery-province-pills"
+          >
+            {regions.map((r) => (
+              <a
+                href={regionChipHref(r.id)}
+                data-region-id={r.id}
+                class:list={[activeRegionId === r.id && "active"]}
+              >{t(r.name, lang)}</a>
+            ))}
+          </GalleryFilterPillRow>
+        )}
+        {regions.map((r) => {
+          const rf = r.flavors[lang] ?? r.flavors.zh;
+          if (rf.length === 0) return null;
+          return (
+            <div
+              class:list={["gallery-flavor-group", r.id !== activeRegionId && "is-region-hidden"]}
+              data-flavor-region={r.id}
+            >
+              <GalleryFilterPillRow
+                label={t(UI.filters.flavor, lang)}
+                wrapOver={6}
+                class="gallery-flavor-pills"
+              >
+                <a href={chipHref(null, r.id)} class={!activeFlavor && r.id === activeRegionId ? "active" : ""}>
+                  {t(UI.filters.all, lang)}
+                </a>
+                {rf.map((f) => (
+                  <a
+                    href={chipHref(f, r.id)}
+                    class={activeFlavor === f && r.id === activeRegionId ? "active" : ""}
+                  >{f}</a>
+                ))}
+              </GalleryFilterPillRow>
+            </div>
+          );
+        })}
+      </div>
+      </div>
+    </div>
+
+    <div class="gallery-tab-panel" data-tab="posters" hidden={activeGalleryTab !== "posters"}>
+    <div
+      class:list={[
+        "gallery-layout",
+        "country-poster-layout",
+        "country-poster-layout--flat-8",
+      ]}
+    >
+      <section id="posters" class="gallery-main gallery-anchor" aria-label={t(UI.nav.poster, lang)}>
+        <div class="gallery-grid country-poster-grid" data-poster-grid>
+          {allCountryPosters.map((p, i) => (
+              <GlassPosterCard
+                poster={p}
+                lang={lang}
+                href={posterHref(p)}
+                filterTags={filterTagsAttr(p.tags, lang)}
+                galleryPageIndex={Math.floor(i / posterPageSize)}
+                galleryActivePage={posterPage}
+                galleryRegionId={p.regionId}
+                galleryRegionHidden={p.regionId !== activeRegionId}
+                regionFeatured={isRegionFeaturedPoster(p)}
+                featured={false}
+              />
+          ))}
+        </div>
+        {regions.map((r) => {
+          const count = getRecipePosters(country, r.id).length;
+          if (count > 0) return null;
+          return (
+            <p
+              class="gallery-empty"
+              data-gallery-empty-region={r.id}
+              hidden={r.id !== activeRegionId}
+            >
+              {t(UI.empty.coming, lang)}
+            </p>
+          );
+        })}
+      </section>
+    </div>
+
+    </div>
+
+    {countryZinesAll.length > 0 && (
+    <div class="gallery-tab-panel" data-tab="zines" hidden={activeGalleryTab !== "zines"}>
+      <section id="zines" class="gallery-zines country-zines gallery-anchor gallery-zines--tab" aria-label={gt(GALLERY_UI.breadcrumb_zines, lang)}>
+        <div class="gallery-grid" data-zine-grid>
+          {countryZinesAll.map(({ zine, region: zr }, i) => (
+              <GlassZineCard
+                zine={zine}
+                lang={lang}
+                href={zineHref(zr.id, zine.slug)}
+                galleryPageIndex={Math.floor(i / zinePageSize)}
+                galleryActivePage={zinePage}
+                filterTags={zineFilterTags(zr.id, zine.slug)}
+                galleryRegionId={zr.id}
+                galleryRegionHidden={zr.id !== activeRegionId}
+              />
+          ))}
+        </div>
+        {regions.map((r) => {
+          const count = countryZinesAll.filter(({ region: zr }) => zr.id === r.id).length;
+          if (count > 0) return null;
+          return (
+            <p
+              class="gallery-empty"
+              data-gallery-empty-region={r.id}
+              hidden={r.id !== activeRegionId}
+            >
+              {t(UI.empty.coming, lang)}
+            </p>
+          );
+        })}
+      </section>
+    </div>
+    )}
+
+    {streetRegionIds.length > 0 && (
+    <div class="gallery-tab-panel" data-tab="streets" hidden={activeGalleryTab !== "streets"}>
+      <section id="streets" class="gallery-anchor alt-street-embed-host" aria-label={t(UI.nav.street, lang)}>
+        {streetRegionIds.map((regionId) => (
+          <div
+            data-street-explorer-region
+            data-region-id={regionId}
+            class:list={[
+              "street-explorer-region",
+              regionId !== activeRegionId && "is-gallery-region-hidden",
+            ]}
+          >
+            <StreetExplorer
+              country={country}
+              regionId={regionId}
+              lang={lang}
+              embedded
+              sceneId={embeddedSceneId(regionId)}
+              showCrumb={false}
+            />
+          </div>
+        ))}
+      </section>
+    </div>
+    )}
+
+    <GalleryTabHashSync fallbackTab={activeGalleryTab} />
+
+    <script
+      type="application/json"
+      data-gallery-region-meta
+      set:html={JSON.stringify(regionGalleryMeta)}
+    />
+
+    <script>
+      import { initGalleryTabs } from "../scripts/gallery-tabs";
+      initGalleryTabs();
+    </script>
+    <div class="gallery-bottom-stack">
+      <div class="gallery-bottom-stack__page" data-tab-pagination="posters">
+        <GalleryPagination
+          total={maxRegionPosterCount}
+          pageSize={posterPageSize}
+          pageParam="page"
+          scrollAnchor="posters"
+          pathname={Astro.url.pathname}
+          search={search}
+        />
+      </div>
+      {countryZinesAll.length > 0 && (
+        <div class="gallery-bottom-stack__page" data-tab-pagination="zines">
+          <GalleryPagination
+            total={maxRegionZineCount}
+            pageSize={zinePageSize}
+            pageParam="zpage"
+            scrollAnchor="zines"
+            pathname={Astro.url.pathname}
+            search={search}
+          />
+        </div>
+      )}
+      <GalleryBottomDock lang={lang} country={country} activeTab={activeGalleryTab} basePath={galleryDockBase} />
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { initGalleryFlavorFilter } from "../scripts/gallery-flavor-filter";
+  import { initGalleryPagination } from "../scripts/gallery-pagination";
+  import { initGalleryRegionFilter } from "../scripts/gallery-region-filter";
+  import { initStreetEatCarousel } from "../scripts/street-eat-carousel";
+
+  initGalleryRegionFilter();
+  initGalleryFlavorFilter();
+  initGalleryPagination();
+
+  document.querySelectorAll<HTMLElement>("[data-street-eat-carousel]").forEach((el) => {
+    initStreetEatCarousel(el);
+  });
+
+  void import("../scripts/street-explorer").then(({ initEmbeddedStreetExplorers }) => {
+    initEmbeddedStreetExplorers();
+  });
+</script>
+
+<script is:inline>
+  (function () {
+    function preserveHashOnClick(sel) {
+      document.querySelectorAll(sel).forEach(function (a) {
+        a.addEventListener("click", function () {
+          var h = location.hash;
+          if (!h) return;
+          try {
+            var u = new URL(a.getAttribute("href") || "", location.href);
+            if (!u.hash) a.href = u.pathname + u.search + h;
+          } catch (e) {}
+        });
+      });
+    }
+    preserveHashOnClick(".gallery-filter-bar a");
+    preserveHashOnClick(".gallery-dock a");
+    preserveHashOnClick(".gallery-pagination a");
+  })();
+</script>

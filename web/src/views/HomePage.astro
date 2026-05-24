@@ -1,0 +1,121 @@
+---
+
+/**
+
+ * v0.6.9 · alt-c · HomePage (Landing)
+
+ * Visual source: design/alt-c/landing.png
+
+ * Left map: world street atlas (same payload as /world-atlas/).
+
+ */
+
+import Base from "../layouts/Base.astro";
+
+import BottomDock from "../components/BottomDock.astro";
+import LandingManifesto from "../components/LandingManifesto.astro";
+import LandingBentoMosaic from "../components/LandingBentoMosaic.astro";
+import LandingCityCard from "../components/LandingCityCard.astro";
+import LandingWorldAtlas from "../components/LandingWorldAtlas.astro";
+
+import { UI, t } from "../lib/i18n";
+import { COUNTRY_ORDER, REGIONS } from "../lib/countries";
+import { resolveLang } from "../lib/locale-path";
+import { buildLandingAtlasSpots, LANDING_MAP_DEFAULT } from "../lib/landing-atlas-spots";
+import { buildLandingSpotPayload } from "../lib/landing-spot-payload";
+import { buildWorldAtlasPayload } from "../lib/world-atlas-payload";
+
+const lang = resolveLang(Astro.currentLocale);
+const featCountry = LANDING_MAP_DEFAULT;
+const payload = buildLandingSpotPayload(featCountry, lang);
+const atlasPayload = buildWorldAtlasPayload(lang);
+const landingSpots = buildLandingAtlasSpots(lang);
+const mapSpot = landingSpots.find((s) => s.id === featCountry)!;
+
+function totalStats(k: "poster" | "zine" | "street"): number {
+  return COUNTRY_ORDER.reduce(
+    (acc, c) => acc + REGIONS[c].reduce((a, r) => a + r.stats[k], 0),
+    0,
+  );
+}
+
+const bentoPrevLabel = t(UI.landing.prev_slide, lang);
+const bentoNextLabel = t(UI.landing.next_slide, lang);
+
+const prefetch = [
+  ...payload.dishSlides.map((s) => s.src),
+  ...payload.zineSlides.map((s) => s.src),
+].filter((s): s is string => !!s);
+
+const ptotal = totalStats("poster");
+const ztotal = totalStats("zine");
+const stotal = totalStats("street");
+
+---
+
+<Base
+  lang={lang}
+  country={featCountry}
+  altc
+  landingPage
+  tabRegionId={payload.regionId}
+  title={t(UI.brand, lang)}
+  prefetchImages={prefetch}
+>
+
+  <section class="alt-landing container-wide">
+
+    <div class="landing-grid">
+
+      <div
+        class="landing-left landing-left--stack landing-spotlight"
+        data-landing-map-root
+        data-default-country={featCountry}
+        data-lang={lang}
+        data-landing-map-json={JSON.stringify(landingSpots)}
+      >
+        <LandingWorldAtlas lang={lang} payload={atlasPayload} />
+        <LandingCityCard
+          lang={lang}
+          heroUrl={mapSpot.heroUrl}
+          city={mapSpot.city}
+          citySub={mapSpot.citySub}
+          coords={mapSpot.coords}
+          regionHref={mapSpot.regionHref}
+        />
+      </div>
+
+      <div class="landing-feature landing-feature--bento-only">
+        <LandingBentoMosaic
+          lang={lang}
+          payload={payload}
+          bentoPrevLabel={bentoPrevLabel}
+          bentoNextLabel={bentoNextLabel}
+        >
+          <LandingManifesto
+            slot="manifesto"
+            variant="bento-slot"
+            lang={lang}
+            countryId={featCountry}
+            posterTotal={ptotal}
+            zineTotal={ztotal}
+            streetTotal={stotal}
+          />
+        </LandingBentoMosaic>
+      </div>
+
+    </div>
+
+  </section>
+
+  <div class="landing-bottom-stack">
+    <BottomDock lang={lang} active="explore" />
+  </div>
+
+  <script>
+    import "../scripts/landing-bento-carousel";
+    import "../scripts/landing-bento-weather";
+    import "../scripts/landing-atlas-bridge";
+    import "../scripts/landing-city-zine-sync";
+  </script>
+</Base>

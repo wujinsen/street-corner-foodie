@@ -1,0 +1,8 @@
+---
+import { buildRegionGalleryRedirect, resolveLang } from "../lib/locale-path";
+
+const lang = resolveLang(Astro.currentLocale);
+const country = Astro.params.country!;
+const regionId = Astro.params.region!;
+return Astro.redirect(buildRegionGalleryRedirect(lang, country, regionId, Astro.url), 301);
+---

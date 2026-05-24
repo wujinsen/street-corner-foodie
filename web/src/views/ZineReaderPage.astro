@@ -1,0 +1,385 @@
+---
+import Base from "../layouts/Base.astro";
+import BottomDock from "../components/BottomDock.astro";
+import FlavorRadar from "../components/FlavorRadar.astro";
+import ScfPicture from "../components/ScfPicture.astro";
+import { buildFlavorPolygon } from "../lib/flavor-polygon";
+import { UI, t } from "../lib/i18n";
+import { GALLERY_UI, gt } from "../lib/gallery-ui";
+import { COUNTRIES, findRegion } from "../lib/countries";
+import { findPoster } from "../lib/posters";
+import { localePath, regionGalleryHref, resolveLang } from "../lib/locale-path";
+import { scfSpreadUrls } from "../lib/scf-image";
+import { resolveOgImage } from "../lib/site-urls";
+import {
+  dishLinkedScene,
+  getStreetConfig,
+  streetImageUrl,
+} from "../lib/streets";
+import {
+  findZine,
+  getZines,
+  zineAvailableVariants,
+  zineHasNarrativeSpreads,
+  zineImageUrl,
+  zinePageCount,
+  zinePinLabel,
+  type ZineMode,
+} from "../lib/zines";
+import type { CountryId } from "../lib/types";
+
+const lang = resolveLang(Astro.currentLocale);
+const country = Astro.params.country as CountryId;
+const regionId = Astro.params.region!;
+const slug = Astro.params.slug!;
+const region = findRegion(country, regionId);
+const zine = findZine(country, regionId, slug);
+
+if (!region || !zine) {
+  return Astro.redirect(localePath(lang, `/${country}/${regionId}`));
+}
+
+const c = COUNTRIES[country];
+const mode: ZineMode = Astro.url.searchParams.get("mode") === "recipe" ? "recipe" : "story";
+const hasNarrativeSpreads = zineHasNarrativeSpreads(zine);
+const storyPageTotal = zinePageCount(zine, "story");
+const recipePageTotal = zinePageCount(zine, "recipe");
+const pageTotal = mode === "recipe" ? recipePageTotal : storyPageTotal;
+const page = Math.max(0, Math.min(pageTotal - 1, Number(Astro.url.searchParams.get("page") ?? "0") || 0));
+const allZines = getZines(country, regionId);
+const sidebarZines = allZines;
+const dishIndex = allZines.findIndex((z) => z.slug === slug);
+const variants = zineAvailableVariants(zine).filter((v) => !v.noChar);
+const useVariantThumbs = !zine.placeholder && variants.length > 1 && !hasNarrativeSpreads;
+const assertUrl = zineImageUrl(zine, mode, false, page);
+const { full: imgFull, display: imgDisplay } = scfSpreadUrls(assertUrl);
+const variantIndex = useVariantThumbs
+  ? Math.max(0, variants.findIndex((v) => v.mode === mode))
+  : page;
+const flavors = region.flavors[lang] ?? region.flavors.zh;
+
+function queryHref(patch: { mode?: ZineMode; page?: number; slug?: string }): string {
+  const targetSlug = patch.slug ?? slug;
+  const base = localePath(lang, `/${country}/${regionId}/zine/${targetSlug}`);
+  const params = new URLSearchParams();
+  const m = patch.mode ?? mode;
+  const pg = patch.page ?? (patch.slug ? 0 : page);
+  if (m === "recipe") params.set("mode", "recipe");
+  if (pg > 0) params.set("page", String(pg));
+  const qs = params.toString();
+  return base + (qs ? `?${qs}` : "");
+}
+
+function pageHref(delta: number): string {
+  if (useVariantThumbs) {
+    const nextVariant = variantIndex + delta;
+    if (nextVariant >= 0 && nextVariant < variants.length) {
+      const v = variants[nextVariant]!;
+      return queryHref({ mode: v.mode, page: 0 });
+    }
+  } else {
+    const nextPage = page + delta;
+    if (nextPage >= 0 && nextPage < pageTotal) return queryHref({ page: nextPage });
+  }
+  const nextDish = (dishIndex + delta + allZines.length) % allZines.length;
+  const z = allZines[nextDish]!;
+  const np = delta > 0 ? 0 : zinePageCount(z) - 1;
+  return queryHref({ slug: z.slug, page: np });
+}
+
+const poster = findPoster(country, regionId, slug);
+const flavorPolygon = buildFlavorPolygon({ poster, region, slug, lang });
+const linkedScene = dishLinkedScene(country, regionId, slug);
+const streetConfig = getStreetConfig(country, regionId);
+const streetHref = linkedScene
+  ? localePath(lang, `/${country}/${regionId}/street/${linkedScene.id}`)
+  : null;
+const streetThumb =
+  linkedScene && streetConfig
+    ? streetImageUrl(streetConfig, linkedScene.id, "day", "wide")
+    : null;
+const posterHref = poster
+  ? localePath(lang, `/${country}/${regionId}/poster/${slug}`)
+  : null;
+const downloadName = `${slug}_${mode}_p${page + 1}.png`;
+
+function zineSpreadEntry(m: ZineMode, pg: number, raw: string | null) {
+  if (!raw) return null;
+  const { full, display } = scfSpreadUrls(raw);
+  if (!full || !display) return null;
+  return { mode: m, page: pg, url: full, displayUrl: display };
+}
+
+const narrativeSpreads = hasNarrativeSpreads
+  ? [
+      ...Array.from({ length: storyPageTotal }, (_, i) =>
+        zineSpreadEntry("story", i, zineImageUrl(zine, "story", false, i)),
+      ),
+      ...Array.from({ length: recipePageTotal }, (_, i) =>
+        zineSpreadEntry("recipe", i, zineImageUrl(zine, "recipe", false, i)),
+      ),
+    ].filter((s): s is { mode: ZineMode; page: number; url: string; displayUrl: string } => !!s)
+  : [];
+
+const readerConfig = JSON.stringify({
+  page,
+  pageTotal,
+  mode,
+  dishIndex,
+  dishCount: allZines.length,
+  hasNarrativeSpreads,
+  storyPageTotal,
+  recipePageTotal,
+  spreads: narrativeSpreads,
+  variants: variants
+    .map((v) => {
+      const raw = zineImageUrl(zine, v.mode, false, 0);
+      if (!raw) return null;
+      const { full, display } = scfSpreadUrls(raw);
+      if (!full || !display) return null;
+      return { mode: v.mode, url: full, displayUrl: display };
+    })
+    .filter((v): v is { mode: ZineMode; url: string; displayUrl: string } => !!v),
+  hrefs: { prev: pageHref(-1), next: pageHref(1) },
+});
+---
+<Base
+  lang={lang}
+  country={country}
+  altc
+  navTab="zines"
+  tabRegionId={regionId}
+  title={`${t(zine.name, lang)} · ${gt(GALLERY_UI.breadcrumb_zines, lang)}`}
+  ogImage={resolveOgImage(Astro.site, imgFull)}
+>
+  <section class="alt-zine container-wide" id="zine-reader-root">
+    <nav class="alt-crumb" aria-label="breadcrumbs">
+      <a href={localePath(lang, "/")}>{t(UI.nav.world, lang).toUpperCase()}</a>
+      <span class="sep" aria-hidden="true">&#8250;</span>
+      <a href={localePath(lang, `/${country}`)}>{t(c.name, lang).toUpperCase()}</a>
+      <span class="sep" aria-hidden="true">&#8250;</span>
+      <a href={regionGalleryHref(lang, country, regionId, { hash: "zines" })}>{t(region.name, lang).toUpperCase()}</a>
+      <span class="sep" aria-hidden="true">&#8250;</span>
+      <span class="active">{t(zine.name, lang)} · {gt(GALLERY_UI.breadcrumb_zines, lang).toUpperCase()}</span>
+    </nav>
+
+    <div class="alt-zine-layout">
+      <aside class="alt-zine-side alt-zine-side-left tile" aria-label={t(UI.zine.other_in_region, lang)}>
+        <div class="alt-zine-side-scroll" tabindex="0">
+          <h2 class="h-track">
+            {t(UI.zine.other_in_region, lang).toUpperCase()} · {t(region.name, lang)}
+          </h2>
+          {sidebarZines.map((z) => {
+          const isCurrent = z.slug === slug;
+          const thumb = zineImageUrl(z, "story", false, 0);
+          const href = localePath(lang, `/${country}/${regionId}/zine/${z.slug}`);
+          const pin = zinePinLabel(z);
+          return (
+            <a
+              class:list={["alt-zine-side-card", "is-link", isCurrent && "is-current"]}
+              href={href}
+              aria-current={isCurrent ? "page" : undefined}
+            >
+              <span class="alt-zine-side-thumb">
+                {thumb && <ScfPicture src={thumb} alt={t(z.name, lang)} loading="lazy" />}
+                <span class="glass-poster-pin h-track">● {pin}</span>
+              </span>
+              <span class="alt-zine-side-cap">
+                <strong>{t(z.name, lang)}</strong>
+              </span>
+            </a>
+          );
+        })}
+        </div>
+      </aside>
+
+      <div class="tile alt-zine-center-panel">
+        <div class="alt-zine-toolbar">
+          <div class="right switch-glass">
+            <a class:list={[mode === "story" && "active"]} href={queryHref({ mode: "story", page: 0 })}>{t(UI.zine.story, lang)}</a>
+            <a class:list={[mode === "recipe" && "active"]} href={queryHref({ mode: "recipe", page: 0 })}>{t(UI.zine.recipe, lang)}</a>
+          </div>
+        </div>
+
+        <div id="zine-reader" class="alt-zine-spread" data-config={readerConfig}>
+          {assertUrl && (
+            <div class="alt-zine-spread-media">
+              <ScfPicture
+                src={assertUrl}
+                alt={t(zine.name, lang)}
+                resolution="display"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+            </div>
+          )}
+          {assertUrl && (
+            <button
+              type="button"
+              class="alt-zine-zoom-btn"
+              data-zine-zoom-open
+              aria-label={t(UI.zine.zoom, lang)}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3M11 8v6M8 11h6" />
+              </svg>
+              <span class="h-track">{t(UI.zine.zoom, lang)}</span>
+            </button>
+          )}
+        </div>
+
+        <dialog id="zine-lightbox" class="zine-lightbox" aria-label={t(UI.zine.zoom, lang)}>
+          <div class="zine-lightbox-bar">
+            <div class="zine-lightbox-zoom-controls" role="group" aria-label={t(UI.zine.zoom, lang)}>
+              <button type="button" class="zine-lightbox-zoom-btn" data-zine-zoom-out aria-label={t(UI.zine.zoom_out, lang)}>−</button>
+              <span class="zine-lightbox-zoom-pct h-track" data-zine-zoom-pct>100%</span>
+              <button type="button" class="zine-lightbox-zoom-btn" data-zine-zoom-in aria-label={t(UI.zine.zoom_in, lang)}>+</button>
+              <button type="button" class="zine-lightbox-zoom-btn zine-lightbox-zoom-reset" data-zine-zoom-reset>
+                {t(UI.zine.zoom_reset, lang)}
+              </button>
+            </div>
+            <button type="button" class="zine-lightbox-close" data-zine-zoom-close aria-label={t(UI.zine.zoom_close, lang)}>
+              ×
+            </button>
+          </div>
+          <div class="zine-lightbox-scroll">
+            <div class="zine-lightbox-stage" data-zine-zoom-stage>
+              <img
+                class="zine-lightbox-img"
+                src={imgDisplay ?? ""}
+                data-display-src={imgDisplay ?? undefined}
+                data-full-src={imgFull ?? undefined}
+                alt={t(zine.name, lang)}
+                decoding="async"
+              />
+            </div>
+          </div>
+        </dialog>
+
+        <nav class="alt-zine-thumbs" aria-label="pages">
+          {useVariantThumbs
+            ? variants.map((v, i) => {
+                const thumb = zineImageUrl(zine, v.mode, false, 0);
+                const active = v.mode === mode;
+                return (
+                  <div class="alt-zine-thumb-item">
+                    <a
+                      class:list={["thumb", active && "active"]}
+                      href={queryHref({ mode: v.mode, page: 0 })}
+                      data-zine-variant-url={thumb ?? ""}
+                    >
+                      {thumb && <ScfPicture src={thumb} alt="" loading="lazy" />}
+                    </a>
+                    <span class="alt-zine-thumb-no" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                );
+              })
+            : hasNarrativeSpreads && narrativeSpreads.length > 0
+              ? narrativeSpreads.map((s, i) => {
+                  const active = s.mode === mode && s.page === page;
+                  return (
+                    <div class="alt-zine-thumb-item">
+                      <a
+                        class:list={["thumb", active && "active"]}
+                        href={queryHref({ mode: s.mode, page: s.page })}
+                      >
+                        <ScfPicture src={s.url} alt="" loading="lazy" />
+                      </a>
+                      <span class="alt-zine-thumb-no" aria-hidden="true">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                  );
+                })
+              : Array.from({ length: pageTotal }, (_, i) => (
+                <div class="alt-zine-thumb-item">
+                  <a
+                    class:list={["thumb", i === page && "active"]}
+                    href={queryHref({ mode, page: i })}
+                  >
+                    {zineImageUrl(zine, mode, false, i) && (
+                      <ScfPicture src={zineImageUrl(zine, mode, false, i)!} alt="" loading="lazy" />
+                    )}
+                  </a>
+                  <span class="alt-zine-thumb-no" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
+              ))}
+        </nav>
+        <p class="alt-zine-hint h-track">
+          {t(UI.zine.keyboard, lang)} · {t(UI.zine.zoom_hint, lang)}
+        </p>
+      </div>
+
+      <aside class="alt-zine-side alt-zine-side-right tile">
+        <h2 class="h-track">{t(UI.zine.about_dish, lang).toUpperCase()}</h2>
+        <h3 class="h-serif-dish">{t(zine.name, lang)}</h3>
+        <p class="pin-chip">● {t(region.name, lang)} · {poster?.pin ?? region.name.zh}</p>
+        <div class="flavor-chips">
+          {(poster ? (poster.tags[lang] ?? poster.tags.zh) : flavors).slice(0, 4).map((f) => (
+            <span>{f}</span>
+          ))}
+        </div>
+        {poster && (
+          <p class="alt-zine-desc">{t(poster.desc, lang) || t(region.tagline, lang)}</p>
+        )}
+        <section class="alt-zine-flavor-radar tile" aria-label={t(UI.detail.flavor_polygon, lang)}>
+          <h4 class="alt-zine-flavor-radar-title h-track">{t(UI.detail.flavors, lang)}</h4>
+          <FlavorRadar
+            poster={poster ?? undefined}
+            flavorLabels={flavorPolygon.labels}
+            scores={flavorPolygon.scores}
+            stars={flavorPolygon.stars}
+            lang={lang}
+            altc
+            compact
+            showLegend
+          />
+        </section>
+        <div class="alt-zine-actions">
+          {posterHref && <a class="btn-glass" href={posterHref}>{t(UI.nav.poster, lang)}</a>}
+          {streetHref && (
+            <a class="btn-glass" href={streetHref}>{t(UI.detail.see_street, lang)}</a>
+          )}
+          <button
+            type="button"
+            class="btn-glass"
+            data-zine-download
+            data-download-url={imgFull ?? ""}
+            data-download-name={downloadName}
+            disabled={!imgFull}
+          >
+            {t(UI.zine.download, lang)}
+          </button>
+        </div>
+        {linkedScene && streetHref && streetThumb && (
+          <a class="tile alt-zine-street-link is-link" href={streetHref}>
+            <ScfPicture src={streetThumb} alt={t(linkedScene.name, lang)} loading="lazy" />
+            <span>
+              <span class="h-track">{gt(GALLERY_UI.linked_street, lang)}</span>
+              <strong>{t(linkedScene.name, lang)} →</strong>
+            </span>
+          </a>
+        )}
+      </aside>
+    </div>
+  </section>
+  <BottomDock lang={lang} active="explore" />
+</Base>
+
+<script>
+  import { initZineReader, initZineSidebarScroll } from "../scripts/zine-reader";
+  import { initZineDownload } from "../scripts/zine-download";
+  import { initZineLightbox } from "../scripts/zine-lightbox";
+  const root = document.getElementById("zine-reader-root");
+  if (root) {
+    initZineReader(root);
+    initZineSidebarScroll(root);
+    initZineLightbox(root);
+    initZineDownload(root);
+  }
+</script>

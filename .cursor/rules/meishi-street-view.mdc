@@ -1,0 +1,16 @@
+---
+description: Street View 目录内编辑时重申 geo 路径与清单更新（全局规范见 meishi-street-view-spec.mdc）
+globs: asserts/Street View/**
+alwaysApply: false
+---
+
+# Street View · 目录内编辑
+
+**全局规范（美食/矩阵/入库）** → [meishi-street-view-spec.mdc](meishi-street-view-spec.mdc)（`alwaysApply`，新旧对话均加载）
+
+在本目录生成或改图时 additionally：
+
+1. 读 [docs/ASSETS.md](../../docs/ASSETS.md) §地区层级；遵循 `docs/style/street-view-diorama.md` 与 Skill `meishi-street-view`。
+2. 保存到 **`{cc}/{admin}/[{local}/]` 子目录**，勿写根目录。
+3. 命名：`{geo}_{场景}_{day|night}_{wide|standard}[_no_char].png`（已定稿 `haikou_*`、`tokyo_*` 有效）。
+4. 入库后更新 `docs/china/hainan.md` / `shijiazhuang.md` / `docs/world/japan.md` 的 `street_view_approved`。

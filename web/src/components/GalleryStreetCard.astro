@@ -1,0 +1,54 @@
+---
+/**
+ * v0.6 · alt-c · region gallery street scene card (design/alt-c gallery streets row).
+ */
+import ScfPicture from "./ScfPicture.astro";
+
+interface Props {
+  href: string;
+  name: string;
+  tag: string;
+  thumbUrl?: string | null;
+  regionLabel?: string;
+  galleryRegionId?: string;
+  galleryRegionHidden?: boolean;
+}
+
+const { href, name, tag, thumbUrl, regionLabel, galleryRegionId, galleryRegionHidden = false } =
+  Astro.props as Props;
+---
+<a
+  class:list={[
+    "tile",
+    "sm",
+    "gallery-street-card",
+    "is-link",
+    galleryRegionHidden && "is-gallery-region-hidden",
+  ]}
+  href={href}
+  {...(galleryRegionId ? { "data-street-region": galleryRegionId } : {})}
+>
+  <span class="tile-glint" aria-hidden="true"></span>
+  <span class="tile-edge" aria-hidden="true"></span>
+  <div class="gallery-street-media">
+    {thumbUrl ? (
+      <ScfPicture
+        src={thumbUrl}
+        alt={name}
+        loading="lazy"
+        decoding="async"
+        sizes="(min-width: 1100px) 300px, 82vw"
+      />
+    ) : (
+      <div class="gallery-street-ph" aria-hidden="true">
+        <span>🏙</span>
+      </div>
+    )}
+  </div>
+  <span class="gallery-street-cap">
+    <strong class="gallery-street-name">{name}</strong>
+    <span class="gallery-street-tag">
+      {regionLabel ? `${regionLabel} · ${tag}` : tag}
+    </span>
+  </span>
+</a>
