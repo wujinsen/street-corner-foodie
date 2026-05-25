@@ -12,6 +12,8 @@ interface Props {
   span?: 2 | 3 | 4 | 6;
   rowSpan?: 2 | 3;
   radius?: "default" | "sm" | "xs";
+  /** Cursor spotlight + 3D tilt (`glass-tile-shine`). Links always on; static tiles default on. */
+  shine?: boolean;
   ariaLabel?: string;
   title?: string;
   class?: string;
@@ -24,34 +26,56 @@ const {
   span,
   rowSpan,
   radius = "default",
+  shine,
   ariaLabel,
   title,
   class: className,
 } = Astro.props as Props;
 
+const isLink = Boolean(href);
+const shineOn = isLink || (shine ?? true);
+
 const classes = [
   "tile",
   variant !== "default" && `t-${variant}`,
-  href && "is-link",
+  isLink && "is-link",
+  !isLink && shineOn && "tile-shine",
   span && `b-${span}`,
   rowSpan && `b-r${rowSpan}`,
   radius === "sm" && "sm",
   radius === "xs" && "xs",
   className,
 ].filter(Boolean).join(" ");
+
 ---
 {as === "a" ? (
   <a class={classes} href={href} aria-label={ariaLabel} title={title}>
-    <span class="tile-glint" aria-hidden="true"></span>
-    <span class="tile-edge" aria-hidden="true"></span>
+    {shineOn ? (
+      <>
+        <span class="tile-glint" aria-hidden="true"></span>
+        <span class="tile-edge" aria-hidden="true"></span>
+      </>
+    ) : null}
     <slot />
   </a>
 ) : as === "article" ? (
   <article class={classes} aria-label={ariaLabel} title={title}>
+    {shineOn ? (
+      <>
+        <span class="tile-glint" aria-hidden="true"></span>
+        <span class="tile-edge" aria-hidden="true"></span>
+      </>
+    ) : null}
     <slot />
   </article>
 ) : (
   <div class={classes} aria-label={ariaLabel} title={title}>
+    {shineOn ? (
+      <>
+        <span class="tile-glint" aria-hidden="true"></span>
+        <span class="tile-edge" aria-hidden="true"></span>
+      </>
+    ) : null}
     <slot />
   </div>
 )}

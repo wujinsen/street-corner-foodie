@@ -127,11 +127,12 @@
 | `ny_pizza` | 海报 **`us_gilded`** · zine **`us_contemporary`** | 各自定代 | Badge **NYC Flavor** · zine EN ✅ 四套 2026-05 |
 | `three_sisters` | **`us_indigenous`**（海报） | 3 女 · 4料横木牌 · 三道姐妹炖 | boluo清新风·**东部林地/易洛魁系**缎带衫（非农场围裙）·禁穿模·**EN**；`us/three_sisters_poster.png` ✅ 2026-05-19 服饰修正 · 强锚定 |
 | `cheeseburger` | **`us_80s_nyc`** | 1980s 防风外套、大步裤、街头快餐店围裙（汉堡池 `sum(ord)%4`） | 角标美国味道 |
-| `full_english_breakfast` | **`uk_wartime`** 固定 | 4 女 · 6料横木牌 · Full English | boluo清新风·**EN only**·British Flavor；海报 ✅ · zine **p01–p06** `uk/full_english_breakfast_mini_zine_p*.png` · 2026-05-19 |
-| `afternoon_tea` | **`uk_edwardian`** 固定 | 4 女 · 6料横木牌 · Afternoon Tea | boluo清新风·**EN only**·British Flavor；海报 ✅ · zine **p01–p06** `uk/afternoon_tea_mini_zine_p*.png` · 2026-05-24 · 禁穿模 |
-| `macaron` | **`fr_belle_epoque`**（海报） | 4 女 · 6料横木牌 · Macaron | boluo清新风·**FR**·Paris Flavor；`fr/macaron_poster.png` ✅ 2026-05-24 |
-| `baguette` | **`fr_contemporary`**（海报） | **3** 女 · **5**料横木牌 · 法棍 | boluo清新风·**FR**·Paris Flavor·boulangerie L形+four à sole；`fr/baguette_poster.png` ✅ 2026-05-19 重绘 · 禁穿模 |
-| `croissant` | **`fr_belle_epoque`**（海报） | **3** 女 · **6**料横木牌 · 可颂 | boluo清新风·**FR**·French Flavor·viennoiserie L形起酥台；`fr/croissant_poster.png` ✅ 2026-05-19 · **非** macaron/pâtissier 台 · 禁穿模 |
+| `full_english_breakfast` | **`uk_wartime`** 固定 | 4 女 · 6料横木牌 · Full English | boluo清新风·**EN only**·British Flavor；海报 ✅ · zine **p01–p06** `united_kingdom/full_english_breakfast_mini_zine_p*.png` · 2026-05-19 |
+| `afternoon_tea` | **`uk_edwardian`** 固定 | 4 女 · 6料横木牌 · Afternoon Tea | boluo清新风·**EN only**·British Flavor；海报 ✅ · zine **p01–p06** `united_kingdom/afternoon_tea_mini_zine_p*.png` · 2026-05-24 · 禁穿模 |
+| `hangi` | **`nz_maori_traditional`** 固定 | 5 女 · 6料横木牌 · Hāngī | boluo清新风·**EN only**·Aotearoa Flavor；海报 ✅ · zine **p01–p06** `new_zealand/hangi_mini_zine_p*.png` · 2026-05-24 · 半圆围 umu · 禁穿模 · 禁刻板丑化 |
+| `macaron` | **`fr_belle_epoque`**（海报） | 4 女 · 6料横木牌 · Macaron | boluo清新风·**FR**·Paris Flavor；`france/macaron_poster.png` ✅ 2026-05-24 |
+| `baguette` | **`fr_contemporary`**（海报） | **3** 女 · **5**料横木牌 · 法棍 | boluo清新风·**FR**·Paris Flavor·boulangerie L形+four à sole；`france/baguette_poster.png` ✅ 2026-05-19 重绘 · 禁穿模 |
+| `croissant` | **`fr_belle_epoque`**（海报） | **3** 女 · **6**料横木牌 · 可颂 | boluo清新风·**FR**·French Flavor·viennoiserie L形起酥台；`france/croissant_poster.png` ✅ 2026-05-19 · **非** macaron/pâtissier 台 · 禁穿模 |
 | `cheung_fun` | **`republic`** 固定 | **5** 女 · **6**料横木牌 · 鲜虾肠粉 | boluo清新风·竖牌**香港味道**；海报 ✅ 2026-05-19 重绘 · zine **p01–p06** `cn/hongkong/cheung_fun_mini_zine_p*.png` · 早茶强锚定 · 禁穿模 |
 | `gangshi_naicha` | **`contemporary`**（海报） | **3** 女 · **5**料横木牌 · 丝袜奶茶 | boluo清新风·竖牌**香港味道**；`cn/hongkong/gangshi_naicha_poster.png` ✅ 2026-05-19 重绘 · 茶餐厅强锚定 · 禁穿模 |
 | `ningmeng_cha` | **`contemporary`**（海报） | **3** 女 · **5**料横木牌 · 冻柠茶 | boluo清新风·竖牌**香港味道**；`cn/hongkong/ningmeng_cha_poster.png` ✅ 2026-05-19 重绘 · 茶餐厅强锚定 · 禁穿模 |
@@ -139,7 +140,15 @@
 | `bao_zai_fan` | **`contemporary`** 固定 | 4 女 · 6料 · 腊肠排骨煲仔饭 | 竖牌**香港味道**；zine **p01–p06** `cn/hongkong/bao_zai_fan_mini_zine_p*.png` · 2026-05-24 · 庙街冬夜强锚定 · 禁穿模 |
 | `gali_yudan` | **`contemporary`**（海报） | **3** 女 · **4**料横木牌 · 咖喱鱼蛋 | boluo清新风·竖牌**香港味道**；`cn/hongkong/gali_yudan_poster.png` ✅ 2026-05-19 重绘 · 旺角街头强锚定 · 禁穿模 |
 | `char_siu` | **`contemporary`**（海报） | **4** 女 · **5**料横木牌 · 蜜汁叉烧 | boluo清新风·竖牌**香港味道**；`cn/hongkong/char_siu_poster.png` ✅ 2026-05-19 重绘 · 烧腊铺强锚定 · 禁穿模 |
-| `shao_la_fan` | **`contemporary`**（海报） | **5** 女 · **6**料横木牌 · 烧腊双拼饭 | boluo清新风·竖牌**香港味道**；`cn/hongkong/shao_la_fan_poster.png` ✅ 2026-05-19 重绘 · 烧腊快餐强锚定 · 禁穿模 |
+| `hangi` | **`nz_maori_traditional`**（海报） | **5** 女 · **6**料横木牌 · Hāngī | boluo清新风·**EN only 禁汉字**·Aotearoa Flavor·umu半圆围坑；`new_zealand/hangi_poster.png` ✅ 2026-05-19 · 尊重简化 Māori 服 · 禁穿模 |
+
+### 新西兰 · `nz_*` 英文块（`{DynastyDressEN}`）
+
+| 代号 | 英文块 |
+|------|--------|
+| `nz_maori_traditional` | `3D chibi respectful Māori Aotearoa cook: simplified traditional-inspired woven cloak or piupiu-pattern apron, dignified cute female, earth oven hangi feast context, NOT ta moko face tattoo mockery, NOT primitive stereotype, NOT Hollywood exoticism, cooking hangi kai` |
+| `nz_midcentury` | `3D chibi 1950s New Zealand fish and chip shop: white apron, paper hat, seaside takeaway, year 1950s` |
+| `nz_contemporary` | `3D chibi contemporary 2020s New Zealand café/dairy worker: modern apron, flat white culture, year 2026` |
 
 ### 美国 · `us_*` 英文块（`{DynastyDressEN}`）
 
@@ -166,6 +175,14 @@
 | `uk_wartime` | `3D chibi 1940s-50s British café/greasy spoon cook: white apron, rolled-sleeve blouse, simple hairnet or cap, postwar English kitchen, NOT Chinese hanfu, NOT American diner only` |
 | `uk_edwardian` | `3D chibi Edwardian British hotel breakfast cook: white apron, modest long skirt blouse simplified, NOT hanfu` |
 | `uk_contemporary` | `3D chibi contemporary 2020s British brunch café: barista apron, casual tee, year 2026 London` |
+
+### 新西兰 · `nz_*` 英文块（`{DynastyDressEN}`）
+
+| 代号 | 英文块 |
+|------|--------|
+| `nz_maori_traditional` | `3D chibi respectful Māori hāngī earth-oven cook: simplified woven kākahu or flax piupiu apron elements, dignified cute NOT caricature, NOT Hollywood stereotype, NOT face ta moko mockery as costume, NOT offensive headdress, marae umu pit with hot stones and flax baskets, all female cooks` |
+| `nz_midcentury` | `3D chibi 1950s New Zealand fish-and-chip shop cook: white apron, rolled sleeves, simple cap, seaside takeaway counter, NOT Chinese hanfu` |
+| `nz_contemporary` | `3D chibi contemporary 2020s New Zealand café/dairy cook: barista apron, casual tee, year 2026 Aotearoa` |
 
 ### 法国 · `fr_*` 英文块（`{DynastyDressEN}`）
 

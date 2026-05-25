@@ -171,6 +171,7 @@ const downloadName = `${slug}_poster.png`;
       </div>
 
       <aside class="alt-zine-side alt-zine-side-right tile">
+        <div class="alt-zine-side-scroll alt-zine-side-scroll--right" tabindex="0">
         <h2 class="h-track">{t(UI.zine.about_dish, lang).toUpperCase()}</h2>
         <h3 class="h-serif-dish">{t(poster.name, lang)}</h3>
         <p class="pin-chip">● {poster.pin}</p>
@@ -181,7 +182,7 @@ const downloadName = `${slug}_poster.png`;
         </div>
         <p class="alt-zine-desc">{t(poster.desc, lang) || t(region.tagline, lang)}</p>
         {poster.name.en && <p class="alt-zine-en-name">{poster.name.en}</p>}
-        <section class="alt-zine-flavor-radar tile" aria-label={t(UI.detail.flavor_polygon, lang)}>
+        <section class="alt-zine-flavor-radar" aria-label={t(UI.detail.flavor_polygon, lang)}>
           <h4 class="alt-zine-flavor-radar-title h-track">{t(UI.detail.flavors, lang)}</h4>
           <FlavorRadar
             poster={poster}
@@ -192,6 +193,7 @@ const downloadName = `${slug}_poster.png`;
             altc
             compact
             showLegend
+            fx
           />
         </section>
         <div class="alt-zine-actions">
@@ -217,6 +219,7 @@ const downloadName = `${slug}_poster.png`;
             </span>
           </a>
         )}
+        </div>
       </aside>
     </div>
   </section>
@@ -224,10 +227,12 @@ const downloadName = `${slug}_poster.png`;
 </Base>
 
 <script>
+  import { initZineSidebarScroll } from "../scripts/zine-reader";
   import { initZineDownload } from "../scripts/zine-download";
   import { initZineLightbox } from "../scripts/zine-lightbox";
   const root = document.getElementById("poster-reader-root");
   if (root) {
+    initZineSidebarScroll(root);
     initZineLightbox(root);
     initZineDownload(root);
   }

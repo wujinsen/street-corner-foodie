@@ -438,11 +438,41 @@ function loadAll(): {
 
 
 
-  const regions: Record<CountryId, Region[]> = { cn: [], jp: [], us: [] };
+  const regions: Record<CountryId, Region[]> = {
+    cn: [],
+    jp: [],
+    us: [],
+    fr: [],
+    uk: [],
+    de: [],
+    za: [],
+    nz: [],
+    antarctica: [],
+  };
 
-  const posters: Record<CountryId, Record<string, Poster[]>> = { cn: {}, jp: {}, us: {} };
+  const posters: Record<CountryId, Record<string, Poster[]>> = {
+    cn: {},
+    jp: {},
+    us: {},
+    fr: {},
+    uk: {},
+    de: {},
+    za: {},
+    nz: {},
+    antarctica: {},
+  };
 
-  const zines: Record<CountryId, Record<string, ZineDish[]>> = { cn: {}, jp: {}, us: {} };
+  const zines: Record<CountryId, Record<string, ZineDish[]>> = {
+    cn: {},
+    jp: {},
+    us: {},
+    fr: {},
+    uk: {},
+    de: {},
+    za: {},
+    nz: {},
+    antarctica: {},
+  };
 
 
 

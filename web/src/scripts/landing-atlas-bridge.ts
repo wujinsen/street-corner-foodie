@@ -39,7 +39,6 @@ function applyLandingCountry(root: HTMLElement, countryId: string): void {
   const cityDisplayEl = root.querySelector<HTMLElement>("[data-map-city-display]");
   const subEl = root.querySelector<HTMLElement>("[data-map-city-sub]");
   const coordsEl = root.querySelector<HTMLElement>("[data-map-city-coords]");
-  const regionLink = root.querySelector<HTMLAnchorElement>("[data-map-region-link]");
   const bg = root.querySelector<HTMLElement>("[data-map-city-bg]");
 
   if (cityDisplayEl) {
@@ -54,7 +53,6 @@ function applyLandingCountry(root: HTMLElement, countryId: string): void {
     subEl.hidden = !sub.trim();
   }
   if (coordsEl) coordsEl.textContent = spot.coords;
-  if (regionLink) regionLink.href = spot.regionHref;
   if (bg) {
     if (spot.heroUrl) {
       bg.style.backgroundImage = `url('${spot.heroUrl}')`;

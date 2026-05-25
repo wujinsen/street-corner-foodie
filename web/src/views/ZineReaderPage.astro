@@ -316,6 +316,7 @@ const readerConfig = JSON.stringify({
       </div>
 
       <aside class="alt-zine-side alt-zine-side-right tile">
+        <div class="alt-zine-side-scroll alt-zine-side-scroll--right" tabindex="0">
         <h2 class="h-track">{t(UI.zine.about_dish, lang).toUpperCase()}</h2>
         <h3 class="h-serif-dish">{t(zine.name, lang)}</h3>
         <p class="pin-chip">● {t(region.name, lang)} · {poster?.pin ?? region.name.zh}</p>
@@ -327,7 +328,7 @@ const readerConfig = JSON.stringify({
         {poster && (
           <p class="alt-zine-desc">{t(poster.desc, lang) || t(region.tagline, lang)}</p>
         )}
-        <section class="alt-zine-flavor-radar tile" aria-label={t(UI.detail.flavor_polygon, lang)}>
+        <section class="alt-zine-flavor-radar" aria-label={t(UI.detail.flavor_polygon, lang)}>
           <h4 class="alt-zine-flavor-radar-title h-track">{t(UI.detail.flavors, lang)}</h4>
           <FlavorRadar
             poster={poster ?? undefined}
@@ -338,6 +339,7 @@ const readerConfig = JSON.stringify({
             altc
             compact
             showLegend
+            fx
           />
         </section>
         <div class="alt-zine-actions">
@@ -365,6 +367,7 @@ const readerConfig = JSON.stringify({
             </span>
           </a>
         )}
+        </div>
       </aside>
     </div>
   </section>

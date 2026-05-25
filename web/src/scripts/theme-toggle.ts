@@ -6,6 +6,9 @@
 export const STORAGE_KEY = "scf:theme";
 export type Theme = "dark" | "light" | "auto";
 
+/** Topbar theme button + ⌘⇧L — flip to re-enable. Settings sheet theme picks stay active. */
+export const THEME_TOGGLE_TOPBAR_ENABLED = false;
+
 export function readStored(): Theme {
   const v = (() => {
     try {
@@ -61,7 +64,18 @@ export function initThemeToggle(): void {
   syncButton();
 
   const btn = document.getElementById("theme-toggle");
-  btn?.addEventListener("click", () => {
+  if (!btn) return;
+
+  if (!THEME_TOGGLE_TOPBAR_ENABLED) {
+    btn.disabled = true;
+    btn.setAttribute("aria-disabled", "true");
+    btn.setAttribute("title", "Theme switch temporarily unavailable");
+    btn.setAttribute("aria-label", "Theme switch temporarily unavailable");
+    btn.classList.add("theme-toggle-btn--paused");
+    return;
+  }
+
+  btn.addEventListener("click", () => {
     const cur = readStored();
     const next = nextTheme(cur);
     writeStored(next);

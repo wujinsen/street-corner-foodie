@@ -1,6 +1,6 @@
 # 德国 · 莱茵河 · 街景原型
 
-> 画风 [street-view-diorama.md](../style/street-view-diorama.md)。入库 `asserts/Street View/de/cologne/`。  
+> 画风 [street-view-diorama.md](../style/street-view-diorama.md)。入库 `asserts/Street View/germany/germany/cologne/`。  
 > 国家总览 → [germany.md](germany.md)
 
 ## 场景索引
@@ -66,4 +66,4 @@ Rhein、Bratwurst、Biergarten、Kölsch、Brezel、Köln、Dom
 ## 命名与目录
 
 `de_cologne_{slug}_{day|night}_{wide|standard}[_no_char].png`  
-→ `asserts/Street View/de/cologne/`
+→ `asserts/Street View/germany/germany/cologne/`

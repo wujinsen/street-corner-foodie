@@ -50,6 +50,7 @@
 | 海报 / 小志阅读器 | `#poster-reader-root`, `#zine-reader-root` | `alt-c-refine.css` 内 `body.has-altc :is(...)` 块 |
 | 地区画廊 | `.alt-gallery` | 同上 |
 | **首页** | `body.landing-page` / `body.landing-page.has-altc` | **`alt-c-refine.css` § Landing · typography**；与城市卡、bento 同步 scale |
+| **首页天气卡** | `.bento-weather-live` | **`tokens.css` § weather chip**；规格 [WEATHER-CHIP-TOKENS.md](./WEATHER-CHIP-TOKENS.md) |
 | 全球/国家 v0.5 | 无 `.has-altc` | 仍用 `components.css` 纸质感；逐步迁移 |
 
 海报、小志、首页 **共用同一套 `--type-*`**；阅读器侧栏可再局部 `clamp()` 放大标题，但副标不得小于 `--type-ui-sm`。

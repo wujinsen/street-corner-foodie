@@ -2,9 +2,13 @@
 import FlavorRadar from "./FlavorRadar.astro";
 import GlassTile from "./GlassTile.astro";
 import LandingBentoCarousel from "./LandingBentoCarousel.astro";
+import WeatherMascot from "./WeatherMascot.astro";
 import { UI, t, type Lang } from "../lib/i18n";
 import { regionGalleryHref } from "../lib/locale-path";
-import { getRegionAtmosphereGeo } from "../lib/region-atmosphere-geo";
+import { getRegionAtmosphereGeo, geoPlaceLabel } from "../lib/region-atmosphere-geo";
+import { inferWeatherPeriod } from "../lib/weather-chip";
+import { inferWeatherMascotState } from "../lib/weather-mascot";
+import WeatherExpandIcon from "./WeatherExpandIcon.astro";
 import type { LandingSpotPayload } from "../lib/landing-spot-payload";
 
 interface Props {
@@ -25,7 +29,8 @@ const {
   atmosphere,
   dishSlides,
   zineSlides,
-  radarHeadline,
+  radarScores,
+  flavorLabels,
 } = payload;
 
 const posterListHref = regionGalleryHref(lang, countryId, regionId, { hash: "posters" });
@@ -39,8 +44,22 @@ const weatherConfigJson =
         timezone: atmosphereGeo.timezone,
         regionKey: `${countryId}/${regionId}`,
         lang,
+        climatePreset: atmosphere.climatePreset,
+        placeZh: atmosphereGeo.place.zh,
+        placeEn: atmosphereGeo.place.en,
+        placeJa: atmosphereGeo.place.ja,
       })
     : null;
+
+const weatherPeriod = atmosphereGeo ? inferWeatherPeriod(new Date(), atmosphereGeo.timezone) : "dusk";
+const weatherSky = "clear";
+const weatherClimate = atmosphere?.climatePreset ?? "temperate";
+const weatherPlaceLabel = atmosphereGeo ? geoPlaceLabel(atmosphereGeo, lang) : "";
+const weatherMascotSsr = inferWeatherMascotState({
+  tempC: null,
+  period: weatherPeriod,
+  climate: weatherClimate,
+});
 ---
 
 <div class="right-bento landing-bento-mosaic landing-bento-mosaic--4" data-landing-bento-mosaic>
@@ -100,10 +119,9 @@ const weatherConfigJson =
     </GlassTile>
   )}
 
-  {editorPick && (
-    <GlassTile variant="chip" class="bento-radar bento-radar--proto t-radar" ariaLabel={t(UI.detail.flavors, lang)}>
-      {radarHeadline && <div class="bento-radar-head">{radarHeadline}</div>}
-      <FlavorRadar poster={editorPick} flavorLabels={payload.flavorLabels} lang={lang} altc compact />
+  {flavorLabels.length > 0 && radarScores.length > 0 && (
+    <GlassTile variant="chip" class="bento-radar bento-radar--proto bento-radar--fill t-radar" ariaLabel={t(UI.detail.flavors, lang)}>
+      <FlavorRadar flavorLabels={flavorLabels} scores={radarScores} lang={lang} altc compact fx bentoFill />
     </GlassTile>
   )}
 
@@ -116,39 +134,99 @@ const weatherConfigJson =
         title={t(UI.gallery.atmosphere_hint, lang)}
       >
         <div
-          class="bento-weather-live"
+          class:list={["bento-weather-live", "bento-weather-live--starfield"]}
           data-landing-weather={weatherConfigJson ? "" : undefined}
           data-weather-config={weatherConfigJson ?? undefined}
+          data-weather-period={weatherPeriod}
+          data-weather-sky={weatherSky}
+          data-weather-climate={weatherClimate}
+          data-weather-mascot={weatherMascotSsr}
+          data-weather-temp-fx-debug="cycle"
         >
-          <div class="bento-weather-bg" aria-hidden="true" />
-          <div class="bento-weather-body">
-            <span class="bento-weather-icon" aria-hidden="true">
-              <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="14" cy="14" r="6" stroke="currentColor" stroke-width="1.5" />
-                <path
-                  d="M8 28c2.5-4 6-6 10-6s7.5 2 10 6"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M26 12h10M31 7v10"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </span>
-            <div class="bento-weather-copy">
-              <div class="bento-weather-main" data-bento-weather-main>
-                {t(atmosphere.climate, lang)} · <span data-bento-weather-temp>{atmosphere.tempC}</span>°
-              </div>
-              <div class="bento-weather-sub" data-bento-weather-sub>
-                <span data-bento-weather-mood>{t(atmosphere.mood, lang)}</span>{" "}
-                <span data-bento-weather-sunset>{atmosphere.sunsetLocal}</span>
+          <div class="bento-weather-bg" aria-hidden="true">
+            <div class="bento-weather-mesh"></div>
+            <canvas
+              class="bento-weather-fx-canvas"
+              data-weather-temp-fx-canvas
+              hidden
+              aria-hidden="true"
+            ></canvas>
+            <div class="bento-weather-fx-stage" data-weather-temp-fx-stage aria-hidden="true">
+              <div class="bento-weather-fx-stage__wash" data-weather-temp-fx-wash aria-hidden="true"></div>
+              <div class="bento-weather-fx-stage__bubbles" data-weather-temp-fx-bubbles aria-hidden="true"></div>
+              <div class="bento-weather-fx-stage__hands" data-weather-temp-fx-hands hidden aria-hidden="true">
+                <svg viewBox="0 0 120 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path
+                    class="bento-weather-fx-hand-l"
+                    d="M8 36c6-12 16-18 28-18 5 0 10 2 14 5"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    class="bento-weather-fx-hand-r"
+                    d="M112 36c-6-12-16-18-28-18-5 0-10 2-14 5"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
               </div>
             </div>
+            <div class="bento-weather-fx-scrim" data-weather-temp-fx-scrim aria-hidden="true"></div>
+            <div class="bento-weather-hover-light"></div>
+            <div class="bento-weather-fx bento-weather-fx--particles"></div>
+            <div class="bento-weather-fx bento-weather-fx--glow"></div>
           </div>
+          <div class="bento-weather-body">
+            <button
+              type="button"
+              class="bento-weather-toggle"
+              data-bento-weather-toggle
+              aria-expanded="false"
+              aria-controls="bento-weather-forecast"
+              aria-label={t(UI.gallery.weather_expand, lang)}
+              data-label-expand={t(UI.gallery.weather_expand, lang)}
+              data-label-collapse={t(UI.gallery.weather_collapse, lang)}
+            >
+              <span class="bento-weather-icon bento-weather-icon--compass" aria-hidden="true">
+                <WeatherExpandIcon />
+              </span>
+            </button>
+            <div class="bento-weather-copy">
+              <div class="bento-weather-main" data-bento-weather-main>
+                <span class="bento-weather-climate" data-bento-weather-climate>{t(atmosphere.climate, lang)}</span>
+                <span class="bento-weather-temp-line">
+                  <span
+                    class="bento-weather-temp-hit"
+                    data-bento-weather-temp-hit
+                    tabindex="0"
+                    role="button"
+                    aria-label={t(UI.gallery.weather_temp_poke, lang)}
+                  >
+                    <span class="bento-weather-temp" data-bento-weather-temp aria-busy="true">—</span>
+                  </span>
+                  <span class="bento-weather-degree" aria-hidden="true">°</span>
+                </span>
+              </div>
+              <div class="bento-weather-sub" data-bento-weather-sub aria-live="polite">
+                <span class="bento-weather-live-dot" data-bento-weather-live-dot hidden aria-hidden="true"></span>
+                <span class="bento-weather-ambient-dot" data-bento-weather-ambient-dot hidden aria-hidden="true"></span>
+                {t(UI.gallery.weather_loading, lang)}{weatherPlaceLabel ? ` · ${weatherPlaceLabel}` : ""}
+              </div>
+              <p class="bento-weather-mood" data-bento-weather-mood hidden></p>
+            </div>
+            <WeatherMascot />
+            <span class="bento-weather-temp-fx-gel-badge" data-weather-temp-fx-gel-badge hidden aria-hidden="true">
+              {t(UI.gallery.weather_fx_gel_label, lang)}
+            </span>
+          </div>
+          <div
+            class="bento-weather-panel"
+            id="bento-weather-forecast"
+            data-bento-weather-forecast
+            hidden
+          ></div>
         </div>
       </GlassTile>
     )}

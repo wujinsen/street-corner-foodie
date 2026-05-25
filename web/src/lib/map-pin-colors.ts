@@ -27,6 +27,36 @@ export const MAP_PIN_BY_COUNTRY: Record<CountryId, MapPinStyle> = {
     glow: "rgba(0, 217, 224, 0.9)",
     ripple: "rgba(0, 242, 255, 0.45)",
   },
+  fr: {
+    core: "#0055A4",
+    glow: "rgba(0, 85, 164, 0.88)",
+    ripple: "rgba(0, 85, 164, 0.45)",
+  },
+  uk: {
+    core: "#C8102E",
+    glow: "rgba(200, 16, 46, 0.88)",
+    ripple: "rgba(200, 16, 46, 0.45)",
+  },
+  de: {
+    core: "#FFCC00",
+    glow: "rgba(255, 204, 0, 0.88)",
+    ripple: "rgba(255, 204, 0, 0.45)",
+  },
+  za: {
+    core: "#007A4D",
+    glow: "rgba(0, 122, 77, 0.88)",
+    ripple: "rgba(0, 122, 77, 0.45)",
+  },
+  nz: {
+    core: "#1A1A1A",
+    glow: "rgba(26, 26, 26, 0.88)",
+    ripple: "rgba(26, 26, 26, 0.45)",
+  },
+  antarctica: {
+    core: "#7EB8E8",
+    glow: "rgba(126, 184, 232, 0.88)",
+    ripple: "rgba(126, 184, 232, 0.45)",
+  },
 };
 
 export function mapPinStyle(countryId: CountryId): MapPinStyle {

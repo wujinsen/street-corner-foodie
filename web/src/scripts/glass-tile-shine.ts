@@ -11,7 +11,7 @@ export function initGlassTileShine(scope: ParentNode = document): void {
   if (reducedTransparency) return;
 
   const tiles = scope.querySelectorAll<HTMLElement>(
-    ".tile.is-link, .glass-poster.is-link, .country-region-card.is-link",
+    ".tile.is-link, .tile.tile-shine, .glass-poster.is-link, .country-region-card.is-link",
   );
   for (const tile of tiles) {
     if (tile.dataset.shineBound === "1") continue;

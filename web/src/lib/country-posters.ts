@@ -6,6 +6,12 @@ export const COUNTRY_SPOTLIGHT: Record<CountryId, string> = {
   cn: "hainan",
   jp: "tokyo",
   us: "ny",
+  fr: "paris",
+  uk: "london",
+  de: "cologne",
+  za: "south_africa",
+  nz: "nz",
+  antarctica: "antarctica",
 };
 
 /** Resolve `?region=`; invalid/missing → spotlight (e.g. cn → hainan). */

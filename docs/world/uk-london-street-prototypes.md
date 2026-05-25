@@ -1,6 +1,6 @@
 # 伦敦 · 街景原型
 
-> 画风 [street-view-diorama.md](../style/street-view-diorama.md)。入库 `asserts/Street View/uk/london/`。  
+> 画风 [street-view-diorama.md](../style/street-view-diorama.md)。入库 `asserts/Street View/united_kingdom/london/`。  
 > 国家总览 → [uk.md](uk.md)
 
 ## 场景索引
@@ -66,4 +66,4 @@ River Thames、Fish & Chips、Pie & Mash、Pub、Afternoon Tea、Westminster、L
 ## 命名与目录
 
 `uk_london_{slug}_{day|night}_{wide|standard}[_no_char].png`  
-→ `asserts/Street View/uk/london/`
+→ `asserts/Street View/united_kingdom/london/`

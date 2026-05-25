@@ -1,6 +1,6 @@
 # 巴黎 · 街景原型
 
-> 画风 [street-view-diorama.md](../style/street-view-diorama.md)。入库 `asserts/Street View/fr/paris/`。  
+> 画风 [street-view-diorama.md](../style/street-view-diorama.md)。入库 `asserts/Street View/france/paris/`。  
 > 国家总览 → [france.md](france.md)
 
 ## 场景索引
@@ -119,4 +119,4 @@ Arc de Triomphe、Champs-Élysées、Crêpes、Café、Bistro、Macarons、Paris
 ## 命名与目录
 
 `fr_paris_{slug}_{day|night}_{wide|standard}[_no_char].png`  
-→ `asserts/Street View/fr/paris/`
+→ `asserts/Street View/france/paris/`

@@ -525,6 +525,22 @@ Bottom foreground only lowest 12-18%: horizontal row of {N} small blue-white por
 
 ---
 
+## 新西兰 · 海报（`new_zealand/` · **英文 EN**）
+
+| slug / 菜名 | 人数 | 分工 / 气泡对白（**EN dialogue**） | 场景 / 站位 |
+|-------------|------|-------------------------------------|-------------|
+| `hangi` Hāngī 地炉 | **5** | 烧石、包食材入篮、分层入坑、覆土焖烤、开坑分餐；例：「Stones are white-hot—careful!」「Meat basket down first, veggies on top!」「Cover the umu—let steam work!」「Earth sealed—two hours of patience!」「Lift the feast—kai time!」 | **earth oven umu** · 5 人 **半圆围坑**，**非** 2+2 · **非** 厨房四角 |
+
+| slug | 碗数 | 标签（横木牌 · **EN**） |
+|------|------|-------------------------|
+| `hangi` | **6** | Lamb · Kūmara · Potato · Pumpkin · Chicken · Cabbage |
+
+> **海报画面语言（2026-05-19 · 必守）**：`new_zealand/` 海报 **仅英文 EN**（及 Māori 菜名如 **Hāngī**、**Kūmara**）；**禁止**画面出现汉字（顶题、竖牌、料签、对白均不用中文）。文档中文名仅作索引。
+
+竖牌：**Aotearoa Flavor** / **New Zealand Flavor**（画面 **仅英文**）。时代：hāngī **`nz_maori_traditional`**（地炉强锚定，**尊重简化** Māori 服，禁刻板丑化）。见 [newzealand.md](../world/newzealand.md)。
+
+---
+
 ## 香港 · 海报（`cn/hongkong/` · 竖牌 **香港味道**）
 
 > **boluo 清新风 ≠ 统一模板。** 仅锁定：明亮通透、棕刷顶题、横木牌、禁绿条、禁穿模。  

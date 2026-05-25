@@ -434,6 +434,99 @@ export const STREET_REGIONS: Partial<Record<CountryId, Record<string, StreetRegi
       filePattern: (id) => `us_nola_${id}_{TIME}_{FRAME}.png`,
     },
   },
+  fr: {
+    paris: {
+      path: "france/paris/",
+      scenes: [
+        {
+          id: "eiffel_tower",
+          name: { zh: "埃菲尔铁塔", en: "Eiffel Tower", ja: "エッフェル塔" },
+          tag: { zh: "塞纳左岸", en: "Left Bank", ja: "セーヌ左岸" },
+          posterSlugs: ["macaron", "croissant"],
+          geo: [2.294, 48.858],
+        },
+        {
+          id: "arc_de_triomphe",
+          name: { zh: "凯旋门", en: "Arc de Triomphe", ja: "凱旋門" },
+          tag: { zh: "香榭大道", en: "Champs-Élysées", ja: "シャンゼリゼ" },
+          posterSlugs: ["baguette"],
+          geo: [2.295, 48.874],
+        },
+      ],
+      filePattern: (id) => `fr_paris_${id}_{TIME}_{FRAME}.png`,
+    },
+  },
+  uk: {
+    london: {
+      path: "united_kingdom/london/",
+      scenes: [
+        {
+          id: "thames_river",
+          name: { zh: "泰晤士河", en: "Thames River", ja: "テムズ川" },
+          tag: { zh: "河畔 pub", en: "Riverside pubs", ja: "川岸のパブ" },
+          posterSlugs: ["full_english_breakfast", "afternoon_tea"],
+          geo: [-0.121, 51.507],
+        },
+      ],
+      filePattern: (id) => `uk_london_${id}_{TIME}_{FRAME}.png`,
+    },
+  },
+  de: {
+    cologne: {
+      path: "germany/cologne/",
+      scenes: [
+        {
+          id: "rhine_river",
+          name: { zh: "莱茵河", en: "Rhine River", ja: "ライン川" },
+          tag: { zh: "大教堂与 Biergarten", en: "Cathedral & beer garden", ja: "大聖堂とビアガルテン" },
+          geo: [6.96, 50.941],
+        },
+      ],
+      filePattern: (id) => `de_cologne_${id}_{TIME}_{FRAME}.png`,
+    },
+  },
+  za: {
+    south_africa: {
+      path: "south_africa/agulhas/",
+      defaultSceneId: "cape_of_good_hope",
+      defaultView: { mood: "night", frame: "wide" },
+      scenes: [
+        {
+          id: "cape_agulhas",
+          name: { zh: "厄加勒斯角", en: "Cape Agulhas", ja: "アグラス岬" },
+          tag: { zh: "非洲最南端", en: "Southern tip", ja: "最南端" },
+          geo: [20.014, -34.832],
+          path: "south_africa/agulhas/",
+          filePattern: () => `za_cape_agulhas_{TIME}_{FRAME}.png`,
+        },
+        {
+          id: "cape_of_good_hope",
+          name: { zh: "好望角", en: "Cape of Good Hope", ja: "喜望峰" },
+          tag: { zh: "Cape Point", en: "Cape Point", ja: "ケープポイント" },
+          geo: [18.489, -34.357],
+          path: "south_africa/good_hope/",
+          filePattern: () => `za_cape_of_good_hope_{TIME}_{FRAME}.png`,
+        },
+      ],
+      filePattern: (id) => `za_${id}_{TIME}_{FRAME}.png`,
+    },
+  },
+  antarctica: {
+    antarctica: {
+      path: "antarctica/paradise_harbor/",
+      defaultSceneId: "paradise_harbor",
+      defaultView: { mood: "night", frame: "wide" },
+      scenes: [
+        {
+          id: "paradise_harbor",
+          name: { zh: "天堂湾", en: "Paradise Harbor", ja: "パラダイス湾" },
+          tag: { zh: "南极半岛", en: "Antarctic Peninsula", ja: "南極半島" },
+          geo: [-62.55, -64.75],
+        },
+      ],
+      filePattern: () => `antarctica_paradise_harbor_{TIME}_{FRAME}_no_char.png`,
+    },
+  },
 };
 
 /** Poster / zine slug → street scene id (optional curated link). */
@@ -477,6 +570,19 @@ export const DISH_STREET_SCENE: Partial<Record<CountryId, Record<string, Record<
     nola: {
       gumbo: "french_quarter",
       beignets: "jackson_square",
+    },
+  },
+  fr: {
+    paris: {
+      macaron: "eiffel_tower",
+      croissant: "eiffel_tower",
+      baguette: "arc_de_triomphe",
+    },
+  },
+  uk: {
+    london: {
+      full_english_breakfast: "thames_river",
+      afternoon_tea: "thames_river",
     },
   },
 };

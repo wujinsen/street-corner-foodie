@@ -49,7 +49,6 @@ export function initLandingMap(root: HTMLElement | null): void {
   const cityDisplayEl = mapRoot.querySelector<HTMLElement>("[data-map-city-display]");
   const subEl = mapRoot.querySelector<HTMLElement>("[data-map-city-sub]");
   const coordsEl = mapRoot.querySelector<HTMLElement>("[data-map-city-coords]");
-  const regionLink = mapRoot.querySelector<HTMLAnchorElement>("[data-map-region-link]");
   const bg = mapRoot.querySelector<HTMLElement>("[data-map-city-bg]");
 
   const pins = [...mapRoot.querySelectorAll<HTMLAnchorElement>(".map-pin[data-country]")];
@@ -98,10 +97,6 @@ export function initLandingMap(root: HTMLElement | null): void {
       subEl.hidden = !sub;
     }
     if (coordsEl) coordsEl.textContent = spot.coords;
-    if (regionLink) {
-      regionLink.href = spot.regionHref;
-      regionLink.hidden = false;
-    }
     if (bg) {
       if (spot.heroUrl) {
         bg.style.backgroundImage = `url('${spot.heroUrl}')`;

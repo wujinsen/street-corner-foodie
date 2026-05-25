@@ -129,6 +129,10 @@ meishi/
 |-----------|------|
 | 日本 | [world/japan.md](world/japan.md) |
 | 美国 | [world/usa.md](world/usa.md) |
+| 英国 | [world/uk.md](world/uk.md) |
+| 法国 | [world/france.md](world/france.md) |
+| 德国 | [world/germany.md](world/germany.md) |
+| 新西兰 | [world/newzealand.md](world/newzealand.md) |
 
 索引 → [world/README.md](world/README.md)
 

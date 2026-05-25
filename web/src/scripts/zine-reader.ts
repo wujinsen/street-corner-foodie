@@ -63,6 +63,11 @@ function variantIndex(config: ZineReaderConfig, mode: "story" | "recipe"): numbe
   return (config.variants ?? []).findIndex((v) => v.mode === mode);
 }
 
+function shouldShowAllThumbs(config: ZineReaderConfig): boolean {
+  if (config.hasNarrativeSpreads && (config.spreads?.length ?? 0) > 0) return true;
+  return (config.variants?.length ?? 0) > 1;
+}
+
 function setSpreadImage(
   reader: HTMLElement,
   fullUrl: string,
@@ -72,8 +77,10 @@ function setSpreadImage(
   const show = displayUrl ?? fullUrl;
   const picture = reader.querySelector("picture");
   if (picture) {
+    picture.querySelectorAll("source").forEach((s) => s.remove());
     const img = picture.querySelector("img");
     if (img) {
+      img.removeAttribute("srcset");
       img.src = show;
       img.setAttribute("data-full-src", fullUrl);
       img.setAttribute("data-display-src", show);
@@ -166,7 +173,7 @@ function applySpread(
   }
 
   syncToolbar(root, mode);
-  syncThumbs(root, mode, clamped);
+  syncThumbs(root, mode, clamped, shouldShowAllThumbs(config));
   updateDownloadButton(root, entry?.url ?? "");
 
   if (pushUrl) history.pushState(null, "", buildSpreadUrl(mode, clamped));
@@ -194,7 +201,7 @@ function applyVariant(
   }
 
   syncToolbar(root, mode);
-  syncThumbs(root, mode, page, false);
+  syncThumbs(root, mode, page, shouldShowAllThumbs(config));
   updateDownloadButton(root, entry?.url ?? "");
 
   if (pushUrl) history.pushState(null, "", buildSpreadUrl(mode, page));
@@ -202,26 +209,29 @@ function applyVariant(
 
 /** Left rail: bounded scroll + wheel capture (page scroll steals wheel otherwise). */
 export function initZineSidebarScroll(root: HTMLElement): void {
-  const rail = root.querySelector<HTMLElement>(".alt-zine-side-left .alt-zine-side-scroll");
-  if (!rail) return;
-
-  rail.querySelector<HTMLElement>(".alt-zine-side-card.is-current")?.scrollIntoView({ block: "nearest" });
-
-  rail.addEventListener(
-    "wheel",
-    (e) => {
-      const max = rail.scrollHeight - rail.clientHeight;
-      if (max <= 0) return;
-      const dy = e.deltaY;
-      const atTop = rail.scrollTop <= 0;
-      const atBottom = rail.scrollTop >= max - 1;
-      if ((dy < 0 && !atTop) || (dy > 0 && !atBottom)) {
-        e.preventDefault();
-        rail.scrollTop += dy;
-      }
-    },
-    { passive: false },
+  const rails = root.querySelectorAll<HTMLElement>(
+    ".alt-zine-side-left .alt-zine-side-scroll, .alt-zine-side-right .alt-zine-side-scroll--right",
   );
+
+  for (const rail of rails) {
+    rail.querySelector<HTMLElement>(".alt-zine-side-card.is-current")?.scrollIntoView({ block: "nearest" });
+
+    rail.addEventListener(
+      "wheel",
+      (e) => {
+        const max = rail.scrollHeight - rail.clientHeight;
+        if (max <= 0) return;
+        const dy = e.deltaY;
+        const atTop = rail.scrollTop <= 0;
+        const atBottom = rail.scrollTop >= max - 1;
+        if ((dy < 0 && !atTop) || (dy > 0 && !atBottom)) {
+          e.preventDefault();
+          rail.scrollTop += dy;
+        }
+      },
+      { passive: false },
+    );
+  }
 }
 
 export function initZineReader(root: HTMLElement): void {

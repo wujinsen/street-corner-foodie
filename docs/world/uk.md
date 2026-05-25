@@ -14,14 +14,14 @@ geo_prefix: uk_
 geo_prefix_london: uk_london_
 geo_prefix_edinburgh: uk_edinburgh_
 assets_dir: asserts/
-gourmet_poster_dir: asserts/Gourmet recipe2/uk/
-mini_zine_dir: asserts/mini-zine/uk/
-street_view_dir: asserts/Street View/uk/
-street_view_london_dir: asserts/Street View/uk/london/
+gourmet_poster_dir: asserts/Gourmet recipe2/united_kingdom/
+mini_zine_dir: asserts/mini-zine/united_kingdom/
+street_view_dir: asserts/Street View/united_kingdom/
+street_view_london_dir: asserts/Street View/united_kingdom/london/
 reference_dirs:
-  gourmet_poster: asserts/Gourmet recipe2/uk/
-  mini_zine: asserts/mini-zine/uk/
-  street_view: asserts/Street View/uk/
+  gourmet_poster: asserts/Gourmet recipe2/united_kingdom/
+  mini_zine: asserts/mini-zine/united_kingdom/
+  street_view: asserts/Street View/united_kingdom/
 gourmet_posters:
   - full_english_breakfast_poster.png
   - afternoon_tea_poster.png
@@ -40,7 +40,7 @@ mini_zine:
   - afternoon_tea_mini_zine_p06_recipe.png
 mini_zine_locale: en
 street_view_approved:
-  - uk/london/uk_london_thames_river_night_wide.png
+  - united_kingdom/london/uk_london_thames_river_night_wide.png
 web_posters: {}
 ---
 
@@ -69,7 +69,7 @@ web_posters: {}
 | **惠灵顿牛排** Beef Wellington | 菲力裹蘑菇酱与酥皮烤 | 切片，粉红内里 | `beef_wellington` |
 | **香肠土豆泥** Bangers and mash | 猪肉肠、土豆泥、洋葱肉汁 | pub 主菜 | `bangers_and_mash` |
 | **洞里的蟾蜍** Toad in the hole | 约克郡布丁裹香肠烤 | 浇肉汁 | `toad_in_the_hole` |
-| **全英式早餐** Full English | 蛋、培根、香肠、黑布丁、焗豆、吐司、番茄蘑菇 | 酒店与 café 上午 | `full_english_breakfast` | ✅ p01–p06 EN · `uk/` |
+| **全英式早餐** Full English | 蛋、培根、香肠、黑布丁、焗豆、吐司、番茄蘑菇 | 酒店与 café 上午 | `full_english_breakfast` | ✅ p01–p06 EN · `united_kingdom/` |
 | **农夫午餐** Ploughman's lunch | 切达、腌菜、面包、苹果、 pickle | 酒吧冷盘 | `ploughmans_lunch` |
 | **苏格兰蛋** Scotch egg | 溏心蛋裹 sausage meat 面包屑炸 | 野餐、pub snack | `scotch_egg` |
 | **康沃尔 pasty** Cornish pasty | 半月酥皮，牛肉土豆洋葱 | 手持 | `cornish_pasty` |
@@ -99,7 +99,7 @@ web_posters: {}
 
 | 名称 | 特点 | 建议 slug |
 |------|------|-----------|
-| **下午茶** Afternoon tea | 三层架：三明治、司康、甜点；配红茶 | `afternoon_tea` | ✅ p01–p06 EN · `uk/` |
+| **下午茶** Afternoon tea | 三层架：三明治、司康、甜点；配红茶 | `afternoon_tea` | ✅ p01–p06 EN · `united_kingdom/` |
 | **司康** Scone | clotted cream + jam（德文/康沃尔之争） | `scone` |
 | **维多利亚海绵** Victoria sponge | 两层海绵夹 jam 与 buttercream | `victoria_sponge` |
 | **Sticky toffee pudding** | 枣泥海绵配太妃酱 | `sticky_toffee_pudding` |
@@ -146,11 +146,11 @@ web_posters: {}
 | P2 | **Sticky toffee pudding** | 经典甜点 | `sticky_toffee_pudding` | 待扩 | 英国味道 |
 | P2 | **康沃尔 pasty** | handheld | `cornish_pasty` | 待扩 | 英国味道 |
 
-**时代服饰（规划）**：英国 **`uk_*`** 档（待建，对齐美国 `us_*` 粒度）：`uk_georgian` · `uk_victorian` · `uk_edwardian` · `uk_wartime` · `uk_swinging_60s` · `uk_mod_70s` · `uk_contemporary`。**禁止**中国朝代汉服默认。**mini-zine 语言**：`uk/` 建议 **英文 EN**（见 [mini-zine-i18n.md](../style/mini-zine-i18n.md)）。
+**时代服饰（规划）**：英国 **`uk_*`** 档（待建，对齐美国 `us_*` 粒度）：`uk_georgian` · `uk_victorian` · `uk_edwardian` · `uk_wartime` · `uk_swinging_60s` · `uk_mod_70s` · `uk_contemporary`。**禁止**中国朝代汉服默认。**mini-zine 语言**：`united_kingdom/` 建议 **英文 EN**（见 [mini-zine-i18n.md](../style/mini-zine-i18n.md)）。
 
 ---
 
-## 美食海报（`asserts/Gourmet recipe2/uk/`）
+## 美食海报（`asserts/Gourmet recipe2/united_kingdom/`）
 
 | 菜品 | 标准版 | 时代服饰 |
 |------|--------|----------|
@@ -161,7 +161,7 @@ web_posters: {}
 
 **定稿（Afternoon Tea · 2026-05-19 boluo 清新风 · EN）**：`uk_edwardian` 爱德华时代茶室围裙 · **4 女** · 三层茶架居中 · 底行 6 料横木牌（Scones·Clotted cream·Jam·Sandwiches·Pastries·Black tea）· 对齐 `boluo_chaofan_poster.png` · 顶题 **Afternoon Tea** · 竖牌 **British Flavor** · 英文对白 ×4 · 禁穿模 · **仅** `afternoon_tea_poster.png`。
 
-路径：`asserts/Gourmet recipe2/uk/` · 命名 `{slug}_poster.png`。
+路径：`asserts/Gourmet recipe2/united_kingdom/` · 命名 `{slug}_poster.png`。
 
 **下单示例**：
 
@@ -171,9 +171,9 @@ web_posters: {}
 
 ---
 
-## 美食 mini zine（`asserts/mini-zine/uk/`）
+## 美食 mini zine（`asserts/mini-zine/united_kingdom/`）
 
-**语言**：`uk/` 成品 **仅英文 EN**（栏目标题 Flavor / How to Eat / Recipe Guide 等；见 [mini-zine-i18n.md](../style/mini-zine-i18n.md)）。
+**语言**：`united_kingdom/` 成品 **仅英文 EN**（栏目标题 Flavor / How to Eat / Recipe Guide 等；见 [mini-zine-i18n.md](../style/mini-zine-i18n.md)）。
 
 | 菜品 | slug | 故事与吃法 | 做法小志 | 时代 · 角标 |
 |------|------|------------|----------|-------------|
@@ -197,14 +197,14 @@ web_posters: {}
 
 ---
 
-## 街景（`asserts/Street View/uk/` · 规划）
+## 街景（`asserts/Street View/united_kingdom/` · 规划）
 
 | 场景 | 目录 | 文件名模板 | 美食重点 |
 |------|------|------------|----------|
-| 伦敦·泰晤士河 | `uk/london/` | `uk_london_thames_river_*` | fish & chips 纸袋、pie & mash、pub 招牌、afternoon tea 橱窗 |
-| 伦敦·东区 | `uk/london/` | `uk_london_{scene}_{day\|night}_{wide\|standard}.png` | fish & chips 纸袋、pie shop、pub 招牌 |
-| 伦敦·西区 | `uk/london/` | 同上 | afternoon tea 橱窗、红巴士旁 café |
-| 爱丁堡 | `uk/edinburgh/` | `uk_edinburgh_*` | haggis pub、whisky 店招、皇家英里 |
+| 伦敦·泰晤士河 | `united_kingdom/london/` | `uk_london_thames_river_*` | fish & chips 纸袋、pie & mash、pub 招牌、afternoon tea 橱窗 |
+| 伦敦·东区 | `united_kingdom/london/` | `uk_london_{scene}_{day\|night}_{wide\|standard}.png` | fish & chips 纸袋、pie shop、pub 招牌 |
+| 伦敦·西区 | `united_kingdom/london/` | 同上 | afternoon tea 橱窗、红巴士旁 café |
+| 爱丁堡 | `united_kingdom/edinburgh/` | `uk_edinburgh_*` | haggis pub、whisky 店招、皇家英里 |
 
 场景原型：[uk-london-street-prototypes.md](uk-london-street-prototypes.md) · `uk-edinburgh-street-prototypes.md`（待建）。
 
@@ -233,9 +233,9 @@ web_posters: {}
 | 日期 | 说明 |
 |------|------|
 | 2026-05-19 | 首版：英格兰/苏格兰/威尔士/北爱风味图鉴 + slug 表；资源待扩 |
-| 2026-05-19 | **Full English** 海报首绘 · boluo 清新风 · EN · `uk/full_english_breakfast_poster.png` |
-| 2026-05-19 | **Full English** zine **p01–p06** · EN · `uk/full_english_breakfast_mini_zine_p*.png` · `uk_wartime` |
-| 2026-05-19 | **Afternoon Tea** 海报首绘 · boluo 清新风 · EN · `uk/afternoon_tea_poster.png` |
-| 2026-05-24 | **Afternoon Tea** zine **p01–p06** · EN · `uk/afternoon_tea_mini_zine_p*.png` · `uk_edwardian` |
+| 2026-05-19 | **Full English** 海报首绘 · boluo 清新风 · EN · `united_kingdom/full_english_breakfast_poster.png` |
+| 2026-05-19 | **Full English** zine **p01–p06** · EN · `united_kingdom/full_english_breakfast_mini_zine_p*.png` · `uk_wartime` |
+| 2026-05-19 | **Afternoon Tea** 海报首绘 · boluo 清新风 · EN · `united_kingdom/afternoon_tea_poster.png` |
+| 2026-05-24 | **Afternoon Tea** zine **p01–p06** · EN · `united_kingdom/afternoon_tea_mini_zine_p*.png` · `uk_edwardian` |
 | 2026-05-24 | **伦敦泰晤士河** 街景 `uk_london_thames_river_night_wide.png` · 有人物 · Big Ben/南岸 · fish & chips/pie & mash/pub |
 | 2026-05-24 | **泰晤士河 night_wide 重绘** · 河面主语 40～50% · 万绿园式三层景深 · 建筑/人物陪衬 |

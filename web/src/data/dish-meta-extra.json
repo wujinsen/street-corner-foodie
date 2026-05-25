@@ -184,5 +184,47 @@
       "pin": "美国·新奥尔良",
       "desc": { "zh": "油炸方包撒满糖粉，配菊苣咖啡。", "en": "", "ja": "" }
     }
+  },
+  "fr/paris": {
+    "macaron": {
+      "name": { "zh": "马卡龙", "en": "Macaron", "ja": "マカロン" },
+      "tags": { "zh": ["甜点", "杏仁"], "en": ["Pastry", "Almond"], "ja": ["スイーツ", "アーモンド"] },
+      "pin": "法国·巴黎",
+      "desc": { "zh": "杏仁蛋白夹馅小圆饼，巴黎 pâtisserie 标志。", "en": "Parisian almond meringue sandwich cookies.", "ja": "パリのマカロン。" }
+    },
+    "baguette": {
+      "name": { "zh": "法棍", "en": "Baguette", "ja": "バゲット" },
+      "tags": { "zh": ["面包", "脆壳"], "en": ["Bread", "Crusty"], "ja": ["パン", "カリッ"] },
+      "pin": "法国·巴黎",
+      "desc": { "zh": "长棍面包，壳脆心软，boulangerie 日常。", "en": "Crusty French loaf from the neighborhood bakery.", "ja": "フランスの定番バゲット。" }
+    },
+    "croissant": {
+      "name": { "zh": "可颂", "en": "Croissant", "ja": "クロワッサン" },
+      "tags": { "zh": ["黄油", "早餐"], "en": ["Butter", "Breakfast"], "ja": ["バター", "朝食"] },
+      "pin": "法国·巴黎",
+      "desc": { "zh": "层叠黄油 viennoiserie，café 早餐标配。", "en": "Buttery laminated pastry — café breakfast classic.", "ja": "バターのクロワッサン。" }
+    }
+  },
+  "uk/london": {
+    "full_english_breakfast": {
+      "name": { "zh": "全英式早餐", "en": "Full English Breakfast", "ja": "フルイングリッシュ" },
+      "tags": { "zh": ["培根", "香肠"], "en": ["Bacon", "Sausage"], "ja": ["ベーコン", "ソーセージ"] },
+      "pin": "英国·伦敦",
+      "desc": { "zh": "蛋、培根、香肠、黑布丁、焗豆与吐司。", "en": "Eggs, bacon, sausage, black pudding, beans and toast.", "ja": "英国の定番朝食。" }
+    },
+    "afternoon_tea": {
+      "name": { "zh": "下午茶", "en": "Afternoon Tea", "ja": "アフタヌーンティー" },
+      "tags": { "zh": ["司康", "茶"], "en": ["Scones", "Tea"], "ja": ["スコーン", "紅茶"] },
+      "pin": "英国·伦敦",
+      "desc": { "zh": "三层架司康、三明治与 scones，配红茶。", "en": "Tiered trays of scones, sandwiches and tea.", "ja": "英国式アフタヌーンティー。" }
+    }
+  },
+  "nz/nz": {
+    "hangi": {
+      "name": { "zh": "地炉 Hāngī", "en": "Hāngī", "ja": "ハンギ" },
+      "tags": { "zh": ["毛利", "慢烤"], "en": ["Māori", "Earth oven"], "ja": ["マオリ", "地炉"] },
+      "pin": "新西兰",
+      "desc": { "zh": "热石埋坑慢烤羊肉、根茎蔬菜与 kūmara。", "en": "Māori earth-oven feast — lamb, kūmara and vegetables.", "ja": "マオリの伝統ハンギ。" }
+    }
   }
 }

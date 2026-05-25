@@ -49,6 +49,11 @@ const PIN_DEFAULTS: Record<string, string> = {
   "us/tx": "美国·德州",
   "us/la": "美国·洛杉矶",
   "us/nola": "美国·新奥尔良",
+  "fr/paris": "法国·巴黎",
+  "uk/london": "英国·伦敦",
+  "de/cologne": "德国·科隆",
+  "za/south_africa": "南非·西开普",
+  "nz/nz": "新西兰",
 };
 
 function emptyTags(): PosterMeta["tags"] {

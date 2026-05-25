@@ -97,7 +97,11 @@ asserts/
 | [beijing.md](docs/china/beijing.md) | `…/cn/beijing/` | `…/cn/beijing/` |
 | [japan.md](docs/world/japan.md) | `…/jp/`（美食 md 已定，海报待扩） | `…/jp/tokyo/` · 富士 `…/jp/fuji/` |
 | [usa.md](docs/world/usa.md) | `…/us/` | 纽约 `…/nyc/` · LA `…/la/` · 德州 BBQ `…/tx/`（各 9 张） |
-| [usa.md](docs/world/usa.md) | `…/us/`（待扩） | `…/us/`（城市子目录待规划） |
+| [uk.md](docs/world/uk.md) | `…/united_kingdom/` | `…/united_kingdom/london/` |
+| [france.md](docs/world/france.md) | `…/france/` | `…/france/paris/` |
+| [germany.md](docs/world/germany.md) | `…/germany/` | `…/germany/cologne/` |
+| [south-africa.md](docs/world/south-africa.md) | `…/south_africa/` | `…/south_africa/agulhas/` · `…/good_hope/` |
+| [newzealand.md](docs/world/newzealand.md) | `…/new_zealand/` | `…/new_zealand/paradise_harbor/` |
 
 ## 入库三步
 

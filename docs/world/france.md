@@ -15,23 +15,23 @@ geo_prefix_paris: fr_paris_
 geo_prefix_lyon: fr_lyon_
 geo_prefix_provence: fr_provence_
 assets_dir: asserts/
-gourmet_poster_dir: asserts/Gourmet recipe2/fr/
-mini_zine_dir: asserts/mini-zine/fr/
-street_view_dir: asserts/Street View/fr/
-street_view_paris_dir: asserts/Street View/fr/paris/
+gourmet_poster_dir: asserts/Gourmet recipe2/france/
+mini_zine_dir: asserts/mini-zine/france/
+street_view_dir: asserts/Street View/france/
+street_view_paris_dir: asserts/Street View/france/paris/
 reference_dirs:
-  gourmet_poster: asserts/Gourmet recipe2/fr/
-  mini_zine: asserts/mini-zine/fr/
-  street_view: asserts/Street View/fr/
+  gourmet_poster: asserts/Gourmet recipe2/france/
+  mini_zine: asserts/mini-zine/france/
+  street_view: asserts/Street View/france/
 gourmet_posters:
-  - fr/macaron_poster.png
-  - fr/baguette_poster.png
-  - fr/croissant_poster.png
+  - france/macaron_poster.png
+  - france/baguette_poster.png
+  - france/croissant_poster.png
 mini_zine: []
 mini_zine_locale: fr
 street_view_approved:
-  - fr/paris/fr_paris_eiffel_tower_night_wide.png
-  - fr/paris/fr_paris_arc_de_triomphe_night_wide.png
+  - france/paris/fr_paris_eiffel_tower_night_wide.png
+  - france/paris/fr_paris_arc_de_triomphe_night_wide.png
 web_posters: {}
 ---
 
@@ -172,17 +172,17 @@ web_posters: {}
 | P2 | ** tarte Tatin** | 苹果倒置塔 | `tarte_tatin` | 待扩 | 法国味道 |
 | P2 | **马卡龙** | pâtisserie | `macaron` | ✅ | 巴黎味道 |
 
-**时代服饰（规划）**：法国 **`fr_*`** 档（待建）：`fr_ancien_regime` · `fr_belle_epoque` · `fr_resistance_40s` · `fr_new_wave_60s` · `fr_contemporary`。**mini-zine 语言**：`fr/` 建议 **法文 FR**（Phase 1 可先 EN，见 [mini-zine-i18n.md](../style/mini-zine-i18n.md)）。
+**时代服饰（规划）**：法国 **`fr_*`** 档（待建）：`fr_ancien_regime` · `fr_belle_epoque` · `fr_resistance_40s` · `fr_new_wave_60s` · `fr_contemporary`。**mini-zine 语言**：`france/` 建议 **法文 FR**（Phase 1 可先 EN，见 [mini-zine-i18n.md](../style/mini-zine-i18n.md)）。
 
 ---
 
-## 美食海报（`asserts/Gourmet recipe2/fr/`）
+## 美食海报（`asserts/Gourmet recipe2/france/`）
 
 | 菜品 | 标准版 | 时代服饰 |
 |------|--------|----------|
-| **Macaron** 马卡龙 | `fr/macaron_poster.png` ✅ | **`fr_belle_epoque`** · 4 女 · 6 料 · **pâtisserie** · Paris Flavor |
-| **可颂** Croissant | `fr/croissant_poster.png` ✅ | **`fr_belle_epoque`** · **3 女** · 6 料 · **viennoiserie L 形起酥台** · French Flavor |
-| **法棍** Baguette | `fr/baguette_poster.png` ✅ | **`fr_contemporary`** · **3 女** · 5 料 · **boulangerie L 形 + four à sole** · Paris Flavor |
+| **Macaron** 马卡龙 | `france/macaron_poster.png` ✅ | **`fr_belle_epoque`** · 4 女 · 6 料 · **pâtisserie** · Paris Flavor |
+| **可颂** Croissant | `france/croissant_poster.png` ✅ | **`fr_belle_epoque`** · **3 女** · 6 料 · **viennoiserie L 形起酥台** · French Flavor |
+| **法棍** Baguette | `france/baguette_poster.png` ✅ | **`fr_contemporary`** · **3 女** · 5 料 · **boulangerie L 形 + four à sole** · Paris Flavor |
 
 **定稿（Macaron · 2026-05-24 boluo 清新风 · FR）**：`fr_belle_epoque` 美好时代巴黎 pâtissier 白帽围裙 · **4 女** · pâtisserie 操作台 · 马卡龙塔居中 · 底行 6 料横木牌（Amandes·Sucre glace·Blancs·Colorant·Ganache·Crème）· 顶题 **Macaron** · 竖牌 **Paris Flavor** · 法文对白 ×4 · 禁穿模 · **仅** `macaron_poster.png`。
 
@@ -190,7 +190,7 @@ web_posters: {}
 
 **定稿（法棍 Baguette · 2026-05-19 重绘 · boluo 清新风 · FR）**：`fr_contemporary` 巴黎 **boulangerie** 烘焙师 · **3 女** · **L 形**站位（案板割纹 + 一侧 **four à sole**，**非** 2+2 · **非** 可颂起酥台）· 法棍篮居中 · 底行 **5** 料横木牌（Farine·Eau·Levure·Sel·Levain）· 顶题 **法棍** + **Baguette** · 竖牌 **Paris Flavor** · 法文对白 ×3 · 禁穿模 · 覆盖 `baguette_poster.png`。
 
-路径：`asserts/Gourmet recipe2/fr/` · 命名 `{slug}_poster.png`。
+路径：`asserts/Gourmet recipe2/france/` · 命名 `{slug}_poster.png`。
 
 **下单示例**：
 
@@ -200,7 +200,7 @@ web_posters: {}
 
 ---
 
-## 美食 mini zine（`asserts/mini-zine/fr/`）
+## 美食 mini zine（`asserts/mini-zine/france/`）
 
 | # | 菜品 | slug | 语言 | 状态 |
 |---|------|------|------|------|
@@ -210,15 +210,15 @@ web_posters: {}
 
 ---
 
-## 街景（`asserts/Street View/fr/` · 规划）
+## 街景（`asserts/Street View/france/` · 规划）
 
 | 场景 | 目录 | 文件名模板 | 美食重点 |
 |------|------|------------|----------|
-| 巴黎·埃菲尔铁塔 | `fr/paris/` | `fr_paris_eiffel_tower_*` | crêpe stand、café 露台、boulangerie 法棍 |
-| 巴黎·凯旋门 | `fr/paris/` | `fr_paris_arc_de_triomphe_*` | crêpe stand、café 露台、macaron、香榭方向 |
-| 巴黎·玛黑/左岸 | `fr/paris/` | `fr_paris_{scene}_{day\|night}_{wide\|standard}.png` | boulangerie 法棍、 café 露台、 crêpe stand |
-| 巴黎·蒙马特 | `fr/paris/` | 同上 | crêpe Nutella、 wine bar |
-| 里昂·老里昂 | `fr/lyon/` | `fr_lyon_*` | bouchon 招牌、 quenelle 店招 |
+| 巴黎·埃菲尔铁塔 | `france/paris/` | `fr_paris_eiffel_tower_*` | crêpe stand、café 露台、boulangerie 法棍 |
+| 巴黎·凯旋门 | `france/paris/` | `fr_paris_arc_de_triomphe_*` | crêpe stand、café 露台、macaron、香榭方向 |
+| 巴黎·玛黑/左岸 | `france/paris/` | `fr_paris_{scene}_{day\|night}_{wide\|standard}.png` | boulangerie 法棍、 café 露台、 crêpe stand |
+| 巴黎·蒙马特 | `france/paris/` | 同上 | crêpe Nutella、 wine bar |
+| 里昂·老里昂 | `france/lyon/` | `fr_lyon_*` | bouchon 招牌、 quenelle 店招 |
 
 场景原型：[france-paris-street-prototypes.md](france-paris-street-prototypes.md) · `france-lyon-street-prototypes.md`（待建）。
 
@@ -255,10 +255,10 @@ web_posters: {}
 | 日期 | 说明 |
 |------|------|
 | 2026-05-19 | 首版：法区风味图鉴 + slug 表；巴黎/里昂/普罗旺斯/西南/布列塔尼/阿尔萨斯；资源待扩 |
-| 2026-05-24 | **Macaron** 海报首绘 · boluo 清新风 · FR · `fr/macaron_poster.png` |
-| 2026-05-19 | **法棍 Baguette** 海报首绘 · boluo 清新风 · FR · boulangerie · `fr/baguette_poster.png` |
-| 2026-05-19 | **可颂 Croissant** 穿模重绘 · 主菜并排留缝 · 人物柜台后 · `fr/croissant_poster.png` |
-| 2026-05-19 | **法棍 Baguette** 重绘 · **3 女** · boulangerie L 形 + four à sole · 覆盖 `fr/baguette_poster.png` |
+| 2026-05-24 | **Macaron** 海报首绘 · boluo 清新风 · FR · `france/macaron_poster.png` |
+| 2026-05-19 | **法棍 Baguette** 海报首绘 · boluo 清新风 · FR · boulangerie · `france/baguette_poster.png` |
+| 2026-05-19 | **可颂 Croissant** 穿模重绘 · 主菜并排留缝 · 人物柜台后 · `france/croissant_poster.png` |
+| 2026-05-19 | **法棍 Baguette** 重绘 · **3 女** · boulangerie L 形 + four à sole · 覆盖 `france/baguette_poster.png` |
 | 2026-05-24 | **巴黎埃菲尔铁塔** 街景 `fr_paris_eiffel_tower_night_wide.png` · 有人物 · crêpe/café/boulangerie |
 | 2026-05-24 | **埃菲尔铁塔 night_wide 重绘** · 铁塔+战神广场占半幅 · 万绿园式景深 · 小摊/chibi 陪衬 |
 | 2026-05-24 | **巴黎凯旋门** 街景 `fr_paris_arc_de_triomphe_night_wide.png` · 有人物 · 戴高乐广场 · crêpe/café/macaron |

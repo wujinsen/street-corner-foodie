@@ -1,6 +1,9 @@
 ---
 import type { Lang } from "../lib/i18n";
 import type { Poster } from "../lib/types";
+import { leadingAxisIndices, radarPolygonPoints, RADAR_R, RADAR_R_BENTO_FILL } from "../lib/flavor-radar-geometry";
+import { flavorAxisFxColor, flavorAxisKeyAt } from "../lib/flavor-radar-fx";
+import { FLAVOR_AXIS_KEYS } from "../lib/flavor-polygon";
 
 interface Props {
   flavorLabels: string[];
@@ -13,6 +16,10 @@ interface Props {
   altc?: boolean;
   compact?: boolean;
   showLegend?: boolean;
+  /** Landing bento · draw-on, breathe, axis click pulse */
+  fx?: boolean;
+  /** Landing bento · max polygon in fixed tile padding */
+  bentoFill?: boolean;
 }
 
 const {
@@ -24,6 +31,8 @@ const {
   altc = false,
   compact = false,
   showLegend = false,
+  fx = false,
+  bentoFill = false,
 } = Astro.props as Props;
 
 const tags = poster ? (poster.tags[lang] ?? poster.tags.zh).slice(0, 5) : [];
@@ -31,7 +40,13 @@ const labels = flavorLabels.length ? flavorLabels : tags;
 const n = Math.max(labels.length, scores?.length ?? 0, tags.length, 3);
 const cx = 50;
 const cy = 50;
-const r = 36;
+const r = bentoFill ? RADAR_R_BENTO_FILL : RADAR_R;
+const fxSurface = fx;
+const fxLabels = fx && compact;
+const labelOffset = bentoFill && fxLabels ? 7 : fxLabels ? 8 : 10;
+const viewBox = fxLabels ? "-8 -8 116 116" : "0 0 100 100";
+const labelFontSize = bentoFill && fx ? 8 : fxLabels ? 6.5 : 5;
+const labelChars = bentoFill ? 5 : 4;
 
 function point(i: number, value: number): string {
   const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
@@ -69,35 +84,174 @@ const stars =
     ? starsProp
     : values.map(scoreToStar);
 
-const poly = values.map((v, i) => point(i, v)).join(" ");
+const poly = fx ? radarPolygonPoints(values, n, r) : values.map((v, i) => point(i, v)).join(" ");
 const grid = [100, 66, 33].map((pct) =>
   Array.from({ length: n }, (_, i) => point(i, pct)).join(" "),
 );
-const rootClass = ["flavor-radar", altc && "is-altc", compact && "is-compact", showLegend && "has-legend"]
+const leadAxes = fx ? leadingAxisIndices(values) : [];
+const rootClass = [
+  "flavor-radar",
+  altc && "is-altc",
+  compact && "is-compact",
+  bentoFill && "is-bento-fill",
+  showLegend && "has-legend",
+  fx && "flavor-radar--fx",
+]
   .filter(Boolean)
   .join(" ");
 ---
-<div class={rootClass} role="group" aria-label={labels.join(", ")}>
-  <svg viewBox="0 0 100 100" role="img" aria-hidden="true">
-    {grid.map((g) => (
-      <polygon points={g} fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.35" />
-    ))}
+<div
+  class={rootClass}
+  role="group"
+  aria-label={labels.join(", ")}
+  data-flavor-radar={fx ? "" : undefined}
+  data-radar-values={fx ? values.join(",") : undefined}
+  data-radar-n={fx ? String(n) : undefined}
+  data-radar-r={fx ? String(r) : undefined}
+>
+  <svg viewBox={viewBox} role="img" overflow="visible">
+    {fxSurface && (
+      <defs>
+        <filter id="scf-radar-glow-fx" x="-45%" y="-45%" width="190%" height="190%">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="2.4" result="blur" />
+          <feColorMatrix
+            in="blur"
+            type="matrix"
+            values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.85 0"
+            result="soft"
+          />
+          <feMerge>
+            <feMergeNode in="soft" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+    )}
+    <g class:list={["flavor-radar__grid", fxSurface && "flavor-radar__grid--glow"]}>
+      {grid.map((g) => (
+        <polygon points={g} fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.35" />
+      ))}
+    </g>
     {labels.slice(0, n).map((label, i) => {
       const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
-      const lx = cx + Math.cos(angle) * (r + 10);
-      const ly = cy + Math.sin(angle) * (r + 10);
+      const lx = cx + Math.cos(angle) * (r + labelOffset);
+      const ly = cy + Math.sin(angle) * (r + labelOffset);
+      if (fx) {
+        const labelText = label.slice(0, labelChars);
+        const pillW = bentoFill ? labelText.length * 5.2 + 6 : labelText.length * 4.8 + 6;
+        const pillH = bentoFill ? 11 : 9;
+        return (
+          <g
+            class:list={[
+              "radar-label-group",
+              bentoFill && "radar-label-group--bento",
+              fxLabels && !bentoFill && "radar-label-group--detail",
+            ]}
+            data-radar-axis-label={String(i)}
+            style={`--axis-color: ${flavorAxisFxColor(i)}`}
+          >
+            {fxLabels && (
+              <rect
+                class="radar-label-pill"
+                x={lx - pillW / 2}
+                y={ly - pillH / 2}
+                width={pillW}
+                height={pillH}
+                rx={pillH / 2}
+              />
+            )}
+            <rect
+              class="radar-label-hit"
+              x={fxLabels ? lx - pillW / 2 : lx - 7}
+              y={fxLabels ? ly - pillH / 2 : ly - 4}
+              width={fxLabels ? pillW : 14}
+              height={fxLabels ? pillH : 8}
+              rx={fxLabels ? pillH / 2 : 2}
+            />
+            <text
+              x={lx}
+              y={ly}
+              text-anchor="middle"
+              dominant-baseline="middle"
+              class="radar-label radar-label--fx"
+              font-size={labelFontSize}
+            >
+              {labelText}
+            </text>
+          </g>
+        );
+      }
       return (
-        <text x={lx} y={ly} text-anchor="middle" dominant-baseline="middle" class="radar-label">
-          {label.slice(0, 4)}
+        <text x={lx} y={ly} text-anchor="middle" dominant-baseline="middle" class="radar-label" font-size={labelFontSize}>
+          {label.slice(0, labelChars)}
         </text>
       );
     })}
-    <polygon
-      points={poly}
-      fill="color-mix(in srgb, var(--radar-fill) 35%, transparent)"
-      stroke="var(--radar-fill)"
-      stroke-width="1.2"
-    />
+    {fxSurface &&
+      labels.slice(0, n).map((_, i) => {
+        const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+        const ox = cx + Math.cos(angle) * r;
+        const oy = cy + Math.sin(angle) * r;
+        return (
+          <line
+            class="flavor-radar__spoke"
+            x1={cx}
+            y1={cy}
+            x2={ox}
+            y2={oy}
+            style={`--axis-color: ${flavorAxisFxColor(i)}`}
+          />
+        );
+      })}
+    <g class="flavor-radar__shape">
+      {fxSurface && (
+        <polygon
+          class="flavor-radar__poly-glow"
+          points={poly}
+          fill="none"
+          stroke="var(--radar-fill)"
+          stroke-width={bentoFill ? "2.8" : "2.4"}
+          stroke-linejoin="round"
+        />
+      )}
+      <polygon
+        class="flavor-radar__poly"
+        points={poly}
+        fill="color-mix(in srgb, var(--radar-fill) 35%, transparent)"
+        stroke="var(--radar-fill)"
+        stroke-width="1.2"
+      />
+      {fx &&
+        values.slice(0, n).map((v, i) => {
+          const angle = (Math.PI * 2 * i) / n - Math.PI / 2;
+          const dist = (v / 100) * r;
+          const vx = cx + Math.cos(angle) * dist;
+          const vy = cy + Math.sin(angle) * dist;
+          const isLead = leadAxes.includes(i);
+          return (
+            <g class="flavor-radar__axis">
+              <circle
+                class:list={["flavor-radar__vertex", isLead && "flavor-radar__vertex--lead"]}
+                style={`--axis-i: ${i}`}
+                data-axis-key={FLAVOR_AXIS_KEYS[i] ?? flavorAxisKeyAt(i)}
+                cx={vx}
+                cy={vy}
+                r={isLead ? 1.55 : 1.15}
+              />
+              <circle
+                class="flavor-radar__hit"
+                data-radar-axis-hit={String(i)}
+                cx={vx}
+                cy={vy}
+                r="9"
+                tabindex="0"
+                role="button"
+                aria-label={labels[i]}
+              />
+            </g>
+          );
+        })}
+    </g>
   </svg>
   {showLegend ? (
     <ul class="radar-legend">
@@ -146,6 +300,24 @@ const rootClass = ["flavor-radar", altc && "is-altc", compact && "is-compact", s
   font-size: 5px;
   fill: currentColor;
   font-family: var(--font-mono);
+}
+.flavor-radar__hit {
+  fill: transparent;
+  stroke: none;
+  cursor: pointer;
+  outline: none;
+}
+.radar-label-hit {
+  fill: transparent;
+  stroke: none;
+  cursor: pointer;
+}
+.radar-label--fx {
+  pointer-events: none;
+  transition: fill 0.22s ease, opacity 0.22s ease;
+}
+.flavor-radar__hit:focus-visible {
+  fill: color-mix(in oklab, var(--radar-fill) 18%, transparent);
 }
 .radar-tags {
   list-style: none;

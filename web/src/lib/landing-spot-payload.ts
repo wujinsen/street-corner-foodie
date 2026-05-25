@@ -6,7 +6,10 @@ import {
   buildLandingZineSlides,
   type LandingBentoSlide,
 } from "./landing-bento-slides";
+import { buildRegionFlavorRadarScores } from "./flavor-match";
+import { findRegion } from "./load-content";
 import { formatAtmosphereBento, getRegionAtmosphere, type RegionAtmosphere } from "./region-atmosphere";
+import { regionHeroImageUrl } from "./region-hero";
 import { getStreetConfig, streetPreferredImageUrl } from "./streets";
 import { t, type Lang } from "./i18n";
 import type { CountryId, Poster } from "./types";
@@ -19,6 +22,8 @@ export const LANDING_SPOT_TILES: Record<
     streetHubId: string;
     sceneSpotId: string;
     cityHeroSceneId: string;
+    /** Landing poster bento default (overrides region web_editor_pick). */
+    posterSlug?: string;
     zineSlug?: string;
     streetHubMood: "day" | "night";
     sceneSpotMood: "day" | "night";
@@ -29,6 +34,7 @@ export const LANDING_SPOT_TILES: Record<
     streetHubId: "qilou",
     sceneSpotId: "laobacha",
     cityHeroSceneId: "qilou",
+    posterSlug: "laobacha",
     zineSlug: "qingbuliang",
     streetHubMood: "night",
     sceneSpotMood: "day",
@@ -69,6 +75,8 @@ export interface LandingSpotPayload {
   streetHubSlides: LandingBentoSlide[];
   sceneSpotSlides: LandingBentoSlide[];
   radarHeadline: string;
+  /** Region-aggregated polygon scores (one per flavorLabels axis). */
+  radarScores: number[];
   streetHubSceneId: string;
   sceneSpotSceneId: string;
 }
@@ -90,6 +98,36 @@ function resolveZinePick(
   return second ?? posters.find((p) => p.fromZine) ?? posters[1];
 }
 
+/** Landing city card — region landing hero (night wide when available). */
+function resolveLandingCityHeroUrl(countryId: CountryId, regionId: string): string | null {
+  const tiles = LANDING_SPOT_TILES[countryId];
+  const region = findRegion(countryId, regionId);
+  if (region) {
+    const hero = regionHeroImageUrl(countryId, region, "landing");
+    if (hero) return hero;
+  }
+  const config = getStreetConfig(countryId, regionId);
+  if (!config) return null;
+  return streetPreferredImageUrl(config, tiles.cityHeroSceneId, "wide");
+}
+
+function resolveEditorPick(
+  countryId: CountryId,
+  regionId: string,
+  posters: Poster[],
+  posterSlug?: string,
+): Poster | undefined {
+  if (posterSlug) {
+    const hit = posters.find((p) => p.slug === posterSlug && !p.fromZine);
+    if (hit) return hit;
+  }
+  return (
+    pickCountryFeatured(posters, countryId) ??
+    posters.find((p) => !p.fromZine) ??
+    posters[0]
+  );
+}
+
 export function buildLandingSpotPayload(
   countryId: CountryId,
   lang: Lang,
@@ -100,18 +138,14 @@ export function buildLandingSpotPayload(
     REGIONS[countryId]?.[0];
   const regionId = region?.id ?? tiles.regionId;
   const posters = getPosters(countryId, regionId);
-  const editorPick =
-    pickCountryFeatured(posters, countryId) ??
-    posters.find((p) => !p.fromZine) ??
-    posters[0];
+  const editorPick = resolveEditorPick(countryId, regionId, posters, tiles.posterSlug);
   const zinePick = resolveZinePick(countryId, regionId, tiles.zineSlug, editorPick);
   const flavorLabels = region?.flavors[lang] ?? region?.flavors.zh ?? [];
+  const radarScores = buildRegionFlavorRadarScores(posters, flavorLabels, lang);
   const atmosphere = getRegionAtmosphere(countryId, regionId);
   const atmoBento = atmosphere ? formatAtmosphereBento(atmosphere, lang) : null;
   const streetConfig = getStreetConfig(countryId, regionId);
-  const cityHeroUrl = streetConfig
-    ? streetPreferredImageUrl(streetConfig, tiles.cityHeroSceneId, "wide")
-    : null;
+  const cityHeroUrl = resolveLandingCityHeroUrl(countryId, regionId);
 
   const dishSlides = editorPick
     ? buildLandingPosterSlides(posters, lang, countryId, regionId, editorPick.slug)
@@ -150,6 +184,7 @@ export function buildLandingSpotPayload(
     streetHubSlides,
     sceneSpotSlides,
     radarHeadline: flavorLabels.slice(0, 3).join(" · "),
+    radarScores,
     streetHubSceneId: tiles.streetHubId,
     sceneSpotSceneId: tiles.sceneSpotId,
   };
@@ -165,12 +200,10 @@ export function buildAllLandingSpotPayloads(
   };
 }
 
-/** City-card hero thumbnail for map spot (street scene, not gallery hero). */
+/** City-card hero thumbnail for map spot (region landing hero · night wide when available). */
 export function landingSpotCityHeroUrl(countryId: CountryId): string | null {
   const tiles = LANDING_SPOT_TILES[countryId];
-  const config = getStreetConfig(countryId, tiles.regionId);
-  if (!config) return null;
-  return streetPreferredImageUrl(config, tiles.cityHeroSceneId, "wide");
+  return resolveLandingCityHeroUrl(countryId, tiles.regionId);
 }
 
 export function streetSceneLabel(

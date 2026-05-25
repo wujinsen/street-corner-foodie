@@ -48,12 +48,24 @@ export const REGION_GEO: Record<string, RegionGeoConfig> = {
   "us:la": { center: [-118.25, 34.05], lngPerPin: 0.006, latPerPin: 0.004, zoom: 10 },
   "us:tx": { center: [-97.74, 30.27], lngPerPin: 0.02, latPerPin: 0.015, zoom: 8 },
   "us:nola": { center: [-90.07, 29.95], lngPerPin: 0.006, latPerPin: 0.004, zoom: 11 },
+  "fr:paris": { center: [2.352, 48.857], lngPerPin: 0.008, latPerPin: 0.006, zoom: 11 },
+  "uk:london": { center: [-0.118, 51.509], lngPerPin: 0.006, latPerPin: 0.004, zoom: 11 },
+  "de:cologne": { center: [6.96, 50.94], lngPerPin: 0.008, latPerPin: 0.006, zoom: 11 },
+  "za:south_africa": { center: [19.25, -34.6], lngPerPin: 0.04, latPerPin: 0.03, zoom: 7 },
+  "nz:nz": { center: [174.0, -41.0], lngPerPin: 0.02, latPerPin: 0.015, zoom: 5 },
+  "antarctica:antarctica": { center: [-64.75, -62.55], lngPerPin: 0.02, latPerPin: 0.015, zoom: 8 },
 };
 
 export const COUNTRY_FALLBACK: Record<CountryId, RegionGeoConfig> = {
   cn: { center: [104.2, 35.5], lngPerPin: 0.02, latPerPin: 0.015, zoom: 4 },
   jp: { center: [139.0, 36.2], lngPerPin: 0.02, latPerPin: 0.015, zoom: 5 },
   us: { center: [-98.5, 39.5], lngPerPin: 0.02, latPerPin: 0.015, zoom: 4 },
+  fr: { center: [2.5, 46.5], lngPerPin: 0.02, latPerPin: 0.015, zoom: 5 },
+  uk: { center: [-2.5, 54.5], lngPerPin: 0.02, latPerPin: 0.015, zoom: 5 },
+  de: { center: [10.5, 51.0], lngPerPin: 0.02, latPerPin: 0.015, zoom: 5 },
+  za: { center: [25.0, -29.0], lngPerPin: 0.02, latPerPin: 0.015, zoom: 5 },
+  nz: { center: [174.0, -41.0], lngPerPin: 0.02, latPerPin: 0.015, zoom: 5 },
+  antarctica: { center: [-64.75, -62.55], lngPerPin: 0.02, latPerPin: 0.015, zoom: 8 },
 };
 
 export function mapPinToGeo(

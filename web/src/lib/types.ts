@@ -6,7 +6,7 @@ export type Multilang = { zh: string; en: string; ja: string };
 
 
 
-export type CountryId = "cn" | "jp" | "us";
+export type CountryId = "cn" | "jp" | "us" | "fr" | "uk" | "de" | "za" | "nz" | "antarctica";
 
 
 

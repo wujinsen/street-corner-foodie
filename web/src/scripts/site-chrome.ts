@@ -12,6 +12,9 @@ import type { SearchIndexEntry } from "../lib/search-index";
 
 const FAV_KEY = "scf_favs";
 
+/** Favorites chrome stays visible; interactions off until the feature ships. */
+const FAVORITES_ENABLED = false;
+
 
 
 
@@ -289,6 +292,9 @@ function toast(msg: string): void {
 function toggleFavFromButton(btn: HTMLElement): void {
 
 
+  if (!FAVORITES_ENABLED) return;
+
+
   const slug = btn.dataset.favSlug;
 
 
@@ -371,6 +377,30 @@ function toggleFavFromButton(btn: HTMLElement): void {
 
 
 function syncFavUi(): void {
+
+
+  if (!FAVORITES_ENABLED) {
+
+
+    const badge = document.getElementById("fav-count");
+
+
+    if (badge) {
+
+
+      badge.textContent = "0";
+
+
+      badge.classList.remove("show");
+
+
+    }
+
+
+    return;
+
+
+  }
 
 
   const count = loadFavs().length;
@@ -595,6 +625,9 @@ function closeSearch(): void {
 function openFavPanel(): void {
 
 
+  if (!FAVORITES_ENABLED) return;
+
+
   document.getElementById("fav-panel")?.classList.add("open");
 
 
@@ -764,6 +797,15 @@ export function initSiteChrome(): void {
 
 
   document.getElementById("fav-close")?.addEventListener("click", closeFavPanel);
+
+
+  if (!FAVORITES_ENABLED) {
+
+
+    document.body.dataset.scfFavorites = "disabled";
+
+
+  }
 
 
   input?.addEventListener("input", () => void runSearch(input.value));

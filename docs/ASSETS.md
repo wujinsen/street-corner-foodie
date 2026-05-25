@@ -59,7 +59,8 @@ docs/
 
 | 段 | 含义 | 示例 |
 |----|------|------|
-| `{cc}` | 国家/地区二字码 | `cn`、`jp` |
+| `{cc}` | 国家/地区 | `cn`、`jp`、`us`（亚洲/美洲沿用二字码） |
+| `{country}` | **世界新增国家** · 完整英文 slug | `united_kingdom`、`france`、`germany`、`south_africa`、`new_zealand` |
 | `{admin}` | 省、都道府县、直辖市辖区等 | `hainan`、`hebei`、`zhejiang`、`tokyo` |
 | `{local}` | 城市、区县、街区 | `haikou`、`shijiazhuang`、`ikebukuro` |
 
@@ -67,7 +68,7 @@ docs/
 
 ### 三类资源的命名模板
 
-**① 街景** `asserts/Street View/{cc}/{admin}/[{local}/]`
+**① 街景** `asserts/Street View/{cc|country}/{admin}/[{local}/]`
 
 ```
 {geo}_{场景}_{day|night}_{wide|standard}.png
@@ -140,6 +141,7 @@ docs/
 | [zhejiang.md](china/zhejiang.md) | `cn_zhejiang_{菜}` | `cn_zhejiang_{场景}` | — |
 | [japan.md](world/japan.md) | `jp_{菜}` | `jp_tokyo_{区域}` · 富士 `jp_fuji_{场景}` | `tokyo_{区域}` |
 | [usa.md](world/usa.md) | `us_{菜}` | `us_nyc_{场景}` · `us_la_{场景}`（待扩） | —（纽约 9 张在 `us/nyc/`） |
+| [newzealand.md](world/newzealand.md) | `nz_{菜}` | `nz_auckland_{场景}` · `nz_wellington_*` · `nz_rotorua_*`（待扩） | — |
 
 ### 生成对话模板（带 geo）
 

@@ -13,19 +13,19 @@ geo_prefix: de_
 geo_prefix_cologne: de_cologne_
 geo_prefix_frankfurt: de_frankfurt_
 assets_dir: asserts/
-gourmet_poster_dir: asserts/Gourmet recipe2/de/
-mini_zine_dir: asserts/mini-zine/de/
-street_view_dir: asserts/Street View/de/
-street_view_cologne_dir: asserts/Street View/de/cologne/
+gourmet_poster_dir: asserts/Gourmet recipe2/germany/
+mini_zine_dir: asserts/mini-zine/germany/
+street_view_dir: asserts/Street View/germany/germany/
+street_view_cologne_dir: asserts/Street View/germany/germany/cologne/
 reference_dirs:
-  gourmet_poster: asserts/Gourmet recipe2/de/
-  mini_zine: asserts/mini-zine/de/
-  street_view: asserts/Street View/de/
+  gourmet_poster: asserts/Gourmet recipe2/germany/
+  mini_zine: asserts/mini-zine/germany/
+  street_view: asserts/Street View/germany/germany/
 gourmet_posters: []
 mini_zine: []
 mini_zine_locale: de
 street_view_approved:
-  - de/cologne/de_cologne_rhine_river_night_wide.png
+  - germany/cologne/de_cologne_rhine_river_night_wide.png
 web_posters: {}
 ---
 
@@ -52,13 +52,13 @@ web_posters: {}
 
 ---
 
-## 街景（`asserts/Street View/de/` · 规划）
+## 街景（`asserts/Street View/germany/germany/` · 规划）
 
 | 场景 | 目录 | 文件名模板 | 美食重点 |
 |------|------|------------|----------|
-| 科隆·莱茵河 | `de/cologne/` | `de_cologne_rhine_river_*` | Bratwurst、Currywurst、Brezel、Kölsch Biergarten |
-| 科隆·老城 | `de/cologne/` | `de_cologne_{scene}_*` | Himmel un Ääd、Kölsch Kneipe |
-| 法兰克福 | `de/frankfurt/` | `de_frankfurt_*` | Apfelwein、Handkäse |
+| 科隆·莱茵河 | `germany/cologne/` | `de_cologne_rhine_river_*` | Bratwurst、Currywurst、Brezel、Kölsch Biergarten |
+| 科隆·老城 | `germany/cologne/` | `de_cologne_{scene}_*` | Himmel un Ääd、Kölsch Kneipe |
+| 法兰克福 | `germany/frankfurt/` | `de_frankfurt_*` | Apfelwein、Handkäse |
 
 场景原型：[germany-rhine-street-prototypes.md](germany-rhine-street-prototypes.md)
 

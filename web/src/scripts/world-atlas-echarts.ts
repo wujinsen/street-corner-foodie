@@ -11,6 +11,7 @@ import type { ECharts, EChartsOption } from "echarts";
 import type {
   WorldAtlasPayload,
   WorldAtlasScene,
+  AtlasCoord,
 } from "../lib/world-atlas-payload";
 import type { CountryId } from "../lib/types";
 import {
@@ -421,13 +422,101 @@ function regionBoundarySeries(
   return [fill, stroke];
 }
 
-const LANDING_WORLD_ZOOM_MULT = 2;
+/** Alaska · left-edge framing anchor (阿拉斯加州). */
+const LANDING_ALASKA_GEO: AtlasCoord = [-152, 61];
+const LANDING_TOKYO_GEO_FALLBACK: AtlasCoord = [139.76, 35.68];
+
+function tokyoAnchorFromPayload(scenes: WorldAtlasScene[]): AtlasCoord {
+  const pts = scenes.filter((s) => s.countryId === "jp" && s.regionId === "tokyo");
+  if (!pts.length) return LANDING_TOKYO_GEO_FALLBACK;
+  const lng = pts.reduce((sum, s) => sum + s.geo[0], 0) / pts.length;
+  const lat = pts.reduce((sum, s) => sum + s.geo[1], 0) / pts.length;
+  return [lng, lat];
+}
+
+/** Short-arc longitude midpoint · Alaska west, Tokyo east across the Pacific. */
+function pacificLngMid(alaskaLng: number, tokyoLng: number): number {
+  let diff = tokyoLng - alaskaLng;
+  if (diff > 180) diff -= 360;
+  if (diff < -180) diff += 360;
+  let mid = alaskaLng + diff / 2;
+  if (mid > 180) mid -= 360;
+  if (mid < -180) mid += 360;
+  return mid;
+}
+
+function readLandingTokyoScreenX(host?: HTMLElement): number {
+  const shell = host?.closest(".landing-world-atlas") as HTMLElement | null;
+  const raw =
+    shell?.style.getPropertyValue("--landing-tokyo-screen-x").trim() ||
+    getComputedStyle(document.documentElement)
+      .getPropertyValue("--landing-tokyo-screen-x")
+      .trim();
+  const n = parseFloat(raw);
+  if (!Number.isFinite(n)) return 92;
+  return Math.min(97, Math.max(84, n));
+}
+
+/** Short-arc longitude span (degrees). */
+function shortLngSpan(westLng: number, eastLng: number): number {
+  let diff = eastLng - westLng;
+  if (diff > 180) diff -= 360;
+  if (diff < -180) diff += 360;
+  return Math.abs(diff);
+}
+
+interface LandingWorldFrame {
+  center: AtlasCoord;
+  zoom: number;
+  layoutCenter: [string, string];
+  layoutSize: string;
+  aspectScale: number;
+}
+
+/**
+ * Landing world · Tokyo pin at poster-side edge; Alaska visible on the left.
+ */
+function landingWorldFrame(
+  payload: WorldAtlasPayload,
+  host?: HTMLElement,
+): LandingWorldFrame {
+  const w = host?.clientWidth ?? 720;
+  const h = Math.max(host?.clientHeight ?? 260, 1);
+  const aspect = w / h;
+  const wide = aspect >= 1.55;
+  const tokyo = tokyoAnchorFromPayload(payload.scenes);
+  const alaska = LANDING_ALASKA_GEO;
+  const tokyoScreenX = readLandingTokyoScreenX(host);
+  const pacificSpan = shortLngSpan(alaska[0], tokyo[0]) + 8;
+
+  const center: AtlasCoord = [
+    tokyo[0],
+    alaska[1] * 0.24 + tokyo[1] * 0.76 - 2,
+  ];
+  const zoom =
+    payload.initialZoom *
+    (wide
+      ? 1.78 + Math.min(0.22, pacificSpan / 100) - Math.min(0.06, (aspect - 1.55) * 0.04)
+      : 1.68);
+  const sizePct = wide
+    ? Math.round(106 + Math.min(14, (aspect - 1.55) * 10))
+    : 102;
+
+  return {
+    center,
+    zoom,
+    layoutCenter: [`${tokyoScreenX}%`, "46%"],
+    layoutSize: `${sizePct}%`,
+    aspectScale: wide ? 0.73 : 0.77,
+  };
+}
 
 function viewportFor(
   state: AtlasState,
   payload: WorldAtlasPayload,
   landing = false,
-): { center: [number, number]; zoom: number; scaleLimit: { min: number; max: number } } {
+  host?: HTMLElement,
+): { center: AtlasCoord; zoom: number; scaleLimit: { min: number; max: number } } {
   const limits = { min: 0.6, max: 32 };
   if (state.view === "region" && state.regionKey) {
     const r = payload.regions.find((x) => x.id === state.regionKey);
@@ -437,13 +526,13 @@ function viewportFor(
     const c = payload.countries.find((x) => x.id === state.countryId);
     if (c) return { center: c.center, zoom: c.zoom, scaleLimit: limits };
   }
-  const worldZoom =
-    landing && state.view === "world"
-      ? payload.initialZoom * LANDING_WORLD_ZOOM_MULT
-      : payload.initialZoom;
+  if (landing && state.view === "world") {
+    const frame = landingWorldFrame(payload, host);
+    return { center: frame.center, zoom: frame.zoom, scaleLimit: limits };
+  }
   return {
     center: payload.initialCenter,
-    zoom: worldZoom,
+    zoom: payload.initialZoom,
     scaleLimit: limits,
   };
 }
@@ -454,8 +543,18 @@ function buildOption(
   landParticles: [number, number][],
   graticule: GraticuleLine[],
   landing = false,
+  host?: HTMLElement,
 ): EChartsOption {
-  const vp = viewportFor(state, payload, landing);
+  const vp = viewportFor(state, payload, landing, host);
+  const landingFrame =
+    landing && state.view === "world" ? landingWorldFrame(payload, host) : null;
+  const landingGeo = landingFrame
+    ? {
+        layoutCenter: landingFrame.layoutCenter,
+        layoutSize: landingFrame.layoutSize,
+        aspectScale: landingFrame.aspectScale,
+      }
+    : null;
 
   const tooltip: NonNullable<EChartsOption["tooltip"]> = {
     trigger: "item",
@@ -523,13 +622,14 @@ function buildOption(
       zoom: vp.zoom,
       center: vp.center,
       scaleLimit: vp.scaleLimit,
+      ...(landingGeo ?? {}),
       silent: true,
       itemStyle: {
-        areaColor: GEO_FILL,
-        borderColor: GEO_BORDER,
-        borderWidth: 0.45,
-        shadowColor: "rgba(0, 180, 255, 0.08)",
-        shadowBlur: 8,
+        areaColor: landing ? "#0c1a2a" : GEO_FILL,
+        borderColor: landing ? "rgba(126, 200, 255, 0.42)" : GEO_BORDER,
+        borderWidth: landing ? 0.55 : 0.45,
+        shadowColor: landing ? "rgba(0, 180, 255, 0.14)" : "rgba(0, 180, 255, 0.08)",
+        shadowBlur: landing ? 10 : 8,
       },
       emphasis: { disabled: true },
       label: { show: false },
@@ -748,12 +848,17 @@ export function createWorldAtlasChart(
     });
   };
 
+  let lastHostW = 0;
+  let lastHostH = 0;
+  /** User panned/zoomed landing world view — keep geo, only resize canvas. */
+  let landingViewCustomized = false;
+
   const render = (): void => {
     if (!chart || disposed) return;
     const assets = (host as HTMLElement & { _mapAssets?: Awaited<ReturnType<typeof loadMapAssets>> })
       ._mapAssets;
     if (!assets) return;
-    const option = buildOption(payload, state, assets.particles, assets.graticule, landing);
+    const option = buildOption(payload, state, assets.particles, assets.graticule, landing, host);
     clickRegistry = buildClickRegistry(option.series);
     chart.setOption(option, {
       notMerge: true,
@@ -773,6 +878,7 @@ export function createWorldAtlasChart(
       state.countryId = null;
       state.regionKey = null;
       state.view = "world";
+      landingViewCustomized = false;
       render();
       return;
     }
@@ -843,7 +949,7 @@ export function createWorldAtlasChart(
   };
 
   host.style.position = "relative";
-  host.style.backgroundColor = MAP_BG;
+  host.style.backgroundColor = landing ? "transparent" : MAP_BG;
 
   const onCrumbClick = (ev: Event): void => {
     const target = ev.target as HTMLElement;
@@ -901,6 +1007,9 @@ export function createWorldAtlasChart(
         });
       });
       chart.on("georoam", () => {
+        if (landing && state.view === "world") {
+          landingViewCustomized = true;
+        }
         syncCards();
       });
       await ensureMap(ec);
@@ -919,11 +1028,39 @@ export function createWorldAtlasChart(
 
   void start();
 
+  const landingShell = landing
+    ? (root.closest(".landing-world-atlas") as HTMLElement | null)
+    : null;
   const resizeObs = new ResizeObserver(() => {
+    const w = host.clientWidth;
+    const h = host.clientHeight;
+    const sizeChanged =
+      landing &&
+      (Math.abs(w - lastHostW) > 3 || Math.abs(h - lastHostH) > 3);
+    if (sizeChanged) {
+      lastHostW = w;
+      lastHostH = h;
+      if (!(landing && state.view === "world" && landingViewCustomized)) {
+        render();
+      }
+    }
     chart?.resize();
     syncCards();
   });
   resizeObs.observe(host);
+  if (landingShell && landingShell !== host) resizeObs.observe(landingShell);
+
+  const onLandingLayout = (): void => {
+    if (!landing || state.view !== "world" || !chart) return;
+    requestAnimationFrame(() => {
+      if (!landingViewCustomized) {
+        render();
+      }
+      chart?.resize();
+      syncCards();
+    });
+  };
+  window.addEventListener("scf:landing-map-layout", onLandingLayout);
 
   const onKey = (ev: KeyboardEvent): void => {
     if (ev.key !== "Escape") return;
@@ -952,6 +1089,7 @@ export function createWorldAtlasChart(
     dispose() {
       disposed = true;
       resizeObs.disconnect();
+      window.removeEventListener("scf:landing-map-layout", onLandingLayout);
       crumbs?.removeEventListener("click", onCrumbClick);
       root.removeEventListener("keydown", onKey);
       clearSpiderCards(host);

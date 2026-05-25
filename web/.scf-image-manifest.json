@@ -9248,5 +9248,465 @@
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
     "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Gourmet recipe2/nz/hangi_poster.png": {
+    "sig": "1779643674309.6108:2998240",
+    "hash": "3c6b87d45261",
+    "fallback": "/asserts/Gourmet recipe2/nz/hangi_poster.png",
+    "avif": "/scf-img/3c6b87d45261/320.avif 320w, /scf-img/3c6b87d45261/720.avif 720w, /scf-img/3c6b87d45261/1536.avif 1536w",
+    "webp": "/scf-img/3c6b87d45261/320.webp 320w, /scf-img/3c6b87d45261/720.webp 720w, /scf-img/3c6b87d45261/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/nz/hangi_mini_zine_p01_story_eating.png": {
+    "sig": "1779641726566.8472:3177313",
+    "hash": "0b3435954fbc",
+    "fallback": "/asserts/mini-zine/nz/hangi_mini_zine_p01_story_eating.png",
+    "avif": "/scf-img/0b3435954fbc/320.avif 320w, /scf-img/0b3435954fbc/720.avif 720w, /scf-img/0b3435954fbc/1536.avif 1536w",
+    "webp": "/scf-img/0b3435954fbc/320.webp 320w, /scf-img/0b3435954fbc/720.webp 720w, /scf-img/0b3435954fbc/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/nz/hangi_mini_zine_p02_narr_story.png": {
+    "sig": "1779641735477.401:3225977",
+    "hash": "8bc327841a3a",
+    "fallback": "/asserts/mini-zine/nz/hangi_mini_zine_p02_narr_story.png",
+    "avif": "/scf-img/8bc327841a3a/320.avif 320w, /scf-img/8bc327841a3a/720.avif 720w, /scf-img/8bc327841a3a/1536.avif 1536w",
+    "webp": "/scf-img/8bc327841a3a/320.webp 320w, /scf-img/8bc327841a3a/720.webp 720w, /scf-img/8bc327841a3a/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/nz/hangi_mini_zine_p03_narr_culture.png": {
+    "sig": "1779641747200.3635:3523110",
+    "hash": "4e0a97a335f0",
+    "fallback": "/asserts/mini-zine/nz/hangi_mini_zine_p03_narr_culture.png",
+    "avif": "/scf-img/4e0a97a335f0/320.avif 320w, /scf-img/4e0a97a335f0/720.avif 720w, /scf-img/4e0a97a335f0/1536.avif 1536w",
+    "webp": "/scf-img/4e0a97a335f0/320.webp 320w, /scf-img/4e0a97a335f0/720.webp 720w, /scf-img/4e0a97a335f0/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/nz/hangi_mini_zine_p04_narr_street.png": {
+    "sig": "1779642013832.9778:2874309",
+    "hash": "a482e2de035b",
+    "fallback": "/asserts/mini-zine/nz/hangi_mini_zine_p04_narr_street.png",
+    "avif": "/scf-img/a482e2de035b/320.avif 320w, /scf-img/a482e2de035b/720.avif 720w, /scf-img/a482e2de035b/1536.avif 1536w",
+    "webp": "/scf-img/a482e2de035b/320.webp 320w, /scf-img/a482e2de035b/720.webp 720w, /scf-img/a482e2de035b/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/nz/hangi_mini_zine_p05_narr_ingredients.png": {
+    "sig": "1779641995705.3738:3393411",
+    "hash": "cf7fb61709c6",
+    "fallback": "/asserts/mini-zine/nz/hangi_mini_zine_p05_narr_ingredients.png",
+    "avif": "/scf-img/cf7fb61709c6/320.avif 320w, /scf-img/cf7fb61709c6/720.avif 720w, /scf-img/cf7fb61709c6/1536.avif 1536w",
+    "webp": "/scf-img/cf7fb61709c6/320.webp 320w, /scf-img/cf7fb61709c6/720.webp 720w, /scf-img/cf7fb61709c6/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/nz/hangi_mini_zine_p06_recipe.png": {
+    "sig": "1779642033239.4978:3219344",
+    "hash": "f118ecb03c2d",
+    "fallback": "/asserts/mini-zine/nz/hangi_mini_zine_p06_recipe.png",
+    "avif": "/scf-img/f118ecb03c2d/320.avif 320w, /scf-img/f118ecb03c2d/720.avif 720w, /scf-img/f118ecb03c2d/1536.avif 1536w",
+    "webp": "/scf-img/f118ecb03c2d/320.webp 320w, /scf-img/f118ecb03c2d/720.webp 720w, /scf-img/f118ecb03c2d/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/za/agulhas/za_cape_agulhas_night_wide_no_char.png": {
+    "sig": "1779641450799.7725:2401818",
+    "hash": "3350f998d9d9",
+    "fallback": "/asserts/Street View/za/agulhas/za_cape_agulhas_night_wide_no_char.png",
+    "avif": "/scf-img/3350f998d9d9/320.avif 320w, /scf-img/3350f998d9d9/720.avif 720w, /scf-img/3350f998d9d9/1536.avif 1536w",
+    "webp": "/scf-img/3350f998d9d9/320.webp 320w, /scf-img/3350f998d9d9/720.webp 720w, /scf-img/3350f998d9d9/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/za/agulhas/za_cape_agulhas_day_wide.png": {
+    "sig": "1779642892382.2212:3057297",
+    "hash": "e3030761c05a",
+    "fallback": "/asserts/Street View/za/agulhas/za_cape_agulhas_day_wide.png",
+    "avif": "/scf-img/e3030761c05a/320.avif 320w, /scf-img/e3030761c05a/720.avif 720w, /scf-img/e3030761c05a/1536.avif 1536w",
+    "webp": "/scf-img/e3030761c05a/320.webp 320w, /scf-img/e3030761c05a/720.webp 720w, /scf-img/e3030761c05a/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/za/agulhas/za_cape_agulhas_night_wide.png": {
+    "sig": "1779644668902.4614:2718232",
+    "hash": "5e4871ec7f51",
+    "fallback": "/asserts/Street View/za/agulhas/za_cape_agulhas_night_wide.png",
+    "avif": "/scf-img/5e4871ec7f51/320.avif 320w, /scf-img/5e4871ec7f51/720.avif 720w, /scf-img/5e4871ec7f51/1280.avif 1280w, /scf-img/5e4871ec7f51/1536.avif 1536w",
+    "webp": "/scf-img/5e4871ec7f51/320.webp 320w, /scf-img/5e4871ec7f51/720.webp 720w, /scf-img/5e4871ec7f51/1280.webp 1280w, /scf-img/5e4871ec7f51/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/za/good_hope/za_cape_of_good_hope_night_wide.png": {
+    "sig": "1779646463082.2522:2471389",
+    "hash": "2c723319cd48",
+    "fallback": "/asserts/Street View/za/good_hope/za_cape_of_good_hope_night_wide.png",
+    "avif": "/scf-img/2c723319cd48/320.avif 320w, /scf-img/2c723319cd48/720.avif 720w, /scf-img/2c723319cd48/1280.avif 1280w, /scf-img/2c723319cd48/1536.avif 1536w",
+    "webp": "/scf-img/2c723319cd48/320.webp 320w, /scf-img/2c723319cd48/720.webp 720w, /scf-img/2c723319cd48/1280.webp 1280w, /scf-img/2c723319cd48/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/nz/paradise_harbor/nz_paradise_harbor_night_wide_no_char.png": {
+    "sig": "1779656993216.3252:2876259",
+    "hash": "bea7a7213b8f",
+    "fallback": "/asserts/Street View/nz/paradise_harbor/nz_paradise_harbor_night_wide_no_char.png",
+    "avif": "/scf-img/bea7a7213b8f/320.avif 320w, /scf-img/bea7a7213b8f/720.avif 720w, /scf-img/bea7a7213b8f/1536.avif 1536w",
+    "webp": "/scf-img/bea7a7213b8f/320.webp 320w, /scf-img/bea7a7213b8f/720.webp 720w, /scf-img/bea7a7213b8f/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Gourmet recipe2/france/baguette_poster.png": {
+    "sig": "1779573950717.1672:2916402",
+    "hash": "988cadb00746",
+    "fallback": "/asserts/Gourmet recipe2/france/baguette_poster.png",
+    "avif": "/scf-img/988cadb00746/320.avif 320w, /scf-img/988cadb00746/720.avif 720w, /scf-img/988cadb00746/1536.avif 1536w",
+    "webp": "/scf-img/988cadb00746/320.webp 320w, /scf-img/988cadb00746/720.webp 720w, /scf-img/988cadb00746/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Gourmet recipe2/france/croissant_poster.png": {
+    "sig": "1779574586785.338:2614485",
+    "hash": "a1cd45fb66c8",
+    "fallback": "/asserts/Gourmet recipe2/france/croissant_poster.png",
+    "avif": "/scf-img/a1cd45fb66c8/320.avif 320w, /scf-img/a1cd45fb66c8/720.avif 720w, /scf-img/a1cd45fb66c8/1536.avif 1536w",
+    "webp": "/scf-img/a1cd45fb66c8/320.webp 320w, /scf-img/a1cd45fb66c8/720.webp 720w, /scf-img/a1cd45fb66c8/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Gourmet recipe2/france/macaron_poster.png": {
+    "sig": "1779565108074.2146:2879827",
+    "hash": "36a1741adf8d",
+    "fallback": "/asserts/Gourmet recipe2/france/macaron_poster.png",
+    "avif": "/scf-img/36a1741adf8d/320.avif 320w, /scf-img/36a1741adf8d/720.avif 720w, /scf-img/36a1741adf8d/1536.avif 1536w",
+    "webp": "/scf-img/36a1741adf8d/320.webp 320w, /scf-img/36a1741adf8d/720.webp 720w, /scf-img/36a1741adf8d/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Gourmet recipe2/new_zealand/hangi_poster.png": {
+    "sig": "1779643674309.6108:2998240",
+    "hash": "a05ecb91c069",
+    "fallback": "/asserts/Gourmet recipe2/new_zealand/hangi_poster.png",
+    "avif": "/scf-img/a05ecb91c069/320.avif 320w, /scf-img/a05ecb91c069/720.avif 720w, /scf-img/a05ecb91c069/1536.avif 1536w",
+    "webp": "/scf-img/a05ecb91c069/320.webp 320w, /scf-img/a05ecb91c069/720.webp 720w, /scf-img/a05ecb91c069/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Gourmet recipe2/united_kingdom/afternoon_tea_poster.png": {
+    "sig": "1779564587849.5417:2968498",
+    "hash": "053ab13f2778",
+    "fallback": "/asserts/Gourmet recipe2/united_kingdom/afternoon_tea_poster.png",
+    "avif": "/scf-img/053ab13f2778/320.avif 320w, /scf-img/053ab13f2778/720.avif 720w, /scf-img/053ab13f2778/1536.avif 1536w",
+    "webp": "/scf-img/053ab13f2778/320.webp 320w, /scf-img/053ab13f2778/720.webp 720w, /scf-img/053ab13f2778/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Gourmet recipe2/united_kingdom/full_english_breakfast_poster.png": {
+    "sig": "1779564323470.5737:3118192",
+    "hash": "be71a36ff3d4",
+    "fallback": "/asserts/Gourmet recipe2/united_kingdom/full_english_breakfast_poster.png",
+    "avif": "/scf-img/be71a36ff3d4/320.avif 320w, /scf-img/be71a36ff3d4/720.avif 720w, /scf-img/be71a36ff3d4/1536.avif 1536w",
+    "webp": "/scf-img/be71a36ff3d4/320.webp 320w, /scf-img/be71a36ff3d4/720.webp 720w, /scf-img/be71a36ff3d4/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/new_zealand/hangi_mini_zine_p01_story_eating.png": {
+    "sig": "1779641726566.8472:3177313",
+    "hash": "178c1c05dae7",
+    "fallback": "/asserts/mini-zine/new_zealand/hangi_mini_zine_p01_story_eating.png",
+    "avif": "/scf-img/178c1c05dae7/320.avif 320w, /scf-img/178c1c05dae7/720.avif 720w, /scf-img/178c1c05dae7/1536.avif 1536w",
+    "webp": "/scf-img/178c1c05dae7/320.webp 320w, /scf-img/178c1c05dae7/720.webp 720w, /scf-img/178c1c05dae7/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/new_zealand/hangi_mini_zine_p02_narr_story.png": {
+    "sig": "1779641735477.401:3225977",
+    "hash": "fd5103724acb",
+    "fallback": "/asserts/mini-zine/new_zealand/hangi_mini_zine_p02_narr_story.png",
+    "avif": "/scf-img/fd5103724acb/320.avif 320w, /scf-img/fd5103724acb/720.avif 720w, /scf-img/fd5103724acb/1536.avif 1536w",
+    "webp": "/scf-img/fd5103724acb/320.webp 320w, /scf-img/fd5103724acb/720.webp 720w, /scf-img/fd5103724acb/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/new_zealand/hangi_mini_zine_p03_narr_culture.png": {
+    "sig": "1779641747200.3635:3523110",
+    "hash": "a7959cac6fe8",
+    "fallback": "/asserts/mini-zine/new_zealand/hangi_mini_zine_p03_narr_culture.png",
+    "avif": "/scf-img/a7959cac6fe8/320.avif 320w, /scf-img/a7959cac6fe8/720.avif 720w, /scf-img/a7959cac6fe8/1536.avif 1536w",
+    "webp": "/scf-img/a7959cac6fe8/320.webp 320w, /scf-img/a7959cac6fe8/720.webp 720w, /scf-img/a7959cac6fe8/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/new_zealand/hangi_mini_zine_p04_narr_street.png": {
+    "sig": "1779642013832.9778:2874309",
+    "hash": "32c051f6efe3",
+    "fallback": "/asserts/mini-zine/new_zealand/hangi_mini_zine_p04_narr_street.png",
+    "avif": "/scf-img/32c051f6efe3/320.avif 320w, /scf-img/32c051f6efe3/720.avif 720w, /scf-img/32c051f6efe3/1536.avif 1536w",
+    "webp": "/scf-img/32c051f6efe3/320.webp 320w, /scf-img/32c051f6efe3/720.webp 720w, /scf-img/32c051f6efe3/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/new_zealand/hangi_mini_zine_p05_narr_ingredients.png": {
+    "sig": "1779641995705.3738:3393411",
+    "hash": "d7602837e076",
+    "fallback": "/asserts/mini-zine/new_zealand/hangi_mini_zine_p05_narr_ingredients.png",
+    "avif": "/scf-img/d7602837e076/320.avif 320w, /scf-img/d7602837e076/720.avif 720w, /scf-img/d7602837e076/1536.avif 1536w",
+    "webp": "/scf-img/d7602837e076/320.webp 320w, /scf-img/d7602837e076/720.webp 720w, /scf-img/d7602837e076/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/new_zealand/hangi_mini_zine_p06_recipe.png": {
+    "sig": "1779642033239.4978:3219344",
+    "hash": "2965509bc351",
+    "fallback": "/asserts/mini-zine/new_zealand/hangi_mini_zine_p06_recipe.png",
+    "avif": "/scf-img/2965509bc351/320.avif 320w, /scf-img/2965509bc351/720.avif 720w, /scf-img/2965509bc351/1536.avif 1536w",
+    "webp": "/scf-img/2965509bc351/320.webp 320w, /scf-img/2965509bc351/720.webp 720w, /scf-img/2965509bc351/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p01_story_eating.png": {
+    "sig": "1779573413009.489:3143720",
+    "hash": "1bd1dde283c5",
+    "fallback": "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p01_story_eating.png",
+    "avif": "/scf-img/1bd1dde283c5/320.avif 320w, /scf-img/1bd1dde283c5/720.avif 720w, /scf-img/1bd1dde283c5/1536.avif 1536w",
+    "webp": "/scf-img/1bd1dde283c5/320.webp 320w, /scf-img/1bd1dde283c5/720.webp 720w, /scf-img/1bd1dde283c5/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p02_narr_story.png": {
+    "sig": "1779573432637.5098:3096019",
+    "hash": "5a00de2811dd",
+    "fallback": "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p02_narr_story.png",
+    "avif": "/scf-img/5a00de2811dd/320.avif 320w, /scf-img/5a00de2811dd/720.avif 720w, /scf-img/5a00de2811dd/1536.avif 1536w",
+    "webp": "/scf-img/5a00de2811dd/320.webp 320w, /scf-img/5a00de2811dd/720.webp 720w, /scf-img/5a00de2811dd/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p03_narr_culture.png": {
+    "sig": "1779573405706.908:3082056",
+    "hash": "6c533a5b48a9",
+    "fallback": "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p03_narr_culture.png",
+    "avif": "/scf-img/6c533a5b48a9/320.avif 320w, /scf-img/6c533a5b48a9/720.avif 720w, /scf-img/6c533a5b48a9/1536.avif 1536w",
+    "webp": "/scf-img/6c533a5b48a9/320.webp 320w, /scf-img/6c533a5b48a9/720.webp 720w, /scf-img/6c533a5b48a9/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p04_narr_street.png": {
+    "sig": "1779573640777.0386:2779109",
+    "hash": "2f81cd1f62ec",
+    "fallback": "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p04_narr_street.png",
+    "avif": "/scf-img/2f81cd1f62ec/320.avif 320w, /scf-img/2f81cd1f62ec/720.avif 720w, /scf-img/2f81cd1f62ec/1536.avif 1536w",
+    "webp": "/scf-img/2f81cd1f62ec/320.webp 320w, /scf-img/2f81cd1f62ec/720.webp 720w, /scf-img/2f81cd1f62ec/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p05_narr_ingredients.png": {
+    "sig": "1779573646016.3037:2948358",
+    "hash": "3ef304a5843f",
+    "fallback": "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p05_narr_ingredients.png",
+    "avif": "/scf-img/3ef304a5843f/320.avif 320w, /scf-img/3ef304a5843f/720.avif 720w, /scf-img/3ef304a5843f/1536.avif 1536w",
+    "webp": "/scf-img/3ef304a5843f/320.webp 320w, /scf-img/3ef304a5843f/720.webp 720w, /scf-img/3ef304a5843f/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p06_recipe.png": {
+    "sig": "1779573571839.3545:2730789",
+    "hash": "e9c19bed032c",
+    "fallback": "/asserts/mini-zine/united_kingdom/afternoon_tea_mini_zine_p06_recipe.png",
+    "avif": "/scf-img/e9c19bed032c/320.avif 320w, /scf-img/e9c19bed032c/720.avif 720w, /scf-img/e9c19bed032c/1536.avif 1536w",
+    "webp": "/scf-img/e9c19bed032c/320.webp 320w, /scf-img/e9c19bed032c/720.webp 720w, /scf-img/e9c19bed032c/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p01_story_eating.png": {
+    "sig": "1779564770899.3252:3101889",
+    "hash": "6567be88129c",
+    "fallback": "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p01_story_eating.png",
+    "avif": "/scf-img/6567be88129c/320.avif 320w, /scf-img/6567be88129c/720.avif 720w, /scf-img/6567be88129c/1536.avif 1536w",
+    "webp": "/scf-img/6567be88129c/320.webp 320w, /scf-img/6567be88129c/720.webp 720w, /scf-img/6567be88129c/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p02_narr_story.png": {
+    "sig": "1779565033599.016:3125416",
+    "hash": "53562bb8e9e8",
+    "fallback": "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p02_narr_story.png",
+    "avif": "/scf-img/53562bb8e9e8/320.avif 320w, /scf-img/53562bb8e9e8/720.avif 720w, /scf-img/53562bb8e9e8/1536.avif 1536w",
+    "webp": "/scf-img/53562bb8e9e8/320.webp 320w, /scf-img/53562bb8e9e8/720.webp 720w, /scf-img/53562bb8e9e8/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p03_narr_culture.png": {
+    "sig": "1779565250771.9526:3185793",
+    "hash": "c62deb2f8837",
+    "fallback": "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p03_narr_culture.png",
+    "avif": "/scf-img/c62deb2f8837/320.avif 320w, /scf-img/c62deb2f8837/720.avif 720w, /scf-img/c62deb2f8837/1536.avif 1536w",
+    "webp": "/scf-img/c62deb2f8837/320.webp 320w, /scf-img/c62deb2f8837/720.webp 720w, /scf-img/c62deb2f8837/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p04_narr_street.png": {
+    "sig": "1779565244394.3972:2816001",
+    "hash": "c01adaa7b417",
+    "fallback": "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p04_narr_street.png",
+    "avif": "/scf-img/c01adaa7b417/320.avif 320w, /scf-img/c01adaa7b417/720.avif 720w, /scf-img/c01adaa7b417/1536.avif 1536w",
+    "webp": "/scf-img/c01adaa7b417/320.webp 320w, /scf-img/c01adaa7b417/720.webp 720w, /scf-img/c01adaa7b417/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p05_narr_ingredients.png": {
+    "sig": "1779565369838.796:3434446",
+    "hash": "99488272116e",
+    "fallback": "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p05_narr_ingredients.png",
+    "avif": "/scf-img/99488272116e/320.avif 320w, /scf-img/99488272116e/720.avif 720w, /scf-img/99488272116e/1536.avif 1536w",
+    "webp": "/scf-img/99488272116e/320.webp 320w, /scf-img/99488272116e/720.webp 720w, /scf-img/99488272116e/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p06_recipe.png": {
+    "sig": "1779565257373.4475:3292426",
+    "hash": "386ca103f1ef",
+    "fallback": "/asserts/mini-zine/united_kingdom/full_english_breakfast_mini_zine_p06_recipe.png",
+    "avif": "/scf-img/386ca103f1ef/320.avif 320w, /scf-img/386ca103f1ef/720.avif 720w, /scf-img/386ca103f1ef/1536.avif 1536w",
+    "webp": "/scf-img/386ca103f1ef/320.webp 320w, /scf-img/386ca103f1ef/720.webp 720w, /scf-img/386ca103f1ef/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/france/paris/fr_paris_arc_de_triomphe_night_wide.png": {
+    "sig": "1779572429232.6348:3036985",
+    "hash": "72c029f00959",
+    "fallback": "/asserts/Street View/france/paris/fr_paris_arc_de_triomphe_night_wide.png",
+    "avif": "/scf-img/72c029f00959/320.avif 320w, /scf-img/72c029f00959/720.avif 720w, /scf-img/72c029f00959/1536.avif 1536w",
+    "webp": "/scf-img/72c029f00959/320.webp 320w, /scf-img/72c029f00959/720.webp 720w, /scf-img/72c029f00959/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/france/paris/fr_paris_eiffel_tower_night_wide.png": {
+    "sig": "1779572995667.2793:2674156",
+    "hash": "b77aa61bf06e",
+    "fallback": "/asserts/Street View/france/paris/fr_paris_eiffel_tower_night_wide.png",
+    "avif": "/scf-img/b77aa61bf06e/320.avif 320w, /scf-img/b77aa61bf06e/720.avif 720w, /scf-img/b77aa61bf06e/1536.avif 1536w",
+    "webp": "/scf-img/b77aa61bf06e/320.webp 320w, /scf-img/b77aa61bf06e/720.webp 720w, /scf-img/b77aa61bf06e/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/germany/cologne/de_cologne_rhine_river_night_wide.png": {
+    "sig": "1779572791468.714:2557296",
+    "hash": "5eedd12c4ec6",
+    "fallback": "/asserts/Street View/germany/cologne/de_cologne_rhine_river_night_wide.png",
+    "avif": "/scf-img/5eedd12c4ec6/320.avif 320w, /scf-img/5eedd12c4ec6/720.avif 720w, /scf-img/5eedd12c4ec6/1536.avif 1536w",
+    "webp": "/scf-img/5eedd12c4ec6/320.webp 320w, /scf-img/5eedd12c4ec6/720.webp 720w, /scf-img/5eedd12c4ec6/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/new_zealand/paradise_harbor/nz_paradise_harbor_day_wide_no_char.png": {
+    "sig": "1779657481614.598:2899091",
+    "hash": "36857627bfd3",
+    "fallback": "/asserts/Street View/new_zealand/paradise_harbor/nz_paradise_harbor_day_wide_no_char.png",
+    "avif": "/scf-img/36857627bfd3/320.avif 320w, /scf-img/36857627bfd3/720.avif 720w, /scf-img/36857627bfd3/1536.avif 1536w",
+    "webp": "/scf-img/36857627bfd3/320.webp 320w, /scf-img/36857627bfd3/720.webp 720w, /scf-img/36857627bfd3/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/new_zealand/paradise_harbor/nz_paradise_harbor_night_wide_no_char.png": {
+    "sig": "1779657333239.3376:2854405",
+    "hash": "ef8370072d1f",
+    "fallback": "/asserts/Street View/new_zealand/paradise_harbor/nz_paradise_harbor_night_wide_no_char.png",
+    "avif": "/scf-img/ef8370072d1f/320.avif 320w, /scf-img/ef8370072d1f/720.avif 720w, /scf-img/ef8370072d1f/1536.avif 1536w",
+    "webp": "/scf-img/ef8370072d1f/320.webp 320w, /scf-img/ef8370072d1f/720.webp 720w, /scf-img/ef8370072d1f/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/new_zealand/paradise_harbor/nz_paradise_harbor_sunset_wide_no_char.png": {
+    "sig": "1779657481614.598:2899091",
+    "hash": "184c9d91e50c",
+    "fallback": "/asserts/Street View/new_zealand/paradise_harbor/nz_paradise_harbor_sunset_wide_no_char.png",
+    "avif": "/scf-img/184c9d91e50c/320.avif 320w, /scf-img/184c9d91e50c/720.avif 720w, /scf-img/184c9d91e50c/1536.avif 1536w",
+    "webp": "/scf-img/184c9d91e50c/320.webp 320w, /scf-img/184c9d91e50c/720.webp 720w, /scf-img/184c9d91e50c/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/south_africa/agulhas/za_cape_agulhas_day_wide.png": {
+    "sig": "1779642892382.2212:3057297",
+    "hash": "566d65650999",
+    "fallback": "/asserts/Street View/south_africa/agulhas/za_cape_agulhas_day_wide.png",
+    "avif": "/scf-img/566d65650999/320.avif 320w, /scf-img/566d65650999/720.avif 720w, /scf-img/566d65650999/1536.avif 1536w",
+    "webp": "/scf-img/566d65650999/320.webp 320w, /scf-img/566d65650999/720.webp 720w, /scf-img/566d65650999/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/south_africa/agulhas/za_cape_agulhas_night_wide.png": {
+    "sig": "1779644668902.4614:2718232",
+    "hash": "4752995d00dc",
+    "fallback": "/asserts/Street View/south_africa/agulhas/za_cape_agulhas_night_wide.png",
+    "avif": "/scf-img/4752995d00dc/320.avif 320w, /scf-img/4752995d00dc/720.avif 720w, /scf-img/4752995d00dc/1536.avif 1536w",
+    "webp": "/scf-img/4752995d00dc/320.webp 320w, /scf-img/4752995d00dc/720.webp 720w, /scf-img/4752995d00dc/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/south_africa/agulhas/za_cape_agulhas_night_wide_no_char.png": {
+    "sig": "1779641450799.7725:2401818",
+    "hash": "792ba9203343",
+    "fallback": "/asserts/Street View/south_africa/agulhas/za_cape_agulhas_night_wide_no_char.png",
+    "avif": "/scf-img/792ba9203343/320.avif 320w, /scf-img/792ba9203343/720.avif 720w, /scf-img/792ba9203343/1536.avif 1536w",
+    "webp": "/scf-img/792ba9203343/320.webp 320w, /scf-img/792ba9203343/720.webp 720w, /scf-img/792ba9203343/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/south_africa/good_hope/za_cape_of_good_hope_night_wide.png": {
+    "sig": "1779646463082.2522:2471389",
+    "hash": "b40252a8f0a2",
+    "fallback": "/asserts/Street View/south_africa/good_hope/za_cape_of_good_hope_night_wide.png",
+    "avif": "/scf-img/b40252a8f0a2/320.avif 320w, /scf-img/b40252a8f0a2/720.avif 720w, /scf-img/b40252a8f0a2/1536.avif 1536w",
+    "webp": "/scf-img/b40252a8f0a2/320.webp 320w, /scf-img/b40252a8f0a2/720.webp 720w, /scf-img/b40252a8f0a2/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/united_kingdom/london/uk_london_thames_river_night_wide.png": {
+    "sig": "1779571987318.2625:2618515",
+    "hash": "e6dae074d7c0",
+    "fallback": "/asserts/Street View/united_kingdom/london/uk_london_thames_river_night_wide.png",
+    "avif": "/scf-img/e6dae074d7c0/320.avif 320w, /scf-img/e6dae074d7c0/720.avif 720w, /scf-img/e6dae074d7c0/1536.avif 1536w",
+    "webp": "/scf-img/e6dae074d7c0/320.webp 320w, /scf-img/e6dae074d7c0/720.webp 720w, /scf-img/e6dae074d7c0/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/antarctica/paradise_harbor/antarctica_paradise_harbor_day_wide_no_char.png": {
+    "sig": "1779657481614.598:2899091",
+    "hash": "4a9806e59c66",
+    "fallback": "/asserts/Street View/antarctica/paradise_harbor/antarctica_paradise_harbor_day_wide_no_char.png",
+    "avif": "/scf-img/4a9806e59c66/320.avif 320w, /scf-img/4a9806e59c66/720.avif 720w, /scf-img/4a9806e59c66/1280.avif 1280w, /scf-img/4a9806e59c66/1536.avif 1536w",
+    "webp": "/scf-img/4a9806e59c66/320.webp 320w, /scf-img/4a9806e59c66/720.webp 720w, /scf-img/4a9806e59c66/1280.webp 1280w, /scf-img/4a9806e59c66/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/antarctica/paradise_harbor/antarctica_paradise_harbor_night_wide_no_char.png": {
+    "sig": "1779657333239.3376:2854405",
+    "hash": "b8ea57450ecd",
+    "fallback": "/asserts/Street View/antarctica/paradise_harbor/antarctica_paradise_harbor_night_wide_no_char.png",
+    "avif": "/scf-img/b8ea57450ecd/320.avif 320w, /scf-img/b8ea57450ecd/720.avif 720w, /scf-img/b8ea57450ecd/1280.avif 1280w, /scf-img/b8ea57450ecd/1536.avif 1536w",
+    "webp": "/scf-img/b8ea57450ecd/320.webp 320w, /scf-img/b8ea57450ecd/720.webp 720w, /scf-img/b8ea57450ecd/1280.webp 1280w, /scf-img/b8ea57450ecd/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/antarctica/paradise_harbor/antarctica_paradise_harbor_sunset_wide_no_char.png": {
+    "sig": "1779657481614.598:2899091",
+    "hash": "d407102b7ef4",
+    "fallback": "/asserts/Street View/antarctica/paradise_harbor/antarctica_paradise_harbor_sunset_wide_no_char.png",
+    "avif": "/scf-img/d407102b7ef4/320.avif 320w, /scf-img/d407102b7ef4/720.avif 720w, /scf-img/d407102b7ef4/1280.avif 1280w, /scf-img/d407102b7ef4/1536.avif 1536w",
+    "webp": "/scf-img/d407102b7ef4/320.webp 320w, /scf-img/d407102b7ef4/720.webp 720w, /scf-img/d407102b7ef4/1280.webp 1280w, /scf-img/d407102b7ef4/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   }
 }

@@ -451,6 +451,17 @@ html[data-country="us"] .topbar { background: rgba(255,248,231,.84); }
 }
 .fav-count.show { display: inline-flex; }
 
+/* Favorites UI visible but inactive until feature ships (site-chrome.ts FAVORITES_ENABLED). */
+body[data-scf-favorites="disabled"] :is(
+  #fav-btn,
+  #dock-fav-btn,
+  [data-fav-slug],
+  .glass-poster-fav,
+  .poster-card .fav-btn
+) {
+  cursor: default;
+}
+
 /* -------- POSTER FAV BUTTON -------- */
 .poster-card .fav-btn {
   position: absolute;
@@ -841,6 +852,13 @@ html[data-theme="light"] .theme-toggle-btn .moon-ic { display: none; }
 /* default (no data-theme attr — auto/system not yet resolved) shows moon */
 html:not([data-theme]) .theme-toggle-btn .sun-ic { display: none; }
 
+.theme-toggle-btn--paused,
+.theme-toggle-btn:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 /* ---------- GLASS TILE base ---------- */
 .tile {
   position: relative;
@@ -857,13 +875,18 @@ html:not([data-theme]) .theme-toggle-btn .sun-ic { display: none; }
               background .25s var(--ease-soft);
   color: var(--fg);
 }
-.tile.is-link {
-  cursor: pointer;
+.tile.is-link,
+.tile.tile-shine {
   transform-style: preserve-3d;
   perspective: 900px;
 }
+.tile.is-link {
+  cursor: pointer;
+}
 .tile.is-link .tile-glint,
-.tile.is-link .tile-edge {
+.tile.is-link .tile-edge,
+.tile.tile-shine .tile-glint,
+.tile.tile-shine .tile-edge {
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -872,14 +895,16 @@ html:not([data-theme]) .theme-toggle-btn .sun-ic { display: none; }
   opacity: 0;
   transition: opacity .28s var(--ease-soft);
 }
-.tile.is-link .tile-glint {
+.tile.is-link .tile-glint,
+.tile.tile-shine .tile-glint {
   background: radial-gradient(
     520px circle at var(--shine-x, 50%) var(--shine-y, 50%),
     rgba(255, 255, 255, 0.16),
     transparent 42%
   );
 }
-.tile.is-link .tile-edge {
+.tile.is-link .tile-edge,
+.tile.tile-shine .tile-edge {
   padding: 1px;
   background: linear-gradient(
     135deg,
@@ -894,7 +919,9 @@ html:not([data-theme]) .theme-toggle-btn .sun-ic { display: none; }
   mask-composite: exclude;
 }
 .tile.is-link:hover,
-.tile.is-link:focus-visible {
+.tile.is-link:focus-visible,
+.tile.tile-shine:hover,
+.tile.tile-shine:focus-within {
   border-color: var(--tile-border-hover);
   background: var(--tile-bg-hover);
   box-shadow: var(--tile-shadow-hover);
@@ -903,18 +930,26 @@ html:not([data-theme]) .theme-toggle-btn .sun-ic { display: none; }
 .tile.is-link:hover .tile-glint,
 .tile.is-link:hover .tile-edge,
 .tile.is-link:focus-visible .tile-glint,
-.tile.is-link:focus-visible .tile-edge {
+.tile.is-link:focus-visible .tile-edge,
+.tile.tile-shine:hover .tile-glint,
+.tile.tile-shine:hover .tile-edge,
+.tile.tile-shine:focus-within .tile-glint,
+.tile.tile-shine:focus-within .tile-edge {
   opacity: 1;
 }
 @media (prefers-reduced-motion: reduce) {
   .tile.is-link:hover,
-  .tile.is-link:focus-visible {
+  .tile.is-link:focus-visible,
+  .tile.tile-shine:hover,
+  .tile.tile-shine:focus-within {
     transform: translateY(-2px);
   }
 }
 @media (prefers-reduced-transparency: reduce) {
   .tile.is-link .tile-glint,
-  .tile.is-link .tile-edge {
+  .tile.is-link .tile-edge,
+  .tile.tile-shine .tile-glint,
+  .tile.tile-shine .tile-edge {
     display: none;
   }
 }
@@ -1336,6 +1371,7 @@ body.landing-page .alt-landing .landing-spotlight > .landing-city-card .landing-
 .alt-landing .landing-city-card-bg {
   position: absolute;
   inset: 0;
+  z-index: 0;
   background: var(--bg-2) center/cover no-repeat;
   opacity: 0;
   transition: opacity .5s var(--ease-soft);
@@ -1917,7 +1953,7 @@ body.landing-page .alt-landing .landing-spotlight > .landing-city-card .landing-
 /* Home · landing-bento-mosaic — 两列错落（原型：左 海报/小志/风味 · 右 骑楼/天气/老爸茶） */
 .right-bento.landing-bento-mosaic {
   --bento-mosaic-gap: 12px;
-  --bento-weather-h: 128px;
+  --bento-weather-h: 384px;
   --bento-weather-tea-gap: var(--bento-mosaic-gap, 12px);
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   grid-template-rows: minmax(196px, 1.14fr) minmax(168px, 1fr) minmax(120px, 0.64fr);
@@ -1934,9 +1970,9 @@ body.landing-page .alt-landing .landing-spotlight > .landing-city-card .landing-
   align-self: start;
   position: relative;
   z-index: 2;
-  height: var(--bento-weather-h, 128px);
-  max-height: 136px;
-  min-height: var(--bento-weather-h, 128px);
+  height: var(--bento-weather-h, 256px);
+  max-height: none;
+  min-height: var(--bento-weather-h, 256px);
 }
 .right-bento.landing-bento-mosaic .bento-tea {
   grid-column: 2;
@@ -1967,7 +2003,7 @@ body.landing-page .alt-landing .landing-spotlight > .landing-city-card .landing-
 
 .right-bento.landing-bento-mosaic .bento-tea--proto.tile.t-tea .bg {
   position: absolute;
-  top: calc(var(--bento-weather-h, 128px) + var(--bento-weather-tea-gap, 12px));
+  top: calc(var(--bento-weather-h, 256px) + var(--bento-weather-tea-gap, 12px));
   right: 0;
   bottom: 0;
   left: 0;
@@ -2108,7 +2144,7 @@ body.landing-page .alt-landing .landing-spotlight > .landing-city-card .landing-
     min-height: 0;
   }
   .right-bento.landing-bento-mosaic {
-    --bento-weather-h: 120px;
+    --bento-weather-h: 360px;
   }
   .right-bento.landing-bento-mosaic .bento-tea--proto.tile.t-tea {
     grid-column: auto;
@@ -2116,9 +2152,9 @@ body.landing-page .alt-landing .landing-spotlight > .landing-city-card .landing-
     overflow: hidden;
   }
   .right-bento.landing-bento-mosaic .bento-weather {
-    height: var(--bento-weather-h, 120px);
-    max-height: 128px;
-    min-height: var(--bento-weather-h, 120px);
+    height: var(--bento-weather-h, 240px);
+    max-height: none;
+    min-height: var(--bento-weather-h, 240px);
   }
   .right-bento.landing-bento-mosaic .bento-tea--proto.tile.t-tea .bg {
     top: 0;
@@ -2160,9 +2196,9 @@ body.landing-page .alt-landing .landing-spotlight > .landing-city-card .landing-
     min-height: 200px;
   }
   .right-bento.landing-bento-mosaic .bento-weather {
-    min-height: 128px;
-    max-height: 136px;
-    height: 128px;
+    min-height: var(--bento-weather-h, 256px);
+    max-height: none;
+    height: var(--bento-weather-h, 256px);
   }
   .right-bento.landing-bento-mosaic .bento-radar {
     min-height: 140px;
@@ -3737,7 +3773,9 @@ body.has-altc .alt-zine-spread-media picture img {
   right: var(--street-edge);
   left: auto;
   top: 72px;
-  bottom: 72px;
+  bottom: auto;
+  height: fit-content;
+  max-height: calc(100% - 144px);
   width: var(--street-matrix-w);
   max-width: calc(50% - var(--street-edge) - 16px);
   overflow-y: auto;
@@ -4340,6 +4378,7 @@ body.has-altc .street-matrix-panel .street-geo-minimap {
 #zine-reader-root .alt-zine-side-left {
   max-height: min(calc(100dvh - var(--topbar-h) - var(--dock-h) - 72px), 720px);
   min-height: 0;
+  align-self: stretch;
   overflow: hidden;
   padding: 0;
 }
