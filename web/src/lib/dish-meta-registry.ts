@@ -38,6 +38,7 @@ const PIN_DEFAULTS: Record<string, string> = {
   "cn/guangdong": "广东",
   "cn/sichuan": "四川",
   "cn/beijing": "北京",
+  "cn/xizang": "西藏·拉萨",
   "cn/hunan": "湖南",
   "cn/fujian": "福建",
   "cn/liaoning": "东北",

@@ -563,6 +563,15 @@ body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card 
     display: none;
   }
 
+  body.landing-page.has-altc .landing-bento-panel > .landing-bento-region-panel:not([hidden]) {
+    display: contents;
+  }
+
+  body.landing-page.has-altc .landing-bento-panel > .landing-bento-region-panel[hidden] {
+    display: none;
+  }
+
+  body.landing-page.has-altc .landing-bento-panel > .landing-bento-region-panel > .landing-bento-mosaic,
   body.landing-page.has-altc .landing-bento-panel > .landing-bento-mosaic {
     flex: 1 1 auto;
     min-height: 0;
@@ -4336,6 +4345,16 @@ body.landing-page .bento-weather--proto.tile.t-chip {
   border-color: color-mix(in oklab, #fff 12%, transparent);
 }
 
+body.landing-page .bento-weather--proto.tile.t-chip:has([data-weather-expanded="true"]) {
+  overflow: visible;
+}
+
+body.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col .bento-weather:has([data-weather-expanded="true"]) {
+  height: auto;
+  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 100px));
+  max-height: none;
+}
+
 body.landing-page .bento-weather-live--starfield,
 body.landing-page .bento-weather-live[data-weather-stars="active"] {
   --weather-bg-1: #080c18;
@@ -4607,7 +4626,8 @@ body.landing-page .bento-weather-live {
 }
 
 body.landing-page .bento-weather-live[data-weather-expanded="true"] {
-  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 88px));
+  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 100px));
+  height: auto;
 }
 
 body.landing-page .right-bento.landing-bento-mosaic .bento-weather--proto.tile.t-chip {
@@ -4627,9 +4647,10 @@ body.landing-page .right-bento.landing-bento-mosaic .bento-weather--proto.tile.t
 body.landing-page
   .right-bento.landing-bento-mosaic
   .bento-weather--proto.tile.t-chip:has([data-weather-expanded="true"]) {
-  height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 88px));
-  max-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 88px));
-  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 88px));
+  height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 100px));
+  max-height: none;
+  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 100px));
+  overflow: visible;
 }
 
 body.landing-page .right-bento.landing-bento-mosaic .bento-radar--proto .flavor-radar svg {
@@ -5107,12 +5128,18 @@ body.landing-page .bento-weather-ambient-dot {
 body.landing-page .bento-weather-panel {
   position: relative;
   z-index: 4;
+  flex: 0 0 auto;
+  width: 100%;
   min-height: var(--weather-forecast-panel-h, 100px);
   padding: 2px 16px 16px;
   box-sizing: border-box;
   color: var(--weather-fg-sub);
   font-size: clamp(14px, 1.3vw, 15px);
   animation: weather-panel-in 0.38s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+body.landing-page .bento-weather-panel:not([hidden]) {
+  display: block;
 }
 
 body.landing-page .bento-weather-forecast-strip {
@@ -9451,6 +9478,13 @@ body.has-altc .footer.footer-alt .inner {
     max-height: none;
   }
 
+  body.landing-page.has-altc
+    .right-bento.landing-bento-mosaic--4
+    .landing-bento-right-col
+    .bento-weather:has([data-weather-expanded="true"]) {
+    min-height: calc(var(--bento-weather-h, 240px) + var(--weather-forecast-panel-h, 96px));
+  }
+
   body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-manifesto--bento-slot {
     grid-column: 1 / -1;
     width: 100%;
@@ -10054,6 +10088,14 @@ body.has-altc .world-atlas-explorer__crumb-item {
   gap: 0;
 }
 
+body.has-altc .world-atlas-explorer__crumb-item[hidden] {
+  display: none !important;
+}
+
+body.has-altc .world-atlas-explorer__crumb:empty {
+  display: none;
+}
+
 body.has-altc .world-atlas-explorer__crumb {
   display: inline-flex;
   align-items: center;
@@ -10201,4 +10243,480 @@ html[data-theme="light"] body.landing-page.has-altc .alt-landing .landing-spotli
     radial-gradient(ellipse 55% 45% at 72% 38%, color-mix(in oklab, #e60012 8%, transparent), transparent 68%),
     radial-gradient(ellipse 42% 38% at 22% 40%, color-mix(in oklab, #00d9e0 6%, transparent), transparent 65%),
     linear-gradient(165deg, #121820 0%, #0f1117 50%, #080a10 100%) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   World Atlas · FX trigger chip + fullscreen portal (restored)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+body.has-altc:has(.world-atlas-page) {
+  --world-atlas-chip-pad-y: 8px;
+  --world-atlas-chip-pad-x: 14px;
+  --world-atlas-chip-font: 14px;
+  --world-atlas-chip-top: calc(var(--topbar-h, 56px) + 8px);
+  --world-atlas-chip-glass-bg: color-mix(in oklab, #080a10 62%, transparent);
+  --world-atlas-chip-glass-border: color-mix(in oklab, #f5f7fb 24%, transparent);
+  --world-atlas-chip-glass-fg: color-mix(in oklab, #f5f7fb 94%, transparent);
+}
+
+body.has-altc .world-atlas-page > .world-atlas-explorer:not(.world-atlas-explorer--landing) .world-atlas-explorer__crumb {
+  padding: var(--world-atlas-chip-pad-y) var(--world-atlas-chip-pad-x);
+  font-size: var(--world-atlas-chip-font);
+}
+
+body.has-altc:has(.world-atlas-page) .atlas-fx-chip {
+  position: fixed;
+  top: var(--world-atlas-chip-top);
+  right: max(16px, calc(50svw - min(var(--scf-layout-max, 1200px), 100vw - 48px) / 2 + 16px));
+  z-index: 26;
+  pointer-events: auto;
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip .bento-weather-live--atlas-fx {
+  --weather-fg: var(--world-atlas-chip-glass-fg);
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--accent-c) 28%, var(--world-atlas-chip-glass-border));
+  background: color-mix(in oklab, var(--accent-c) 7%, var(--world-atlas-chip-glass-bg));
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, #fff 4%, transparent),
+    0 4px 18px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.22s ease,
+    transform 0.18s ease;
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip .bento-weather-bg,
+body.has-altc .world-atlas-page .atlas-fx-chip .bento-weather-mesh {
+  display: none;
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip__btn {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: var(--world-atlas-chip-pad-y) var(--world-atlas-chip-pad-x);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--world-atlas-chip-font);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  cursor: pointer;
+  border-radius: inherit;
+  outline: none;
+  white-space: nowrap;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--accent-c) 24%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--accent-c) 38%, transparent),
+    0 0 12px color-mix(in oklab, var(--accent-c) 32%, transparent);
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip__spark {
+  font-size: 11px;
+  line-height: 1;
+  color: color-mix(in oklab, #fff 92%, var(--accent-c));
+  animation: atlas-fx-spark-idle 2.8s ease-in-out infinite;
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip__label {
+  opacity: 0.96;
+}
+
+body.has-altc
+  .world-atlas-page
+  .atlas-fx-chip
+  .bento-weather-live--atlas-fx:has(.atlas-fx-chip__btn:hover),
+body.has-altc
+  .world-atlas-page
+  .atlas-fx-chip
+  .bento-weather-live--atlas-fx:has(.atlas-fx-chip__btn:focus-visible) {
+  border-color: color-mix(in oklab, var(--accent-c) 58%, #f5f7fb);
+  background: color-mix(in oklab, var(--accent-c) 16%, #080a10 78%);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--accent-c) 22%, transparent),
+    0 0 20px color-mix(in oklab, var(--accent-c) 26%, transparent);
+}
+
+body.has-altc
+  .world-atlas-page
+  .atlas-fx-chip
+  .bento-weather-live--atlas-fx:has(.atlas-fx-chip__btn:active) {
+  transform: scale(0.98);
+}
+
+body.has-altc
+  .world-atlas-page
+  .atlas-fx-chip
+  .bento-weather-live--atlas-fx:has(.atlas-fx-chip__btn:focus-visible) {
+  outline: 2px solid color-mix(in oklab, var(--accent-c) 60%, transparent);
+  outline-offset: 2px;
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip__btn:hover .atlas-fx-chip__icon,
+body.has-altc .world-atlas-page .atlas-fx-chip__btn:focus-visible .atlas-fx-chip__icon {
+  background: color-mix(in oklab, var(--accent-c) 34%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--accent-c) 52%, transparent),
+    0 0 16px color-mix(in oklab, var(--accent-c) 48%, transparent);
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip__btn:hover .atlas-fx-chip__spark,
+body.has-altc .world-atlas-page .atlas-fx-chip__btn:focus-visible .atlas-fx-chip__spark {
+  transform: scale(1.08);
+  filter: drop-shadow(0 0 4px color-mix(in oklab, var(--accent-c) 55%, transparent));
+}
+
+@keyframes atlas-fx-spark-idle {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.06) rotate(10deg);
+    opacity: 1;
+  }
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip__btn.bento-weather-temp-hit--bursting,
+body.has-altc .world-atlas-page .atlas-fx-chip__btn.bento-weather-temp-hit--burst-digit,
+body.has-altc .world-atlas-page .atlas-fx-chip__btn.combo-burst--tap-pulse {
+  animation: none !important;
+  transform: none !important;
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip__btn .atlas-fx-chip__label {
+  animation: none !important;
+  transform: none !important;
+  font-size: var(--world-atlas-chip-font) !important;
+  opacity: 0.96 !important;
+  letter-spacing: 0.03em !important;
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip .bento-weather-temp-fx-gel-badge {
+  display: none !important;
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip__icon.combo-burst--tap-pulse {
+  animation: atlas-fx-icon-tap 0.22s cubic-bezier(0.34, 1.45, 0.54, 1) both;
+}
+
+@keyframes atlas-fx-icon-tap {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.14);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+body.has-altc .world-atlas-page .atlas-fx-chip .bento-weather-live--fx-fullscreen {
+  transform: none !important;
+}
+
+html[data-theme="light"] body.has-altc:has(.world-atlas-page) {
+  --world-atlas-chip-glass-bg: color-mix(in oklab, var(--bg-1) 78%, transparent);
+  --world-atlas-chip-glass-border: color-mix(in oklab, var(--fg-strong) 20%, transparent);
+  --world-atlas-chip-glass-fg: color-mix(in oklab, var(--fg-strong) 94%, transparent);
+}
+
+html[data-theme="light"]
+  body.has-altc
+  .world-atlas-page
+  .atlas-fx-chip
+  .bento-weather-live--atlas-fx {
+  box-shadow:
+    0 0 0 1px color-mix(in oklab, var(--fg-strong) 6%, transparent),
+    0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+html[data-theme="light"] body.has-altc .world-atlas-page .atlas-fx-chip__btn {
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.55);
+}
+
+html[data-theme="light"] body.has-altc .world-atlas-page .atlas-fx-chip__spark {
+  color: color-mix(in oklab, var(--accent-c) 78%, var(--fg-strong));
+}
+
+@media (max-width: 720px) {
+  body.has-altc:has(.world-atlas-page) .atlas-fx-chip {
+    top: var(--world-atlas-chip-top);
+    right: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.has-altc .world-atlas-page .atlas-fx-chip__spark,
+  body.has-altc .world-atlas-page .atlas-fx-chip .bento-weather-live--atlas-fx,
+  body.has-altc .world-atlas-page .atlas-fx-chip__icon.combo-burst--tap-pulse {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* World Atlas · FX portal (mounted on body) */
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-canvas,
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage,
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border-radius: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-canvas {
+  z-index: 3;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage {
+  z-index: 2;
+  overflow: hidden;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-scrim {
+  z-index: 1;
+  opacity: 0;
+  border-radius: 0;
+  transition: opacity 0.45s var(--ease-soft, ease);
+  mix-blend-mode: soft-light;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-scrim.is-active {
+  opacity: 0.4;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage__wash {
+  position: absolute;
+  inset: -70%;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.55);
+  transform-origin: var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%);
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage__wash.is-playing {
+  animation: weather-fx-wash-bloom-fs 1.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-scrim--heat {
+  background:
+    radial-gradient(
+      ellipse 140% 120% at var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%),
+      color-mix(in oklab, #ff7800 48%, transparent) 0%,
+      color-mix(in oklab, #ff6200 36%, transparent) 38%,
+      color-mix(in oklab, #ff9500 28%, transparent) 62%,
+      transparent 82%
+    ),
+    linear-gradient(
+      118deg,
+      color-mix(in oklab, #ff8800 22%, transparent) 0%,
+      color-mix(in oklab, #ff5500 30%, transparent) 100%
+    );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-scrim--humid {
+  background: linear-gradient(
+    118deg,
+    color-mix(in oklab, #ff6070 34%, transparent) 0%,
+    color-mix(in oklab, #ff8898 28%, transparent) 38%,
+    color-mix(in oklab, #3cb858 32%, transparent) 100%
+  );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-scrim--sand {
+  background: linear-gradient(
+    118deg,
+    color-mix(in oklab, #f0e0a8 62%, transparent) 0%,
+    color-mix(in oklab, #e8c878 50%, transparent) 42%,
+    color-mix(in oklab, #c89858 55%, transparent) 100%
+  );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-scrim--gel {
+  background: linear-gradient(
+    118deg,
+    color-mix(in oklab, #e8f8ff 38%, transparent) 0%,
+    color-mix(in oklab, #88d8ff 34%, transparent) 48%,
+    color-mix(in oklab, #48b8f0 36%, transparent) 100%
+  );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-scrim--cosmic {
+  background:
+    radial-gradient(
+      ellipse 140% 120% at var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%),
+      color-mix(in oklab, #b878ff 42%, transparent) 0%,
+      color-mix(in oklab, #5088ff 32%, transparent) 42%,
+      color-mix(in oklab, #180828 38%, transparent) 100%
+    ),
+    linear-gradient(
+      118deg,
+      color-mix(in oklab, #ffb850 18%, transparent) 0%,
+      color-mix(in oklab, #8040d0 28%, transparent) 100%
+    );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-scrim--sun {
+  background:
+    radial-gradient(
+      ellipse 130% 110% at var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%),
+      color-mix(in oklab, #ffe898 44%, transparent) 0%,
+      color-mix(in oklab, #ffc850 30%, transparent) 45%,
+      transparent 78%
+    ),
+    linear-gradient(
+      118deg,
+      color-mix(in oklab, #ffd860 24%, transparent) 0%,
+      color-mix(in oklab, #ff9800 22%, transparent) 100%
+    );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--heat .bento-weather-fx-stage__wash {
+  background:
+    radial-gradient(
+      circle at var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%),
+      rgba(255, 255, 230, 0.58) 0%,
+      rgba(255, 190, 50, 0.48) 12%,
+      rgba(255, 120, 0, 0.38) 28%,
+      rgba(255, 85, 0, 0.22) 48%,
+      rgba(255, 100, 0, 0.08) 68%,
+      transparent 78%
+    ),
+    radial-gradient(
+      ellipse 120% 100% at var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%),
+      rgba(255, 130, 0, 0.12),
+      transparent 70%
+    );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--humid .bento-weather-fx-stage__wash {
+  background:
+    linear-gradient(
+      125deg,
+      rgba(255, 90, 105, 0.24) 0%,
+      rgba(255, 130, 140, 0.2) 38%,
+      rgba(55, 175, 85, 0.22) 100%
+    ),
+    radial-gradient(
+      circle at var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%),
+      rgba(255, 180, 190, 0.26),
+      transparent 54%
+    );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--sand .bento-weather-fx-stage__wash {
+  background:
+    radial-gradient(
+      ellipse 90% 80% at var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%),
+      rgba(255, 235, 180, 0.55) 0%,
+      rgba(230, 190, 120, 0.38) 38%,
+      rgba(190, 140, 80, 0.18) 62%,
+      transparent 78%
+    ),
+    repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(220, 180, 120, 0.06) 0deg 14deg,
+      transparent 14deg 28deg
+    );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--gel .bento-weather-fx-stage__wash {
+  background:
+    radial-gradient(
+      ellipse 95% 85% at var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%),
+      rgba(255, 255, 255, 0.32) 0%,
+      rgba(180, 235, 255, 0.24) 38%,
+      rgba(90, 190, 255, 0.16) 68%,
+      transparent 84%
+    );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--cosmic .bento-weather-fx-stage__wash {
+  background:
+    radial-gradient(
+      circle at var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%),
+      rgba(255, 252, 240, 0.42) 0%,
+      rgba(255, 200, 120, 0.28) 10%,
+      rgba(200, 120, 255, 0.24) 28%,
+      rgba(80, 140, 255, 0.18) 48%,
+      rgba(12, 8, 32, 0.22) 68%,
+      transparent 82%
+    );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--sun .bento-weather-fx-stage__wash {
+  background:
+    radial-gradient(
+      circle at var(--weather-fx-origin-x, 50%) var(--weather-fx-origin-y, 50%),
+      rgba(255, 252, 230, 0.48) 0%,
+      rgba(255, 220, 110, 0.32) 18%,
+      rgba(255, 180, 60, 0.18) 42%,
+      rgba(255, 150, 40, 0.08) 62%,
+      transparent 80%
+    );
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--heat .bento-weather-fx-stage__wash.is-playing {
+  animation: weather-fx-heat-explode-fs 1.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--humid .bento-weather-fx-stage__wash.is-playing {
+  animation: weather-fx-watermelon-explode-fs 1.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--gel .bento-weather-fx-stage__wash.is-playing {
+  animation: weather-fx-ice-explode-fs 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--cosmic .bento-weather-fx-stage__wash.is-playing {
+  animation: weather-fx-cosmic-explode-fs 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--sun .bento-weather-fx-stage__wash.is-playing {
+  animation: weather-fx-sun-beam-fs 1.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

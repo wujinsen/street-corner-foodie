@@ -33,6 +33,7 @@ import {
   primeWeatherAmbientGesture,
   stopWeatherAmbient,
 } from "../lib/weather-ambient-audio";
+import { getVisibleBentoScope } from "./landing-bento-scope";
 
 export interface LandingWeatherConfig {
   lat: number;
@@ -408,9 +409,41 @@ function initWeatherAmbient(el: HTMLElement, config: LandingWeatherConfig): void
   });
 }
 
+function syncForecastPanelHeight(el: HTMLElement): void {
+  const panel = el.querySelector<HTMLElement>("[data-bento-weather-forecast]");
+  if (!panel) return;
+
+  const tile = el.closest<HTMLElement>(".bento-weather--proto.tile");
+
+  const clearHeight = (): void => {
+    el.style.removeProperty("--weather-forecast-panel-h");
+    tile?.style.removeProperty("--weather-forecast-panel-h");
+  };
+
+  if (el.dataset.weatherExpanded !== "true" || panel.hidden) {
+    clearHeight();
+    return;
+  }
+
+  const applyHeight = (): void => {
+    const measured = Math.ceil(panel.scrollHeight);
+    if (measured <= 0) return;
+    const px = `${measured}px`;
+    el.style.setProperty("--weather-forecast-panel-h", px);
+    tile?.style.setProperty("--weather-forecast-panel-h", px);
+    window.dispatchEvent(new Event("scf:landing-map-layout"));
+  };
+
+  requestAnimationFrame(() => {
+    applyHeight();
+    requestAnimationFrame(applyHeight);
+  });
+}
+
 function setExpanded(el: HTMLElement, expanded: boolean, config?: LandingWeatherConfig): void {
   const toggle = el.querySelector<HTMLButtonElement>("[data-bento-weather-toggle]");
   const panel = el.querySelector<HTMLElement>("[data-bento-weather-forecast]");
+  const tile = el.closest<HTMLElement>(".bento-weather--proto.tile");
   if (!toggle || !panel) return;
 
   el.dataset.weatherExpanded = expanded ? "true" : "false";
@@ -422,6 +455,17 @@ function setExpanded(el: HTMLElement, expanded: boolean, config?: LandingWeather
       : toggle.getAttribute("data-label-expand") ?? "Expand",
   );
   panel.hidden = !expanded;
+
+  if (expanded) {
+    if (!panel.dataset.forecastLoaded) {
+      el.style.setProperty("--weather-forecast-panel-h", "100px");
+      tile?.style.setProperty("--weather-forecast-panel-h", "100px");
+    }
+    syncForecastPanelHeight(el);
+  } else {
+    el.style.removeProperty("--weather-forecast-panel-h");
+    tile?.style.removeProperty("--weather-forecast-panel-h");
+  }
 
   if (config && el.dataset.weatherSource === "live") {
     if (expanded) void startWeatherAmbient(el, config);
@@ -442,6 +486,7 @@ async function loadForecast(el: HTMLElement, config: LandingWeatherConfig): Prom
     const days = await fetchDailyForecast(config);
     renderForecastStrip(panel, days, config.lang);
     panel.dataset.forecastLoaded = "true";
+    syncForecastPanelHeight(el);
   } catch {
     panel.textContent = forecastErrorLabel(config.lang);
     delete panel.dataset.forecastLoaded;
@@ -541,10 +586,21 @@ async function enhanceWeatherChip(el: HTMLElement): Promise<void> {
 
 export function initLandingBentoWeather(root: ParentNode = document): void {
   root.querySelectorAll<HTMLElement>("[data-landing-weather]").forEach((el) => {
+    if (el.dataset.weatherInit === "true") return;
+    el.dataset.weatherInit = "true";
     void enhanceWeatherChip(el);
   });
 }
 
 if (typeof document !== "undefined") {
-  initLandingBentoWeather();
+  const bootVisibleWeather = (): void => {
+    const visible = getVisibleBentoScope();
+    initLandingBentoWeather(visible ?? document);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootVisibleWeather, { once: true });
+  } else {
+    bootVisibleWeather();
+  }
 }

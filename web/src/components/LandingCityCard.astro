@@ -1,4 +1,5 @@
 ---
+import { formatLandingCoordsHtml } from "../lib/landing-coords";
 import { t } from "../lib/i18n";
 import type { Lang } from "../lib/i18n";
 import type { Multilang } from "../lib/types";
@@ -30,9 +31,17 @@ const citySubText = t(citySub, lang).trim();
     <h2 class="name h-serif-dish">
       <span data-map-city-display>{cityDisplay}</span>
     </h2>
-    {citySubText && <p class="sub" data-map-city-sub>{citySubText}</p>}
+    {citySubText ? (
+      <p class="sub" data-map-city-sub>{citySubText}</p>
+    ) : (
+      <p class="sub" data-map-city-sub hidden></p>
+    )}
     <footer class="landing-city-card-foot">
-      <span class="coords h-track" data-map-city-coords>{coords}</span>
+      <span
+        class="coords h-track landing-city-coords"
+        data-map-city-coords
+        set:html={formatLandingCoordsHtml(coords)}
+      />
     </footer>
   </div>
 </article>

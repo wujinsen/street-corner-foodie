@@ -3,8 +3,10 @@
 ---
 <script>
   import { initWorldAtlasExplorer } from "../scripts/world-atlas-echarts";
+  import { initWorldAtlasWeather } from "../scripts/world-atlas-weather";
 
   function bootWorldAtlas(): void {
+    initWorldAtlasWeather();
     document
       .querySelectorAll<HTMLElement>("[data-world-atlas-explorer]")
       .forEach((root) => {
@@ -12,5 +14,9 @@
       });
   }
 
-  bootWorldAtlas();
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootWorldAtlas, { once: true });
+  } else {
+    bootWorldAtlas();
+  }
 </script>

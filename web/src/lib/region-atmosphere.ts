@@ -66,6 +66,13 @@ const ATMOSPHERE: Record<string, RegionAtmosphere> = {
     climate: { zh: "江南", en: "Jiangnan", ja: "江南" },
     climatePreset: "temperate",
   },
+  "cn/xizang": {
+    mood: { zh: "晴冷", en: "Crisp", ja: "晴れ冷" },
+    sunsetLocal: "20:05",
+    tempC: 12,
+    climate: { zh: "高原", en: "Plateau", ja: "高原" },
+    climatePreset: "continental",
+  },
   "jp/tokyo": {
     mood: { zh: "夕暮", en: "Dusk", ja: "夕暮れ" },
     sunsetLocal: "18:32",
@@ -126,7 +133,7 @@ const ATMOSPHERE: Record<string, RegionAtmosphere> = {
     mood: { zh: "晴", en: "Clear", ja: "晴れ" },
     sunsetLocal: "21:30",
     tempC: 17,
-    climate: { zh: "莱茵", en: "Rhine", ja: "ライン" },
+    climate: { zh: "温带", en: "Temperate", ja: "温帯" },
     climatePreset: "temperate",
   },
   "za/south_africa": {

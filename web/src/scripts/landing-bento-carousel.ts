@@ -1,7 +1,83 @@
-/** Home · bento tile image carousel (prev/next + dots) */
+/** Home · bento tile image carousel (prev/next + dots + adjacent preload) */
+
+import { getVisibleBentoScope } from "./landing-bento-scope";
+
+const preloadedUrls = new Set<string>();
 
 function findTileRoot(carousel: HTMLElement): HTMLElement | null {
   return carousel.closest<HTMLElement>("a.tile, .tile.is-link, a.tile");
+}
+
+function bestImageUrl(img: HTMLImageElement): string {
+  if (img.currentSrc) return img.currentSrc;
+  const display = img.getAttribute("data-display-src");
+  if (display) return display;
+  const srcset = img.getAttribute("srcset");
+  if (srcset) {
+    const parts = srcset.split(",").map((part) => part.trim());
+    const last = parts[parts.length - 1];
+    const url = last?.split(/\s+/)[0];
+    if (url) return url;
+  }
+  return img.src;
+}
+
+function preloadImageUrl(url: string): Promise<void> {
+  if (!url || preloadedUrls.has(url)) return Promise.resolve();
+
+  preloadedUrls.add(url);
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve();
+    image.onerror = () => {
+      preloadedUrls.delete(url);
+      resolve();
+    };
+    image.src = url;
+  });
+}
+
+async function preloadSlide(slide: HTMLElement | undefined): Promise<void> {
+  if (!slide || slide.dataset.preloaded === "1") return;
+
+  const img = slide.querySelector<HTMLImageElement>("img");
+  if (!img) return;
+
+  const url = bestImageUrl(img);
+  await preloadImageUrl(url);
+
+  if (img.loading === "lazy") img.loading = "eager";
+  if (!img.complete) {
+    try {
+      await img.decode();
+    } catch {
+      /* decode optional */
+    }
+  }
+
+  slide.dataset.preloaded = "1";
+}
+
+function markSlideWarm(slide: HTMLElement): void {
+  const img = slide.querySelector<HTMLImageElement>("img");
+  if (!img || slide.dataset.preloaded === "1" || (img.complete && img.naturalWidth > 0)) {
+    slide.classList.add("is-warmed");
+    return;
+  }
+
+  slide.classList.remove("is-warmed");
+  const warm = () => slide.classList.add("is-warmed");
+  img.addEventListener("load", warm, { once: true });
+  void img.decode?.().then(warm).catch(warm);
+}
+
+function preloadAdjacentSlides(
+  slides: HTMLElement[],
+  activeIndex: number,
+): void {
+  if (slides.length < 2) return;
+  const next = slides[(activeIndex + 1) % slides.length];
+  void preloadSlide(next);
 }
 
 function findCopyTargets(tile: HTMLElement): {
@@ -17,6 +93,12 @@ function findCopyTargets(tile: HTMLElement): {
   return { title, sub };
 }
 
+function pulseCopyTitle(el: HTMLElement): void {
+  el.classList.remove("bento-copy--swap");
+  void el.offsetWidth;
+  el.classList.add("bento-copy--swap");
+}
+
 function setActiveSlide(carousel: HTMLElement, index: number): void {
   const slides = [...carousel.querySelectorAll<HTMLElement>(".bento-carousel__slide")];
   if (!slides.length) return;
@@ -27,8 +109,13 @@ function setActiveSlide(carousel: HTMLElement, index: number): void {
   slides.forEach((el, idx) => {
     const on = idx === i;
     el.classList.toggle("is-active", on);
-    if (on) el.removeAttribute("hidden");
-    else el.setAttribute("hidden", "");
+    if (on) {
+      el.removeAttribute("hidden");
+      markSlideWarm(el);
+    } else {
+      el.setAttribute("hidden", "");
+      el.classList.remove("is-warmed");
+    }
   });
 
   carousel.querySelectorAll<HTMLElement>("[data-bento-dot]").forEach((dot) => {
@@ -52,7 +139,12 @@ function setActiveSlide(carousel: HTMLElement, index: number): void {
   const title = slide.getAttribute("data-title");
   const sub = slide.getAttribute("data-sub");
   const targets = findCopyTargets(tile);
-  if (targets.title && title) targets.title.textContent = title;
+  if (targets.title && title) {
+    if (targets.title.textContent !== title) {
+      targets.title.textContent = title;
+      pulseCopyTitle(targets.title);
+    }
+  }
   if (targets.sub && sub !== null) {
     if (targets.sub.classList.contains("bento-street-eat")) {
       /* street eat line stays static */
@@ -62,6 +154,7 @@ function setActiveSlide(carousel: HTMLElement, index: number): void {
   }
 
   carousel.dataset.activeIndex = String(i);
+  preloadAdjacentSlides(slides, i);
 }
 
 function initCarousel(carousel: HTMLElement): void {
@@ -122,5 +215,14 @@ export function initLandingBentoCarousels(root: ParentNode = document): void {
 }
 
 if (typeof document !== "undefined") {
-  initLandingBentoCarousels();
+  const bootVisibleCarousels = (): void => {
+    const visible = getVisibleBentoScope();
+    initLandingBentoCarousels(visible ?? document);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bootVisibleCarousels, { once: true });
+  } else {
+    bootVisibleCarousels();
+  }
 }

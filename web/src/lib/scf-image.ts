@@ -17,6 +17,16 @@ type Manifest = Record<string, ScfPictureData>;
 
 const MANIFEST = manifestData as Manifest;
 
+/** data:/blob:/http(s): — must not be prefixed with `/` for site-relative lookup. */
+export function isInlineOrAbsoluteUrl(src: string): boolean {
+  return (
+    src.startsWith("data:") ||
+    src.startsWith("blob:") ||
+    src.startsWith("http://") ||
+    src.startsWith("https://")
+  );
+}
+
 function sigQuery(sig: string | undefined): string {
   if (!sig) return "";
   return `?v=${encodeURIComponent(sig)}`;
@@ -45,6 +55,9 @@ function withSigSrcset(srcset: string | undefined, sig: string | undefined): str
 /** Resolve optimized <picture> sources for a public /asserts/… URL. */
 export function getScfPicture(src: string | null | undefined): ScfPictureData | null {
   if (!src) return null;
+  if (isInlineOrAbsoluteUrl(src)) {
+    return { fallback: src, sizes: "100vw" };
+  }
   const key = src.startsWith("/") ? src : `/${src}`;
   const hit = MANIFEST[key];
   if (hit) {
@@ -66,7 +79,7 @@ export function hasOptimizedVariants(src: string | null | undefined): boolean {
 
 /** True when optimize-images has registered this `/asserts/…` PNG (file on disk at last build). */
 export function scfSourceExists(src: string | null | undefined): boolean {
-  if (!src) return false;
+  if (!src || isInlineOrAbsoluteUrl(src)) return false;
   const key = src.startsWith("/") ? src : `/${src}`;
   return Object.prototype.hasOwnProperty.call(MANIFEST, key);
 }
@@ -93,6 +106,7 @@ function largestFromSrcset(srcset: string | undefined): string | undefined {
 /** Original `/asserts/…` PNG (download / archive). */
 export function scfOriginalSrc(src: string | null | undefined): string | null {
   if (!src) return null;
+  if (isInlineOrAbsoluteUrl(src)) return src;
   return src.startsWith("/") ? src : `/${src}`;
 }
 

@@ -1,0 +1,59 @@
+---
+/**
+ * Compact country switcher — one trigger + scrollable menu (scales to many countries).
+ */
+import { COUNTRIES, COUNTRY_ORDER } from "../lib/countries";
+import { localePath } from "../lib/locale-path";
+import { t, type Lang } from "../lib/i18n";
+import type { CountryId } from "../lib/types";
+
+interface Props {
+  lang: Lang;
+  country: CountryId;
+  variant?: "topbar" | "filter";
+  /** Accessible name for the trigger (defaults to localized "Country"). */
+  ariaLabel?: string;
+}
+
+const { lang, country, variant = "topbar", ariaLabel } = Astro.props as Props;
+const active = COUNTRIES[country];
+const label = ariaLabel ?? t({ zh: "选择国家", en: "Choose country", ja: "国を選択" }, lang);
+---
+<details class:list={["country-picker", `country-picker--${variant}`]} data-country-picker>
+  <summary class="country-picker__trigger" aria-label={label}>
+    {variant !== "filter" && (
+      <span class="country-picker__flag" aria-hidden="true">{active.flag}</span>
+    )}
+    <span class="country-picker__label">{t(active.name, lang)}</span>
+    <svg
+      class="country-picker__chev"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  </summary>
+  <div class="country-picker__panel" role="listbox" aria-label={label}>
+    {COUNTRY_ORDER.map((cid) => (
+      <a
+        href={localePath(lang, `/${cid}/`)}
+        class:list={["country-picker__option", cid === country && "active"]}
+        role="option"
+        data-country-link={cid}
+        aria-current={cid === country ? "true" : undefined}
+      >
+        {variant !== "filter" && (
+          <span class="country-picker__option-flag" aria-hidden="true">{COUNTRIES[cid].flag}</span>
+        )}
+        <span class="country-picker__option-label">{t(COUNTRIES[cid].name, lang)}</span>
+      </a>
+    ))}
+  </div>
+</details>

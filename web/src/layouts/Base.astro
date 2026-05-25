@@ -9,6 +9,7 @@ import SiteChrome from "../components/SiteChrome.astro";
 
 import { UI, HTML_LANG, t, type Lang } from "../lib/i18n";
 import { countryFavicon } from "../lib/favicon";
+import { countryThemeColor } from "../lib/map-pin-colors";
 import { googleFontsHref } from "../lib/google-fonts";
 import { pageCanonical, resolveOgImage } from "../lib/site-urls";
 import type { CountryId } from "../lib/types";
@@ -86,7 +87,7 @@ const fontsHref = googleFontsHref(lang, country);
     {ogImage && <meta name="twitter:image" content={ogImage} />}
     <link rel="icon" href={faviconHref} type="image/svg+xml" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content={country === "cn" ? "#C0392B" : country === "jp" ? "#E60012" : "#1B3A6B"} />
+    <meta name="theme-color" content={countryThemeColor(country)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preload" href={fontsHref} as="style" />

@@ -17,7 +17,7 @@
 | 河北省 | [hebei.md](hebei.md) | 海报/zine `…/cn/hebei/` · 街景 `…/cn/hebei/shijiazhuang/` | 已收录（板面+街景；见 [shijiazhuang.md](shijiazhuang.md)） |
 | 陕西省 | [shaanxi.md](shaanxi.md) | 街景 `…/cn/shaanxi/xian/` · `cn_shaanxi_xian_` | 回民街 + 唐长安西市 各 3 张 |
 | 北京市 | [beijing.md](beijing.md) | 海报 `…/cn/beijing/` · 街景 `…/cn/beijing/` | 南锣鼓巷 3 张；京菜海报 ✅ |
-| **西藏自治区** | [xizang.md](xizang.md) | 海报/zine `…/cn/xizang/` · 街景 `…/cn/xizang/lhasa/`（规划） | 糌粑·酥油茶·甜茶·青稞酒海报 ✅ · 其余待扩 |
+| **西藏自治区** | [xizang.md](xizang.md) | 海报/zine `…/cn/xizang/` · 街景 `…/cn/xizang/lhasa/` | 糌粑·酥油茶·甜茶·青稞酒海报 ✅ · 布达拉宫 night_wide ✅ |
 | **新疆维吾尔自治区** | [xinjiang.md](xinjiang.md) | 海报 `…/cn/xinjiang/`（羊肉炒饭·羊肉抓饭·拉条子·馕 ✅）· zine/街景待扩 | 文案 ✅ · 4 海报 |
 | **香港特别行政区** | [hongkong.md](hongkong.md) | 海报/zine `…/cn/hongkong/` · 街景 `…/cn/hongkong/`（规划） | 肠粉·奶茶·柠茶·菠萝包·咖喱鱼蛋·叉烧·烧腊饭海报 ✅ · 其余待扩 |
 

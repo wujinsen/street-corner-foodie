@@ -1,0 +1,77 @@
+---
+import { UI, t, type Lang } from "../lib/i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props as Props;
+---
+
+<div class="atlas-fx-chip" data-atlas-fx-chip>
+  <div
+    class="bento-weather-live bento-weather-live--atlas-fx"
+    data-atlas-fx-live
+    data-weather-source="live"
+    data-weather-temp-fx-debug="cycle"
+    data-weather-temp-poke="28"
+    data-weather-period="night"
+    data-weather-sky="cloudy"
+    data-weather-climate="temperate"
+    data-weather-config={JSON.stringify({ lang })}
+  >
+    <div class="bento-weather-bg" aria-hidden="true">
+      <div class="bento-weather-mesh"></div>
+      <canvas
+        class="bento-weather-fx-canvas"
+        data-weather-temp-fx-canvas
+        hidden
+        aria-hidden="true"
+      ></canvas>
+      <div class="bento-weather-fx-stage" data-weather-temp-fx-stage aria-hidden="true">
+        <div class="bento-weather-fx-stage__wash" data-weather-temp-fx-wash aria-hidden="true"></div>
+        <div class="bento-weather-fx-stage__bubbles" data-weather-temp-fx-bubbles aria-hidden="true"></div>
+        <div class="bento-weather-fx-stage__hands" data-weather-temp-fx-hands hidden aria-hidden="true">
+          <svg viewBox="0 0 120 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path
+              class="bento-weather-fx-hand-l"
+              d="M8 36c6-12 16-18 28-18 5 0 10 2 14 5"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+            <path
+              class="bento-weather-fx-hand-r"
+              d="M112 36c-6-12-16-18-28-18-5 0-10 2-14 5"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
+      </div>
+      <div class="bento-weather-fx-scrim" data-weather-temp-fx-scrim aria-hidden="true"></div>
+      <div class="bento-weather-fx bento-weather-fx--particles"></div>
+      <div class="bento-weather-fx bento-weather-fx--glow"></div>
+    </div>
+
+    <button
+      type="button"
+      class="atlas-fx-chip__btn"
+      data-bento-weather-temp-hit
+      aria-label={t(UI.gallery.atlas_fx_aria, lang)}
+    >
+      <span class="atlas-fx-chip__icon" aria-hidden="true">
+        <span class="atlas-fx-chip__spark">✦</span>
+      </span>
+      <span class="atlas-fx-chip__label">{t(UI.gallery.atlas_fx_trigger, lang)}</span>
+    </button>
+
+    <span class="bento-weather-temp-line" hidden aria-hidden="true">
+      <span data-bento-weather-temp>28</span>
+    </span>
+    <span class="bento-weather-temp-fx-gel-badge" data-weather-temp-fx-gel-badge hidden aria-hidden="true">
+      {t(UI.gallery.weather_fx_gel_label, lang)}
+    </span>
+  </div>
+</div>

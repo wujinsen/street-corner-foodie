@@ -3,6 +3,8 @@
  * Map band height = visibleH / (2/3) → two-thirds visible above city card.
  */
 
+import { getVisibleBentoScope } from "./landing-bento-scope";
+
 const STACK_MQ = "(max-width: 720px)";
 const DESKTOP_MAP_MQ = "(min-width: 721px)";
 const CARD_BOTTOM_INSET = 16;
@@ -14,15 +16,18 @@ const MAP_RIGHT_INSET = 8;
 const TOKYO_POSTER_GAP = 18;
 
 function query() {
-  const zine = document.querySelector<HTMLElement>(".bento-zine--proto");
+  const panel = getVisibleBentoScope();
+  const scope = panel ?? document;
+  const zine = scope.querySelector<HTMLElement>(".bento-zine--proto");
   const spot = document.querySelector<HTMLElement>(".landing-spotlight");
   const map = document.querySelector<HTMLElement>(".landing-spotlight > .landing-world-atlas");
   const card = document.querySelector<HTMLElement>(".landing-spotlight > .landing-city-card");
   const topbar = document.querySelector<HTMLElement>(".topbar");
-  const poster = document.querySelector<HTMLElement>(".bento-dish--proto");
+  const poster = scope.querySelector<HTMLElement>(".bento-dish--proto");
   const feature = document.querySelector<HTMLElement>(".landing-feature--bento-only");
   const grid = document.querySelector<HTMLElement>(".landing-grid");
-  return { zine, spot, map, card, topbar, poster, feature, grid };
+  const mosaic = scope.querySelector<HTMLElement>(".landing-bento-mosaic");
+  return { zine, spot, map, card, topbar, poster, feature, grid, mosaic, panel };
 }
 
 function clearSpotLayout(
@@ -142,10 +147,9 @@ function schedule(): void {
 }
 
 function init(): void {
-  const { zine, spot, map, card, topbar, poster, feature, grid } = query();
+  const { zine, spot, map, card, topbar, poster, feature, grid, mosaic } = query();
   if (!zine || !spot || !card) return;
 
-  const mosaic = document.querySelector(".landing-bento-mosaic");
   const ro = new ResizeObserver(schedule);
   ro.observe(zine);
   if (mosaic) ro.observe(mosaic);
@@ -160,6 +164,8 @@ function init(): void {
   window.matchMedia(STACK_MQ).addEventListener("change", schedule);
   window.matchMedia(DESKTOP_MAP_MQ).addEventListener("change", schedule);
   window.addEventListener("load", schedule, { once: true });
+  window.addEventListener("scf:landing-bento-synced", schedule);
+  window.addEventListener("scf:landing-spot", schedule);
   document.fonts?.ready?.then(schedule).catch(schedule);
 
   schedule();

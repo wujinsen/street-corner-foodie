@@ -71,7 +71,12 @@ const ctaLabel =
                 {
                   parts1.map((part) =>
                     part.startsWith("\0") ? (
-                      <em class="landing-manifesto__accent">{part.slice(1, -1)}</em>
+                      <em
+                        class="landing-manifesto__accent landing-manifesto__accent--corner"
+                        tabindex="0"
+                      >
+                        {part.slice(1, -1)}
+                      </em>
                     ) : (
                       part
                     ),
@@ -82,7 +87,9 @@ const ctaLabel =
                 {
                   parts2.map((part) =>
                     part.startsWith("\0") ? (
-                      <em class="landing-manifesto__accent">{part.slice(1, -1)}</em>
+                      <em class="landing-manifesto__accent landing-manifesto__accent--breathe">
+                        {part.slice(1, -1)}
+                      </em>
                     ) : (
                       part
                     ),
@@ -126,7 +133,12 @@ const ctaLabel =
                 {
                   parts1.map((part) =>
                     part.startsWith("\0") ? (
-                      <em class="landing-manifesto__accent">{part.slice(1, -1)}</em>
+                      <em
+                        class="landing-manifesto__accent landing-manifesto__accent--corner"
+                        tabindex="0"
+                      >
+                        {part.slice(1, -1)}
+                      </em>
                     ) : (
                       part
                     ),
@@ -137,7 +149,9 @@ const ctaLabel =
                 {
                   parts2.map((part) =>
                     part.startsWith("\0") ? (
-                      <em class="landing-manifesto__accent">{part.slice(1, -1)}</em>
+                      <em class="landing-manifesto__accent landing-manifesto__accent--breathe">
+                        {part.slice(1, -1)}
+                      </em>
                     ) : (
                       part
                     ),

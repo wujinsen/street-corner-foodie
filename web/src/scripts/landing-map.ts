@@ -3,6 +3,9 @@
  * Progressive enhancement: pins remain normal links without JS.
  */
 
+import { applyLandingCoordsEl } from "../lib/landing-coords";
+import { syncCountryChrome } from "./country-picker";
+
 
 type Spot = {
   id: string;
@@ -96,7 +99,7 @@ export function initLandingMap(root: HTMLElement | null): void {
       subEl.textContent = sub;
       subEl.hidden = !sub;
     }
-    if (coordsEl) coordsEl.textContent = spot.coords;
+    if (coordsEl) applyLandingCoordsEl(coordsEl, spot.coords);
     if (bg) {
       if (spot.heroUrl) {
         bg.style.backgroundImage = `url('${spot.heroUrl}')`;
@@ -121,6 +124,7 @@ export function initLandingMap(root: HTMLElement | null): void {
     }
 
     document.documentElement.setAttribute("data-country", id);
+    syncCountryChrome(id);
     mapRoot.dispatchEvent(
       new CustomEvent("scf:landing-spot", { bubbles: true, detail: { countryId: id } }),
     );

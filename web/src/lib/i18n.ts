@@ -265,6 +265,8 @@ export const UI = {
     weather_sunset: { zh: "日落", en: "Sunset", ja: "日没" },
     weather_local: { zh: "本地", en: "Local", ja: "現地" },
     weather_temp_poke: { zh: "戳一下气温", en: "Poke the temperature", ja: "気温をタップ" },
+    atlas_fx_trigger: { zh: "特效", en: "FX", ja: "特效" },
+    atlas_fx_aria: { zh: "播放特效", en: "Play FX", ja: "特效を再生" },
     weather_fx_watermelon_juicy: { zh: "多汁", en: "Juicy", ja: "ジューシー" },
     weather_fx_watermelon_sweet: { zh: "清甜", en: "Sweet", ja: "甘い" },
     weather_fx_humid_hot: { zh: "热气", en: "Steamy", ja: "むわっ" },

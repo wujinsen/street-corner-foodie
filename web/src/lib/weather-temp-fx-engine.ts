@@ -17,7 +17,7 @@ import { syncWeatherStarsCanvas } from "./weather-stars-canvas";
 
 const HEAT_MS = 1500;
 const SAND_MS = 1300;
-const HUMID_MS = 1400;
+const HUMID_MS = 1180;
 const ICE_MS = 1400;
 const COSMIC_MS = 1600;
 const SUN_MS = 1500;
@@ -129,18 +129,29 @@ function maxRadius(originX: number, originY: number, vw: number, vh: number): nu
   return farthest * 1.05;
 }
 
-function getCardCenterViewport(refs: FxDomRefs): {
+function isAtlasFxMode(refs: FxDomRefs): boolean {
+  return refs.live.hasAttribute("data-atlas-fx-live");
+}
+
+function getFxOriginViewport(refs: FxDomRefs): {
   originX: number;
   originY: number;
   vw: number;
   vh: number;
 } {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  if (isAtlasFxMode(refs)) {
+    return { originX: vw * 0.5, originY: vh * 0.5, vw, vh };
+  }
+
   const card = refs.chip.getBoundingClientRect();
   return {
     originX: card.left + card.width * 0.5,
     originY: card.top + card.height * 0.5,
-    vw: window.innerWidth,
-    vh: window.innerHeight,
+    vw,
+    vh,
   };
 }
 
@@ -159,9 +170,9 @@ function ensureFxPortal(): HTMLElement {
 
 function mountFxPortal(refs: FxDomRefs, rt: FxRuntime): void {
   const portal = ensureFxPortal();
-  const { originX, originY, vw, vh } = getCardCenterViewport(refs);
-  portal.style.setProperty("--weather-fx-origin-x", `${(originX / vw) * 100}%`);
-  portal.style.setProperty("--weather-fx-origin-y", `${(originY / vh) * 100}%`);
+  const { originX, originY, vw, vh } = getFxOriginViewport(refs);
+  portal.style.setProperty("--weather-fx-origin-x", isAtlasFxMode(refs) ? "50%" : `${(originX / vw) * 100}%`);
+  portal.style.setProperty("--weather-fx-origin-y", isAtlasFxMode(refs) ? "50%" : `${(originY / vh) * 100}%`);
   portal.hidden = false;
 
   if (!rt.portalMounted) {
@@ -348,7 +359,7 @@ function setupCanvas(refs: FxDomRefs): {
   const canvas = refs.fxCanvas;
   if (!canvas) return null;
 
-  const { originX, originY, vw, vh } = getCardCenterViewport(refs);
+  const { originX, originY, vw, vh } = getFxOriginViewport(refs);
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const width = Math.max(Math.round(vw), 1);
   const height = Math.max(Math.round(vh), 1);
@@ -534,9 +545,8 @@ function paintHeat(state: CanvasFxState, now: number): void {
   const elapsed = now - state.start;
   const flashDur = state.duration * 0.14;
   const flash = elapsed < flashDur ? easeOutExpo(elapsed / flashDur) : Math.max(0, 1 - (elapsed - flashDur) / (flashDur * 2));
-  const burst = easeOutExpo(Math.min(1, elapsed / (state.duration * 0.34)));
-  const fadeStart = state.duration * 0.5;
-  const fade = 1 - easeOutCubic(Math.max(0, (elapsed - fadeStart) / (state.duration - fadeStart)));
+  const burst = fxEaseExpand(elapsed, state.duration, 2.5);
+  const fade = fxEaseFade(elapsed, state.duration, 0.52, 0.42);
   const alpha = fade * 0.62;
   const { ctx, width, height, originX: ox, originY: oy } = state;
   const maxR = maxRadius(ox, oy, width, height);
@@ -558,8 +568,7 @@ function paintHeat(state: CanvasFxState, now: number): void {
   ctx.fill();
 
   for (let ring = 0; ring < 3; ring += 1) {
-    const lag = ring * 0.12;
-    const rb = easeOutExpo(Math.max(0, Math.min(1, burst - lag)));
+    const rb = fxRingExpand(elapsed, state.duration, ring);
     if (rb < 0.04) continue;
     const ringR = maxR * (0.28 + rb * 0.92);
     const ringA = alpha * (0.32 - ring * 0.08) * (1 - rb * 0.65);
@@ -601,9 +610,9 @@ function paintHeat(state: CanvasFxState, now: number): void {
 
 function paintSand(state: CanvasFxState, now: number): void {
   const elapsed = now - state.start;
-  const burst = easeOutExpo(Math.min(1, elapsed / 360));
-  const swirl = easeOutCubic(Math.min(1, elapsed / state.duration));
-  const fade = 1 - easeOutCubic(Math.max(0, (elapsed - 560) / (state.duration - 560)));
+  const burst = fxEaseExpand(elapsed, state.duration, 2.3);
+  const swirl = fxEaseExpand(elapsed, state.duration, 1.85);
+  const fade = fxEaseFade(elapsed, state.duration, 0.48, 0.44);
   const { ctx, width, height, originX: ox, originY: oy } = state;
   const maxR = maxRadius(ox, oy, width, height);
 
@@ -636,20 +645,41 @@ function paintSand(state: CanvasFxState, now: number): void {
   }
 }
 
+function fxEaseExpand(elapsed: number, duration: number, power = 2.35): number {
+  const t = Math.min(1, Math.max(0, elapsed / duration));
+  return 1 - (1 - t) ** power;
+}
+
+function fxEaseFade(
+  elapsed: number,
+  duration: number,
+  fadeStartRatio = 0.56,
+  fadeSpanRatio = 0.38,
+): number {
+  const fadeStart = duration * fadeStartRatio;
+  if (elapsed <= fadeStart) return 1;
+  const t = Math.min(1, (elapsed - fadeStart) / (duration * fadeSpanRatio));
+  return 1 - easeOutCubic(t);
+}
+
+function fxRingExpand(elapsed: number, duration: number, ring: number, lagRatio = 0.038): number {
+  const lag = duration * lagRatio * ring;
+  return fxEaseExpand(Math.max(0, elapsed - lag), duration * 0.96, 2.25);
+}
+
 function paintWatermelon(state: CanvasFxState, now: number): void {
   const elapsed = now - state.start;
-  const flashDur = state.duration * 0.12;
-  const flash = elapsed < flashDur ? easeOutExpo(elapsed / flashDur) : Math.max(0, 1 - (elapsed - flashDur) / (flashDur * 2));
-  const burst = easeOutExpo(Math.min(1, elapsed / (state.duration * 0.36)));
-  const fadeStart = state.duration * 0.52;
-  const fade = 1 - easeOutCubic(Math.max(0, (elapsed - fadeStart) / (state.duration - fadeStart)));
+  const flashDur = state.duration * 0.1;
+  const flash = elapsed < flashDur ? easeOutExpo(elapsed / flashDur) : Math.max(0, 1 - (elapsed - flashDur) / (flashDur * 1.5));
+  const burst = fxEaseExpand(elapsed, state.duration, 2.4);
+  const fade = fxEaseFade(elapsed, state.duration, 0.56, 0.36);
   const alpha = fade * 0.68;
   const { ctx, width, height, originX: ox, originY: oy } = state;
   const maxR = maxRadius(ox, oy, width, height);
 
   ctx.clearRect(0, 0, width, height);
 
-  const coreR = maxR * (0.15 + burst * 0.5);
+  const coreR = maxR * (0.15 + burst * 0.58);
   const core = ctx.createRadialGradient(ox, oy, 0, ox, oy, coreR);
   core.addColorStop(0, `rgba(255, 240, 230, ${alpha * (0.32 + flash * 0.2)})`);
   core.addColorStop(0.2, `rgba(255, 100, 110, ${alpha * 0.38 * burst})`);
@@ -660,9 +690,9 @@ function paintWatermelon(state: CanvasFxState, now: number): void {
   ctx.fillRect(0, 0, width, height);
 
   for (let ring = 0; ring < 2; ring += 1) {
-    const rb = easeOutExpo(Math.max(0, burst - ring * 0.1));
-    const ringR = maxR * (0.25 + rb * 0.85);
-    ctx.strokeStyle = `rgba(255, 120, 130, ${alpha * (0.22 - ring * 0.07) * (1 - rb * 0.5)})`;
+    const ringT = fxRingExpand(elapsed, state.duration, ring, 0.032);
+    const ringR = maxR * (0.25 + ringT * 0.92);
+    ctx.strokeStyle = `rgba(255, 120, 130, ${alpha * (0.22 - ring * 0.07) * (1 - ringT * 0.45)})`;
     ctx.lineWidth = 3.5 - ring;
     ctx.beginPath();
     ctx.arc(ox, oy, ringR, 0, Math.PI * 2);
@@ -671,14 +701,14 @@ function paintWatermelon(state: CanvasFxState, now: number): void {
 
   for (const p of state.particles) {
     if (p.kind !== "watermelon") continue;
-    const r = maxR * p.dist * burst * 1.02;
-    const x = ox + Math.cos(p.angle) * r + p.vx * burst * 20;
-    const y = oy + Math.sin(p.angle) * r * 0.9 + p.vy * burst * 22;
+    const r = maxR * p.dist * burst * 1.06;
+    const x = ox + Math.cos(p.angle) * r + p.vx * burst * 24;
+    const y = oy + Math.sin(p.angle) * r * 0.9 + p.vy * burst * 26;
     drawWatermelonSlice(
       ctx,
       x,
       y,
-      p.size * (1.05 + burst * 0.25),
+      p.size * (1.05 + burst * 0.28),
       alpha * (0.68 + p.dist * 0.22),
       p.spin + now * 0.004,
       p.phase,
@@ -688,11 +718,10 @@ function paintWatermelon(state: CanvasFxState, now: number): void {
 
 function paintIce(state: CanvasFxState, now: number): void {
   const elapsed = now - state.start;
-  const flashDur = state.duration * 0.12;
-  const flash = elapsed < flashDur ? easeOutExpo(elapsed / flashDur) : Math.max(0, 1 - (elapsed - flashDur) / (flashDur * 2));
-  const burst = easeOutExpo(Math.min(1, elapsed / (state.duration * 0.34)));
-  const fadeStart = state.duration * 0.5;
-  const fade = 1 - easeOutCubic(Math.max(0, (elapsed - fadeStart) / (state.duration - fadeStart)));
+  const flashDur = state.duration * 0.1;
+  const flash = elapsed < flashDur ? easeOutExpo(elapsed / flashDur) : Math.max(0, 1 - (elapsed - flashDur) / (flashDur * 1.5));
+  const burst = fxEaseExpand(elapsed, state.duration, 2.35);
+  const fade = fxEaseFade(elapsed, state.duration, 0.54, 0.38);
   const alpha = fade * 0.58;
   const { ctx, width, height, originX: ox, originY: oy } = state;
   const maxR = maxRadius(ox, oy, width, height);
@@ -713,7 +742,7 @@ function paintIce(state: CanvasFxState, now: number): void {
   ctx.fill();
 
   for (let ring = 0; ring < 3; ring += 1) {
-    const rb = easeOutExpo(Math.max(0, burst - ring * 0.11));
+    const rb = fxRingExpand(elapsed, state.duration, ring, 0.042);
     if (rb < 0.05) continue;
     const ringR = maxR * (0.22 + rb * 0.88);
     ctx.strokeStyle = `rgba(180, 230, 255, ${alpha * (0.26 - ring * 0.07) * (1 - rb * 0.55)})`;
@@ -829,9 +858,8 @@ function paintCosmic(state: CanvasFxState, now: number): void {
   const elapsed = now - state.start;
   const flashDur = state.duration * 0.1;
   const flash = elapsed < flashDur ? easeOutExpo(elapsed / flashDur) : Math.max(0, 1 - (elapsed - flashDur) / (flashDur * 2.2));
-  const burst = easeOutExpo(Math.min(1, elapsed / (state.duration * 0.38)));
-  const fadeStart = state.duration * 0.52;
-  const fade = 1 - easeOutCubic(Math.max(0, (elapsed - fadeStart) / (state.duration - fadeStart)));
+  const burst = fxEaseExpand(elapsed, state.duration, 2.4);
+  const fade = fxEaseFade(elapsed, state.duration, 0.54, 0.4);
   const alpha = fade * 0.58;
   const { ctx, width, height, originX: ox, originY: oy } = state;
   const maxR = maxRadius(ox, oy, width, height);
@@ -859,7 +887,7 @@ function paintCosmic(state: CanvasFxState, now: number): void {
 
   const ringColors = ["255, 180, 80", "255, 120, 200", "120, 200, 255", "200, 160, 255"];
   for (let ring = 0; ring < 4; ring += 1) {
-    const rb = easeOutExpo(Math.max(0, burst - ring * 0.09));
+    const rb = fxRingExpand(elapsed, state.duration, ring, 0.034);
     if (rb < 0.04) continue;
     const ringR = maxR * (0.18 + rb * 0.92);
     ctx.strokeStyle = `rgba(${ringColors[ring]}, ${alpha * (0.28 - ring * 0.05) * (1 - rb * 0.55)})`;
@@ -883,10 +911,9 @@ function paintCosmic(state: CanvasFxState, now: number): void {
 
 function paintSun(state: CanvasFxState, now: number): void {
   const elapsed = now - state.start;
-  const swell = easeOutCubic(Math.min(1, elapsed / (state.duration * 0.48)));
-  const burst = easeOutExpo(Math.min(1, elapsed / (state.duration * 0.42)));
-  const fadeStart = state.duration * 0.55;
-  const fade = 1 - easeOutCubic(Math.max(0, (elapsed - fadeStart) / (state.duration - fadeStart)));
+  const swell = fxEaseExpand(elapsed, state.duration, 1.65);
+  const burst = fxEaseExpand(elapsed, state.duration, 2.3);
+  const fade = fxEaseFade(elapsed, state.duration, 0.56, 0.38);
   const alpha = fade * 0.55;
   const { ctx, width, height, originX: ox, originY: oy } = state;
   const maxR = maxRadius(ox, oy, width, height);
@@ -1143,9 +1170,11 @@ function startBubbleLoop(rt: FxRuntime, refs: FxDomRefs, fxId: TempFxId, everyMs
   const labels = bubbleLabels(fxId, refs.lang);
   if (!labels.length) return;
   let i = 0;
-  rt.canvasFx.bubbleTimer = setInterval(() => {
+  const tick = (): void => {
     if (refs.bubbles) spawnBubble(refs.bubbles, labels[i++ % labels.length]!, bubbleVariant(fxId));
-  }, everyMs);
+  };
+  tick();
+  rt.canvasFx.bubbleTimer = setInterval(tick, everyMs);
 }
 
 function primeFxShell(refs: FxDomRefs, rt: FxRuntime, fxId: TempFxId): void {
@@ -1174,7 +1203,7 @@ export function playSandstorm(refs: FxDomRefs, rt: FxRuntime, opts?: { restack?:
   primeFxShell(refs, rt, "FX_Dry_Sandstorm");
   vibeSandBurst();
   playCanvasBurst(rt, refs, "FX_Dry_Sandstorm", SAND_MS, seedSand(90));
-  startBubbleLoop(rt, refs, "FX_Dry_Sandstorm", 620);
+  startBubbleLoop(rt, refs, "FX_Dry_Sandstorm", 360);
   finishFx(rt, refs, SAND_MS + 120);
 }
 
@@ -1184,8 +1213,8 @@ export function playHumiditySqueeze(refs: FxDomRefs, rt: FxRuntime): void {
   primeFxShell(refs, rt, "FX_Humidity_Squeeze");
   vibeHumidSplash();
   playCanvasBurst(rt, refs, "FX_Humidity_Squeeze", HUMID_MS, seedWatermelon(52));
-  startBubbleLoop(rt, refs, "FX_Humidity_Squeeze", 560);
-  finishFx(rt, refs, HUMID_MS + 160);
+  startBubbleLoop(rt, refs, "FX_Humidity_Squeeze", 320);
+  finishFx(rt, refs, HUMID_MS + 100);
 }
 
 export function playCoolGel(refs: FxDomRefs, rt: FxRuntime): void {
@@ -1209,7 +1238,7 @@ export function playSunBeam(refs: FxDomRefs, rt: FxRuntime, opts?: { restack?: b
   primeFxShell(refs, rt, "FX_Sun_Beam");
   vibeSunBeam();
   playCanvasBurst(rt, refs, "FX_Sun_Beam", SUN_MS, [...seedSunRay(24), ...seedSunSpark(56)]);
-  startBubbleLoop(rt, refs, "FX_Sun_Beam", 680);
+  startBubbleLoop(rt, refs, "FX_Sun_Beam", 380);
   finishFx(rt, refs, SUN_MS + 160);
 }
 

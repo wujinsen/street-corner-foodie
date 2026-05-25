@@ -89,6 +89,7 @@ export function resolveOgImage(
   assetPath: string | null | undefined,
 ): string | undefined {
   if (!assetPath || !site) return undefined;
+  if (assetPath.startsWith("data:") || assetPath.startsWith("blob:")) return undefined;
   try {
     return new URL(assetPath, String(site)).href;
   } catch {

@@ -1,9 +1,11 @@
 import { initGlassTileShine } from "./glass-tile-shine";
 import { initFilterPillTracks } from "./filter-pill-track";
 import { initFlavorRadarFx } from "./flavor-radar-fx";
+import { initCountryPickers } from "./country-picker";
 
 if (document.body.classList.contains("has-altc")) {
   const bootChrome = () => {
+    initCountryPickers(document);
     initGlassTileShine(document);
     initFilterPillTracks(document);
     initFlavorRadarFx(document);

@@ -1,21 +1,37 @@
 /**
- * Landing · sync city card + bento when world-atlas pin focuses a country.
+ * Landing · sync city card + topbar country theme when world-atlas pin focuses.
+ * Multi-region countries (cn · us · jp …) resolve by regionId; others fall back to country spot.
+ * cn · same-country region changes also dispatch scf:landing-spot for bento sub-panels.
  */
 
-type Spot = {
-  id: string;
+import { applyLandingCoordsEl } from "../lib/landing-coords";
+import { syncCountryChrome } from "./country-picker";
+
+type CardSpot = {
   city: { zh: string; en: string; ja: string };
   citySub: { zh: string; en: string; ja: string };
   coords: string;
   heroUrl: string | null;
-  regionHref: string;
 };
 
-function readSpots(root: HTMLElement): Spot[] {
+type CountrySpot = CardSpot & { id: string };
+type RegionSpot = CardSpot & { regionKey: string; countryId: string };
+
+function readCountrySpots(root: HTMLElement): CountrySpot[] {
   const raw = root.getAttribute("data-landing-map-json");
   if (!raw) return [];
   try {
-    return JSON.parse(raw) as Spot[];
+    return JSON.parse(raw) as CountrySpot[];
+  } catch {
+    return [];
+  }
+}
+
+function readRegionSpots(root: HTMLElement): RegionSpot[] {
+  const script = document.getElementById("landing-regions-data");
+  if (!script?.textContent?.trim()) return [];
+  try {
+    return JSON.parse(script.textContent) as RegionSpot[];
   } catch {
     return [];
   }
@@ -27,13 +43,47 @@ function spotLang(root: HTMLElement): "zh" | "en" | "ja" {
   return "zh";
 }
 
-function applyLandingCountry(root: HTMLElement, countryId: string): void {
-  const spots = readSpots(root);
-  const spot = spots.find((s) => s.id === countryId);
-  if (!spot) return;
+function pickText(
+  ml: { zh: string; en: string; ja: string },
+  lang: "zh" | "en" | "ja",
+): string {
+  return (lang === "en" ? ml.en : lang === "ja" ? ml.ja : ml.zh) || ml.zh;
+}
 
+function resolveCardSpot(
+  root: HTMLElement,
+  countryId: string,
+  regionId?: string,
+): CardSpot | null {
+  if (regionId) {
+    const regionKey = `${countryId}__${regionId}`;
+    const regionSpot = readRegionSpots(root).find((s) => s.regionKey === regionKey);
+    if (regionSpot) return regionSpot;
+  }
+  return readCountrySpots(root).find((s) => s.id === countryId) ?? null;
+}
+
+function dispatchLandingSpot(root: HTMLElement, countryId: string, regionId?: string): void {
+  root.dispatchEvent(
+    new CustomEvent("scf:landing-spot", {
+      bubbles: true,
+      detail: { countryId, regionId: countryId === "cn" ? regionId : undefined },
+    }),
+  );
+}
+
+function applyCardSpot(
+  root: HTMLElement,
+  countryId: string,
+  spot: CardSpot,
+  regionId?: string,
+): void {
   const lang = spotLang(root);
+  const prevCountry = root.getAttribute("data-active-country");
+  const prevRegion = root.getAttribute("data-active-region") ?? "";
+
   root.setAttribute("data-active-country", countryId);
+  root.setAttribute("data-active-region", regionId ?? "");
   root.setAttribute("data-country", countryId);
 
   const cityDisplayEl = root.querySelector<HTMLElement>("[data-map-city-display]");
@@ -42,17 +92,14 @@ function applyLandingCountry(root: HTMLElement, countryId: string): void {
   const bg = root.querySelector<HTMLElement>("[data-map-city-bg]");
 
   if (cityDisplayEl) {
-    cityDisplayEl.textContent =
-      lang === "en" ? spot.city.en : lang === "ja" ? spot.city.ja : spot.city.zh;
+    cityDisplayEl.textContent = pickText(spot.city, lang);
   }
   if (subEl) {
-    const sub =
-      (lang === "en" ? spot.citySub.en : lang === "ja" ? spot.citySub.ja : spot.citySub.zh) ||
-      spot.citySub.zh;
-    subEl.textContent = sub.trim();
-    subEl.hidden = !sub.trim();
+    const sub = pickText(spot.citySub, lang).trim();
+    subEl.textContent = sub;
+    subEl.hidden = !sub;
   }
-  if (coordsEl) coordsEl.textContent = spot.coords;
+  if (coordsEl) applyLandingCoordsEl(coordsEl, spot.coords);
   if (bg) {
     if (spot.heroUrl) {
       bg.style.backgroundImage = `url('${spot.heroUrl}')`;
@@ -64,21 +111,39 @@ function applyLandingCountry(root: HTMLElement, countryId: string): void {
   }
 
   document.documentElement.setAttribute("data-country", countryId);
-  root.dispatchEvent(
-    new CustomEvent("scf:landing-spot", { bubbles: true, detail: { countryId } }),
-  );
+  syncCountryChrome(countryId);
+
+  const nextRegion = regionId ?? "";
+  if (prevCountry !== countryId) {
+    dispatchLandingSpot(root, countryId, regionId);
+  } else if (countryId === "cn" && prevRegion !== nextRegion) {
+    dispatchLandingSpot(root, countryId, regionId);
+  }
+}
+
+function applyLandingFocus(root: HTMLElement, countryId: string, regionId?: string): void {
+  const spot = resolveCardSpot(root, countryId, regionId);
+  if (!spot) return;
+  applyCardSpot(root, countryId, spot, regionId);
 }
 
 function initLandingAtlasBridge(): void {
   const root = document.querySelector<HTMLElement>("[data-landing-map-root]");
   if (!root) return;
 
-  const defaultId = root.getAttribute("data-default-country") || "cn";
-  applyLandingCountry(root, defaultId);
+  const defaultCountry = root.getAttribute("data-default-country") || "cn";
+  const defaultRegion = root.getAttribute("data-default-region") || undefined;
+  applyLandingFocus(root, defaultCountry, defaultRegion);
 
   document.addEventListener("scf:atlas-focus", (ev) => {
-    const countryId = (ev as CustomEvent<{ countryId?: string }>).detail?.countryId;
-    if (countryId) applyLandingCountry(root, countryId);
+    const detail = (ev as CustomEvent<{ countryId?: string; regionId?: string; cleared?: boolean }>)
+      .detail;
+    if (detail?.cleared) {
+      applyLandingFocus(root, defaultCountry, defaultRegion);
+      return;
+    }
+    const { countryId, regionId } = detail ?? {};
+    if (countryId) applyLandingFocus(root, countryId, regionId);
   });
 }
 

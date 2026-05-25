@@ -294,6 +294,22 @@ export const STREET_REGIONS: Partial<Record<CountryId, Record<string, StreetRegi
       ],
       filePattern: (id) => `cn_shaanxi_xian_${id}_{TIME}_{FRAME}.png`,
     },
+    xizang: {
+      path: "cn/xizang/lhasa/",
+      defaultSceneId: "potala",
+      defaultView: { mood: "night", frame: "wide" },
+      scenes: [
+        {
+          id: "potala",
+          name: { zh: "布达拉宫", en: "Potala Palace", ja: "ポタラ宮" },
+          tag: { zh: "高原广场", en: "High-plateau plaza", ja: "高原の広場" },
+          posterSlugs: ["zanba", "suyoucha", "tiancha", "qingke_jiu"],
+          mapPin: { x: 50, y: 38 },
+          geo: [91.117, 29.657],
+        },
+      ],
+      filePattern: (id) => `cn_xizang_lhasa_${id}_{TIME}_{FRAME}.png`,
+    },
   },
   jp: {
     tokyo: {
@@ -547,6 +563,12 @@ export const DISH_STREET_SCENE: Partial<Record<CountryId, Record<string, Record<
       luzhu_huoshao: "nanluoguxiang",
       chaogan: "nanluoguxiang",
       douzhi_jiaoquan: "nanluoguxiang",
+    },
+    xizang: {
+      zanba: "potala",
+      suyoucha: "potala",
+      tiancha: "potala",
+      qingke_jiu: "potala",
     },
   },
   jp: {

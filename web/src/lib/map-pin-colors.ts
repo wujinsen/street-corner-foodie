@@ -62,3 +62,8 @@ export const MAP_PIN_BY_COUNTRY: Record<CountryId, MapPinStyle> = {
 export function mapPinStyle(countryId: CountryId): MapPinStyle {
   return MAP_PIN_BY_COUNTRY[countryId] ?? MAP_PIN_BY_COUNTRY.cn;
 }
+
+/** Browser chrome / meta theme-color · matches `--accent-c` core. */
+export function countryThemeColor(countryId: CountryId): string {
+  return MAP_PIN_BY_COUNTRY[countryId]?.core ?? MAP_PIN_BY_COUNTRY.cn.core;
+}

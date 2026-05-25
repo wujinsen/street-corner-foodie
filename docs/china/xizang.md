@@ -29,7 +29,8 @@ gourmet_posters:
   - cn/xizang/tiancha_poster.png
   - cn/xizang/qingke_jiu_poster.png
 mini_zine: []
-street_view_approved: []
+street_view_approved:
+  - cn/xizang/lhasa/cn_xizang_lhasa_potala_night_wide.png
 web_posters: {}
 ---
 
@@ -41,7 +42,7 @@ web_posters: {}
 
 **味型关键词**：青稞、酥油、牦牛肉、发酵酸奶、岩盐、甜茶、高原菌菇。
 
-**资源状态（2026-05）**：**糌粑 · 酥油茶 · 甜茶 · 青稞酒** 海报 ✅；其余海报 / zine / 街景 **待扩**。
+**资源状态（2026-05）**：**糌粑 · 酥油茶 · 甜茶 · 青稞酒** 海报 ✅；街景 **布达拉宫 night_wide** ✅；其余海报 / zine / 街景矩阵 **待扩**。
 
 > 舌尖 · 我们的田野 S1E7 提及 **西藏青稞** → slug 见下表 `qingke` / `zanba` 系。
 
@@ -191,10 +192,10 @@ web_posters: {}
 | 场景 | 目录 | 文件名模板 | 美食重点 |
 |------|------|------------|----------|
 | 拉萨·八廓街 | `cn/xizang/lhasa/` | `cn_xizang_lhasa_{scene}_{day\|night}_{wide\|standard}.png` | 甜茶馆、藏面、糌粑店招、酥油茶蒸汽 |
-| 拉萨·布达拉宫广场 | `cn/xizang/lhasa/` | 同上 | 酸奶、青稞饼摊位 |
+| 拉萨·布达拉宫广场 | `potala` | `cn_xizang_lhasa_potala_night_wide.png` ✅ | 酸奶、青稞饼、酥油茶小摊 | 夜景 wide · 有人物 ✅ |
 | 林芝·鲁朗 | `cn/xizang/nyingchi/` | `cn_xizang_nyingchi_*` | 石锅鸡招牌、菌菇 |
 
-场景原型 **待建**：`xizang-lhasa-street-prototypes.md` · `xizang-nyingchi-street-prototypes.md`。
+场景原型 → [xizang-lhasa-street-prototypes.md](xizang-lhasa-street-prototypes.md) · [xizang-nyingchi-street-prototypes.md](xizang-nyingchi-street-prototypes.md)（待建）
 
 ---
 
@@ -216,4 +217,4 @@ web_posters: {}
 | 2026-05-24 | **糌粑** 海报首绘 · boluo 清新风 · `cn/xizang/zanba_poster.png` |
 | 2026-05-24 | **酥油茶** 海报首绘 · boluo 清新风 · `cn/xizang/suyoucha_poster.png` |
 | 2026-05-24 | **甜茶** 海报首绘 · boluo 清新风 · `cn/xizang/tiancha_poster.png` · 竖牌拉萨味道 |
-| 2026-05-24 | **青稞酒** 海报首绘 · boluo 清新风 · `cn/xizang/qingke_jiu_poster.png` |
+| 2026-05-25 | **布达拉宫广场** 街景 `cn_xizang_lhasa_potala_night_wide.png` · 夜景 wide · 有人物 |

@@ -53,6 +53,12 @@ const GEO: Record<string, RegionAtmosphereGeo> = {
     timezone: "Asia/Shanghai",
     place: { zh: "杭州", en: "Hangzhou", ja: "杭州" },
   },
+  "cn/xizang": {
+    lat: 29.657,
+    lon: 91.117,
+    timezone: "Asia/Shanghai",
+    place: { zh: "拉萨", en: "Lhasa", ja: "ラサ" },
+  },
   "jp/tokyo": {
     lat: 35.681,
     lon: 139.767,
@@ -118,6 +124,12 @@ const GEO: Record<string, RegionAtmosphereGeo> = {
     lon: 174.763,
     timezone: "Pacific/Auckland",
     place: { zh: "奥克兰", en: "Auckland", ja: "オークランド" },
+  },
+  "antarctica/antarctica": {
+    lat: -64.75,
+    lon: -62.55,
+    timezone: "Antarctica/Palmer",
+    place: { zh: "天堂湾", en: "Paradise Harbor", ja: "パラダイス湾" },
   },
 };
 

@@ -16,9 +16,16 @@ interface Props {
   payload: LandingSpotPayload;
   bentoPrevLabel: string;
   bentoNextLabel: string;
+  /** Default visible panel only — hidden panels lazy-load carousel images. */
+  eagerCarousel?: boolean;
 }
 
-const { lang, payload, bentoPrevLabel, bentoNextLabel } = Astro.props as Props;
+const { lang, payload, bentoPrevLabel, bentoNextLabel, eagerCarousel = false } = Astro.props as Props;
+
+const forecastPanelId =
+  payload.countryId === "cn"
+    ? `bento-weather-forecast-cn-${payload.regionId}`
+    : `bento-weather-forecast-${payload.countryId}`;
 
 const {
   countryId,
@@ -76,7 +83,7 @@ const weatherMascotSsr = inferWeatherMascotState({
           <LandingBentoCarousel
             slides={dishSlides}
             variant="photo"
-            eager
+            eager={eagerCarousel}
             prevLabel={bentoPrevLabel}
             nextLabel={bentoNextLabel}
           />
@@ -112,9 +119,6 @@ const weatherMascotSsr = inferWeatherMascotState({
       <span class="bento-flag" aria-hidden="true">{flag}</span>
       <div class="bento-zine-copy">
         <div class="n-zh h-serif-dish">{zineSlides[0]?.title ?? t(zinePick.name, lang)}</div>
-        <span class="bento-zine-read">
-          {t(UI.landing.read_short, lang)} &rarr;
-        </span>
       </div>
     </GlassTile>
   )}
@@ -184,7 +188,7 @@ const weatherMascotSsr = inferWeatherMascotState({
               class="bento-weather-toggle"
               data-bento-weather-toggle
               aria-expanded="false"
-              aria-controls="bento-weather-forecast"
+              aria-controls={forecastPanelId}
               aria-label={t(UI.gallery.weather_expand, lang)}
               data-label-expand={t(UI.gallery.weather_expand, lang)}
               data-label-collapse={t(UI.gallery.weather_collapse, lang)}
@@ -223,7 +227,7 @@ const weatherMascotSsr = inferWeatherMascotState({
           </div>
           <div
             class="bento-weather-panel"
-            id="bento-weather-forecast"
+            id={forecastPanelId}
             data-bento-weather-forecast
             hidden
           ></div>

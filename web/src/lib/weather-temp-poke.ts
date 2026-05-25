@@ -231,14 +231,29 @@ export function initWeatherTempPoke(chip: HTMLElement): void {
     debugCycleIndex: 0,
   });
 
+  let pokeFromPointer = false;
+  const poke = (): void => {
+    const state = bindStates.get(chip);
+    if (!state) return;
+    onPointerDown(state);
+  };
+
   hit.addEventListener("pointerdown", (ev) => {
     if (ev.button !== 0) return;
-    onPointerDown(bindStates.get(chip)!);
+    pokeFromPointer = true;
+    poke();
+    window.setTimeout(() => {
+      pokeFromPointer = false;
+    }, 0);
+  });
+  hit.addEventListener("click", (ev) => {
+    if (ev.button !== 0 || pokeFromPointer) return;
+    poke();
   });
   hit.addEventListener("keydown", (ev) => {
     if (ev.key !== "Enter" && ev.key !== " ") return;
     ev.preventDefault();
-    onPointerDown(bindStates.get(chip)!);
+    poke();
   });
 }
 

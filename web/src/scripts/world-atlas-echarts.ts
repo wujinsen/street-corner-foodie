@@ -118,6 +118,8 @@ interface AtlasState {
   countryId: CountryId | null;
   /** `${countryId}__${regionId}` of the focused province, null in world/country view. */
   regionKey: string | null;
+  /** Landing homepage · world view · selected scene id (no zoom). */
+  landingSelection: string | null;
   /** Spider fan for a multi-scene cluster in region view. */
   spider: {
     clusterKey: string;
@@ -133,7 +135,7 @@ interface SceneDatum {
   value: [number, number];
   meta: string;
   regionKey: string;
-  itemStyle?: { opacity?: number };
+  itemStyle?: { opacity?: number; shadowBlur?: number; shadowColor?: string };
   label?: { show?: boolean };
   symbolSize?: number;
 }
@@ -183,6 +185,7 @@ function sceneSeriesByCountry(
   payload: WorldAtlasPayload,
   scenes: WorldAtlasScene[],
   state: AtlasState,
+  landing = false,
 ): Extract<NonNullable<EChartsOption["series"]>, object>[] {
   const activeClusters =
     state.view === "region" && state.regionKey
@@ -193,6 +196,8 @@ function sceneSeriesByCountry(
     for (const id of c.sceneIds) clusterByScene.set(id, c);
   }
   const expandedKey = state.spider?.clusterKey ?? null;
+  const landingWorldPick =
+    landing && state.view === "world" && state.landingSelection ? state.landingSelection : null;
 
   const groups = new Map<CountryId, WorldAtlasScene[]>();
   for (const s of scenes) {
@@ -209,9 +214,13 @@ function sceneSeriesByCountry(
 
     for (const s of list) {
       const regionKey = `${s.countryId}__${s.regionId}`;
-      const dim =
+      let dim =
         (state.view === "country" && state.countryId != null && s.countryId !== state.countryId) ||
         (state.view === "region" && state.regionKey != null && state.regionKey !== regionKey);
+      const landingSelected = landingWorldPick === s.id;
+      if (landingWorldPick) {
+        dim = !landingSelected;
+      }
       const inActiveRegion = state.view === "region" && state.regionKey === regionKey;
       const cluster = inActiveRegion ? clusterByScene.get(s.id) : undefined;
 
@@ -239,7 +248,18 @@ function sceneSeriesByCountry(
         value: s.geo,
         meta: s.id,
         regionKey,
-        itemStyle: dim ? { opacity: 0.22 } : undefined,
+        symbolSize: landingWorldPick
+          ? landingSelected
+            ? 30
+            : 16
+          : undefined,
+        itemStyle: landingWorldPick
+          ? landingSelected
+            ? { opacity: 1, shadowBlur: 34, shadowColor: pin.glow }
+            : { opacity: 0.24 }
+          : dim
+            ? { opacity: 0.22 }
+            : undefined,
         label: dim ? { show: false } : state.view === "region" ? { show: true } : undefined,
       });
     }
@@ -258,9 +278,13 @@ function sceneSeriesByCountry(
       showEffectOn: "render",
       rippleEffect: {
         brushType: "stroke",
-        scale: state.view === "region" ? 7 : 6.5,
-        period: 5.5,
-        number: 3,
+        scale: landingWorldPick
+          ? 5
+          : state.view === "region"
+            ? 7
+            : 6.5,
+        period: landingWorldPick ? 4.2 : 5.5,
+        number: landingWorldPick ? 2 : 3,
         color: pin.ripple,
       },
       label: {
@@ -599,7 +623,9 @@ function buildOption(
         : undefined;
       const isExpanded = state.spider?.clusterKey === cluster?.key;
       let action = payload.i18n.tip_zoom;
-      if (inRegion) {
+      if (landing && state.view === "world") {
+        action = "→ 单击选中 · 不放大";
+      } else if (inRegion) {
         if (cluster && cluster.sceneIds.length > 1 && !isExpanded) {
           action = langTip(payload, "cluster_expand") ?? "→ 点击展开缩略图";
         } else {
@@ -666,7 +692,7 @@ function buildOption(
         zlevel: 1,
       },
       ...regionBoundarySeries(state, payload, atlasRegionsCache),
-      ...sceneSeriesByCountry(payload, payload.scenes, state),
+      ...sceneSeriesByCountry(payload, payload.scenes, state, landing),
     ] as EChartsOption["series"],
   };
 }
@@ -759,21 +785,27 @@ function syncBreadcrumb(
   const showRegion = Boolean(region && (state.view === "region" || cityLabel));
   const showCity = Boolean(cityLabel);
 
-  setCrumbWrap(crumbs, "country", showCountry);
-  setCrumbWrap(crumbs, "region", showRegion);
-  setCrumbWrap(crumbs, "city", showCity);
-
   if (countryEl && country) {
     countryEl.textContent = country.name;
     countryEl.dataset.countryId = country.id;
+  } else if (countryEl) {
+    countryEl.textContent = "";
+    delete countryEl.dataset.countryId;
   }
   if (regionEl && region) {
     regionEl.textContent = region.name;
     regionEl.dataset.regionKey = region.id;
+  } else if (regionEl) {
+    regionEl.textContent = "";
+    delete regionEl.dataset.regionKey;
   }
   if (cityEl) {
     cityEl.textContent = cityLabel ?? "";
   }
+
+  setCrumbWrap(crumbs, "country", showCountry);
+  setCrumbWrap(crumbs, "region", showRegion);
+  setCrumbWrap(crumbs, "city", showCity);
 
   let currentLevel: "world" | "country" | "region" | "city" | null = "world";
   if (cityLabel) currentLevel = "city";
@@ -801,7 +833,13 @@ export function createWorldAtlasChart(
   let chart: ECharts | null = null;
   let mapReady: Promise<void> | null = null;
   let disposed = false;
-  const state: AtlasState = { view: "world", countryId: null, regionKey: null, spider: null };
+  const state: AtlasState = {
+    view: "world",
+    countryId: null,
+    regionKey: null,
+    landingSelection: null,
+    spider: null,
+  };
   const landing = root.classList.contains("world-atlas-explorer--landing");
   let suppressZrClear = false;
 
@@ -867,6 +905,13 @@ export function createWorldAtlasChart(
     syncCards();
   };
 
+  /** Landing world · update pin highlight only (keep geo viewport). */
+  const renderLandingPinState = (): void => {
+    if (!chart || disposed || !landing || state.view !== "world") return;
+    const sceneSeries = sceneSeriesByCountry(payload, payload.scenes, state, landing);
+    chart.setOption({ series: sceneSeries });
+  };
+
   const clearSpider = (): void => {
     state.spider = null;
     clearSpiderCards(host);
@@ -877,6 +922,7 @@ export function createWorldAtlasChart(
       clearSpider();
       state.countryId = null;
       state.regionKey = null;
+      state.landingSelection = null;
       state.view = "world";
       landingViewCustomized = false;
       render();
@@ -924,6 +970,22 @@ export function createWorldAtlasChart(
 
     const scene = payload.scenes.find((s) => s.id === meta);
     if (!scene) return;
+
+    /** Landing homepage · world view: select only, never zoom into region. */
+    if (landing && state.view === "world") {
+      const deselect = state.landingSelection === meta;
+      state.landingSelection = deselect ? null : meta;
+      root.dispatchEvent(
+        new CustomEvent("scf:atlas-focus", {
+          bubbles: true,
+          detail: deselect
+            ? { cleared: true }
+            : { countryId: scene.countryId, regionId: scene.regionId },
+        }),
+      );
+      renderLandingPinState();
+      return;
+    }
 
     root.dispatchEvent(
       new CustomEvent("scf:atlas-focus", {
@@ -999,6 +1061,17 @@ export function createWorldAtlasChart(
         requestAnimationFrame(() => {
           if (suppressZrClear) {
             suppressZrClear = false;
+            return;
+          }
+          if (landing && state.view === "world" && state.landingSelection) {
+            state.landingSelection = null;
+            renderLandingPinState();
+            root.dispatchEvent(
+              new CustomEvent("scf:atlas-focus", {
+                bubbles: true,
+                detail: { cleared: true },
+              }),
+            );
             return;
           }
           if (!state.spider) return;

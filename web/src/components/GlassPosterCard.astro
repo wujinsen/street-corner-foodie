@@ -3,6 +3,7 @@
  * v0.6 · alt-c · glass poster card for region gallery grid.
  */
 import { UI, t, type Lang } from "../lib/i18n";
+import { COUNTRIES } from "../lib/countries";
 import { posterImageUrl } from "../lib/posters";
 import ScfPicture from "./ScfPicture.astro";
 import type { Poster } from "../lib/types";
@@ -62,7 +63,7 @@ function flavorAccent(tag: string): string {
 }
 
 const flavorLine = flavorAccent(tags[0] ?? "");
-const countryCode = poster.countryId.toUpperCase();
+const countryLabel = t(COUNTRIES[poster.countryId].name, lang);
 const Tag = href ? "a" : "article";
 ---
 <Tag
@@ -109,7 +110,7 @@ const Tag = href ? "a" : "article";
         <span class="ph-emoji">{poster.emoji}</span>
       </div>
     )}
-    <span class="glass-poster-flag h-track" aria-hidden="true">{countryCode}</span>
+    <span class="glass-poster-flag" aria-hidden="true">{countryLabel}</span>
     <span class="glass-poster-pin h-track">● {poster.pin}</span>
     <button
       type="button"

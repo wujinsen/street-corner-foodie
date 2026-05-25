@@ -1,8 +1,9 @@
 ﻿---
 import BrandMark from "./BrandMark.astro";
 import ThemeToggle from "./ThemeToggle.astro";
+import CountryPicker from "./CountryPicker.astro";
 import { UI, LANG_LABELS, t, LANGS, type Lang } from "../lib/i18n";
-import { COUNTRIES, COUNTRY_ORDER, REGIONS } from "../lib/countries";
+import { REGIONS } from "../lib/countries";
 import { COUNTRY_SPOTLIGHT } from "../lib/country-posters";
 import { localePath, regionGalleryHref, resolveLang, switchLocalePath } from "../lib/locale-path";
 import type { CountryId } from "../lib/types";
@@ -128,16 +129,7 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
     <div class="topbar-actions">
       {altc ? (
         <>
-          <div class="switch-glass" role="group" aria-label="country">
-            {COUNTRY_ORDER.map((cid) => (
-              <a
-                href={localePath(pageLang, `/${cid}/`)}
-                class={cid === country ? "active" : ""}
-                data-country-link={cid}
-                title={t(COUNTRIES[cid].name, pageLang)}
-              >{COUNTRIES[cid].flag}</a>
-            ))}
-          </div>
+          <CountryPicker lang={pageLang} country={country} variant="topbar" />
           <div class="switch-glass" role="group" aria-label="language">
             {LANGS.map((l) => (
               <a
@@ -171,15 +163,7 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
           <button type="button" class="icon-btn" id="fav-btn" title="Favorites">
             &#9825;<span class="fav-count" id="fav-count">0</span>
           </button>
-          <div class="switch" role="group" aria-label="country">
-            {COUNTRY_ORDER.map((cid) => (
-              <a
-                href={localePath(pageLang, `/${cid}/`)}
-                class={cid === country ? "active" : ""}
-                data-country-link={cid}
-              >{COUNTRIES[cid].flag}<span style="margin-left:6px">{cid.toUpperCase()}</span></a>
-            ))}
-          </div>
+          <CountryPicker lang={pageLang} country={country} variant="topbar" />
           <div class="switch" role="group" aria-label="language">
             {LANGS.map((l) => (
               <a

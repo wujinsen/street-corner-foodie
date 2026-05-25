@@ -1,6 +1,7 @@
 ---
 import WorldAtlasBoot from "./WorldAtlasBoot.astro";
 import WorldAtlasCrumbs from "./WorldAtlasCrumbs.astro";
+import WorldAtlasWeatherChip from "./WorldAtlasWeatherChip.astro";
 import { UI, t, type Lang } from "../lib/i18n";
 import { buildWorldAtlasPayload, type WorldAtlasPayload } from "../lib/world-atlas-payload";
 
@@ -26,6 +27,8 @@ if (!payload) {
   <script type="application/json" data-world-atlas-config set:html={JSON.stringify(payload)} />
 
   <WorldAtlasCrumbs lang={lang} worldLabel={payload.i18n.crumb_world} />
+
+  <WorldAtlasWeatherChip lang={lang} />
 
   <div
     class="world-atlas-explorer__stage"

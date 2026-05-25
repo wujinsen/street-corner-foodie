@@ -22,14 +22,18 @@ import { UI, t } from "../lib/i18n";
 import { COUNTRY_ORDER, REGIONS } from "../lib/countries";
 import { resolveLang } from "../lib/locale-path";
 import { buildLandingAtlasSpots, LANDING_MAP_DEFAULT } from "../lib/landing-atlas-spots";
-import { buildLandingSpotPayload } from "../lib/landing-spot-payload";
+import { buildLandingRegionSpots } from "../lib/landing-region-spots";
+import { buildLandingSpotPayload, buildAllLandingSpotPayloads, buildAllCnRegionPayloads, LANDING_BENTO_COUNTRIES, LANDING_CN_BENTO_REGIONS } from "../lib/landing-spot-payload";
 import { buildWorldAtlasPayload } from "../lib/world-atlas-payload";
 
 const lang = resolveLang(Astro.currentLocale);
 const featCountry = LANDING_MAP_DEFAULT;
 const payload = buildLandingSpotPayload(featCountry, lang);
+const bentoPayloads = buildAllLandingSpotPayloads(lang);
+const cnRegionPayloads = buildAllCnRegionPayloads(lang);
 const atlasPayload = buildWorldAtlasPayload(lang);
 const landingSpots = buildLandingAtlasSpots(lang);
+const landingRegions = buildLandingRegionSpots(lang);
 const mapSpot = landingSpots.find((s) => s.id === featCountry)!;
 
 function totalStats(k: "poster" | "zine" | "street"): number {
@@ -71,9 +75,15 @@ const stotal = totalStats("street");
         class="landing-left landing-left--stack landing-spotlight"
         data-landing-map-root
         data-default-country={featCountry}
+        data-default-region={mapSpot.regionId}
         data-lang={lang}
         data-landing-map-json={JSON.stringify(landingSpots)}
       >
+        <script
+          type="application/json"
+          id="landing-regions-data"
+          set:html={JSON.stringify(landingRegions)}
+        />
         <LandingWorldAtlas lang={lang} payload={atlasPayload} />
         <LandingCityCard
           lang={lang}
@@ -84,23 +94,71 @@ const stotal = totalStats("street");
         />
       </div>
 
-      <div class="landing-feature landing-feature--bento-only">
-        <LandingBentoMosaic
-          lang={lang}
-          payload={payload}
-          bentoPrevLabel={bentoPrevLabel}
-          bentoNextLabel={bentoNextLabel}
-        >
-          <LandingManifesto
-            slot="manifesto"
-            variant="bento-slot"
-            lang={lang}
-            countryId={featCountry}
-            posterTotal={ptotal}
-            zineTotal={ztotal}
-            streetTotal={stotal}
-          />
-        </LandingBentoMosaic>
+      <div class="landing-feature landing-feature--bento-only" data-landing-bento-root>
+        {
+          LANDING_BENTO_COUNTRIES.map((countryId) => (
+            countryId === "cn" ? (
+              <div
+                class="landing-bento-panel"
+                data-landing-bento-panel
+                data-country={countryId}
+                hidden={countryId !== featCountry || undefined}
+              >
+                {LANDING_CN_BENTO_REGIONS.map((regionId) => (
+                  <div
+                    class="landing-bento-region-panel"
+                    data-landing-bento-region-panel
+                    data-region={regionId}
+                    hidden={regionId !== mapSpot.regionId || undefined}
+                  >
+                    <LandingBentoMosaic
+                      lang={lang}
+                      payload={cnRegionPayloads[regionId]}
+                      bentoPrevLabel={bentoPrevLabel}
+                      bentoNextLabel={bentoNextLabel}
+                      eagerCarousel={countryId === featCountry && regionId === mapSpot.regionId}
+                    >
+                      <LandingManifesto
+                        slot="manifesto"
+                        variant="bento-slot"
+                        lang={lang}
+                        countryId={countryId}
+                        posterTotal={ptotal}
+                        zineTotal={ztotal}
+                        streetTotal={stotal}
+                      />
+                    </LandingBentoMosaic>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div
+                class="landing-bento-panel"
+                data-landing-bento-panel
+                data-country={countryId}
+                hidden={countryId !== featCountry || undefined}
+              >
+                <LandingBentoMosaic
+                  lang={lang}
+                  payload={bentoPayloads[countryId]}
+                  bentoPrevLabel={bentoPrevLabel}
+                  bentoNextLabel={bentoNextLabel}
+                  eagerCarousel={countryId === featCountry}
+                >
+                  <LandingManifesto
+                    slot="manifesto"
+                    variant="bento-slot"
+                    lang={lang}
+                    countryId={countryId}
+                    posterTotal={ptotal}
+                    zineTotal={ztotal}
+                    streetTotal={stotal}
+                  />
+                </LandingBentoMosaic>
+              </div>
+            )
+          ))
+        }
       </div>
 
     </div>
@@ -114,6 +172,7 @@ const stotal = totalStats("street");
   <script>
     import "../scripts/landing-bento-carousel";
     import "../scripts/landing-bento-weather";
+    import "../scripts/landing-bento-sync";
     import "../scripts/landing-atlas-bridge";
     import "../scripts/landing-city-zine-sync";
   </script>

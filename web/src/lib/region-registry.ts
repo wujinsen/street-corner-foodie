@@ -163,6 +163,26 @@ export const REGION_BINDINGS: RegionBinding[] = [
     streetFilter: (e) => e.includes("cn_zhejiang_hangzhou_"),
   },
   {
+    docSuffix: "china/xizang.md",
+    countryId: "cn",
+    regionId: "xizang",
+    name: { zh: "西藏", en: "Tibet", ja: "チベット" },
+    tagline: {
+      zh: "高原青稞与酥油茶 — 糌粑、甜茶、牦牛肉，从布达拉宫到甜茶馆。",
+      en: "High-plateau barley and butter tea — tsampa, sweet tea, yak meat from Potala to teahouses.",
+      ja: "高原の青稞と酥油茶 — ツァンパ、甜茶、ヤク肉。",
+    },
+    flavors: {
+      zh: ["咸香", "奶脂", "青稞", "发酵"],
+      en: ["Savory", "Dairy", "Barley", "Fermented"],
+      ja: ["塩辛", "乳脂", "青稞", "発酵"],
+    },
+    posterFilter: (e) => e.includes("cn/xizang/"),
+    posterPathPrefix: "cn/xizang/",
+    streetPathOverride: "cn/xizang/lhasa/",
+    streetFilter: (e) => e.includes("cn_xizang_lhasa_") || e.includes("cn/xizang/lhasa/"),
+  },
+  {
     docSuffix: "world/japan.md",
     countryId: "jp",
     regionId: "tokyo",

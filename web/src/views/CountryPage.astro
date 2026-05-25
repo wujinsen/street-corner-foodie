@@ -7,6 +7,7 @@ import Base from "../layouts/Base.astro";
 import GalleryTabHashSync from "../components/GalleryTabHashSync.astro";
 import GlassPosterCard from "../components/GlassPosterCard.astro";
 import GalleryFilterPillRow from "../components/GalleryFilterPillRow.astro";
+import CountryPicker from "../components/CountryPicker.astro";
 import GalleryBottomDock from "../components/GalleryBottomDock.astro";
 import GalleryPagination from "../components/GalleryPagination.astro";
 import StreetExplorer from "../components/StreetExplorer.astro";
@@ -19,7 +20,7 @@ import { filterTagsAttr } from "../lib/flavor-match";
 import { zineReaderPath } from "../lib/zines";
 import { UI, t } from "../lib/i18n";
 import { GALLERY_UI, gt } from "../lib/gallery-ui";
-import { COUNTRIES, COUNTRY_ORDER, REGIONS, findRegion } from "../lib/countries";
+import { COUNTRIES, REGIONS, findRegion } from "../lib/countries";
 import {
   COUNTRY_SPOTLIGHT,
   pickCountryFeatured,
@@ -274,15 +275,10 @@ const zineHref = (regionId: string, zSlug: string) =>
     <div class="gallery-filter-bar tile xs country-filter-bar gallery-tab-posters-only">
       <div class="gallery-filter-inner">
       <div class="gallery-filter-rows">
-        <GalleryFilterPillRow label={gt(GALLERY_UI.filter_country, lang)} wrapOver={99}>
-          {COUNTRY_ORDER.map((cid) => (
-            <a
-              href={localePath(lang, `/${cid}`)}
-              class={cid === country ? "active" : ""}
-              title={t(COUNTRIES[cid].name, lang)}
-            >{COUNTRIES[cid].flag}</a>
-          ))}
-        </GalleryFilterPillRow>
+        <div class="gallery-filter-row gallery-filter-row--country">
+          <span class="gallery-filter-label h-track">{gt(GALLERY_UI.filter_country, lang)}</span>
+          <CountryPicker lang={lang} country={country} variant="filter" />
+        </div>
         {regions.length > 0 && (
           <GalleryFilterPillRow
             label={gt(GALLERY_UI.filter_province, lang)}

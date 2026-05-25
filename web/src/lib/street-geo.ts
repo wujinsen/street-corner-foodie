@@ -42,6 +42,7 @@ export const REGION_GEO: Record<string, RegionGeoConfig> = {
   "cn:guangdong": { center: [113.5, 23.2], lngPerPin: 0.015, latPerPin: 0.011, zoom: 9 },
   "cn:sichuan": { center: [104.5, 30.4], lngPerPin: 0.018, latPerPin: 0.013, zoom: 8 },
   "cn:shaanxi": { center: [108.94, 34.26], lngPerPin: 0.006, latPerPin: 0.004, zoom: 11 },
+  "cn:xizang": { center: [91.12, 29.65], lngPerPin: 0.008, latPerPin: 0.006, zoom: 10 },
   "jp:tokyo": { center: [139.76, 35.68], lngPerPin: 0.004, latPerPin: 0.003, zoom: 11 },
   "jp:fuji": { center: [138.76, 35.5], lngPerPin: 0.02, latPerPin: 0.015, zoom: 9 },
   "us:ny": { center: [-73.98, 40.75], lngPerPin: 0.004, latPerPin: 0.003, zoom: 11 },
