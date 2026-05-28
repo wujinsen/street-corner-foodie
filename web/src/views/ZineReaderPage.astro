@@ -153,7 +153,7 @@ const readerConfig = JSON.stringify({
   ogImage={resolveOgImage(Astro.site, imgFull)}
 >
   <section class="alt-zine container-wide" id="zine-reader-root">
-    <nav class="alt-crumb" aria-label="breadcrumbs">
+    <nav class="alt-crumb" aria-label={t(UI.a11y.breadcrumbs, lang)}>
       <a href={localePath(lang, "/")}>{t(UI.nav.world, lang).toUpperCase()}</a>
       <span class="sep" aria-hidden="true">&#8250;</span>
       <a href={localePath(lang, `/${country}`)}>{t(c.name, lang).toUpperCase()}</a>
@@ -319,7 +319,7 @@ const readerConfig = JSON.stringify({
         <div class="alt-zine-side-scroll alt-zine-side-scroll--right" tabindex="0">
         <h2 class="h-track">{t(UI.zine.about_dish, lang).toUpperCase()}</h2>
         <h3 class="h-serif-dish">{t(zine.name, lang)}</h3>
-        <p class="pin-chip">● {t(region.name, lang)} · {poster?.pin ?? region.name.zh}</p>
+        <p class="pin-chip">● {t(region.name, lang)} · {poster?.pin ?? t(region.name, lang)}</p>
         <div class="flavor-chips">
           {(poster ? (poster.tags[lang] ?? poster.tags.zh) : flavors).slice(0, 4).map((f) => (
             <span>{f}</span>

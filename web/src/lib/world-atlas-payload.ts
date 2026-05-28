@@ -82,6 +82,10 @@ export interface WorldAtlasPayload {
     hint_region: string;
     hint_spider: string;
     cluster_expand: string;
+    cluster_collapse: string;
+    landing_select: string;
+    tooltip_street_default: string;
+    map_load_error: string;
     tip_zoom: string;
     tip_navigate: string;
   };
@@ -274,6 +278,10 @@ export function buildWorldAtlasPayload(lang: Lang): WorldAtlasPayload | null {
         },
         lang,
       ),
+      cluster_collapse: t(UI.gallery.cluster_collapse, lang),
+      landing_select: t(UI.gallery.landing_select, lang),
+      tooltip_street_default: t(UI.gallery.tooltip_street_default, lang),
+      map_load_error: t(UI.gallery.map_load_error, lang),
       tip_zoom: t(
         {
           zh: "→ 点击放大到该省",

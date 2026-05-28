@@ -131,6 +131,12 @@ const GEO: Record<string, RegionAtmosphereGeo> = {
     timezone: "Antarctica/Palmer",
     place: { zh: "天堂湾", en: "Paradise Harbor", ja: "パラダイス湾" },
   },
+  "arctic/arctic": {
+    lat: 89.5,
+    lon: 0,
+    timezone: "Arctic/Longyearbyen",
+    place: { zh: "地理北极点", en: "North Pole", ja: "北極点" },
+  },
 };
 
 export function getRegionAtmosphereGeo(

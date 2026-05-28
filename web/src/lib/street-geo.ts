@@ -55,6 +55,7 @@ export const REGION_GEO: Record<string, RegionGeoConfig> = {
   "za:south_africa": { center: [19.25, -34.6], lngPerPin: 0.04, latPerPin: 0.03, zoom: 7 },
   "nz:nz": { center: [174.0, -41.0], lngPerPin: 0.02, latPerPin: 0.015, zoom: 5 },
   "antarctica:antarctica": { center: [-64.75, -62.55], lngPerPin: 0.02, latPerPin: 0.015, zoom: 8 },
+  "arctic:arctic": { center: [0, 89.5], lngPerPin: 0.02, latPerPin: 0.015, zoom: 8 },
 };
 
 export const COUNTRY_FALLBACK: Record<CountryId, RegionGeoConfig> = {
@@ -67,6 +68,7 @@ export const COUNTRY_FALLBACK: Record<CountryId, RegionGeoConfig> = {
   za: { center: [25.0, -29.0], lngPerPin: 0.02, latPerPin: 0.015, zoom: 5 },
   nz: { center: [174.0, -41.0], lngPerPin: 0.02, latPerPin: 0.015, zoom: 5 },
   antarctica: { center: [-64.75, -62.55], lngPerPin: 0.02, latPerPin: 0.015, zoom: 8 },
+  arctic: { center: [0, 89.5], lngPerPin: 0.02, latPerPin: 0.015, zoom: 8 },
 };
 
 export function mapPinToGeo(

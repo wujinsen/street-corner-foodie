@@ -13,6 +13,7 @@ export const COUNTRIES: Record<CountryId, Country> = {
   za: { id: "za", flag: "🇿🇦", name: { zh: "南非", en: "South Africa", ja: "南アフリカ" }, vstrip: "SOUTH AFRICAN FLAVOUR" },
   nz: { id: "nz", flag: "🇳🇿", name: { zh: "新西兰", en: "New Zealand", ja: "ニュージーランド" }, vstrip: "AOTEAROA FLAVOUR" },
   antarctica: { id: "antarctica", flag: "🇦🇶", name: { zh: "南极", en: "Antarctica", ja: "南極" }, vstrip: "POLAR EXPEDITION" },
+  arctic: { id: "arctic", flag: "🧊", name: { zh: "北极", en: "Arctic", ja: "北極" }, vstrip: "ARCTIC EXPEDITION" },
 };
 
-export const COUNTRY_ORDER: CountryId[] = ["cn", "jp", "us", "fr", "uk", "de", "za", "nz", "antarctica"];
+export const COUNTRY_ORDER: CountryId[] = ["cn", "jp", "us", "fr", "uk", "de", "za", "nz", "antarctica", "arctic"];

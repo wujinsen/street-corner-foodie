@@ -32,6 +32,8 @@ gourmet_posters:
   - cheeseburger_poster_no_char.png
   - three_sisters_poster.png
   - three_sisters_poster_no_char.png
+  - wild_rice_poster.png
+  - chinatown_takeout_poster.png
   - us/ny_pizza_poster.png
   - us/ny_pizza_poster_no_char.png
   - texas_brisket_poster.png
@@ -60,6 +62,12 @@ mini_zine:
   - ny_pizza_recipe_mini_zine.png
   - ny_pizza_story_eating_mini_zine_no_char.png
   - ny_pizza_recipe_mini_zine_no_char.png
+  - wild_rice_mini_zine_p01_story_eating.png
+  - wild_rice_mini_zine_p02_narr_story.png
+  - wild_rice_mini_zine_p03_narr_culture.png
+  - wild_rice_mini_zine_p04_narr_street.png
+  - wild_rice_mini_zine_p05_narr_ingredients.png
+  - wild_rice_mini_zine_p06_recipe.png
 mini_zine_zh: []
 mini_zine_ja: []
 street_view_approved:
@@ -348,7 +356,7 @@ web_posters:
 | **披萨 slice** | 薄底大扇、窑烤、折角吃 | 一片手持；芝士拉丝 | `times_square` / `brooklyn_dumbo` |
 | **百吉饼 + lox** | 烤百吉饼、奶油芝士、烟熏三文鱼 | 早餐 deli；可加刺山柑 | `lower_manhattan` |
 | **纽约 deli 三明治** | 厚切腌牛肉/火鸡、酸黄瓜、黑麦面包 | 半份常够一人 | `lower_manhattan` |
-| **唐人街外卖** | 中餐快餐窗、炒饭面条 | 纸盒带走 | `lower_manhattan` |
+| **唐人街外卖** | 中餐快餐窗、炒饭面条 | 纸盒带走 | `lower_manhattan` | `chinatown_takeout` |
 | **smash burger** | 压扁煎焦肉饼、芝士、软面包 | 布鲁克林水岸店 | `brooklyn_dumbo` |
 
 场景原型 → **[usa-nyc-street-prototypes.md](usa-nyc-street-prototypes.md)**（时代广场 / 下城 / DUMBO，各 3 张金标准 **已入库**）。
@@ -436,13 +444,14 @@ web_posters:
 | **纽约披萨** | 薄底大扇、折角吃、窑烤 | `ny_pizza` |
 | **费城芝士牛排** | 薄切牛肉、芝士酱、长卷 | `philly_cheesesteak` |
 | **百吉饼 + 烟熏三文鱼** | NYC 早餐经典 | `bagel_lox` |
+| **唐人街外卖**（Chinatown takeout） | 华埠快餐窗、炒饭捞面、纸盒带走 | `chinatown_takeout` ✅ 海报 |
 
 ### 原住民 · Indigenous（`us_indigenous*` 强锚定）
 
 | 名菜 | 特点 | 建议 slug | 时代 |
 |------|------|-----------|------|
 | **三道姐妹**（玉米·豆·南瓜） | 北美传统种植与炖煮 | `three_sisters` | `us_indigenous` ✅ 海报已入库 |
-| **野米饭**（wild rice） | 大湖地区采集与烹煮 | `wild_rice` | `us_indigenous` |
+| **野米饭**（wild rice） | 大湖地区采集与烹煮 | `wild_rice` | `us_indigenous` ✅ 海报 · zine p01–p06 |
 | **太平洋西北熏鲑** | 烟熏架、图腾纹布景可选 | `smoked_salmon_pnw` | `us_indigenous` |
 | **炸面包**（fry bread） | 当代集市/节庆小食（现代创制史） | `fry_bread` | `us_indigenous_modern` |
 
@@ -493,6 +502,7 @@ web_posters:
 | 菜品 | 标准版 | 无人物版 | 时代服饰 |
 |------|--------|----------|----------|
 | **三道姐妹** | `three_sisters_poster.png` | — · **`us_indigenous`** · 3 女 · 4 料横木牌 ✅ · boluo **清新风** · **英文** · **2026-05-19 穿模+服饰修正**（仅有人物） |
+| **野米饭** Wild rice | `wild_rice_poster.png` | — · **`us_indigenous`** · **大湖系** · 3 女 · 4 料横木牌 ✅ · boluo **清新风** · **EN only** |
 | **芝士汉堡** | `cheeseburger_poster.png` | `cheeseburger_poster_no_char.png` | **`us_80s_nyc`**（汉堡池 · `sum(ord)%4`）✅ |
 | 纽约披萨 slice | `ny_pizza_poster.png` | `ny_pizza_poster_no_char.png` | **`us_gilded`**（纽约 cart 池 · `sum(ord)%3`；旧稿若为当代风可 `_us_gilded_redraw`） |
 | **德州牛腩** | `texas_brisket_poster.png` | `texas_brisket_poster_no_char.png` | **`us_texas`**（烟熏池）✅ |
@@ -501,6 +511,7 @@ web_posters:
 | **街头塔可** | `tacos_poster.png` | `tacos_poster_no_char.png` | **`us_contemporary`** ✅ |
 | **秋葵海鲜饭**（gumbo） | `gumbo_poster.png` | `gumbo_poster_no_char.png` | **`us_creole`** ✅ |
 | **法式甜圈**（beignets） | `beignets_poster.png` | `beignets_poster_no_char.png` | **`us_creole`** ✅ |
+| **唐人街外卖** Chinatown Takeout | `chinatown_takeout_poster.png` | — · **`us_contemporary`** · **4** 女 · **5** 料横木牌 ✅ · boluo **清新风** · **EN only** · NYC Flavor |
 
 路径：`asserts/Gourmet recipe2/us/` · 命名 `{slug}_poster.png` / `_poster_no_char.png`。
 
@@ -509,6 +520,10 @@ web_posters:
 **与街景无关**：海报 **不** 绑定 `us_nyc_*` / `us_la_*` 街景场景；竖牌用 **美国味道** 或广域 **纽约味道** / **加州味道**（菜系圈，非街景分区名）。见 [food-poster-diorama.md §与街景无关](../style/food-poster-diorama.md)。
 
 **定稿（Three Sisters · 2026-05-19 boluo 清新风 · 穿模+服饰修正 · EN）**：`us_indigenous` **东部林地/易洛魁系**简化服饰（缎带衫几何纹、编织腰带、 moccasin；**禁**现代农场围裙/好莱坞刻板）· **3 女** · 炖菜大碗居中 · 四角分置**禁穿模** · 底行 4 料横木牌（Corn·Beans·Squash·Herbs）· 对齐 `boluo_chaofan_poster.png` · 竖牌 **American Flavor** · 英文对白 ×3 · **仅** `three_sisters_poster.png`。
+
+**定稿（Wild Rice · 2026-05-19 boluo 清新风 · EN）**：`us_indigenous` **大湖/Anishinaabe 系**简化服饰（leather-trim apron、birch 元素；**非**易洛魁缎带衫 · **禁**战羽/面部彩绘丑化）· **3 女** · **湖岸一字排** 篝火煮锅+birch 淘洗（**非** 2+2 · **非** three sisters 炖台）· 野米饭大碗居中 · 底行 **4** 料横木牌（Wild Rice·Broth·Wild Onion·Berries）· 顶题 **Wild Rice**（**画面仅 EN**）· 竖牌 **Great Lakes Flavor** · 英文对白 ×3 · 禁穿模 · **仅** `wild_rice_poster.png`。
+
+**定稿（Chinatown Takeout · 2026-05-19 boluo 清新风 · EN）**：`us_contemporary` **华埠外卖厨**（白短厨衣、黑围裙、蒸汽取餐窗；**禁**汉服 · **禁**刻板丑化）· **4 女** · **L 形柜台** 炒镬/捞面/装盒/递窗（**非** 2+2 · **非** 湖岸/披萨窑）· 主菜：**折叠纸盒** 炒饭+捞面组合居中 · 底行 **5** 料横木牌（Rice·Soy Sauce·Eggs·Vegetables·Noodles）· 顶题 **Chinatown Takeout**（**画面仅 EN**）· 竖牌 **NYC Flavor** · 英文对白 ×4 · 禁穿模 · **仅** `chinatown_takeout_poster.png`。
 
 **下单示例**：
 
@@ -533,6 +548,15 @@ web_posters:
 | 1 | NY Hot Dog | `hot_dog` | `us_contemporary` | **EN** ✅ | `hot_dog_story_eating_mini_zine.png` | `hot_dog_recipe_mini_zine.png` |
 | 2 | Soft Pretzel | `pretzel` | `us_roaring_20s` | **EN** ✅ | `pretzel_story_eating_mini_zine.png` | `pretzel_recipe_mini_zine.png` |
 | 3 | NY Pizza Slice | `ny_pizza` | `us_contemporary` | **EN** ✅ | `ny_pizza_story_eating_mini_zine.png` | `ny_pizza_recipe_mini_zine.png` |
+| 4 | Wild Rice | `wild_rice` | `us_indigenous` | **EN** ✅ | `wild_rice_mini_zine_p01_story_eating.png` | `wild_rice_mini_zine_p06_recipe.png` |
+
+**六页叙事**（`wild_rice` · p02–p05）：
+
+| 菜品 | 01 故事 | 02 文化 | 03 街景 | 04 食材 |
+|------|---------|---------|---------|---------|
+| Wild Rice | `wild_rice_mini_zine_p02_narr_story.png` | `wild_rice_mini_zine_p03_narr_culture.png` | `wild_rice_mini_zine_p04_narr_street.png` | `wild_rice_mini_zine_p05_narr_ingredients.png` |
+
+**Wild Rice 定稿（2026-05-24 · p01–p06 · EN）**：`us_indigenous` **大湖/Anishinaabe 系** · **3 女** · 角标 **Great Lakes Flavor** · 食材 p05：Wild Rice · Broth · Wild Onion · Berries (optional) · 与海报 `wild_rice_poster.png` 同代。
 
 每菜另有 `_story_eating_mini_zine_no_char.png`、`_recipe_mini_zine_no_char.png`。**2026-05** 三菜四套由中英混杂旧稿重做为 **EN-only**。
 

@@ -3930,22 +3930,24 @@
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
   "/asserts/Street View/jp/fuji/jp_fuji_kawaguchiko_day_wide.png": {
-    "sig": "1779472139428.6443:2699569",
-    "hash": "646fdfe9698b",
+    "sig": "1779872288447.6616:2624944",
+    "hash": "ec700c3e3e85",
     "fallback": "/asserts/Street View/jp/fuji/jp_fuji_kawaguchiko_day_wide.png",
-    "avif": "/scf-img/646fdfe9698b/320.avif 320w, /scf-img/646fdfe9698b/720.avif 720w, /scf-img/646fdfe9698b/1280.avif 1280w, /scf-img/646fdfe9698b/1536.avif 1536w",
-    "webp": "/scf-img/646fdfe9698b/320.webp 320w, /scf-img/646fdfe9698b/720.webp 720w, /scf-img/646fdfe9698b/1280.webp 1280w, /scf-img/646fdfe9698b/1536.webp 1536w",
+    "avif": "/scf-img/ec700c3e3e85/320.avif 320w, /scf-img/ec700c3e3e85/720.avif 720w, /scf-img/ec700c3e3e85/1536.avif 1536w",
+    "webp": "/scf-img/ec700c3e3e85/320.webp 320w, /scf-img/ec700c3e3e85/720.webp 720w, /scf-img/ec700c3e3e85/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
-    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
   },
   "/asserts/Street View/jp/fuji/jp_fuji_kawaguchiko_night_wide.png": {
-    "sig": "1779472139428.6443:2653372",
-    "hash": "b8c06a423da1",
+    "sig": "1779872007943.4082:2566922",
+    "hash": "68471baee1dd",
     "fallback": "/asserts/Street View/jp/fuji/jp_fuji_kawaguchiko_night_wide.png",
-    "avif": "/scf-img/b8c06a423da1/320.avif 320w, /scf-img/b8c06a423da1/720.avif 720w, /scf-img/b8c06a423da1/1280.avif 1280w, /scf-img/b8c06a423da1/1536.avif 1536w",
-    "webp": "/scf-img/b8c06a423da1/320.webp 320w, /scf-img/b8c06a423da1/720.webp 720w, /scf-img/b8c06a423da1/1280.webp 1280w, /scf-img/b8c06a423da1/1536.webp 1536w",
+    "avif": "/scf-img/68471baee1dd/320.avif 320w, /scf-img/68471baee1dd/720.avif 720w, /scf-img/68471baee1dd/1536.avif 1536w",
+    "webp": "/scf-img/68471baee1dd/320.webp 320w, /scf-img/68471baee1dd/720.webp 720w, /scf-img/68471baee1dd/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
-    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
   },
   "/asserts/Street View/jp/tokyo/tokyo_akihabara_day_standard.png": {
     "sig": "1779472139428.6443:2610387",
@@ -9708,5 +9710,167 @@
     "webp": "/scf-img/d407102b7ef4/320.webp 320w, /scf-img/d407102b7ef4/720.webp 720w, /scf-img/d407102b7ef4/1280.webp 1280w, /scf-img/d407102b7ef4/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/cn/xizang/lhasa/cn_xizang_lhasa_potala_night_wide.png": {
+    "sig": "1779692262203.042:2947761",
+    "hash": "65dc74498a9e",
+    "fallback": "/asserts/Street View/cn/xizang/lhasa/cn_xizang_lhasa_potala_night_wide.png",
+    "avif": "/scf-img/65dc74498a9e/320.avif 320w, /scf-img/65dc74498a9e/720.avif 720w, /scf-img/65dc74498a9e/1536.avif 1536w",
+    "webp": "/scf-img/65dc74498a9e/320.webp 320w, /scf-img/65dc74498a9e/720.webp 720w, /scf-img/65dc74498a9e/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/arctic/north_pole/arctic_north_pole_night_wide.png": {
+    "sig": "1779718300445.1973:2851200",
+    "hash": "1fa2c5c69406",
+    "fallback": "/asserts/Street View/arctic/north_pole/arctic_north_pole_night_wide.png",
+    "avif": "/scf-img/1fa2c5c69406/320.avif 320w, /scf-img/1fa2c5c69406/720.avif 720w, /scf-img/1fa2c5c69406/1536.avif 1536w",
+    "webp": "/scf-img/1fa2c5c69406/320.webp 320w, /scf-img/1fa2c5c69406/720.webp 720w, /scf-img/1fa2c5c69406/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/antarctica/paradise_harbor/antarctica_paradise_harbor_day_wide.png": {
+    "sig": "1779717863751.2715:2524984",
+    "hash": "0ffcc484340e",
+    "fallback": "/asserts/Street View/antarctica/paradise_harbor/antarctica_paradise_harbor_day_wide.png",
+    "avif": "/scf-img/0ffcc484340e/320.avif 320w, /scf-img/0ffcc484340e/720.avif 720w, /scf-img/0ffcc484340e/1536.avif 1536w",
+    "webp": "/scf-img/0ffcc484340e/320.webp 320w, /scf-img/0ffcc484340e/720.webp 720w, /scf-img/0ffcc484340e/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/antarctica/paradise_harbor/antarctica_paradise_harbor_night_wide.png": {
+    "sig": "1779717944199.2915:2760240",
+    "hash": "fefe14fce4e9",
+    "fallback": "/asserts/Street View/antarctica/paradise_harbor/antarctica_paradise_harbor_night_wide.png",
+    "avif": "/scf-img/fefe14fce4e9/320.avif 320w, /scf-img/fefe14fce4e9/720.avif 720w, /scf-img/fefe14fce4e9/1536.avif 1536w",
+    "webp": "/scf-img/fefe14fce4e9/320.webp 320w, /scf-img/fefe14fce4e9/720.webp 720w, /scf-img/fefe14fce4e9/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Gourmet recipe2/us/chinatown_takeout_poster.png": {
+    "sig": "1779872951371.1616:3073728",
+    "hash": "4510609fba8e",
+    "fallback": "/asserts/Gourmet recipe2/us/chinatown_takeout_poster.png",
+    "avif": "/scf-img/4510609fba8e/320.avif 320w, /scf-img/4510609fba8e/720.avif 720w, /scf-img/4510609fba8e/1536.avif 1536w",
+    "webp": "/scf-img/4510609fba8e/320.webp 320w, /scf-img/4510609fba8e/720.webp 720w, /scf-img/4510609fba8e/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Gourmet recipe2/us/wild_rice_poster.png": {
+    "sig": "1779872498262.6138:3162344",
+    "hash": "497a000e32f4",
+    "fallback": "/asserts/Gourmet recipe2/us/wild_rice_poster.png",
+    "avif": "/scf-img/497a000e32f4/320.avif 320w, /scf-img/497a000e32f4/720.avif 720w, /scf-img/497a000e32f4/1536.avif 1536w",
+    "webp": "/scf-img/497a000e32f4/320.webp 320w, /scf-img/497a000e32f4/720.webp 720w, /scf-img/497a000e32f4/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/wild_rice_mini_zine_p01_story_eating.png": {
+    "sig": "1779872498293.615:3094531",
+    "hash": "761caf42532d",
+    "fallback": "/asserts/mini-zine/us/wild_rice_mini_zine_p01_story_eating.png",
+    "avif": "/scf-img/761caf42532d/320.avif 320w, /scf-img/761caf42532d/720.avif 720w, /scf-img/761caf42532d/1536.avif 1536w",
+    "webp": "/scf-img/761caf42532d/320.webp 320w, /scf-img/761caf42532d/720.webp 720w, /scf-img/761caf42532d/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/wild_rice_mini_zine_p02_narr_story.png": {
+    "sig": "1779872463556.61:3269550",
+    "hash": "ea7cdd13ce26",
+    "fallback": "/asserts/mini-zine/us/wild_rice_mini_zine_p02_narr_story.png",
+    "avif": "/scf-img/ea7cdd13ce26/320.avif 320w, /scf-img/ea7cdd13ce26/720.avif 720w, /scf-img/ea7cdd13ce26/1536.avif 1536w",
+    "webp": "/scf-img/ea7cdd13ce26/320.webp 320w, /scf-img/ea7cdd13ce26/720.webp 720w, /scf-img/ea7cdd13ce26/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/wild_rice_mini_zine_p03_narr_culture.png": {
+    "sig": "1779872471841.0369:3665498",
+    "hash": "e9c5761854a0",
+    "fallback": "/asserts/mini-zine/us/wild_rice_mini_zine_p03_narr_culture.png",
+    "avif": "/scf-img/e9c5761854a0/320.avif 320w, /scf-img/e9c5761854a0/720.avif 720w, /scf-img/e9c5761854a0/1536.avif 1536w",
+    "webp": "/scf-img/e9c5761854a0/320.webp 320w, /scf-img/e9c5761854a0/720.webp 720w, /scf-img/e9c5761854a0/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/wild_rice_mini_zine_p04_narr_street.png": {
+    "sig": "1779872756042.2627:2980196",
+    "hash": "77011ead817e",
+    "fallback": "/asserts/mini-zine/us/wild_rice_mini_zine_p04_narr_street.png",
+    "avif": "/scf-img/77011ead817e/320.avif 320w, /scf-img/77011ead817e/720.avif 720w, /scf-img/77011ead817e/1536.avif 1536w",
+    "webp": "/scf-img/77011ead817e/320.webp 320w, /scf-img/77011ead817e/720.webp 720w, /scf-img/77011ead817e/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/wild_rice_mini_zine_p05_narr_ingredients.png": {
+    "sig": "1779872749626.7046:3472004",
+    "hash": "d0275949e2c7",
+    "fallback": "/asserts/mini-zine/us/wild_rice_mini_zine_p05_narr_ingredients.png",
+    "avif": "/scf-img/d0275949e2c7/320.avif 320w, /scf-img/d0275949e2c7/720.avif 720w, /scf-img/d0275949e2c7/1536.avif 1536w",
+    "webp": "/scf-img/d0275949e2c7/320.webp 320w, /scf-img/d0275949e2c7/720.webp 720w, /scf-img/d0275949e2c7/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/wild_rice_mini_zine_p06_recipe.png": {
+    "sig": "1779872649306.2334:2838608",
+    "hash": "4f4b79ca64eb",
+    "fallback": "/asserts/mini-zine/us/wild_rice_mini_zine_p06_recipe.png",
+    "avif": "/scf-img/4f4b79ca64eb/320.avif 320w, /scf-img/4f4b79ca64eb/720.avif 720w, /scf-img/4f4b79ca64eb/1536.avif 1536w",
+    "webp": "/scf-img/4f4b79ca64eb/320.webp 320w, /scf-img/4f4b79ca64eb/720.webp 720w, /scf-img/4f4b79ca64eb/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/cn/hainan/wanning/wanning_riyue_bay_day_wide.png": {
+    "sig": "1779932154461.7163:2931259",
+    "hash": "61cb3f4c7ae6",
+    "fallback": "/asserts/Street View/cn/hainan/wanning/wanning_riyue_bay_day_wide.png",
+    "avif": "/scf-img/61cb3f4c7ae6/320.avif 320w, /scf-img/61cb3f4c7ae6/720.avif 720w, /scf-img/61cb3f4c7ae6/1536.avif 1536w",
+    "webp": "/scf-img/61cb3f4c7ae6/320.webp 320w, /scf-img/61cb3f4c7ae6/720.webp 720w, /scf-img/61cb3f4c7ae6/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/cn/hainan/wuzhishan/wuzhishan_rainforest_day_wide.png": {
+    "sig": "1779935243075.8733:3076081",
+    "hash": "37b3d0cc6c90",
+    "fallback": "/asserts/Street View/cn/hainan/wuzhishan/wuzhishan_rainforest_day_wide.png",
+    "avif": "/scf-img/37b3d0cc6c90/320.avif 320w, /scf-img/37b3d0cc6c90/720.avif 720w, /scf-img/37b3d0cc6c90/1536.avif 1536w",
+    "webp": "/scf-img/37b3d0cc6c90/320.webp 320w, /scf-img/37b3d0cc6c90/720.webp 720w, /scf-img/37b3d0cc6c90/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/cn/hainan/lingshui/lingshui_fenjiezhou_day_wide.png": {
+    "sig": "1779935874720.7573:2931147",
+    "hash": "b6492f3da988",
+    "fallback": "/asserts/Street View/cn/hainan/lingshui/lingshui_fenjiezhou_day_wide.png",
+    "avif": "/scf-img/b6492f3da988/320.avif 320w, /scf-img/b6492f3da988/720.avif 720w, /scf-img/b6492f3da988/1536.avif 1536w",
+    "webp": "/scf-img/b6492f3da988/320.webp 320w, /scf-img/b6492f3da988/720.webp 720w, /scf-img/b6492f3da988/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/cn/hainan/wenchang/wenchang_dongjiao_yelin_day_wide.png": {
+    "sig": "1779936635609.6946:3110193",
+    "hash": "e050c05430a7",
+    "fallback": "/asserts/Street View/cn/hainan/wenchang/wenchang_dongjiao_yelin_day_wide.png",
+    "avif": "/scf-img/e050c05430a7/320.avif 320w, /scf-img/e050c05430a7/720.avif 720w, /scf-img/e050c05430a7/1536.avif 1536w",
+    "webp": "/scf-img/e050c05430a7/320.webp 320w, /scf-img/e050c05430a7/720.webp 720w, /scf-img/e050c05430a7/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/Street View/cn/hainan/chengmai/chengmai_fushan_coffee_day_wide.png": {
+    "sig": "1779937387140.2092:3199539",
+    "hash": "ca4bf8ca7cc9",
+    "fallback": "/asserts/Street View/cn/hainan/chengmai/chengmai_fushan_coffee_day_wide.png",
+    "avif": "/scf-img/ca4bf8ca7cc9/320.avif 320w, /scf-img/ca4bf8ca7cc9/720.avif 720w, /scf-img/ca4bf8ca7cc9/1536.avif 1536w",
+    "webp": "/scf-img/ca4bf8ca7cc9/320.webp 320w, /scf-img/ca4bf8ca7cc9/720.webp 720w, /scf-img/ca4bf8ca7cc9/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
   }
 }

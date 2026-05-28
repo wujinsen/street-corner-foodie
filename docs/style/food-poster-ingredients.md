@@ -478,13 +478,15 @@ Bottom foreground only lowest 12-18%: horizontal row of {N} small blue-white por
 | `three_sisters` 三道姐妹 | **3** | 捣玉米、煮豆、切南瓜；中文例见上 · **英文海报（EN）**用下栏 |
 | `three_sisters` Three Sisters（**EN dialogue**） | **3** | Grind corn, stir beans, cut squash; e.g. "Corn's simmering—smell that sweetness!" "Beans go in—let's stew together!" "Squash chunks are just right—sweet!" |
 | `three_sisters` 服饰（海报） | — | **`us_indigenous` 东部林地/易洛魁系**：缎带衫几何纹、编织腰带、moccasin；**禁**现代农场围裙、战羽、面部彩绘；见 [mini-zine-dynasty-chibi.md](mini-zine-dynasty-chibi.md) §原住民 |
-| `wild_rice` 野米饭 | **3** | 淘洗、煮锅、装盘；例：「野米淘干净了～」「慢火煮，别糊底！」 |
+| `wild_rice` 野米饭 | **3** | 淘洗、煮锅、装盘；中文例 · **英文海报（EN）**用下栏 |
+| `wild_rice` Wild Rice（**EN dialogue**） | **3** | Rinse, simmer, garnish; e.g. "Rinse the wild rice—float off the chaff!" "Low simmer—don't scorch the bottom!" "Wild onion and berries—lake-country flavor!" | **大湖湖岸** · 3 人 **一字排** 篝火煮锅+ birch 淘洗，**非** 2+2 · **非** 三道姐妹炖菜台 |
+| `wild_rice` 服饰（海报） | — | **`us_indigenous` 大湖/ Anishinaabe 系**：leather-trim apron、birch 元素；**禁**易洛魁缎带衫（与 three_sisters 区分）· **禁**战羽/面部彩绘 |
 | `fry_bread` 炸面包 | **3** | 揉面、油炸、撒糖/配酱；例：「面团发好了，下锅啦～」「炸到金黄，趁热！」 |
 
 | slug | 碗数 | 标签（无人物底部碗） |
 |------|------|------|
 | `three_sisters` | 4 | 中文：玉米 · 豆类 · 南瓜 · 香草 · **EN**：Corn · Beans · Squash · Herbs |
-| `wild_rice` | 4 | 野米 · 高汤 · 野葱 · 浆果（可选） |
+| `wild_rice` | **4** | **EN**：Wild Rice · Broth · Wild Onion · Berries |
 | `fry_bread` | 4 | 面粉 · 油炸 · 糖粉 · 蜂蜜 |
 
 竖牌：**美国味道** / 地域子款（大湖味道、西南味道等）。服饰 **强锚定** `us_indigenous*`，见 [mini-zine-dynasty-chibi.md](mini-zine-dynasty-chibi.md)。
@@ -590,6 +592,8 @@ Bottom foreground only lowest 12-18%: horizontal row of {N} small blue-white por
 | `ny_pizza` 纽约披萨 | **4** | 抻薄底、铺酱撒芝士、窑炉出炉、折角递片；例：「薄底我来抻，大扇才地道～」「番茄酱芝士铺满啦～」「芝士起泡了，出炉！」「罗勒撒上，折角吃！」 |
 | `bbq_ribs` 烧烤肋排 | **4** | 刷酱、切块、配玉米面包、撒胡椒；例：「烟熏味够了，刷酱～」「肋排软烂，我切一块！」 |
 | `bagel_lox` 百吉饼烟熏三文鱼 | **3** | 烤百吉饼、抹奶油芝士、铺三文鱼；例：「百吉饼烤脆了～」「奶油芝士抹匀！」 |
+| `chinatown_takeout` Chinatown Takeout（**EN dialogue**） | **4** | Wok-fry rice, toss lo mein, fold boxes, hand off at window; e.g. "Wok on high—rice flying!" "Lo mein's ready—box it up!" "Fold the carton—sauce on the side!" "Pick up at the window—hot and fast!" | **NYC Chinatown takeout window** · 4 人 **L 形蒸汽柜台**（炒镬/捞面/装盒/递窗），**非** 2+2 · **非** 野米饭湖岸 · **非** 披萨窑 |
+| `chinatown_takeout` 服饰（海报） | — | **`us_contemporary`** + 华埠外卖厨：**白短厨衣、黑围裙、蒸汽取餐窗**；**禁**汉服 · **禁**刻板丑化 · **禁**海南绿围裙 |
 
 | slug | 碗数 | 标签（无人物底部碗） |
 |------|------|------|
@@ -597,8 +601,11 @@ Bottom foreground only lowest 12-18%: horizontal row of {N} small blue-white por
 | `lobster_roll` 龙虾卷 | 4 | 龙虾肉 · 黄油 · 柠檬 · 香葱 |
 | `ny_pizza` 纽约披萨 | 4 | 马苏里拉 · 番茄酱 · 罗勒 · 橄榄油 |
 | `bbq_ribs` 烧烤肋排 | 5 | 肋排 · 烧烤酱 · 黑胡椒 · 玉米面包 · 腌黄瓜 |
+| `chinatown_takeout` | **5** | **EN**：Rice · Soy Sauce · Eggs · Vegetables · Noodles |
 
-竖牌：**美国味道** / **纽约味道** / **加州味道**。横幅 pattern：`美国经典 · … · …`
+> **NYC 海报 EN（2026-05-19）**：`chinatown_takeout` 等纽约符号菜 **画面仅英文**（顶题、竖牌、料签、对白）；文档中文名仅索引。竖牌 **NYC Flavor**。
+
+竖牌：**美国味道** / **纽约味道** / **加州味道** / **NYC Flavor**（纽约符号菜）。横幅 pattern：`美国经典 · … · …`
 
 ---
 

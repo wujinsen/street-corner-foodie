@@ -67,6 +67,7 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
   const hash = kind === "posters" ? "posters" : kind;
   return regionGalleryHref(pageLang, country, rid, { hash });
 }
+
 ---
 <header class={altc ? "topbar topbar-glass" : "topbar"}>
   <div class="container-wide topbar-inner">
@@ -97,26 +98,71 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
     </a>
 
     {altc && (
-      <nav class="topbar-center" aria-label="primary">
-        <a href={tabHref("posters")} class={`tab ${navTab === "posters" ? "active" : ""}`}>
-          {t(UI.nav.poster, pageLang)}
+      <nav class="topbar-center" aria-label={t(UI.a11y.primary, pageLang)}>
+        <span class="topbar-tech" aria-hidden="true">
+          <span class="topbar-tech-grid"></span>
+          <span class="topbar-tech-scan"></span>
+          <span class="topbar-tech-dust"></span>
+        </span>
+        <a href={tabHref("posters")} data-topbar-tab="posters" class={`tab ${navTab === "posters" ? "active" : ""}`}>
+          <span class="tab-comet-trail tab-comet-trail--l" aria-hidden="true"></span>
+          <span class="tab-comet-trail tab-comet-trail--r" aria-hidden="true"></span>
+          <span class="tab-ic-wrap" aria-hidden="true">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="2"/>
+              <path d="M3 16l5-5 4 4 4-4 5 5"/>
+              <circle cx="9" cy="9" r="1.4"/>
+            </svg>
+          </span>
+          <span class="tab-label">{t(UI.nav.poster, pageLang)}</span>
         </a>
-        <a href={tabHref("zines")} class={`tab ${navTab === "zines" ? "active" : ""}`}>
-          {t(UI.nav.zine, pageLang)}
+        <a href={tabHref("zines")} data-topbar-tab="zines" class={`tab ${navTab === "zines" ? "active" : ""}`}>
+          <span class="tab-comet-trail tab-comet-trail--l" aria-hidden="true"></span>
+          <span class="tab-comet-trail tab-comet-trail--r" aria-hidden="true"></span>
+          <span class="tab-ic-wrap" aria-hidden="true">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 5c3.5-1 6.5 0 9 2c2.5-2 5.5-3 9-2v13c-3.5-1-6.5 0-9 2c-2.5-2-5.5-3-9-2z"/>
+              <path d="M12 7v13"/>
+            </svg>
+          </span>
+          <span class="tab-label">{t(UI.nav.zine, pageLang)}</span>
         </a>
-        <a href={tabHref("streets")} class={`tab ${navTab === "streets" ? "active" : ""}`}>
-          {t(UI.nav.street, pageLang)}
+        <a href={tabHref("streets")} data-topbar-tab="streets" class={`tab ${navTab === "streets" ? "active" : ""}`}>
+          <span class="tab-comet-trail tab-comet-trail--l" aria-hidden="true"></span>
+          <span class="tab-comet-trail tab-comet-trail--r" aria-hidden="true"></span>
+          <span class="tab-ic-wrap" aria-hidden="true">
+            <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="9" width="7" height="11"/>
+              <rect x="14" y="5" width="7" height="15"/>
+              <path d="M3 13h7 M3 17h7 M14 9h7 M14 13h7 M14 17h7"/>
+            </svg>
+          </span>
+          <span class="tab-label">{t(UI.nav.street, pageLang)}</span>
         </a>
         {showWorldAtlasLink && (
-          <a href={worldAtlasHref} class={`tab ${worldAtlasActive ? "active" : ""}`} data-world-atlas-link>
-            {t(UI.nav.world_atlas, pageLang)}
+          <a
+            href={worldAtlasHref}
+            class={`tab ${worldAtlasActive ? "active" : ""}`}
+            data-world-atlas-link
+          >
+            <span class="tab-comet-trail tab-comet-trail--l" aria-hidden="true"></span>
+            <span class="tab-comet-trail tab-comet-trail--r" aria-hidden="true"></span>
+            <span class="tab-ic-wrap" aria-hidden="true">
+              <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M3 12h18"/>
+                <path d="M12 3a14 14 0 0 1 0 18"/>
+                <path d="M12 3a14 14 0 0 0 0 18"/>
+              </svg>
+            </span>
+            <span class="tab-label">{t(UI.nav.world_atlas, pageLang)}</span>
           </a>
         )}
       </nav>
     )}
 
     {!altc && crumbs.length > 0 && (
-      <nav class="crumbs" aria-label="breadcrumbs">
+      <nav class="crumbs" aria-label={t(UI.a11y.breadcrumbs, pageLang)}>
         {crumbs.map((c, i) => (
           <>
             {i > 0 && <span class="sep">/</span>}
@@ -129,8 +175,11 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
     <div class="topbar-actions">
       {altc ? (
         <>
+          {/* 2026-05-28 · P1：search / fav 入口由 BottomDock 统一承担，
+              topbar 右侧只留：国家 · 语言 · 主题 三类「站点偏好」。
+              fav-count 仍需保留（隐藏宿主），供收藏数渲染时挂载。 */}
           <CountryPicker lang={pageLang} country={country} variant="topbar" />
-          <div class="switch-glass" role="group" aria-label="language">
+          <div class="switch-glass" role="group" aria-label={t(UI.nav.language, pageLang)}>
             {LANGS.map((l) => (
               <a
                 href={switchLocalePath(l, Astro.url)}
@@ -138,33 +187,17 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
               >{LANG_LABELS[l]}</a>
             ))}
           </div>
-          <button
-            type="button"
-            class="icon-btn-glass with-hint"
-            id="search-btn"
-            title="Search (Ctrl+K)"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>
-            </svg>
-            <span class="kbd-hint">&#8984;K</span>
-          </button>
-          <button type="button" class="icon-btn-glass" id="fav-btn" title="Favorites">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-            <span class="fav-count-glass" id="fav-count">0</span>
-          </button>
-          <span class="topbar-theme-desktop"><ThemeToggle /></span>
+          <span class="topbar-theme-desktop"><ThemeToggle lang={pageLang} /></span>
+          <span id="fav-count" hidden aria-hidden="true">0</span>
         </>
       ) : (
         <>
-          <button type="button" class="icon-btn" id="search-btn" title="Search (Ctrl+K)">&#8981;</button>
-          <button type="button" class="icon-btn" id="fav-btn" title="Favorites">
+          <button type="button" class="icon-btn" id="search-btn" title={t(UI.search.shortcut_title, pageLang)} aria-label={t(UI.search.title, pageLang)}>&#8981;</button>
+          <button type="button" class="icon-btn" id="fav-btn" title={t(UI.fav.title, pageLang)} aria-label={t(UI.fav.title, pageLang)}>
             &#9825;<span class="fav-count" id="fav-count">0</span>
           </button>
           <CountryPicker lang={pageLang} country={country} variant="topbar" />
-          <div class="switch" role="group" aria-label="language">
+          <div class="switch" role="group" aria-label={t(UI.nav.language, pageLang)}>
             {LANGS.map((l) => (
               <a
                 href={switchLocalePath(l, Astro.url)}
@@ -181,30 +214,42 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
 {altc && (
   <script is:inline>
     (function () {
-      function isStandaloneTab(el) {
-        return el.hasAttribute("data-world-atlas-link");
+      /* 启动时缓存所有 tab 引用与 metadata，避免每次点击都 querySelectorAll + indexOf */
+      var tabsNodeList = document.querySelectorAll(".topbar-glass .topbar-center .tab");
+      var tabs = [];
+      for (var i = 0; i < tabsNodeList.length; i += 1) {
+        var el = tabsNodeList[i];
+        var href = el.getAttribute("href") || "";
+        var kind = el.hasAttribute("data-world-atlas-link")
+          ? "world"
+          : href.indexOf("#zines") !== -1
+            ? "zines"
+            : href.indexOf("#streets") !== -1
+              ? "streets"
+              : href.indexOf("#posters") !== -1
+                ? "posters"
+                : null;
+        if (kind) tabs.push({ el: el, kind: kind });
       }
+
+      var root = document.documentElement;
+      var currentTab = null;
 
       function setActiveTab(tab) {
-        document.querySelectorAll(".topbar-glass .topbar-center .tab").forEach(function (el) {
-          if (isStandaloneTab(el)) {
-            el.classList.remove("active");
-            return;
+        if (currentTab === tab) return;
+        currentTab = tab;
+        if (tab === "world") {
+          root.removeAttribute("data-topbar-tab");
+        } else {
+          root.setAttribute("data-topbar-tab", tab);
+        }
+        for (var j = 0; j < tabs.length; j += 1) {
+          var t = tabs[j];
+          var on = t.kind === tab;
+          if (on !== t.el.classList.contains("active")) {
+            t.el.classList.toggle("active", on);
           }
-          var href = el.getAttribute("href") || "";
-          var active =
-            (tab === "posters" && href.indexOf("#posters") !== -1) ||
-            (tab === "zines" && href.indexOf("#zines") !== -1) ||
-            (tab === "streets" && href.indexOf("#streets") !== -1);
-          el.classList.toggle("active", active);
-        });
-      }
-
-      function tabFromHref(href) {
-        if (href.indexOf("#zines") !== -1) return "zines";
-        if (href.indexOf("#streets") !== -1) return "streets";
-        if (href.indexOf("#posters") !== -1) return "posters";
-        return null;
+        }
       }
 
       function syncTabFromHash() {
@@ -218,20 +263,19 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
           setActiveTab(forced);
           return;
         }
-        if (
-          !document.querySelector(".topbar-glass .tab[data-world-atlas-link].active")
-        ) {
+        if (!document.querySelector(".topbar-glass .tab[data-world-atlas-link].active")) {
           setActiveTab("posters");
         }
       }
 
-      document.querySelectorAll(".topbar-glass .topbar-center .tab").forEach(function (el) {
-        el.addEventListener("click", function () {
-          if (isStandaloneTab(el)) return;
-          var tab = tabFromHref(el.getAttribute("href") || "");
-          if (tab) setActiveTab(tab);
-        });
-      });
+      for (var k = 0; k < tabs.length; k += 1) {
+        (function (t) {
+          t.el.addEventListener("click", function () {
+            /* 同步打 active 类，让旋涡 MutationObserver 立即调度迁移 */
+            setActiveTab(t.kind);
+          });
+        })(tabs[k]);
+      }
 
       syncTabFromHash();
       window.addEventListener("hashchange", syncTabFromHash);

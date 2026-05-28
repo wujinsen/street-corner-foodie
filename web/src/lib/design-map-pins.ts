@@ -18,6 +18,7 @@ export const DESIGN_MAP_PINS: Record<CountryId, { x: number; y: number }> = {
   za: { x: 54, y: 78 },
   nz: { x: 92, y: 82 },
   antarctica: { x: 22, y: 92 },
+  arctic: { x: 50, y: 8 },
 };
 
 export const DESIGN_MAP_HOTSPOTS: Record<
@@ -36,4 +37,5 @@ export const DESIGN_MAP_HOTSPOTS: Record<
   za: { x: 48, y: 62, w: 14, h: 22 },
   nz: { x: 84, y: 72, w: 16, h: 18 },
   antarctica: { x: 14, y: 82, w: 18, h: 14 },
+  arctic: { x: 42, y: 4, w: 18, h: 12 },
 };

@@ -1,31 +1,45 @@
 ---
 /**
  * v0.6 · alt-c · BottomDock
- * Sticky floating glass dock — same chrome as GalleryBottomDock (theme-cn / mobile.png).
+ * Sticky floating glass dock — site-wide bottom navigation (theme-cn / mobile.png).
+ * 2026-05-28 · P1：合并原 GalleryBottomDock；全站统一 5 项（探索 · 地图 · 收藏 · 搜索 · 设置）。
  */
 import { UI, t, type Lang } from "../lib/i18n";
 import { localePath } from "../lib/locale-path";
 
 interface Props {
   lang: Lang;
-  /** Which dock item is active: "explore" | "map" | "saved" | "search" | "profile" */
-  active?: "explore" | "map" | "saved" | "search" | "profile";
+  /**
+   * 2026-05-28 · P5：dock 只把「页面级 tab」做持久 active。
+   * - `explore` = 在内容站点中（首页/国家页/地区页/阅读器）
+   * - `map`     = 在世界地图页（/world-atlas）
+   * 收藏 / 搜索 / 设置都是抽屉触发器（aria-haspopup="dialog"），不该有 page-level active；
+   * 它们的点击反馈由 CSS `:active` 即时承担。
+   */
+  active?: "explore" | "map";
 }
 
 const { lang, active } = Astro.props as Props;
 const labels = {
-  explore: { zh: "探索", en: "Explore", ja: "探索" },
-  map: { zh: "地图", en: "Map", ja: "地図" },
-  saved: { zh: "收藏", en: "Saved", ja: "保存" },
-  search: { zh: "搜索", en: "Search", ja: "検索" },
-  profile: { zh: "设置", en: "Settings", ja: "設定" },
+  explore: UI.nav.explore,
+  map: UI.nav.map,
+  saved: UI.fav.title,
+  search: UI.search.title,
+  profile: UI.settings.title,
 } as const;
 ---
-<div class="dock-wrap">
-  <nav class="dock" aria-label="primary dock">
+<div class="scf-bottom-stack">
+  <div class="dock-wrap">
+  <nav class="dock" aria-label={t(UI.a11y.primary, lang)}>
+    <span class="dock-tech" aria-hidden="true">
+      <span class="dock-tech-grid"></span>
+      <span class="dock-tech-scan"></span>
+      <span class="dock-tech-dust"></span>
+    </span>
     <a
       href={localePath(lang, "/")}
       class:list={["dock-item", active === "explore" && "active"]}
+      data-dock="explore"
     >
       <span class="dock-ic-wrap" aria-hidden="true">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true">
@@ -51,21 +65,25 @@ const labels = {
     <button
       type="button"
       id="dock-fav-btn"
-      class:list={["dock-item", active === "saved" && "active"]}
+      class="dock-item dock-item--drawer"
       aria-label={t(UI.fav.title, lang)}
+      aria-haspopup="dialog"
+      aria-controls="fav-panel"
     >
       <span class="dock-ic-wrap" aria-hidden="true">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true">
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
         </svg>
       </span>
-      <span>{t(labels.saved, lang)}</span>
+      <span class="dock-label">{t(labels.saved, lang)}</span>
     </button>
     <button
       type="button"
       id="dock-search-btn"
-      class:list={["dock-item", active === "search" && "active"]}
+      class="dock-item dock-item--drawer"
       aria-label={t(UI.search.title, lang)}
+      aria-haspopup="dialog"
+      aria-controls="search-overlay"
     >
       <span class="dock-ic-wrap" aria-hidden="true">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true">
@@ -73,13 +91,15 @@ const labels = {
           <path d="M21 21l-4.3-4.3"/>
         </svg>
       </span>
-      <span>{t(labels.search, lang)}</span>
+      <span class="dock-label">{t(labels.search, lang)}</span>
     </button>
     <button
       type="button"
       id="dock-settings-btn"
-      class:list={["dock-item", active === "profile" && "active"]}
+      class="dock-item dock-item--drawer"
       aria-label={t(labels.profile, lang)}
+      aria-haspopup="dialog"
+      aria-controls="settings-overlay"
     >
       <span class="dock-ic-wrap" aria-hidden="true">
         <svg class="ic" viewBox="0 0 24 24" aria-hidden="true">
@@ -87,16 +107,14 @@ const labels = {
           <path d="M4 21c1-4 5-6 8-6s7 2 8 6"/>
         </svg>
       </span>
-      <span>{t(labels.profile, lang)}</span>
+      <span class="dock-label">{t(labels.profile, lang)}</span>
     </button>
   </nav>
+  </div>
 </div>
 
-<script>
-  document.getElementById("dock-search-btn")?.addEventListener("click", () => {
-    document.getElementById("search-btn")?.dispatchEvent(new MouseEvent("click"));
-  });
-  document.getElementById("dock-fav-btn")?.addEventListener("click", () => {
-    document.getElementById("fav-btn")?.dispatchEvent(new MouseEvent("click"));
-  });
-</script>
+<!--
+  2026-05-28 · P1：search / fav / settings 直接由 site-chrome.ts / settings-sheet.ts
+  统一监听 #dock-search-btn / #dock-fav-btn / #dock-settings-btn（以及兼容旧 id），
+  这里无需再 dispatchEvent 转发到 topbar 上的按钮。
+-->

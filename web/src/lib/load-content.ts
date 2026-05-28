@@ -448,6 +448,7 @@ function loadAll(): {
     za: [],
     nz: [],
     antarctica: [],
+    arctic: [],
   };
 
   const posters: Record<CountryId, Record<string, Poster[]>> = {
@@ -460,6 +461,7 @@ function loadAll(): {
     za: {},
     nz: {},
     antarctica: {},
+    arctic: {},
   };
 
   const zines: Record<CountryId, Record<string, ZineDish[]>> = {
@@ -472,6 +474,7 @@ function loadAll(): {
     za: {},
     nz: {},
     antarctica: {},
+    arctic: {},
   };
 
 

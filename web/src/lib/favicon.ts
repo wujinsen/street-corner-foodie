@@ -10,6 +10,7 @@ const FAVICON_BY_COUNTRY: Record<CountryId, string> = {
   za: "/favicon.svg",
   nz: "/favicon.svg",
   antarctica: "/favicon.svg",
+  arctic: "/favicon.svg",
 };
 
 export function countryFavicon(country: CountryId): string {

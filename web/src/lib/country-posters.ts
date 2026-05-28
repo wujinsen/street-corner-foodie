@@ -12,6 +12,7 @@ export const COUNTRY_SPOTLIGHT: Record<CountryId, string> = {
   za: "south_africa",
   nz: "nz",
   antarctica: "antarctica",
+  arctic: "arctic",
 };
 
 /** Resolve `?region=`; invalid/missing → spotlight (e.g. cn → hainan). */

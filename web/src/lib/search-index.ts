@@ -6,6 +6,8 @@ import { posterImageUrl } from "./posters";
 
 import { getStreetConfig, getStreetScenes, streetImageUrl } from "./streets";
 
+import { streetSearchIndexPath } from "./street-page-redirect";
+
 import type { CountryId, Multilang } from "./types";
 
 
@@ -114,7 +116,7 @@ export function buildSearchIndex(): SearchIndexEntry[] {
 
           thumb,
 
-          path: `/${countryId}/${region.id}/street/${scene.id}`,
+          path: streetSearchIndexPath(countryId, region.id, scene.id),
 
           haystack: hay(scene.name.zh, scene.name.en, scene.name.ja, scene.tag.zh, scene.tag.en),
 

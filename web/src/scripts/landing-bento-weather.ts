@@ -18,21 +18,12 @@ import {
   skyShortLabel,
   wmoCodeToSky,
   type WeatherClimate,
-  type WeatherPeriod,
   type WeatherSky,
 } from "../lib/weather-chip";
 import { syncWeatherRainCanvas } from "../lib/weather-rain-canvas";
 import { bootWeatherStarsCanvas } from "../lib/weather-stars-canvas";
-import { applyWeatherMascotState, inferWeatherMascotState } from "../lib/weather-mascot";
 import { inferWeatherMoodCopy, type WeatherMoodInput } from "../lib/weather-mood-copy";
 import { initWeatherTempPoke, syncWeatherTempPokeValue } from "../lib/weather-temp-poke";
-import {
-  inferWeatherAmbientScene,
-  isWeatherAmbientPlaying,
-  playWeatherAmbientFromGesture,
-  primeWeatherAmbientGesture,
-  stopWeatherAmbient,
-} from "../lib/weather-ambient-audio";
 import { getVisibleBentoScope } from "./landing-bento-scope";
 
 export interface LandingWeatherConfig {
@@ -50,6 +41,11 @@ export interface LandingWeatherConfig {
 const CACHE_TTL_MS = 60 * 60 * 1000;
 const CACHE_PREFIX = "scf-weather-v2:";
 const MOOD_TICK_MS = 60_000;
+const WEATHER_EXPAND_MS = 340;
+/** Min forecast strip height so tile grows before async forecast paint. */
+const WEATHER_FORECAST_MIN_H = 96;
+
+const collapseFinishTimers = new WeakMap<HTMLElement, number>();
 
 interface LiveChipSnapshot {
   tempC: number;
@@ -58,8 +54,6 @@ interface LiveChipSnapshot {
 
 const moodTickers = new WeakMap<HTMLElement, ReturnType<typeof setInterval>>();
 const liveSnapshots = new WeakMap<HTMLElement, LiveChipSnapshot>();
-
-const LONG_PRESS_MS = 560;
 
 interface WeatherCacheEntry {
   tempC: number;
@@ -289,23 +283,6 @@ function syncStarfieldClass(el: HTMLElement): void {
   el.classList.add("bento-weather-live--starfield");
 }
 
-function syncMascot(
-  el: HTMLElement,
-  config: LandingWeatherConfig,
-  tempC: number | null,
-  period?: WeatherPeriod,
-): void {
-  const p = period ?? inferWeatherPeriod(new Date(), config.timezone);
-  applyWeatherMascotState(
-    el,
-    inferWeatherMascotState({
-      tempC,
-      period: p,
-      climate: config.climatePreset,
-    }),
-  );
-}
-
 function applyChipState(
   el: HTMLElement,
   config: LandingWeatherConfig,
@@ -321,92 +298,41 @@ function applyChipState(
   syncStarfieldClass(el);
   syncWeatherRainCanvas(el);
   bootWeatherStarsCanvas(el);
-  syncMascot(el, config, tempC, period);
 }
 
-function syncAmbientState(el: HTMLElement, on: boolean): void {
-  el.dataset.weatherAmbient = on ? "on" : "off";
-  const dot = el.querySelector<HTMLElement>("[data-bento-weather-ambient-dot]");
-  if (dot) dot.hidden = !on;
-}
+const lastForecastPanelHeight = new WeakMap<HTMLElement, number>();
+let landingMapLayoutRaf = 0;
 
-function ambientSceneInput(el: HTMLElement, config: LandingWeatherConfig) {
-  const snap = liveSnapshots.get(el);
-  if (!snap) return null;
-  return {
-    tempC: snap.tempC,
-    period: inferWeatherPeriod(new Date(), config.timezone),
-    sky: snap.sky,
-    climate: config.climatePreset,
-  };
-}
-
-async function startWeatherAmbient(el: HTMLElement, config: LandingWeatherConfig): Promise<boolean> {
-  const input = ambientSceneInput(el, config);
-  if (!input) return false;
-  const scene = inferWeatherAmbientScene(input);
-  if (!scene) return false;
-  const ok = playWeatherAmbientFromGesture(scene);
-  syncAmbientState(el, ok);
-  return ok;
-}
-
-async function stopWeatherAmbientForChip(el: HTMLElement): Promise<void> {
-  await stopWeatherAmbient();
-  syncAmbientState(el, false);
-}
-
-async function toggleWeatherAmbient(el: HTMLElement, config: LandingWeatherConfig): Promise<void> {
-  if (isWeatherAmbientPlaying()) {
-    await stopWeatherAmbientForChip(el);
-    return;
-  }
-  await startWeatherAmbient(el, config);
-}
-
-function isAmbientExcludedTarget(target: EventTarget | null): boolean {
-  if (!(target instanceof Element)) return false;
-  return !!target.closest("[data-bento-weather-temp-hit], [data-bento-weather-toggle]");
-}
-
-function initWeatherAmbient(el: HTMLElement, config: LandingWeatherConfig): void {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  let pressTimer: ReturnType<typeof setTimeout> | null = null;
-  let longPressFired = false;
-
-  function clearPress(): void {
-    if (pressTimer !== null) {
-      clearTimeout(pressTimer);
-      pressTimer = null;
-    }
-  }
-
-  el.addEventListener(
-    "pointerdown",
-    (ev) => {
-      if (ev.button !== 0 || el.dataset.weatherSource !== "live") return;
-      if (!isAmbientExcludedTarget(ev.target)) primeWeatherAmbientGesture();
-      if (isAmbientExcludedTarget(ev.target)) return;
-      longPressFired = false;
-      clearPress();
-      pressTimer = setTimeout(() => {
-        pressTimer = null;
-        longPressFired = true;
-        void toggleWeatherAmbient(el, config);
-      }, LONG_PRESS_MS);
-    },
-    { passive: true },
-  );
-
-  for (const type of ["pointerup", "pointerleave", "pointercancel"] as const) {
-    el.addEventListener(type, clearPress, { passive: true });
-  }
-
-  el.addEventListener("contextmenu", (ev) => {
-    if (longPressFired) ev.preventDefault();
-    longPressFired = false;
+/** Coalesce weather height nudges — map host ResizeObserver handles full re-render. */
+function notifyLandingMapLayout(): void {
+  if (landingMapLayoutRaf) return;
+  landingMapLayoutRaf = requestAnimationFrame(() => {
+    landingMapLayoutRaf = 0;
+    window.dispatchEvent(new Event("scf:landing-map-layout"));
   });
+}
+
+function applyForecastPanelHeight(
+  el: HTMLElement,
+  panel: HTMLElement,
+  tile: HTMLElement | null,
+  heightPx: number,
+): void {
+  const h = Math.max(WEATHER_FORECAST_MIN_H, Math.ceil(heightPx));
+  if (lastForecastPanelHeight.get(el) === h) return;
+  lastForecastPanelHeight.set(el, h);
+  const px = `${h}px`;
+  el.style.setProperty("--weather-forecast-panel-h", px);
+  tile?.style.setProperty("--weather-forecast-panel-h", px);
+  notifyLandingMapLayout();
+}
+
+function clearCollapseTimer(el: HTMLElement): void {
+  const id = collapseFinishTimers.get(el);
+  if (id !== undefined) {
+    window.clearTimeout(id);
+    collapseFinishTimers.delete(el);
+  }
 }
 
 function syncForecastPanelHeight(el: HTMLElement): void {
@@ -420,33 +346,45 @@ function syncForecastPanelHeight(el: HTMLElement): void {
     tile?.style.removeProperty("--weather-forecast-panel-h");
   };
 
-  if (el.dataset.weatherExpanded !== "true" || panel.hidden) {
+  if (el.dataset.weatherExpanded !== "true") {
     clearHeight();
     return;
   }
 
-  const applyHeight = (): void => {
-    const measured = Math.ceil(panel.scrollHeight);
-    if (measured <= 0) return;
-    const px = `${measured}px`;
-    el.style.setProperty("--weather-forecast-panel-h", px);
-    tile?.style.setProperty("--weather-forecast-panel-h", px);
-    window.dispatchEvent(new Event("scf:landing-map-layout"));
+  const measure = (): void => {
+    const strip = panel.querySelector<HTMLElement>(".bento-weather-forecast-strip");
+    const heightPx = strip ? strip.offsetHeight + 18 : panel.scrollHeight;
+    applyForecastPanelHeight(el, panel, tile, heightPx);
   };
 
-  requestAnimationFrame(() => {
-    applyHeight();
-    requestAnimationFrame(applyHeight);
-  });
+  requestAnimationFrame(measure);
+}
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function finishWeatherCollapse(
+  el: HTMLElement,
+  panel: HTMLElement,
+  tile: HTMLElement | null,
+): void {
+  panel.setAttribute("aria-hidden", "true");
+  el.style.removeProperty("--weather-forecast-panel-h");
+  tile?.style.removeProperty("--weather-forecast-panel-h");
+  lastForecastPanelHeight.delete(el);
+  notifyLandingMapLayout();
 }
 
 function setExpanded(el: HTMLElement, expanded: boolean, config?: LandingWeatherConfig): void {
+  const cfg = config ?? parseConfig(el) ?? undefined;
   const toggle = el.querySelector<HTMLButtonElement>("[data-bento-weather-toggle]");
   const panel = el.querySelector<HTMLElement>("[data-bento-weather-forecast]");
   const tile = el.closest<HTMLElement>(".bento-weather--proto.tile");
   if (!toggle || !panel) return;
 
-  el.dataset.weatherExpanded = expanded ? "true" : "false";
+  const reduced = prefersReducedMotion();
+
   toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
   toggle.setAttribute(
     "aria-label",
@@ -454,42 +392,101 @@ function setExpanded(el: HTMLElement, expanded: boolean, config?: LandingWeather
       ? toggle.getAttribute("data-label-collapse") ?? "Collapse"
       : toggle.getAttribute("data-label-expand") ?? "Expand",
   );
-  panel.hidden = !expanded;
 
   if (expanded) {
-    if (!panel.dataset.forecastLoaded) {
-      el.style.setProperty("--weather-forecast-panel-h", "100px");
-      tile?.style.setProperty("--weather-forecast-panel-h", "100px");
+    clearCollapseTimer(el);
+    el.dataset.weatherExpanded = "true";
+    panel.setAttribute("aria-hidden", "false");
+    panel.removeAttribute("hidden");
+
+    if (panel.dataset.forecastLoaded === "loading") {
+      delete panel.dataset.forecastLoaded;
     }
-    syncForecastPanelHeight(el);
-  } else {
-    el.style.removeProperty("--weather-forecast-panel-h");
-    tile?.style.removeProperty("--weather-forecast-panel-h");
+
+    if (cfg && panel.dataset.forecastLoaded !== "true") {
+      panel.textContent = forecastLoadingLabel(cfg.lang);
+    }
+
+    applyForecastPanelHeight(el, panel, tile, WEATHER_FORECAST_MIN_H);
+    requestAnimationFrame(() => syncForecastPanelHeight(el));
+
+    if (cfg) void loadForecast(el, cfg);
+    return;
   }
 
-  if (config && el.dataset.weatherSource === "live") {
-    if (expanded) void startWeatherAmbient(el, config);
-    else void stopWeatherAmbientForChip(el);
+  clearCollapseTimer(el);
+  panel.setAttribute("aria-hidden", "true");
+  el.dataset.weatherExpanded = "false";
+
+  if (panel.dataset.forecastLoaded === "loading") {
+    delete panel.dataset.forecastLoaded;
   }
+
+  if (reduced) {
+    finishWeatherCollapse(el, panel, tile);
+    return;
+  }
+
+  el.style.setProperty("--weather-forecast-panel-h", "0px");
+  tile?.style.setProperty("--weather-forecast-panel-h", "0px");
+
+  let done = false;
+  const finish = (): void => {
+    if (done) return;
+    if (el.dataset.weatherExpanded === "true") return;
+    done = true;
+    collapseFinishTimers.delete(el);
+    finishWeatherCollapse(el, panel, tile);
+  };
+
+  const target = tile ?? el;
+  const onTransitionEnd = (ev: TransitionEvent): void => {
+    if (ev.target !== target) return;
+    if (ev.propertyName !== "height" && ev.propertyName !== "min-height") return;
+    finish();
+  };
+
+  target.addEventListener("transitionend", onTransitionEnd, { once: true });
+  collapseFinishTimers.set(
+    el,
+    window.setTimeout(finish, WEATHER_EXPAND_MS + 80),
+  );
 }
 
 async function loadForecast(el: HTMLElement, config: LandingWeatherConfig): Promise<void> {
   const panel = el.querySelector<HTMLElement>("[data-bento-weather-forecast]");
-  if (!panel || panel.dataset.forecastLoaded === "true" || panel.dataset.forecastLoaded === "loading") {
-    return;
+  if (!panel || el.dataset.weatherExpanded !== "true") return;
+
+  if (panel.dataset.forecastLoaded === "true") {
+    if (!panel.querySelector(".bento-weather-forecast-strip")) {
+      delete panel.dataset.forecastLoaded;
+    } else {
+      syncForecastPanelHeight(el);
+      return;
+    }
   }
 
   panel.dataset.forecastLoaded = "loading";
   panel.textContent = forecastLoadingLabel(config.lang);
+  syncForecastPanelHeight(el);
 
   try {
     const days = await fetchDailyForecast(config);
+    if (el.dataset.weatherExpanded !== "true") {
+      delete panel.dataset.forecastLoaded;
+      return;
+    }
     renderForecastStrip(panel, days, config.lang);
     panel.dataset.forecastLoaded = "true";
     syncForecastPanelHeight(el);
   } catch {
+    if (el.dataset.weatherExpanded !== "true") {
+      delete panel.dataset.forecastLoaded;
+      return;
+    }
     panel.textContent = forecastErrorLabel(config.lang);
     delete panel.dataset.forecastLoaded;
+    syncForecastPanelHeight(el);
   }
 }
 
@@ -530,17 +527,21 @@ function initHoverLight(el: HTMLElement): void {
 
 function initExpand(el: HTMLElement, config: LandingWeatherConfig): void {
   const toggle = el.querySelector<HTMLButtonElement>("[data-bento-weather-toggle]");
-  if (!toggle) return;
-
-  toggle.addEventListener("pointerdown", () => {
-    if (el.dataset.weatherSource === "live") primeWeatherAmbientGesture();
-  }, { passive: true });
+  if (!toggle || toggle.dataset.weatherExpandBound === "true") return;
+  toggle.dataset.weatherExpandBound = "true";
 
   toggle.addEventListener("click", () => {
     const next = el.dataset.weatherExpanded !== "true";
-    setExpanded(el, next, config);
-    if (next) void loadForecast(el, config);
+    if (!next) {
+      setExpanded(el, false, config);
+      return;
+    }
+    setExpanded(el, true, config);
   });
+
+  if (el.dataset.weatherExpanded === "true") {
+    void loadForecast(el, config);
+  }
 
   el.addEventListener("keydown", (ev) => {
     if (ev.key === "Escape" && el.dataset.weatherExpanded === "true") {
@@ -557,9 +558,7 @@ async function enhanceWeatherChip(el: HTMLElement): Promise<void> {
   initHoverLight(el);
   initExpand(el, config);
   initWeatherTempPoke(el);
-  initWeatherAmbient(el, config);
   applyLoadingState(el, config);
-  syncMascot(el, config, null);
 
   try {
     const live = await fetchCurrentWeather(config);

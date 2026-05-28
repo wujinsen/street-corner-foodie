@@ -2,12 +2,10 @@
 import FlavorRadar from "./FlavorRadar.astro";
 import GlassTile from "./GlassTile.astro";
 import LandingBentoCarousel from "./LandingBentoCarousel.astro";
-import WeatherMascot from "./WeatherMascot.astro";
 import { UI, t, type Lang } from "../lib/i18n";
 import { regionGalleryHref } from "../lib/locale-path";
 import { getRegionAtmosphereGeo, geoPlaceLabel } from "../lib/region-atmosphere-geo";
 import { inferWeatherPeriod } from "../lib/weather-chip";
-import { inferWeatherMascotState } from "../lib/weather-mascot";
 import WeatherExpandIcon from "./WeatherExpandIcon.astro";
 import type { LandingSpotPayload } from "../lib/landing-spot-payload";
 
@@ -62,11 +60,6 @@ const weatherPeriod = atmosphereGeo ? inferWeatherPeriod(new Date(), atmosphereG
 const weatherSky = "clear";
 const weatherClimate = atmosphere?.climatePreset ?? "temperate";
 const weatherPlaceLabel = atmosphereGeo ? geoPlaceLabel(atmosphereGeo, lang) : "";
-const weatherMascotSsr = inferWeatherMascotState({
-  tempC: null,
-  period: weatherPeriod,
-  climate: weatherClimate,
-});
 ---
 
 <div class="right-bento landing-bento-mosaic landing-bento-mosaic--4" data-landing-bento-mosaic>
@@ -144,7 +137,6 @@ const weatherMascotSsr = inferWeatherMascotState({
           data-weather-period={weatherPeriod}
           data-weather-sky={weatherSky}
           data-weather-climate={weatherClimate}
-          data-weather-mascot={weatherMascotSsr}
           data-weather-temp-fx-debug="cycle"
         >
           <div class="bento-weather-bg" aria-hidden="true">
@@ -215,22 +207,22 @@ const weatherMascotSsr = inferWeatherMascotState({
               </div>
               <div class="bento-weather-sub" data-bento-weather-sub aria-live="polite">
                 <span class="bento-weather-live-dot" data-bento-weather-live-dot hidden aria-hidden="true"></span>
-                <span class="bento-weather-ambient-dot" data-bento-weather-ambient-dot hidden aria-hidden="true"></span>
                 {t(UI.gallery.weather_loading, lang)}{weatherPlaceLabel ? ` · ${weatherPlaceLabel}` : ""}
               </div>
               <p class="bento-weather-mood" data-bento-weather-mood hidden></p>
             </div>
-            <WeatherMascot />
             <span class="bento-weather-temp-fx-gel-badge" data-weather-temp-fx-gel-badge hidden aria-hidden="true">
               {t(UI.gallery.weather_fx_gel_label, lang)}
             </span>
           </div>
-          <div
-            class="bento-weather-panel"
-            id={forecastPanelId}
-            data-bento-weather-forecast
-            hidden
-          ></div>
+          <div class="bento-weather-forecast-collapse" data-bento-weather-forecast-collapse>
+            <div
+              class="bento-weather-panel"
+              id={forecastPanelId}
+              data-bento-weather-forecast
+              aria-hidden="true"
+            ></div>
+          </div>
         </div>
       </GlassTile>
     )}

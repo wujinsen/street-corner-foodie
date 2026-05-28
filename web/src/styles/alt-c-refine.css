@@ -38,8 +38,8 @@ body.has-altc .icon-btn-glass.with-hint .kbd-hint {
   opacity: 0.85;
 }
 
-/* ---------- Topbar (gallery / landing / street) ---------- */
-/* pill tab · landing.png：三 Tab 顶栏居中 + 激活项底部荧光红线 */
+/* ---------- Topbar · 赛博霓虹胶囊（与底部 dock 同款 · 烟雾深色 + 冷蓝脉动 + 电路网格 + 红涡 + 红/金粒子） ---------- */
+
 body.has-altc .topbar-glass .topbar-inner {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -52,78 +52,473 @@ body.has-altc .topbar-glass .logo {
   justify-self: start;
 }
 
-body.has-altc .topbar-glass .topbar-center {
-  grid-column: 2;
-  justify-self: center;
-  margin-left: 0;
-  margin-right: 0;
-}
-
 body.has-altc .topbar-glass .topbar-actions {
   grid-column: 3;
   justify-self: end;
   margin-left: 0;
 }
 
+/* === 容器：半透明黑色胶囊 + 冷蓝呼吸 box-shadow === */
 body.has-altc .topbar-glass .topbar-center {
+  --topbar-capsule-pad-y: 6px;
+  --topbar-capsule-pad-x: 24px; /* 原 12px → 16px（+30%）→ 24px（再 +50%） */
+  grid-column: 2;
+  justify-self: center;
+  position: relative;
+  isolation: isolate;
   overflow: visible;
-  background: color-mix(in oklab, var(--bg-2) 72%, transparent);
-  border: 1px solid color-mix(in oklab, var(--fg-mute) 35%, var(--tile-border));
+  display: flex;
+  align-items: center;
+  padding: var(--topbar-capsule-pad-y) var(--topbar-capsule-pad-x);
+  gap: 3px;
+  /* 让胶囊自适应内容高度（icon 28 + gap 4 + label 16 + tab pad 15 = 63px + capsule pad 12 ≈ 75）
+   * 之前的 max-height: calc(--topbar-h - 4) = 68px 会把 label 压到胶囊底沿、
+   * 文字外发光被下方 filter bar 视觉遮住 */
+  box-sizing: border-box;
   border-radius: 999px;
-  padding: 4px 8px 6px;
-  gap: 2px;
+  background:
+    radial-gradient(
+      ellipse 80% 110% at 50% 50%,
+      rgba(10, 16, 26, 0.55) 0%,
+      rgba(4, 8, 14, 0.78) 75%
+    );
+  border: 1px solid color-mix(in oklab, var(--dock-neon-cyan) 50%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   box-shadow:
-    0 12px 32px -16px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 color-mix(in oklab, #fff 6%, transparent);
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
+    0 0 28px color-mix(in oklab, var(--dock-neon-cyan) 28%, transparent),
+    0 0 56px color-mix(in oklab, var(--dock-neon-cyan) 14%, transparent),
+    0 14px 36px rgba(0, 0, 0, 0.55),
+    inset 0 0 26px color-mix(in oklab, var(--dock-neon-cyan) 11%, transparent),
+    inset 0 1px 0 color-mix(in oklab, #fff 18%, transparent);
+  animation: topbar-edge-pulse 3.6s ease-in-out infinite;
 }
 
+@keyframes topbar-edge-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 22px color-mix(in oklab, var(--dock-neon-cyan) 20%, transparent),
+      0 0 42px color-mix(in oklab, var(--dock-neon-cyan) 10%, transparent),
+      0 14px 36px rgba(0, 0, 0, 0.55),
+      inset 0 0 22px color-mix(in oklab, var(--dock-neon-cyan) 8%, transparent),
+      inset 0 1px 0 color-mix(in oklab, #fff 16%, transparent);
+    border-color: color-mix(in oklab, var(--dock-neon-cyan) 42%, transparent);
+  }
+
+  50% {
+    box-shadow:
+      0 0 40px color-mix(in oklab, var(--dock-neon-cyan) 48%, transparent),
+      0 0 72px color-mix(in oklab, var(--dock-neon-cyan) 22%, transparent),
+      0 14px 36px rgba(0, 0, 0, 0.55),
+      inset 0 0 32px color-mix(in oklab, var(--dock-neon-cyan) 18%, transparent),
+      inset 0 1px 0 color-mix(in oklab, #fff 24%, transparent);
+    border-color: color-mix(in oklab, var(--dock-neon-cyan) 70%, transparent);
+  }
+}
+
+body.has-altc .topbar-glass .topbar-actions .switch-glass {
+  position: relative;
+}
+
+/* === Tech 层 · 电路网格 + 冷蓝扫光 + 漂浮粒子（红/金/冰蓝） === */
+body.has-altc .topbar-glass .topbar-center .topbar-tech {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+body.has-altc .topbar-glass .topbar-center .topbar-tech-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='42' height='24' viewBox='0 0 42 24'><g fill='none' stroke='rgba(255,80,80,0.22)' stroke-width='0.65' stroke-linejoin='round'><path d='M10.5 0L21 6L21 18L10.5 24L0 18L0 6Z'/><path d='M31.5 0L42 6L42 18L31.5 24L21 18L21 6Z'/></g></svg>");
+  background-size: 42px 24px;
+  opacity: 0.62;
+  mask-image: radial-gradient(ellipse 95% 95% at 50% 45%, #000 25%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 95% 95% at 50% 45%, #000 25%, transparent 100%);
+}
+
+body.has-altc .topbar-glass .topbar-center .topbar-tech-scan {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 42%,
+    color-mix(in oklab, var(--dock-neon-cyan) 22%, transparent) 50%,
+    transparent 58%
+  );
+  opacity: 0.55;
+  animation: topbar-tech-scan 5.5s ease-in-out infinite;
+}
+
+body.has-altc .topbar-glass .topbar-center .topbar-tech-dust {
+  position: absolute;
+  left: 4%;
+  top: 50%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--dock-neon-ice);
+  box-shadow:
+    18px -6px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 80%, #fff),
+    40px 5px 0 0 #ffd166,
+    64px -3px 0 0 color-mix(in oklab, var(--accent-c) 65%, #fff),
+    86px 7px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 55%, transparent),
+    112px -5px 0 0 color-mix(in oklab, var(--dock-neon-ice) 88%, transparent),
+    138px 4px 0 0 #f4c430,
+    162px -8px 0 0 color-mix(in oklab, var(--accent-c) 55%, transparent),
+    188px 6px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 70%, #fff),
+    216px -4px 0 0 color-mix(in oklab, var(--dock-neon-ice) 78%, transparent),
+    244px 8px 0 0 color-mix(in oklab, #ffd166 70%, transparent),
+    272px -2px 0 0 color-mix(in oklab, var(--accent-c) 60%, #fff),
+    300px 5px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 65%, transparent),
+    328px -6px 0 0 color-mix(in oklab, var(--dock-neon-ice) 82%, transparent),
+    356px 3px 0 0 #f4c430,
+    386px -5px 0 0 color-mix(in oklab, var(--accent-c) 45%, transparent),
+    412px 8px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 58%, transparent);
+  filter: blur(0.2px);
+  opacity: 0.85;
+  animation: topbar-tech-dust 7s linear infinite;
+}
+
+@keyframes topbar-tech-scan {
+  0%,
+  100% {
+    transform: translateX(-55%);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: translateX(55%);
+    opacity: 0.65;
+  }
+
+  88% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes topbar-tech-dust {
+  0% {
+    transform: translateX(0);
+    opacity: 0.85;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-46px);
+    opacity: 0.6;
+  }
+}
+
+/* === 已废弃 legacy 钩子（兜底隐藏旧 DOM 残留） === */
+body.has-altc .topbar-nav-fx-layer,
+body.has-altc .topbar-nav-slider,
+body.has-altc .topbar-nav-particle,
+body.has-altc .topbar-nav-ripple,
+body.has-altc .topbar-tab-shell,
+body.has-altc .topbar-tab-fx,
+body.has-altc .topbar-tab-fx-a,
+body.has-altc .topbar-tab-fx-b,
+body.has-altc .topbar-tab-comet,
+body.has-altc .topbar-tab-tendrils {
+  display: none !important;
+}
+
+/*
+ * 刷新 FOUC：SSR 读不到 #hash，首帧 .active 可能错 tab。
+ * head 内联脚本写入 html[data-topbar-tab] 后，先关掉所有 .active 特效，
+ * 仅对 data-topbar-tab 匹配项预亮（与后续 .active 对齐前一致）。
+ */
+html[data-topbar-tab="posters"] body.has-altc .topbar-glass .topbar-center .tab.active:not([data-topbar-tab="posters"]) .tab-comet-trail,
+html[data-topbar-tab="zines"] body.has-altc .topbar-glass .topbar-center .tab.active:not([data-topbar-tab="zines"]) .tab-comet-trail,
+html[data-topbar-tab="streets"] body.has-altc .topbar-glass .topbar-center .tab.active:not([data-topbar-tab="streets"]) .tab-comet-trail {
+  display: none;
+  opacity: 0;
+  animation: none;
+}
+
+html[data-topbar-tab="posters"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="posters"] .tab-comet-trail,
+html[data-topbar-tab="zines"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="zines"] .tab-comet-trail,
+html[data-topbar-tab="streets"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="streets"] .tab-comet-trail {
+  display: block;
+}
+
+html[data-topbar-tab="posters"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="posters"],
+html[data-topbar-tab="zines"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="zines"],
+html[data-topbar-tab="streets"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="streets"] {
+  color: #ff5566;
+  font-weight: 700;
+  text-shadow:
+    0 0 10px rgba(255, 60, 80, 0.9),
+    0 0 22px rgba(255, 60, 80, 0.45),
+    0 0 40px rgba(255, 60, 80, 0.22);
+}
+
+html[data-topbar-tab="posters"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="posters"] .ic,
+html[data-topbar-tab="zines"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="zines"] .ic,
+html[data-topbar-tab="streets"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="streets"] .ic {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: none;
+  pointer-events: none;
+}
+
+/* === Tab · 与底部 .dock .dock-item 同字号/间距/栅格（防切换抖动） === */
 body.has-altc .topbar-glass .topbar-center .tab {
   position: relative;
-  overflow: visible;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  z-index: 2;
+  flex: 0 0 auto;
+  min-width: max-content;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-rows: 26px minmax(1.1em, auto);
+  justify-items: center;
+  align-content: center;
+  gap: 2px;
+  padding: 4px 4px 6px;
+  font-size: 13px;
+  line-height: 1.25;
+  font-weight: var(--type-weight-ui, 700);
+  letter-spacing: 0.02em;
   text-transform: none;
-  padding: 10px 22px 12px;
-  color: var(--fg-mute);
+  color: color-mix(in oklab, var(--dock-neon-ice) 86%, var(--fg-strong));
+  text-shadow: 0 0 10px color-mix(in oklab, var(--dock-neon-cyan) 38%, transparent);
+  -webkit-font-smoothing: antialiased;
   border-radius: 999px;
   background: transparent;
-  box-shadow: none;
+  /* 点击切换时只过渡 color；text-shadow 含 color-mix(oklab) 三层，过渡极昂贵 */
+  transition: color 0.18s var(--ease-soft);
 }
 
-body.has-altc .topbar-glass .topbar-center .tab:hover {
-  color: var(--fg-strong);
-  background: color-mix(in oklab, var(--fg-weak) 6%, transparent);
+body.has-altc .topbar-glass .topbar-center .tab .tab-label {
+  grid-row: 2;
+  position: relative;
+  z-index: 5;
+  min-height: 1.25em;
+  line-height: 1.25;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-body.has-altc .topbar-glass .topbar-center .tab.active {
-  color: var(--fg-strong);
-  background: color-mix(in oklab, var(--fg-weak) 7%, transparent);
-  box-shadow: none;
+/* 四字标签（世界街景 / 世界の街角）保证完整展示 */
+body.has-altc .topbar-glass .topbar-center .tab[data-world-atlas-link] .tab-label {
+  padding-inline: 2px;
 }
 
-/* 荧光底线 · landing.png：细线、中心略亮、两端渐弱、外晕克制 */
-body.has-altc .topbar-glass .topbar-center .tab.active::after {
-  display: block;
-  content: "";
-  position: absolute;
-  left: 20%;
-  right: 20%;
-  bottom: 5px;
-  height: 2px;
+body.has-altc .topbar-glass .topbar-center .tab .tab-ic-wrap {
+  grid-row: 1;
+  position: relative;
+  z-index: 2;
+  isolation: isolate;
+  flex-shrink: 0;
+  width: 32px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    color-mix(in oklab, var(--accent-c) 55%, transparent) 0%,
-    color-mix(in oklab, var(--accent-c) 88%, #fff 6%) 50%,
-    color-mix(in oklab, var(--accent-c) 55%, transparent) 100%
-  );
+  overflow: visible;
+  transition: background 0.22s var(--ease-soft);
+}
+
+body.has-altc .topbar-glass .topbar-center .tab .ic {
+  width: 18px;
+  height: 18px;
+  opacity: 0.96;
+  filter:
+    drop-shadow(0 0 4px color-mix(in oklab, var(--dock-neon-cyan) 80%, #fff))
+    drop-shadow(0 0 8px color-mix(in oklab, var(--dock-neon-cyan) 32%, transparent));
+  transition:
+    opacity 0.22s var(--ease-soft),
+    filter 0.22s var(--ease-soft);
+}
+
+/* active 态：SVG 始终不可见（仅 WebGL 旋涡） */
+body.has-altc .topbar-glass .topbar-center .tab.active .ic {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transform: none;
+  pointer-events: none;
+}
+
+/* WebGL 旋涡 canvas 宿主（被 topbar-vortex-webgl.ts 注入到 active tab） */
+body.has-altc .topbar-glass .topbar-center .tab .topbar-tab-vortex {
+  --topbar-vortex-w: 42px;
+  --topbar-vortex-h: 36px;
+  position: absolute;
+  top: calc((28px - var(--topbar-vortex-h)) / 2);
+  left: 50%;
+  width: var(--topbar-vortex-w);
+  height: var(--topbar-vortex-h);
+  margin-left: calc(var(--topbar-vortex-w) / -2);
+  z-index: 3;
+  pointer-events: none;
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  background: transparent;
+}
+
+body.has-altc .topbar-glass .topbar-center .tab .topbar-tab-vortex.topbar-tab-vortex--ready {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 仅 WebGL 银河旋涡：禁用 CSS 软红云 ::before */
+body.has-altc .topbar-glass .topbar-center .tab .tab-ic-wrap::before {
+  content: none;
+  display: none;
+}
+
+body.has-altc .topbar-glass .topbar-center .tab .topbar-tab-vortex canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* === 左右粒子横向发散流（默认隐藏，active 时显形） === */
+body.has-altc .topbar-glass .topbar-center .tab .tab-comet-trail {
+  position: absolute;
+  top: 38%;
+  width: 3px;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 6;
+  display: none;
+  background: color-mix(in oklab, var(--accent-c) 94%, #fff 6%);
+  filter: drop-shadow(0 0 5px color-mix(in oklab, var(--accent-c) 92%, #fff));
+  will-change: transform, opacity;
+}
+
+body.has-altc .topbar-glass .topbar-center .tab:not(.active):hover {
+  color: var(--dock-neon-ice);
+  text-shadow: 0 0 14px color-mix(in oklab, var(--dock-neon-cyan) 55%, transparent);
+}
+
+body.has-altc .topbar-glass .topbar-center .tab:not(.active):hover .tab-ic-wrap {
+  background: color-mix(in oklab, var(--dock-neon-cyan) 12%, transparent);
+}
+
+/* === active · 红涡旋 + 红/金粒子轨道 + 红文字霓虹（对齐 dock active） ===
+ * text-shadow 用静态 rgb（避免 color-mix(oklab) 重算）；切换瞬间生效不过渡 */
+body.has-altc .topbar-glass .topbar-center .tab.active {
+  color: #ff5566;
+  text-shadow:
+    0 0 10px rgba(255, 60, 80, 0.9),
+    0 0 22px rgba(255, 60, 80, 0.45),
+    0 0 40px rgba(255, 60, 80, 0.22);
+}
+
+body.has-altc .topbar-glass .topbar-center .tab.active .tab-ic-wrap {
+  background: transparent;
+}
+
+/* === 左右粒子横向发散 · 覆盖「图标 + 文字」整列两侧 === */
+body.has-altc .topbar-glass .topbar-center .tab.active .tab-comet-trail {
+  display: block;
+}
+
+body.has-altc .topbar-glass .topbar-center .tab.active .tab-comet-trail--l {
+  left: 4px;
+  top: 50%;
   box-shadow:
-    0 0 2px 0 color-mix(in oklab, var(--accent-c) 70%, transparent),
-    0 0 6px 1px color-mix(in oklab, var(--accent-c) 38%, transparent),
-    0 0 12px 2px color-mix(in oklab, var(--accent-c) 18%, transparent);
+    0 -10px 0 -0.5px color-mix(in oklab, var(--accent-c) 82%, #fff),
+    -8px -6px 0 -0.6px color-mix(in oklab, #fff 78%, var(--accent-c)),
+    -16px 2px 0 -0.8px color-mix(in oklab, var(--accent-c) 70%, transparent),
+    -10px 10px 0 -0.7px color-mix(in oklab, var(--accent-c) 72%, #fff),
+    -22px -4px 0 -1px color-mix(in oklab, var(--accent-c) 55%, transparent),
+    -18px 8px 0 -1.1px color-mix(in oklab, #fff 60%, var(--accent-c)),
+    -30px 0 0 -1.4px color-mix(in oklab, var(--accent-c) 42%, transparent),
+    -28px -10px 0 -1.5px color-mix(in oklab, var(--accent-c) 38%, transparent);
+  animation: topbar-tab-comet-l 1.7s linear infinite;
+}
+
+body.has-altc .topbar-glass .topbar-center .tab.active .tab-comet-trail--r {
+  right: 4px;
+  top: 50%;
+  left: auto;
+  box-shadow:
+    0 10px 0 -0.5px color-mix(in oklab, var(--accent-c) 82%, #fff),
+    8px 6px 0 -0.6px color-mix(in oklab, #fff 78%, var(--accent-c)),
+    16px -2px 0 -0.8px color-mix(in oklab, var(--accent-c) 70%, transparent),
+    10px -10px 0 -0.7px color-mix(in oklab, var(--accent-c) 72%, #fff),
+    22px 4px 0 -1px color-mix(in oklab, var(--accent-c) 55%, transparent),
+    18px -8px 0 -1.1px color-mix(in oklab, #fff 60%, var(--accent-c)),
+    30px 0 0 -1.4px color-mix(in oklab, var(--accent-c) 42%, transparent),
+    28px 10px 0 -1.5px color-mix(in oklab, var(--accent-c) 38%, transparent);
+  animation: topbar-tab-comet-r 1.7s linear infinite 0.85s;
+}
+
+@keyframes topbar-tab-comet-l {
+  0% {
+    transform: translateX(0) scale(0.9);
+    opacity: 0;
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  82% {
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: translateX(-26px) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes topbar-tab-comet-r {
+  0% {
+    transform: translateX(0) scale(0.9);
+    opacity: 0;
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  82% {
+    opacity: 0.85;
+  }
+
+  100% {
+    transform: translateX(26px) scale(0.2);
+    opacity: 0;
+  }
+}
+
+/* 红色辐射触须 SVG · 撤除 */
+body.has-altc .topbar-glass .topbar-center .tab.active::after {
+  content: none;
+}
+
+body.has-altc .topbar-glass .topbar-center .tab:active {
+  transform: none;
+}
+
+@keyframes topbar-vortex-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* 品牌区 · design §3.1 / theme-cn.png 左栏 */
@@ -214,7 +609,7 @@ body.has-altc:has(.alt-gallery[data-active-tab="streets"]) .topbar-glass .logo-h
   }
 }
 
-html[data-country="cn"] body.has-altc .topbar-glass .logo-mark {
+html[data-country] body.has-altc .topbar-glass .logo-mark {
   color: var(--accent-c);
 }
 
@@ -223,12 +618,58 @@ html[data-theme="light"] body.has-altc .topbar-glass .topbar-center {
   border-color: color-mix(in oklab, var(--fg-mute) 28%, var(--tile-border));
 }
 
-html[data-theme="light"] body.has-altc .topbar-glass .topbar-center .tab {
-  color: color-mix(in oklab, var(--fg-mute) 95%, var(--fg-weak));
+html[data-theme="light"] body.has-altc .topbar-glass .topbar-center .tab:not(.active) {
+  color: color-mix(in oklab, var(--fg-mute) 96%, var(--fg-weak));
+  opacity: 0.68;
 }
 
 html[data-theme="light"] body.has-altc .topbar-glass .topbar-center .tab.active {
-  color: var(--fg-strong);
+  color: var(--accent-c);
+  opacity: 1;
+}
+
+body.has-altc .topbar-glass .topbar-actions .switch-glass a {
+  position: relative;
+  z-index: 1;
+  transform: translateY(0);
+  transition:
+    background-color 0.25s var(--ease-soft),
+    color 0.25s var(--ease-soft),
+    transform 0.3s var(--ease-soft);
+}
+
+body.has-altc .topbar-glass .topbar-actions .switch-glass a:not(.active) {
+  opacity: 0.82;
+}
+
+body.has-altc .topbar-glass .topbar-actions .switch-glass a.active {
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.has-altc .topbar-glass .topbar-center .tab.active .ic {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: none;
+    pointer-events: none;
+  }
+
+  body.has-altc .topbar-glass .topbar-center,
+  body.has-altc .topbar-glass .topbar-center .topbar-tech-scan,
+  body.has-altc .topbar-glass .topbar-center .topbar-tech-dust,
+  body.has-altc .topbar-glass .topbar-center .tab.active .tab-ic-wrap::after,
+  body.has-altc .topbar-glass .topbar-center .tab.active::before,
+  body.has-altc .topbar-glass .topbar-center .tab.active::after,
+  body.has-altc .topbar-glass .topbar-center .tab.active .tab-comet-trail,
+  body.has-altc .topbar-glass .topbar-center .tab.active .tab-comet-trail--l,
+  body.has-altc .topbar-glass .topbar-center .tab.active .tab-comet-trail--r {
+    animation: none !important;
+  }
+
+  body.has-altc .topbar-glass .topbar-center .tab,
+  body.has-altc .topbar-glass .topbar-actions .switch-glass a {
+    transition: none;
+  }
 }
 
 /* ---------- Country overview · world map (landing.png left column) ---------- */
@@ -1679,11 +2120,35 @@ body.landing-page.has-altc .landing-manifesto__cta-arrow {
   }
 }
 
-body.landing-page.has-altc .landing-bottom-stack .dock-wrap {
+/* Primary bottom dock rail — shared BottomDock wrapper (landing · world-atlas · readers) */
+body.has-altc .scf-bottom-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+body.has-altc .scf-bottom-stack > * {
+  pointer-events: auto;
+}
+
+body.has-altc .scf-bottom-stack .dock-wrap {
   position: static;
   bottom: auto;
   margin-top: 0;
   padding: 0;
+  width: 100%;
+}
+
+body.landing-page.has-altc .scf-bottom-stack {
+  max-width: var(--scf-layout-max);
+  margin-inline: auto;
+  margin-top: 10px;
+  padding: 4px var(--scf-layout-pad-x) 8px;
+  gap: 10px;
 }
 
 body.landing-page.has-altc .footer.footer-alt {
@@ -1761,25 +2226,10 @@ body.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col .lan
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow: visible;
 }
 
-/* ── Landing manifesto bento · breathe FX (pure CSS) ── */
-@keyframes manifesto-accent-breathe {
-  0%,
-  100% {
-    text-shadow:
-      0 0 14px color-mix(in oklab, var(--accent-c) 38%, transparent),
-      0 0 26px color-mix(in oklab, var(--accent-c) 14%, transparent);
-    filter: brightness(1);
-  }
-  50% {
-    text-shadow:
-      0 0 26px color-mix(in oklab, var(--accent-c) 58%, transparent),
-      0 0 48px color-mix(in oklab, var(--accent-c) 28%, transparent);
-    filter: brightness(1.1);
-  }
-}
-
+/* ── Landing manifesto bento · card ambient (no per-word FX) ── */
 @keyframes manifesto-glow-drift {
   0%,
   100% {
@@ -1802,14 +2252,21 @@ body.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col .lan
   }
 }
 
-@keyframes manifesto-line-in {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
+@keyframes manifesto-breathe-bar {
+  0%,
   100% {
+    opacity: 0.42;
+    transform: scaleX(0.68);
+    filter: blur(0.4px);
+    box-shadow: 0 0 5px color-mix(in oklab, var(--accent-c) 28%, transparent);
+  }
+  50% {
     opacity: 1;
-    transform: translateY(0);
+    transform: scaleX(1);
+    filter: blur(0);
+    box-shadow:
+      0 0 8px color-mix(in oklab, var(--accent-c) 72%, transparent),
+      0 0 16px color-mix(in oklab, var(--accent-c) 38%, transparent);
   }
 }
 
@@ -1822,18 +2279,6 @@ body.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col .lan
   50% {
     opacity: 0.72;
     transform: translateY(-3%) scale(1.04);
-  }
-}
-
-@keyframes manifesto-breathe-line {
-  0%,
-  100% {
-    opacity: 0.28;
-    transform: scaleX(0.32);
-  }
-  50% {
-    opacity: 0.82;
-    transform: scaleX(0.92);
   }
 }
 
@@ -1887,7 +2332,7 @@ body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__ca
   align-content: stretch;
   align-items: stretch;
   grid-template-columns: unset;
-  overflow: hidden;
+  overflow: visible;
   box-sizing: border-box;
   container-type: size;
 }
@@ -1970,6 +2415,8 @@ body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__he
   position: relative;
   text-align: left;
   align-self: stretch;
+  overflow: visible;
+  isolation: isolate;
 }
 
 body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__hero::before {
@@ -1995,25 +2442,6 @@ body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__he
   animation: manifesto-hero-ambient 5.2s ease-in-out infinite;
 }
 
-body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__hero::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: clamp(6px, 3cqh, 16px);
-  height: 1px;
-  pointer-events: none;
-  z-index: 0;
-  transform-origin: center;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    color-mix(in oklab, var(--accent-c) 72%, #fff 28%) 50%,
-    transparent 100%
-  );
-  animation: manifesto-breathe-line 5.2s ease-in-out infinite;
-}
-
 body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__quote {
   position: relative;
   z-index: 1;
@@ -2024,21 +2452,50 @@ body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__qu
   letter-spacing: 0.015em;
   font-weight: var(--type-weight-strong, 700);
   text-wrap: balance;
+  overflow: visible;
 }
 
 body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__line {
   display: block;
-  animation: manifesto-line-in 0.78s cubic-bezier(0.22, 1, 0.36, 1) both;
+  overflow: visible;
 }
 
 body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__line + .landing-manifesto__line {
   margin-top: 0.22em;
-  animation-delay: 0.14s;
 }
 
 body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__accent {
   font-style: normal;
-  animation: manifesto-accent-breathe 5.2s ease-in-out infinite;
+  color: var(--accent-c);
+  font-weight: var(--type-weight-strong, 700);
+}
+
+body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__accent--breathe {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  padding-bottom: 0.14em;
+}
+
+body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__accent--breathe::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 0.02em;
+  height: 2px;
+  border-radius: 999px;
+  pointer-events: none;
+  transform-origin: center bottom;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--accent-c) 88%, #fff 12%) 22%,
+    var(--accent-c) 50%,
+    color-mix(in oklab, var(--accent-c) 88%, #fff 12%) 78%,
+    transparent 100%
+  );
+  animation: manifesto-breathe-bar 4.6s ease-in-out infinite;
 }
 
 body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__deck--ad {
@@ -2054,7 +2511,6 @@ body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__de
   line-height: 1.35;
   color: color-mix(in oklab, var(--fg-strong) 88%, var(--accent-c) 12%);
   text-align: left;
-  animation: manifesto-line-in 0.78s cubic-bezier(0.22, 1, 0.36, 1) 0.26s both;
 }
 
 body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__aside--ad {
@@ -2295,10 +2751,7 @@ body.landing-page.has-altc .landing-manifesto__card.tile-shine:focus-within {
   body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__glow,
   body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stripe,
   body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__hero::before,
-  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__hero::after,
-  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__accent,
-  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__line,
-  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__deck--ad,
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__accent--breathe::after,
   body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__cta--ad,
   body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__cta--ad::before,
   body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__cta-arrow {
@@ -2833,16 +3286,89 @@ body.has-altc :is(#zine-reader-root, #poster-reader-root).container-wide {
 
 body.has-altc :is(#zine-reader-root, #poster-reader-root).alt-zine {
   padding-top: 12px;
-  padding-bottom: calc(var(--dock-h) + 8px);
+  padding-bottom: 0;
 }
 
-/* 原型：左 286 · 中 1fr · 右 280；侧栏卡片外框不变，封面占比加大 */
+/* 海报/小志详情 · 撑满 topbar↔footer，卡片行 flex 吃满剩余高度 */
+body.has-altc:has(#poster-reader-root) main,
+body.has-altc:has(#zine-reader-root) main {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+body.has-altc main > :is(#poster-reader-root, #zine-reader-root).container-wide {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-crumb {
+  flex: 0 0 auto;
+}
+
+body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack {
+  position: static;
+  flex-shrink: 0;
+  margin-top: 0;
+  padding: 3px var(--scf-layout-pad-x, 16px) max(3px, env(safe-area-inset-bottom, 0px));
+  --dock-h: 56px;
+}
+
+/* 海报/小志详情 · 略紧凑，但字号与全局可读性对齐 */
+body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack .dock {
+  --dock-pad-x: 10px;
+  --dock-item-gap: 3px;
+  padding: 6px 10px;
+  gap: 3px;
+}
+
+body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack .dock .dock-item,
+body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack .dock > a,
+body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack .dock > button {
+  gap: 3px;
+  min-width: 40px;
+  padding: 5px 3px 7px;
+  font-size: 12px;
+  font-weight: var(--type-weight-ui, 650);
+}
+
+body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack .dock .dock-ic-wrap {
+  width: 28px;
+  height: 24px;
+}
+
+body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack .dock .ic {
+  width: 16px;
+  height: 16px;
+}
+
+body.has-altc:has(#poster-reader-root) .footer.footer-alt,
+body.has-altc:has(#zine-reader-root) .footer.footer-alt {
+  margin-top: 0;
+  padding: 8px 0 12px;
+}
+
+/* 原型：左 286 · 中 1fr · 右 280；行高由 flex 链约束，侧栏内滚 */
 body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-layout {
   display: flex;
   flex-direction: row;
   align-items: stretch;
   gap: 16px;
-  min-height: min(calc(100dvh - var(--topbar-h) - var(--dock-h) - 72px), 720px);
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: none;
+  overflow: hidden;
+}
+
+body.has-altc #zine-reader-root .alt-zine-layout {
+  align-items: stretch;
+}
+
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel {
+  align-self: stretch;
 }
 
 body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left {
@@ -2850,27 +3376,30 @@ body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left {
   width: 286px;
   min-width: 286px;
   max-width: 286px;
-}
-
-/* 小志左栏：限高 + 内层滚动（勿随条目撑开整行） */
-body.has-altc #zine-reader-root .alt-zine-side-left {
-  max-height: min(calc(100dvh - var(--topbar-h) - var(--dock-h) - 72px), 720px);
+  display: flex;
+  flex-direction: column;
   min-height: 0;
   align-self: stretch;
   overflow: hidden;
   padding: 0;
+  position: relative;
+  top: auto;
+  box-sizing: border-box;
 }
 
-body.has-altc #zine-reader-root .alt-zine-side-left .alt-zine-side-scroll {
-  flex: 1 1 auto;
-  min-height: 0;
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left .alt-zine-side-scroll {
+  position: absolute;
+  inset: 0;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
   padding: 16px;
+  padding-bottom: 16px;
+  padding-right: 10px;
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--fg-weak) 40%, transparent) transparent;
+  scrollbar-color: color-mix(in srgb, var(--fg-weak) 50%, transparent) transparent;
   outline: none;
 }
 
@@ -2881,17 +3410,41 @@ body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left::a
   pointer-events: none;
 }
 
-/* 小志左栏用 .alt-zine-side-scroll，禁用 ::after 占位 */
-body.has-altc #zine-reader-root .alt-zine-side-left::after {
+/* 左栏用 .alt-zine-side-scroll，禁用 ::after 占位 */
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left::after {
   display: none;
 }
-body.has-altc #poster-reader-root .alt-zine-side-left {
-  max-height: none;
-  height: auto;
-  align-self: stretch;
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+
+body.has-altc
+  :is(#zine-reader-root, #poster-reader-root)
+  .alt-zine-side-left
+  .alt-zine-side-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+body.has-altc
+  :is(#zine-reader-root, #poster-reader-root)
+  .alt-zine-side-left
+  .alt-zine-side-scroll::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 4px 0;
+}
+
+body.has-altc
+  :is(#zine-reader-root, #poster-reader-root)
+  .alt-zine-side-left
+  .alt-zine-side-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--fg-weak) 50%, transparent);
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+body.has-altc
+  :is(#zine-reader-root, #poster-reader-root)
+  .alt-zine-side-left
+  .alt-zine-side-scroll::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--fg-weak) 65%, transparent);
 }
 
 body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left h2 {
@@ -2943,6 +3496,7 @@ body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left .a
 body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel {
   flex: 1 1 auto;
   min-width: 0;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   padding: 0;
@@ -2961,11 +3515,23 @@ body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-right {
   display: flex;
   flex-direction: column;
   align-self: stretch;
-  position: sticky;
-  top: calc(var(--topbar-h) + 12px);
   min-height: 0;
   box-sizing: border-box;
+}
+
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-right {
+  position: sticky;
+  top: calc(var(--topbar-h) + 12px);
+  height: auto;
   padding: 16px;
+}
+
+body.has-altc #zine-reader-root .alt-zine-side-left {
+  padding: 0;
+}
+
+body.has-altc #poster-reader-root .alt-zine-side-left {
+  padding: 0;
 }
 
 body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-right {
@@ -3007,7 +3573,7 @@ body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel
   flex: 1 1 auto;
   width: 100%;
   min-height: min(38dvh, 320px);
-  max-height: min(calc(100dvh - var(--topbar-h) - 200px), 860px);
+  max-height: none;
   height: auto;
   aspect-ratio: 3 / 2;
   margin: 0;
@@ -3016,6 +3582,42 @@ body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel
   border-radius: 0;
   box-shadow: none;
   background: var(--bg-2);
+  position: relative;
+}
+
+body.has-altc #poster-reader-root .alt-zine-center-panel .alt-zine-spread {
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: 100%;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+}
+
+@media (min-width: 1101px) {
+  /* 桌面：三栏 + 中栏主图吃满 section 剩余高度，消除 dock 上方空白 */
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-layout {
+    flex: 1 1 0;
+    min-height: 0;
+    align-self: stretch;
+  }
+
+  body.has-altc #poster-reader-root .alt-zine-center-panel .alt-zine-spread {
+    aspect-ratio: unset;
+    max-height: none;
+    height: auto;
+  }
+}
+
+body.has-altc #poster-reader-root .alt-zine-center-panel .alt-zine-spread .alt-zine-spread-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body.has-altc #zine-reader-root .alt-zine-center-panel .alt-zine-spread {
+  aspect-ratio: 3 / 2;
+  min-height: min(38dvh, 320px);
 }
 
 body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumbs {
@@ -3045,6 +3647,28 @@ body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel
   width: 135px;
   height: 91px;
   border-radius: 10px;
+  cursor: zoom-in;
+}
+
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-spread:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent-c) 75%, transparent);
+  outline-offset: 2px;
+}
+
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .zine-lightbox::backdrop {
+  background: color-mix(in oklab, #000 82%, transparent);
+}
+
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .zine-lightbox-bar {
+  pointer-events: none;
+}
+
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .zine-lightbox-bar > * {
+  pointer-events: auto;
+}
+
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .zine-lightbox-img {
+  max-height: min(92dvh, 1200px);
 }
 
 body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumbs .thumb.active {
@@ -3216,17 +3840,6 @@ body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-right .
   color: var(--zine-rail-fg);
 }
 
-body.has-altc:has(#zine-reader-root) .dock-wrap,
-body.has-altc:has(#poster-reader-root) .dock-wrap {
-  margin-top: 0;
-}
-
-body.has-altc:has(#zine-reader-root) .footer-alt,
-body.has-altc:has(#poster-reader-root) .footer-alt {
-  margin-top: 0;
-  padding-top: 8px;
-}
-
 /* 海报详情 · 侧栏缩略图 3:2 */
 body.has-altc #poster-reader-root .alt-zine-side-left .alt-zine-side-thumb--poster {
   aspect-ratio: 3 / 2;
@@ -3239,18 +3852,23 @@ body.has-altc #poster-reader-root .alt-zine-side-right .alt-zine-en-name {
   color: var(--zine-rail-fg-label, var(--fg-mute));
 }
 
-/* 海报无页码条：占位 nav 与小志底栏同高，避免中心 tile 偏矮 */
+/* 海报无页码条：占位 nav 与小志底栏同高，三栏齐平（不占 flex 高度） */
 body.has-altc #poster-reader-root .alt-zine-center-panel .alt-zine-thumbs--spacer {
-  min-height: 131px;
+  flex: 0 0 auto;
+  min-height: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
   visibility: hidden;
   pointer-events: none;
 }
 
-/* 小志：底栏留白，不压缩主图 max-height（主图尺寸见共用 .alt-zine-spread 规则） */
+/* 小志/海报 · 窄屏底栏（static + safe-area，紧贴内容） */
 @media (max-width: 1100px) {
-  body.has-altc:has(#zine-reader-root) .dock-wrap {
+  body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack {
     position: static;
-    margin-top: 20px;
+    margin-top: 0;
     margin-bottom: max(12px, env(safe-area-inset-bottom, 0px));
   }
 }
@@ -3653,13 +4271,14 @@ body.landing-page .right-bento .bento-dish--proto .photo,
 body.landing-page .right-bento .bento-zine--proto .photo {
   position: absolute;
   inset: 0;
-  display: grid;
+  display: block;
   flex: none;
   min-height: 0;
+  overflow: hidden;
 }
 
-body.landing-page .right-bento .bento-dish--proto .photo > :is(picture img, img),
-body.landing-page .right-bento .bento-zine--proto .photo > :is(picture img, img) {
+body.landing-page .right-bento .bento-dish--proto .photo > :is(picture, img),
+body.landing-page .right-bento .bento-zine--proto .photo > :is(picture, img) {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -4139,6 +4758,11 @@ body.landing-page .right-bento .bento-flag {
   pointer-events: none;
 }
 
+body.landing-page .right-bento .bento-dish--proto .bento-flag,
+body.landing-page .right-bento .bento-zine--proto .bento-flag {
+  top: 12px;
+}
+
 body.landing-page .right-bento .bento-tile-dots {
   position: absolute;
   left: 14px;
@@ -4205,6 +4829,40 @@ body.landing-page .bento-carousel__slide :is(picture, img) {
   object-fit: cover;
   object-position: center;
   display: block;
+}
+
+/* 海报 / 小志 · 全幅 cover 铺满卡片（无 letterbox） */
+body.landing-page .bento-carousel--photo {
+  inset: 0;
+  top: 0;
+}
+
+body.landing-page .bento-carousel--photo .bento-carousel__viewport,
+body.landing-page .bento-carousel--photo .bento-carousel__track,
+body.landing-page .bento-carousel--photo .bento-carousel__slide {
+  border-radius: inherit;
+}
+
+body.landing-page .bento-carousel--photo .bento-carousel__slide {
+  overflow: hidden;
+}
+
+body.landing-page .bento-carousel--photo .bento-carousel__media,
+body.landing-page .bento-carousel--photo .bento-carousel__slide picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+body.landing-page .bento-carousel--photo .bento-carousel__slide :is(.bento-carousel__media img, picture img, img) {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center;
 }
 
 body.landing-page .bento-carousel__nav {
@@ -4351,8 +5009,11 @@ body.landing-page .bento-weather--proto.tile.t-chip:has([data-weather-expanded="
 
 body.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col .bento-weather:has([data-weather-expanded="true"]) {
   height: auto;
-  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 100px));
+  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 96px));
   max-height: none;
+  transition:
+    min-height var(--weather-expand-duration, 0.48s) var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    height var(--weather-expand-duration, 0.48s) var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 body.landing-page .bento-weather-live--starfield,
@@ -4604,6 +5265,12 @@ body.landing-page .bento-weather-fx {
   z-index: 2;
 }
 
+@property --weather-forecast-panel-h {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 body.landing-page .bento-weather-live {
   position: relative;
   display: flex;
@@ -4612,6 +5279,8 @@ body.landing-page .bento-weather-live {
   min-height: 100%;
   height: 100%;
   cursor: default;
+  --weather-expand-duration: 0.34s;
+  --weather-expand-ease: cubic-bezier(0.16, 1, 0.3, 1);
   --weather-icon-size: 56px;
   --weather-climate-size: var(--weather-temp-size);
   --weather-temp-size: clamp(38px, 4.2vw, 50px);
@@ -4622,12 +5291,27 @@ body.landing-page .bento-weather-live {
   --weather-copy-gap: 10px;
   --weather-main-gap: clamp(8px, 1.1vw, 12px);
   --weather-mascot-size: clamp(66px, 8.5vw, 76px);
-  --weather-forecast-panel-h: 100px;
+  --weather-forecast-panel-h: 0px;
+  transition:
+    min-height var(--weather-expand-duration) var(--weather-expand-ease),
+    height var(--weather-expand-duration) var(--weather-expand-ease),
+    --weather-forecast-panel-h var(--weather-expand-duration) var(--weather-expand-ease);
 }
 
 body.landing-page .bento-weather-live[data-weather-expanded="true"] {
-  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 100px));
+  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 96px));
   height: auto;
+}
+
+body.landing-page .bento-weather-live[data-weather-expanded="true"] .bento-weather-body {
+  flex: 0 0 auto;
+}
+
+body.landing-page .bento-weather-live[data-weather-expanded="true"] .bento-weather-forecast-collapse {
+  position: relative;
+  z-index: 5;
+  flex: 0 0 auto;
+  width: 100%;
 }
 
 body.landing-page .right-bento.landing-bento-mosaic .bento-weather--proto.tile.t-chip {
@@ -4638,18 +5322,20 @@ body.landing-page .right-bento.landing-bento-mosaic .bento-weather--proto.tile.t
   height: var(--bento-weather-h, 256px);
   max-height: none;
   min-height: var(--bento-weather-h, 256px);
+  --weather-forecast-panel-h: 0px;
   transition:
-    height 0.42s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
-    max-height 0.42s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
-    min-height 0.42s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+    height var(--weather-expand-duration, 0.48s) var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    max-height var(--weather-expand-duration, 0.48s) var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    min-height var(--weather-expand-duration, 0.48s) var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    --weather-forecast-panel-h var(--weather-expand-duration, 0.48s) var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
 body.landing-page
   .right-bento.landing-bento-mosaic
   .bento-weather--proto.tile.t-chip:has([data-weather-expanded="true"]) {
-  height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 100px));
+  height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 96px));
   max-height: none;
-  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 100px));
+  min-height: calc(var(--bento-weather-h, 256px) + var(--weather-forecast-panel-h, 96px));
   overflow: visible;
 }
 
@@ -4666,8 +5352,10 @@ body.landing-page .right-bento.landing-bento-mosaic .bento-radar--fill .flavor-r
 body.landing-page .bento-weather-bg {
   position: absolute;
   inset: 0;
+  z-index: 0;
   overflow: hidden;
   background: transparent;
+  pointer-events: none;
 }
 
 body.landing-page .bento-weather-live--starfield .bento-weather-bg,
@@ -4735,6 +5423,7 @@ body.landing-page .bento-weather-live[data-weather-sky="fog"] .bento-weather-fx-
 body.landing-page .bento-weather-body {
   position: relative;
   z-index: 4;
+  isolation: isolate;
   display: flex;
   align-items: center;
   gap: var(--weather-body-gap, 18px);
@@ -4938,7 +5627,6 @@ body.landing-page .bento-weather-copy {
   flex-direction: column;
   justify-content: center;
   gap: var(--weather-copy-gap, 10px);
-  padding-right: calc(var(--weather-mascot-size, 72px) + 10px);
 }
 
 /* Corner weather mascot · line-art chibi states */
@@ -5125,21 +5813,70 @@ body.landing-page .bento-weather-ambient-dot {
   }
 }
 
-body.landing-page .bento-weather-panel {
+body.landing-page .bento-weather-forecast-collapse {
+  display: block;
   position: relative;
-  z-index: 4;
+  z-index: 5;
   flex: 0 0 auto;
   width: 100%;
-  min-height: var(--weather-forecast-panel-h, 100px);
-  padding: 2px 16px 16px;
-  box-sizing: border-box;
-  color: var(--weather-fg-sub);
-  font-size: clamp(14px, 1.3vw, 15px);
-  animation: weather-panel-in 0.38s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1));
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+  transition: max-height var(--weather-expand-duration, 0.48s)
+    var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1));
 }
 
-body.landing-page .bento-weather-panel:not([hidden]) {
+body.landing-page .bento-weather-live[data-weather-expanded="true"] .bento-weather-forecast-collapse {
+  max-height: none;
+  min-height: var(--weather-forecast-panel-h, 110px);
+  visibility: visible;
+  pointer-events: auto;
+  overflow: visible;
+}
+
+body.landing-page .bento-weather-panel {
   display: block;
+  position: relative;
+  z-index: 6;
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 2px 16px 16px;
+  box-sizing: border-box;
+  color: var(--weather-fg, #fff);
+  font-size: clamp(14px, 1.3vw, 15px);
+  opacity: 1;
+  transform: translateY(8px);
+  transition: transform var(--weather-expand-duration, 0.48s)
+    var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+body.landing-page .bento-weather-live[data-weather-expanded="true"] .bento-weather-panel {
+  transform: translateY(0);
+}
+
+body.landing-page .bento-weather-live[data-weather-expanded="true"] .bento-weather-forecast-wd,
+body.landing-page .bento-weather-live[data-weather-expanded="true"] .bento-weather-forecast-hi,
+body.landing-page .bento-weather-live[data-weather-expanded="true"] .bento-weather-forecast-lo {
+  color: var(--weather-fg, #fff);
+}
+
+body.landing-page .bento-weather-live[data-weather-expanded="true"] .bento-weather-forecast-day {
+  color: var(--weather-fg, #fff);
+  background: color-mix(in oklab, var(--weather-fg, #fff) 10%, transparent);
+  border-color: color-mix(in oklab, var(--weather-fg, #fff) 18%, transparent);
+}
+
+body.landing-page
+  .right-bento.landing-bento-mosaic
+  .bento-weather--proto.tile.t-chip:has([data-weather-expanded="true"])
+  .bento-weather-live {
+  height: auto;
+  min-height: 100%;
+}
+
+body.landing-page .bento-weather-live[data-weather-expanded="true"] .bento-weather-forecast-strip {
+  min-height: 72px;
 }
 
 body.landing-page .bento-weather-forecast-strip {
@@ -6585,7 +7322,6 @@ body.landing-page .bento-weather-sub {
 
 body.landing-page .bento-weather-mood {
   margin: 0;
-  padding-right: calc(var(--weather-mascot-size, 72px) + 10px);
   max-width: 100%;
   font-family: var(--font-body);
   font-size: clamp(12.5px, 1.2vw, 14px);
@@ -6677,11 +7413,18 @@ body.landing-page .bento-weather-live[data-weather-source="live"] .bento-weather
 }
 
 @media (prefers-reduced-motion: reduce) {
+  body.landing-page .bento-weather-live,
+  body.landing-page .right-bento.landing-bento-mosaic .bento-weather--proto.tile.t-chip,
+  body.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col .bento-weather {
+    transition: none;
+  }
+
   body.landing-page .bento-weather-mesh,
   body.landing-page .bento-weather-fx--particles,
   body.landing-page .bento-weather-fx--glow,
   body.landing-page .bento-weather-live-dot,
   body.landing-page .bento-weather-ambient-dot,
+  body.landing-page .bento-weather-forecast-collapse,
   body.landing-page .bento-weather-panel,
   body.landing-page .bento-weather-climate,
   body.landing-page .bento-weather-temp,
@@ -9285,19 +10028,20 @@ body.has-altc .gallery-dock {
   max-width: min(680px, calc(100vw - 32px));
   margin-inline: auto;
   justify-content: center;
-  gap: 4px;
-  padding: 10px 14px;
+  gap: 3px;
+  padding: 7px 10px;
   border-radius: 999px;
   box-sizing: border-box;
 }
 
 body.has-altc .gallery-dock .dock-item {
-  flex: 0 0 auto;
-  min-width: 56px;
-  width: auto;
+  flex: 1 1 0;
+  min-width: 0;
   max-width: none;
-  gap: 5px;
-  padding: 8px 4px 12px;
+  gap: 4px;
+  padding: 6px 4px 9px;
+  font-size: 13px;
+  font-weight: var(--type-weight-ui, 650);
 }
 
 body.has-altc .gallery-items-count--inline {
@@ -9331,9 +10075,432 @@ body.has-altc .alt-gallery.container-wide > .gallery-dock-wrap:not(.gallery-dock
   padding-bottom: 4px;
 }
 
-/* dock chrome: components.css · --tab-glow alias for legacy refs */
+/* dock · 街角浮轨 v3 · 科技霓虹（发光 · 粒子；无滑轨胶囊） */
+
+body.has-altc {
+  --dock-h: 68px;
+  --dock-neon-cyan: #5ec8ff;
+  --dock-neon-ice: #e8f6ff;
+}
+
 body.has-altc .dock {
   --dock-tab-glow: var(--tab-glow);
+  --dock-pad-x: 12px;
+  --dock-item-gap: 3px;
+  /* === 2026-05-28 · P4：底部 dock 走「暖玻璃 · 街角灯火」色温，
+   * 与顶部胶囊「冷蓝霓虹 · 内容」形成上看 / 下用 的视觉分层。
+   * 只在 .dock 作用域内覆盖 token，topbar 不受影响。 */
+  --dock-neon-cyan: #ffb86b;
+  --dock-neon-ice: #fff2dd;
+  position: relative;
+  isolation: isolate;
+  align-items: center;
+  gap: var(--dock-item-gap);
+  padding: 8px 12px;
+  overflow: hidden;
+  backdrop-filter: blur(22px) saturate(175%);
+  -webkit-backdrop-filter: blur(22px) saturate(175%);
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--bg-1) 50%, #1c1108 50%) 0%,
+    color-mix(in oklab, var(--bg-1) 64%, #2a1c10 36%) 100%
+  );
+  border: 1px solid color-mix(in oklab, #ffb86b 38%, var(--accent-c) 24%);
+  box-shadow:
+    0 0 28px color-mix(in oklab, #ffb86b 22%, transparent),
+    0 10px 36px color-mix(in oklab, #000 38%, transparent),
+    inset 0 0 28px color-mix(in oklab, #ffb86b 9%, transparent),
+    inset 0 1px 0 color-mix(in oklab, #fff 16%, transparent);
+}
+
+/* 装饰层 · 网格 / 扫光 / 粒子 */
+body.has-altc .dock .dock-tech {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+body.has-altc .dock .dock-tech-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--dock-neon-cyan) 14%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--dock-neon-cyan) 14%, transparent) 1px, transparent 1px);
+  background-size: 16px 16px;
+  opacity: 0.38;
+  mask-image: radial-gradient(ellipse 92% 85% at 50% 45%, #000 15%, transparent 100%);
+}
+
+body.has-altc .dock .dock-tech-scan {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 42%,
+    color-mix(in oklab, var(--dock-neon-cyan) 22%, transparent) 50%,
+    transparent 58%
+  );
+  opacity: 0.55;
+  animation: scf-dock-scan 5.5s ease-in-out infinite;
+}
+
+body.has-altc .dock .dock-tech-dust {
+  position: absolute;
+  left: 8%;
+  top: 38%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--dock-neon-ice);
+  box-shadow:
+    24px -8px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 85%, #fff),
+    52px 6px 0 0 color-mix(in oklab, var(--accent-c) 70%, #fff),
+    78px -4px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 60%, transparent),
+    108px 10px 0 0 color-mix(in oklab, var(--dock-neon-ice) 90%, transparent),
+    140px -2px 0 0 color-mix(in oklab, var(--accent-c) 55%, transparent),
+    168px 8px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 75%, #fff),
+    198px -6px 0 0 color-mix(in oklab, var(--dock-neon-ice) 80%, transparent),
+    228px 4px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 65%, transparent),
+    258px -10px 0 0 color-mix(in oklab, var(--accent-c) 50%, transparent),
+    288px 2px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 70%, #fff),
+    318px -5px 0 0 color-mix(in oklab, var(--dock-neon-ice) 75%, transparent),
+    348px 7px 0 0 color-mix(in oklab, var(--accent-c) 45%, transparent),
+    378px -3px 0 0 color-mix(in oklab, var(--dock-neon-cyan) 60%, transparent),
+    408px 9px 0 0 color-mix(in oklab, var(--dock-neon-ice) 85%, transparent),
+    438px -7px 0 0 color-mix(in oklab, var(--accent-c) 60%, #fff);
+  filter: blur(0.2px);
+  opacity: 0.85;
+  animation: scf-dock-dust-drift 7s linear infinite;
+}
+
+/* 滑轨胶囊 · 全局关闭（保留图标涡旋/网格/粒子） */
+body.has-altc .dock::after {
+  content: none;
+}
+
+body.has-altc .dock .dock-item,
+body.has-altc .dock > a,
+body.has-altc .dock > button {
+  position: relative;
+  z-index: 2;
+  flex: 1 1 0;
+  min-width: 0;
+  display: grid;
+  grid-template-rows: 28px minmax(1.25em, auto);
+  justify-items: center;
+  align-content: start;
+  gap: 4px;
+  min-height: 52px;
+  padding: 7px 4px 8px;
+  box-sizing: border-box;
+  font-size: 13px;
+  line-height: 1.25;
+  font-weight: var(--type-weight-ui, 650);
+  color: color-mix(in oklab, var(--dock-neon-ice) 86%, var(--fg-strong));
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 10px color-mix(in oklab, var(--dock-neon-cyan) 38%, transparent);
+  -webkit-font-smoothing: antialiased;
+  transition:
+    color 0.22s var(--ease-soft),
+    transform 0.16s var(--ease-soft),
+    text-shadow 0.22s var(--ease-soft);
+}
+
+body.has-altc .dock .dock-label,
+body.has-altc .dock .dock-item > span:last-child,
+body.has-altc .dock > a > span:last-child,
+body.has-altc .dock > button > span:last-child {
+  grid-row: 2;
+  min-height: 1.25em;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 3;
+}
+
+body.has-altc .dock .dock-ic-wrap {
+  position: relative;
+  grid-row: 1;
+  width: 32px;
+  height: 28px;
+  border-radius: 999px;
+  overflow: visible;
+  transition:
+    background 0.22s var(--ease-soft),
+    transform 0.22s var(--ease-soft),
+    filter 0.22s var(--ease-soft);
+}
+
+body.has-altc .dock .ic {
+  width: 18px;
+  height: 18px;
+  opacity: 0.98;
+  stroke-width: 2.25;
+  filter:
+    drop-shadow(0 0 4px color-mix(in oklab, var(--dock-neon-cyan) 80%, #fff))
+    drop-shadow(0 0 10px color-mix(in oklab, var(--dock-neon-cyan) 35%, transparent));
+  transition:
+    opacity 0.22s var(--ease-soft),
+    transform 0.22s var(--ease-soft),
+    filter 0.22s var(--ease-soft);
+}
+
+body.has-altc .dock .dock-item:not(.active):hover,
+body.has-altc .dock > a:not(.active):hover,
+body.has-altc .dock > button:not(.active):hover {
+  color: var(--dock-neon-ice);
+  text-shadow: 0 0 14px color-mix(in oklab, var(--dock-neon-cyan) 55%, transparent);
+}
+
+/* === 2026-05-28 · P5：抽屉触发器（收藏/搜索/设置）—— 点击瞬间反馈，不持久 active ===
+ * 即便上层误传 .active class，也用更高特异性的规则压回；
+ * :active 时短暂 scale + 红色发光给「确认按下」反馈。 */
+body.has-altc .dock .dock-item.dock-item--drawer:active .dock-ic-wrap,
+body.has-altc .dock > button.dock-item--drawer:active .dock-ic-wrap {
+  transform: scale(0.92);
+  background: color-mix(in oklab, var(--accent-c) 18%, transparent);
+  transition: transform 0.08s var(--ease-soft), background 0.08s var(--ease-soft);
+}
+body.has-altc .dock .dock-item.dock-item--drawer:active .ic,
+body.has-altc .dock > button.dock-item--drawer:active .ic {
+  filter:
+    drop-shadow(0 0 5px color-mix(in oklab, var(--accent-c) 85%, #fff))
+    drop-shadow(0 0 12px color-mix(in oklab, var(--accent-c) 45%, transparent));
+}
+body.has-altc .dock .dock-item.dock-item--drawer:active,
+body.has-altc .dock > button.dock-item--drawer:active {
+  color: color-mix(in oklab, var(--accent-c) 80%, var(--dock-neon-ice));
+}
+
+body.has-altc .dock .dock-item:not(.active):hover .dock-ic-wrap,
+body.has-altc .dock > a:not(.active):hover .dock-ic-wrap,
+body.has-altc .dock > button:not(.active):hover .dock-ic-wrap {
+  background: color-mix(in oklab, var(--dock-neon-cyan) 12%, transparent);
+}
+
+body.has-altc .dock .dock-item.active,
+body.has-altc .dock > a.active,
+body.has-altc .dock > button.active {
+  color: color-mix(in oklab, var(--accent-c) 92%, #fff 8%);
+  font-weight: 700;
+  text-shadow:
+    0 0 10px color-mix(in oklab, var(--accent-c) 90%, transparent),
+    0 0 22px color-mix(in oklab, var(--accent-c) 45%, transparent);
+}
+
+body.has-altc .dock .dock-item.active .dock-ic-wrap,
+body.has-altc .dock > a.active .dock-ic-wrap,
+body.has-altc .dock > button.active .dock-ic-wrap {
+  background: transparent;
+  box-shadow: none;
+  transform: scale(1.05);
+}
+
+body.has-altc .dock .dock-item.active .dock-ic-wrap::before,
+body.has-altc .dock > a.active .dock-ic-wrap::before,
+body.has-altc .dock > button.active .dock-ic-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--accent-c) 50%, transparent) 0%,
+    color-mix(in oklab, var(--accent-c) 18%, transparent) 42%,
+    transparent 72%
+  );
+  animation: scf-dock-vortex 3.2s ease-in-out infinite;
+  z-index: -1;
+}
+
+body.has-altc .dock .dock-item.active .dock-ic-wrap::after,
+body.has-altc .dock > a.active .dock-ic-wrap::after,
+body.has-altc .dock > button.active .dock-ic-wrap::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--accent-c) 90%, #fff);
+  box-shadow:
+    0 0 6px color-mix(in oklab, var(--accent-c) 90%, #fff),
+    12px -8px 0 0 color-mix(in oklab, var(--accent-c) 75%, #fff),
+    -10px 6px 0 0 color-mix(in oklab, #fff 85%, var(--accent-c)),
+    8px 10px 0 0 color-mix(in oklab, var(--accent-c) 55%, transparent),
+    -14px -4px 0 0 color-mix(in oklab, var(--accent-c) 45%, transparent);
+  animation: scf-dock-orbit 4.5s linear infinite;
+  pointer-events: none;
+}
+
+body.has-altc .dock .dock-item.active .ic,
+body.has-altc .dock > a.active .ic,
+body.has-altc .dock > button.active .ic {
+  opacity: 1;
+  filter:
+    drop-shadow(0 0 6px color-mix(in oklab, var(--accent-c) 95%, #fff))
+    drop-shadow(0 0 14px color-mix(in oklab, var(--accent-c) 55%, transparent))
+    drop-shadow(0 0 24px color-mix(in oklab, var(--accent-c) 30%, transparent));
+}
+
+body.has-altc .dock .dock-item.active::before,
+body.has-altc .dock > a.active::before,
+body.has-altc .dock > button.active::before {
+  display: none;
+}
+
+body.has-altc .dock .dock-item:active,
+body.has-altc .dock > a:active,
+body.has-altc .dock > button:active {
+  transform: scale(0.97);
+}
+
+body.has-altc #dock-fav-btn:active .ic {
+  fill: color-mix(in oklab, var(--accent-c) 35%, transparent);
+  animation: scf-dock-heart-tap 0.36s ease-out;
+}
+
+@keyframes scf-dock-scan {
+  0%,
+  100% {
+    transform: translateX(-55%);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 0.55;
+  }
+
+  50% {
+    transform: translateX(55%);
+    opacity: 0.45;
+  }
+
+  62% {
+    opacity: 0;
+  }
+}
+
+@keyframes scf-dock-dust-drift {
+  0% {
+    transform: translateX(0);
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 0.95;
+  }
+
+  100% {
+    transform: translateX(-18px);
+    opacity: 0.55;
+  }
+}
+
+@keyframes scf-dock-vortex {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.75;
+  }
+
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+@keyframes scf-dock-orbit {
+  from {
+    transform: rotate(0deg) translateX(13px) rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg) translateX(13px) rotate(-360deg);
+  }
+}
+
+@keyframes scf-dock-heart-tap {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.14);
+  }
+
+  70% {
+    transform: scale(0.96);
+  }
+}
+
+html[data-theme="light"] body.has-altc {
+  --dock-neon-cyan: #2d8fc4;
+  --dock-neon-ice: #1a3a52;
+}
+
+html[data-theme="light"] body.has-altc .dock {
+  /* P4 light：dock 同样走暖色（米/琥珀），与顶部冷蓝胶囊区分 */
+  --dock-neon-cyan: #c97a2c;
+  --dock-neon-ice: #6b3a14;
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--bg-1) 88%, #fbeede 12%) 0%,
+    color-mix(in oklab, var(--bg-1) 92%, #f8e3c8 8%) 100%
+  );
+  border-color: color-mix(in oklab, #c97a2c 36%, var(--accent-c) 26%);
+  box-shadow:
+    0 0 20px color-mix(in oklab, #c97a2c 16%, transparent),
+    0 8px 24px color-mix(in oklab, #000 10%, transparent),
+    inset 0 0 16px color-mix(in oklab, #c97a2c 6%, transparent);
+}
+
+html[data-theme="light"] body.has-altc .dock .dock-tech-grid {
+  opacity: 0.32;
+}
+
+html[data-theme="light"] body.has-altc .dock .dock-tech-scan,
+html[data-theme="light"] body.has-altc .dock .dock-tech-dust {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.has-altc .dock .dock-tech-scan,
+  body.has-altc .dock .dock-tech-dust,
+  body.has-altc .dock .dock-item.active .dock-ic-wrap::before,
+  body.has-altc .dock > a.active .dock-ic-wrap::before,
+  body.has-altc .dock > button.active .dock-ic-wrap::before,
+  body.has-altc .dock .dock-item.active .dock-ic-wrap::after,
+  body.has-altc .dock > a.active .dock-ic-wrap::after,
+  body.has-altc .dock > button.active .dock-ic-wrap::after {
+    animation: none;
+  }
+
+  body.has-altc .dock .dock-item,
+  body.has-altc .dock > a,
+  body.has-altc .dock > button,
+  body.has-altc .dock .dock-ic-wrap,
+  body.has-altc .dock .ic {
+    transition: none;
+  }
+
+  body.has-altc .dock .dock-item.active .dock-ic-wrap,
+  body.has-altc .dock > a.active .dock-ic-wrap,
+  body.has-altc .dock > button.active .dock-ic-wrap {
+    transform: none;
+  }
+
+  body.has-altc #dock-fav-btn:active .ic {
+    animation: none;
+  }
 }
 
 body.has-altc .footer.footer-alt {
@@ -9530,17 +10697,16 @@ body.has-altc .footer.footer-alt .inner {
     justify-self: start;
   }
 
-  body.has-altc .alt-landing .dock-wrap {
-    bottom: 8px;
+  body.has-altc .scf-bottom-stack .dock-wrap {
     justify-content: center;
-    padding: 0 12px;
+    padding: 0;
   }
 
   body.has-altc .dock {
     width: 100%;
     max-width: min(680px, calc(100% - 24px));
     margin-inline: auto;
-    justify-content: space-around;
+    justify-content: center;
     border-radius: 20px;
   }
 
@@ -9554,26 +10720,31 @@ body.has-altc .footer.footer-alt .inner {
     width: 100%;
     max-width: min(680px, calc(100% - 24px));
     margin-inline: auto;
-    justify-content: space-around;
+    justify-content: center;
   }
 
   body.has-altc .gallery-dock .dock-item {
     flex: 1;
     min-width: 0;
-    font-size: 14px;
-    padding: 10px 6px 14px;
+    font-size: 12px;
+    font-weight: var(--type-weight-ui, 650);
+    padding: 8px 4px 11px;
   }
 
   body.has-altc .dock .dock-item,
   body.has-altc .dock > a,
   body.has-altc .dock > button {
     flex: 1;
-    font-size: 14px;
-    padding: 10px 6px 14px;
+    font-size: 12px;
+    font-weight: var(--type-weight-ui, 650);
+    min-height: 52px;
+    padding: 7px 4px 8px;
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-layout {
     flex-direction: column;
+    flex: 1 1 0;
+    min-height: 0;
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left,
@@ -9583,6 +10754,15 @@ body.has-altc .footer.footer-alt .inner {
     width: 100%;
     min-width: 0;
     max-width: none;
+  }
+
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-right {
+    flex: 0 0 auto;
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left,
@@ -9599,15 +10779,15 @@ body.has-altc .footer.footer-alt .inner {
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root).alt-zine {
-    padding-bottom: calc(var(--dock-h) + 6px);
+    padding-bottom: 0;
   }
 
-  body.has-altc #zine-reader-root.alt-zine {
-    padding-bottom: calc(var(--dock-h) + 20px + env(safe-area-inset-bottom, 0px));
+  body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack {
+    padding-bottom: max(4px, env(safe-area-inset-bottom, 0px));
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel {
-    min-height: min(calc(100dvh - var(--topbar-h) - var(--dock-h) - 40px), 620px);
+    min-height: 0;
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-spread {
@@ -9686,7 +10866,7 @@ body.has-altc .world-atlas-page > .world-atlas-explorer:not(.world-atlas-explore
   position: relative;
 }
 
-body.has-altc .world-atlas-page > .gallery-bottom-stack {
+body.has-altc .world-atlas-page > .scf-bottom-stack {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -9694,7 +10874,7 @@ body.has-altc .world-atlas-page > .gallery-bottom-stack {
   width: 100%;
   flex-shrink: 0;
   margin: 0;
-  padding: 0 16px 12px;
+  padding: 0 16px max(12px, env(safe-area-inset-bottom, 0px));
   position: fixed;
   left: 0;
   right: 0;
@@ -9704,13 +10884,8 @@ body.has-altc .world-atlas-page > .gallery-bottom-stack {
   box-sizing: border-box;
 }
 
-body.has-altc .world-atlas-page > .gallery-bottom-stack > * {
+body.has-altc .world-atlas-page > .scf-bottom-stack > * {
   pointer-events: auto;
-}
-
-body.has-altc .world-atlas-page > .gallery-bottom-stack > .dock-wrap {
-  margin-top: 0;
-  position: static;
 }
 
 body.has-altc .world-atlas-explorer__head {
@@ -10719,4 +11894,74 @@ body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weathe
 
 body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weather-fx-stage--sun .bento-weather-fx-stage__wash.is-playing {
   animation: weather-fx-sun-beam-fs 1.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ============================================================================
+ * 2026-05-28 · P3 · 移动端 ≤720 适配（顶部胶囊 + 右侧 actions）
+ * 目的：4 个 tab + 右侧 actions 在窄屏不挤、不溢出、不抢底部 dock 焦点。
+ * - 顶部胶囊：进一步缩小字号、padding、隐藏 capsule 内的扫光/粒子装饰
+ * - 顶部右侧 actions：country picker 只留国旗、语言切换缩成单字母、保留主题切换隐藏（≤900 已隐）
+ * ========================================================================== */
+@media (max-width: 720px) {
+  body.has-altc .topbar-glass .topbar-inner {
+    gap: 6px;
+    padding-inline: 8px;
+  }
+
+  /* 顶部 4 tab 胶囊：紧凑模式，字号 11px，padding 收紧，gap 0 */
+  body.has-altc .topbar-glass .topbar-center {
+    --topbar-capsule-pad-y: 4px;
+    --topbar-capsule-pad-x: 12px;
+    gap: 1px;
+  }
+
+  body.has-altc .topbar-glass .topbar-center .tab,
+  body.has-altc .topbar-glass .topbar-center .tab.active {
+    padding: 3px 3px 4px;
+    font-size: 11px;
+    letter-spacing: 0.01em;
+    grid-template-rows: 22px minmax(1em, auto);
+    gap: 1px;
+  }
+
+  /* tab icon 收小 */
+  body.has-altc .topbar-glass .topbar-center .tab .tab-ic-wrap {
+    width: 26px;
+    height: 22px;
+  }
+  body.has-altc .topbar-glass .topbar-center .tab .tab-ic {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* capsule 内的扫光 / 粒子 / 网格在窄屏上属于装饰噪声 → 隐 */
+  body.has-altc .topbar-glass .topbar-center .topbar-tech-scan,
+  body.has-altc .topbar-glass .topbar-center .topbar-tech-dust {
+    display: none;
+  }
+
+  /* 顶部右侧 actions：language switch 收成单字母按钮 */
+  body.has-altc .topbar-glass .topbar-actions {
+    gap: 4px;
+  }
+  body.has-altc .topbar-glass .topbar-actions .switch-glass a {
+    padding: 4px 7px;
+    font-size: 11px;
+    min-width: auto;
+  }
+
+  /* country picker 只留国旗，隐藏 label 文字 */
+  body.has-altc .topbar-glass .country-picker--topbar .country-picker__label {
+    display: none;
+  }
+  body.has-altc .topbar-glass .country-picker--topbar {
+    padding: 4px 6px;
+  }
+}
+
+/* ≤520（典型手机竖屏）：actions 进一步收纳 —— 隐藏语言切换，全交给 setting sheet */
+@media (max-width: 520px) {
+  body.has-altc .topbar-glass .topbar-actions .switch-glass {
+    display: none;
+  }
 }

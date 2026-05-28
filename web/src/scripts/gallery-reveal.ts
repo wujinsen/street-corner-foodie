@@ -121,7 +121,7 @@ function initOneReveal(footer: HTMLElement): void {
 
     if (searchBtn) {
       e.preventDefault();
-      document.getElementById("search-btn")?.click();
+      openSearchAnywhere();
       return;
     }
 
@@ -154,7 +154,16 @@ export function initGalleryReveal(root: ParentNode = document): void {
     if (btn.closest("[data-gallery-reveal]")) return;
     btn.addEventListener("click", (e) => {
       e.preventDefault();
-      document.getElementById("search-btn")?.click();
+      openSearchAnywhere();
     });
   });
+}
+
+/** 2026-05-28 · P1：search 入口可能在 topbar / bottom dock / data-action 任一处。 */
+function openSearchAnywhere(): void {
+  const target =
+    document.getElementById("search-btn") ??
+    document.getElementById("dock-search-btn") ??
+    document.querySelector<HTMLElement>('[data-action="open-search"]');
+  target?.click();
 }

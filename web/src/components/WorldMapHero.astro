@@ -26,12 +26,7 @@ const MAP_LIGHT = "/design/alt-c/world-map-light.png";
 /** world-map-dark.png crop size (807×318) — keeps aspect when scaling */
 const MAP_ART_W = 807;
 const MAP_ART_H = 318;
-const mapHint =
-  lang === "en"
-    ? "Scroll · drag · pin → street"
-    : lang === "ja"
-      ? "スクロール · ドラッグ · pin→街景"
-      : "滚轮缩放 · 拖动平移 · 光点进街景";
+const mapHint = t(UI.gallery.map_hint_sub, lang);
 ---
 
 <div
@@ -42,7 +37,7 @@ const mapHint =
   data-map-art-w={MAP_ART_W}
   data-map-art-h={MAP_ART_H}
   aria-label={t(UI.landing.map_label, lang)}
-  title={lang === "en" ? "Scroll to zoom out for full world · drag to pan · double-click to reset" : lang === "ja" ? "スクロールで世界全図まで縮小 · ドラッグで移動 · ダブルクリックでリセット" : "滚轮缩小可看全世界 · 拖动平移 · 双击重置"}
+  title={t(UI.gallery.map_hint_title, lang)}
 >
   <div class="map-layers" data-map-zoom-stage style={`--map-art-ratio: ${MAP_ART_W} / ${MAP_ART_H}`}>
     <img

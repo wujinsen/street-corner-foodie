@@ -3,8 +3,10 @@
  * theme-cn / gallery.png · pill pagination (1 · 2 · 3 · 4 · →).
  */
 import { galleryPageHref, pageFromSearch } from "../lib/gallery-page";
+import { UI, t, type Lang } from "../lib/i18n";
 
 interface Props {
+  lang: Lang;
   total: number;
   pageSize: number;
   pageParam?: string;
@@ -14,6 +16,7 @@ interface Props {
 }
 
 const {
+  lang,
   total,
   pageSize,
   pageParam = "page",
@@ -30,7 +33,7 @@ const hash = scrollAnchor;
 {showNav && (
   <nav
     class="gallery-pagination tile xs"
-    aria-label="gallery pages"
+    aria-label={t(UI.gallery.pagination_nav, lang)}
     data-gallery-paginate
     data-page-count={pageCount}
     data-page-size={pageSize}
@@ -61,7 +64,7 @@ const hash = scrollAnchor;
       )}
       class:list={["next", currentPage >= pageCount - 1 && "is-gallery-page-hidden"]}
       data-gallery-next
-      aria-label="Next page"
+      aria-label={t(UI.gallery.pagination_next, lang)}
     >
       →
     </a>

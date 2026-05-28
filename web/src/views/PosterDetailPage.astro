@@ -10,7 +10,6 @@ import { COUNTRIES, findRegion } from "../lib/countries";
 import {
   findPoster,
   getRecipePosters,
-  getSidebarPosters,
   posterImageUrl,
 } from "../lib/posters";
 import { localePath, regionGalleryHref, resolveLang } from "../lib/locale-path";
@@ -38,7 +37,7 @@ const assertUrl = posterImageUrl(poster, false);
 const { full: imgFull } = scfSpreadUrls(assertUrl);
 const imgDisplay = scfLargestWebpVariant(assertUrl) ?? scfSpreadUrls(assertUrl).display;
 const allPosters = getRecipePosters(country, regionId);
-const sidebarPosters = getSidebarPosters(allPosters, 5, slug);
+const sidebarPosters = allPosters;
 const flavorPolygon = buildFlavorPolygon({ poster, region, slug, lang });
 const linkedScene = posterLinkedScene(country, regionId, slug);
 const streetConfig = getStreetConfig(country, regionId);
@@ -64,7 +63,7 @@ const downloadName = `${slug}_poster.png`;
   ogImage={resolveOgImage(Astro.site, imgFull)}
 >
   <section class="alt-zine container-wide" id="poster-reader-root">
-    <nav class="alt-crumb" aria-label="breadcrumbs">
+    <nav class="alt-crumb" aria-label={t(UI.a11y.breadcrumbs, lang)}>
       <a href={localePath(lang, "/")}>{t(UI.nav.world, lang).toUpperCase()}</a>
       <span class="sep" aria-hidden="true">&#8250;</span>
       <a href={localePath(lang, `/${country}`)}>{t(c.name, lang).toUpperCase()}</a>
@@ -76,10 +75,11 @@ const downloadName = `${slug}_poster.png`;
 
     <div class="alt-zine-layout">
       <aside class="alt-zine-side alt-zine-side-left tile" aria-label={t(UI.zine.other_in_region, lang)}>
-        <h2 class="h-track">
-          {t(UI.zine.other_in_region, lang).toUpperCase()} · {t(region.name, lang)}
-        </h2>
-        {sidebarPosters.map((p) => {
+        <div class="alt-zine-side-scroll" tabindex="0">
+          <h2 class="h-track">
+            {t(UI.zine.other_in_region, lang).toUpperCase()} · {t(region.name, lang)}
+          </h2>
+          {sidebarPosters.map((p) => {
           const isCurrent = p.slug === slug;
           const thumb = posterImageUrl(p, false);
           const href = localePath(lang, `/${country}/${regionId}/poster/${p.slug}`);
@@ -99,6 +99,7 @@ const downloadName = `${slug}_poster.png`;
             </a>
           );
         })}
+        </div>
       </aside>
 
       <div class="tile alt-zine-center-panel">

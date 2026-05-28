@@ -143,8 +143,41 @@ const fontsHref = googleFontsHref(lang, country);
         location.replace(target + (qs ? "?" + qs : "") + (location.hash || ""));
       })();
     </script>
+    {altc && (
+      <style is:inline>
+        /* 首屏关键：仅藏「当前 hash 对应 tab」的 SVG（勿误伤其它 tab 图标） */
+        body.has-altc .topbar-glass .topbar-center .tab.active .tab-ic-wrap .ic,
+        html[data-topbar-tab="posters"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="posters"] .ic,
+        html[data-topbar-tab="zines"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="zines"] .ic,
+        html[data-topbar-tab="streets"] body.has-altc .topbar-glass .topbar-center .tab[data-topbar-tab="streets"] .ic,
+        body.has-altc .topbar-glass .topbar-center .tab.active[data-world-atlas-link] .ic {
+          opacity: 0 !important;
+          visibility: hidden !important;
+        }
+        body.has-altc .topbar-glass .topbar-center .tab .topbar-tab-vortex:not(.topbar-tab-vortex--ready) {
+          opacity: 0 !important;
+          visibility: hidden !important;
+        }
+        body.has-altc .topbar-glass .topbar-center .tab .topbar-tab-vortex.topbar-tab-vortex--ready {
+          opacity: 1 !important;
+          visibility: visible !important;
+        }
+      </style>
+    )}
+    {altc && (
+      <script is:inline>
+        (function () {
+          var h = (location.hash || "").replace("#", "");
+          if (h === "zines" || h === "streets" || h === "posters") {
+            document.documentElement.setAttribute("data-topbar-tab", h);
+          }
+        })();
+      </script>
+    )}
     <script>
       import "../scripts/alt-chrome-boot";
+      import { initTopbarVortexWebGL } from "../scripts/topbar-vortex-webgl";
+      initTopbarVortexWebGL();
     </script>
   </head>
   <body class={bodyClass} {...(navTab ? { "data-nav-tab": navTab } : {})}>

@@ -29,10 +29,29 @@ function centroid(geos: [number, number][]): [number, number] {
   return [lng / geos.length, lat / geos.length];
 }
 
+/** Per-scene metro bucket for Hainan (multi-city province). */
+const HAINAN_SCENE_METRO: Record<string, string> = {
+  qilou: "haikou",
+  fucheng: "haikou",
+  laobacha: "haikou",
+  wanlv: "haikou",
+  jiari_haitan: "haikou",
+  bay: "haikou",
+  sanyawan: "sanya",
+  dadonghai: "sanya",
+  riyue_bay: "wanning",
+  fenjiezhou: "lingshui",
+  rainforest: "wuzhishan",
+  dongjiao_yelin: "wenchang",
+  fushan_coffee: "chengmai",
+};
+
 /** Metro split for provinces whose street scenes span distant cities (e.g. Hainan). */
 function sceneMetroKey(s: WorldAtlasScene): string {
   const regionKey = `${s.countryId}__${s.regionId}`;
   if (regionKey === "cn__hainan") {
+    const mapped = HAINAN_SCENE_METRO[s.sceneId];
+    if (mapped) return mapped;
     return s.geo[1] >= 19.35 ? "haikou" : "sanya";
   }
   return "default";
@@ -175,6 +194,11 @@ export function parseClusterHubMeta(meta: string): string | null {
 const METRO_CITY: Record<string, { zh: string; en: string; ja: string }> = {
   haikou: { zh: "海口", en: "Haikou", ja: "海口" },
   sanya: { zh: "三亚", en: "Sanya", ja: "三亚" },
+  wanning: { zh: "万宁", en: "Wanning", ja: "万寧" },
+  lingshui: { zh: "陵水", en: "Lingshui", ja: "陵水" },
+  wenchang: { zh: "文昌", en: "Wenchang", ja: "文昌" },
+  chengmai: { zh: "澄迈", en: "Chengmai", ja: "澄邁" },
+  wuzhishan: { zh: "五指山", en: "Wuzhishan", ja: "五指山" },
 };
 
 /** Localized city label for a scene cluster (metro bucket or scene short name). */

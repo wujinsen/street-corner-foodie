@@ -608,10 +608,10 @@ function buildOption(
         const pin = mapPinStyle(
           cluster?.scenes[0]?.countryId ?? payload.scenes[0]?.countryId ?? "cn",
         );
-        const tip = langTip(payload, "cluster_expand") ?? "→ 点击展开缩略图";
-        const collapseTip = "→ 点击收起";
+        const tip = langTip(payload, "cluster_expand") ?? payload.i18n.cluster_expand;
+        const collapseTip = langTip(payload, "cluster_collapse") ?? payload.i18n.cluster_collapse;
         const isExpanded = state.spider?.clusterKey === hubKey;
-        const title = cluster?.scenes[0]?.name.split(" · ")[0] ?? "街景";
+        const title = cluster?.scenes[0]?.name.split(" · ")[0] ?? payload.i18n.tooltip_street_default;
         return `${atlasTooltipTitle(pin.core, title)}${atlasTooltipAction(isExpanded ? collapseTip : tip)}`;
       }
       const scene = payload.scenes.find((x) => x.id === data.meta);
@@ -624,10 +624,10 @@ function buildOption(
       const isExpanded = state.spider?.clusterKey === cluster?.key;
       let action = payload.i18n.tip_zoom;
       if (landing && state.view === "world") {
-        action = "→ 单击选中 · 不放大";
+        action = payload.i18n.landing_select;
       } else if (inRegion) {
         if (cluster && cluster.sceneIds.length > 1 && !isExpanded) {
-          action = langTip(payload, "cluster_expand") ?? "→ 点击展开缩略图";
+          action = langTip(payload, "cluster_expand") ?? payload.i18n.cluster_expand;
         } else {
           action = payload.i18n.tip_navigate;
         }
@@ -816,7 +816,7 @@ function syncBreadcrumb(
   if (hintEl) {
     if (state.spider) {
       hintEl.textContent =
-        langTip(payload, "hint_spider") ?? "点选上方缩略图卡片进入街景 · Esc 收起";
+        langTip(payload, "hint_spider") ?? payload.i18n.hint_spider;
     } else {
       hintEl.textContent =
         state.view === "world" ? payload.i18n.hint_world : payload.i18n.hint_region;
@@ -1091,10 +1091,7 @@ export function createWorldAtlasChart(
       chart.resize();
     } catch (err) {
       console.error("[world-atlas] init failed", err);
-      showMapError(
-        host,
-        "地图加载失败，请硬刷新 (Ctrl+Shift+R) 或重新运行 npm run dev",
-      );
+      showMapError(host, payload.i18n.map_load_error);
       if (root) delete root.dataset.worldAtlasInit;
     }
   };
@@ -1126,9 +1123,6 @@ export function createWorldAtlasChart(
   const onLandingLayout = (): void => {
     if (!landing || state.view !== "world" || !chart) return;
     requestAnimationFrame(() => {
-      if (!landingViewCustomized) {
-        render();
-      }
       chart?.resize();
       syncCards();
     });

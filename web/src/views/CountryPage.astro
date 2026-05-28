@@ -8,7 +8,7 @@ import GalleryTabHashSync from "../components/GalleryTabHashSync.astro";
 import GlassPosterCard from "../components/GlassPosterCard.astro";
 import GalleryFilterPillRow from "../components/GalleryFilterPillRow.astro";
 import CountryPicker from "../components/CountryPicker.astro";
-import GalleryBottomDock from "../components/GalleryBottomDock.astro";
+import BottomDock from "../components/BottomDock.astro";
 import GalleryPagination from "../components/GalleryPagination.astro";
 import StreetExplorer from "../components/StreetExplorer.astro";
 import GlassZineCard from "../components/GlassZineCard.astro";
@@ -89,8 +89,6 @@ function isRegionFeaturedPoster(p: Poster): boolean {
   const f = pickCountryFeatured(getRecipePosters(country, p.regionId), country);
   return !!f && f.slug === p.slug && f.regionId === p.regionId;
 }
-
-const galleryDockBase = regionGalleryHref(lang, country, activeRegionId).replace(/#.*$/, "");
 
 const zineFilterTags = (regionId: string, slug: string): string => {
   const p = findPoster(country, regionId, slug);
@@ -199,7 +197,7 @@ const zineHref = (regionId: string, zSlug: string) =>
     data-gallery-region-overview=""
     data-default-region={spotlightId}
   >
-    <nav class="alt-crumb h-track" aria-label="breadcrumbs">
+    <nav class="alt-crumb h-track" aria-label={t(UI.a11y.breadcrumbs, lang)}>
       <a href={localePath(lang, "/")}>{t(UI.nav.world, lang).toUpperCase()}</a>
       <span class="sep">›</span>
       <span>{t(c.name, lang).toUpperCase()}</span>
@@ -441,8 +439,9 @@ const zineHref = (regionId: string, zSlug: string) =>
     </script>
     <div class="gallery-bottom-stack">
       <div class="gallery-bottom-stack__page" data-tab-pagination="posters">
-        <GalleryPagination
-          total={maxRegionPosterCount}
+          <GalleryPagination
+            lang={lang}
+            total={maxRegionPosterCount}
           pageSize={posterPageSize}
           pageParam="page"
           scrollAnchor="posters"
@@ -453,6 +452,7 @@ const zineHref = (regionId: string, zSlug: string) =>
       {countryZinesAll.length > 0 && (
         <div class="gallery-bottom-stack__page" data-tab-pagination="zines">
           <GalleryPagination
+            lang={lang}
             total={maxRegionZineCount}
             pageSize={zinePageSize}
             pageParam="zpage"
@@ -462,7 +462,9 @@ const zineHref = (regionId: string, zSlug: string) =>
           />
         </div>
       )}
-      <GalleryBottomDock lang={lang} country={country} activeTab={activeGalleryTab} basePath={galleryDockBase} />
+      {/* 2026-05-28 · P1：海报/小志/街景 已在 Topbar 居中 tab，底部 dock 不再重复。
+          国家页用户「正在探索某国」，dock 默认高亮"探索"。 */}
+      <BottomDock lang={lang} active="explore" />
     </div>
   </div>
 </Base>

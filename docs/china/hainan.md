@@ -389,6 +389,11 @@ street_view_approved:
   - haikou_fucheng_day_standard.png
   - sanya/sanya_sanyawan_night_wide.png
   - sanya/sanya_dadonghai_night_wide.png
+  - wanning/wanning_riyue_bay_day_wide.png
+  - wuzhishan/wuzhishan_rainforest_day_wide.png
+  - lingshui/lingshui_fenjiezhou_day_wide.png
+  - wenchang/wenchang_dongjiao_yelin_day_wide.png
+  - chengmai/chengmai_fushan_coffee_day_wide.png
 street_view_extra:
   - haikou_laobacha_day_wide_no_char.png
   - haikou_qilou_day_wide_no_char.png
@@ -1838,6 +1843,46 @@ web_posters:
 | 大东海 | `sanya_dadonghai_day_wide.png` | `sanya_dadonghai_night_wide.png` ✅ | `sanya_dadonghai_day_standard.png` |
 
 入库目录：`asserts/Street View/cn/hainan/sanya/` · 原型 → [hainan-sanya-street-prototypes.md](hainan-sanya-street-prototypes.md)
+
+### 万宁 · 金标准矩阵（首绘）
+
+| 场景 | 白天 wide | 夜景 wide | 方图 standard |
+|------|-----------|-----------|---------------|
+| 日月湾 | `wanning_riyue_bay_day_wide.png` ✅ | 待扩 | 待扩 |
+
+入库目录：`asserts/Street View/cn/hainan/wanning/` · 原型 → [hainan-wanning-street-prototypes.md](hainan-wanning-street-prototypes.md)
+
+### 五指山 · 金标准矩阵（首绘）
+
+| 场景 | 白天 wide | 夜景 wide | 方图 standard |
+|------|-----------|-----------|---------------|
+| 热带雨林风景区 | `wuzhishan_rainforest_day_wide.png` ✅ | 待扩 | 待扩 |
+
+入库目录：`asserts/Street View/cn/hainan/wuzhishan/` · 原型 → [hainan-wuzhishan-street-prototypes.md](hainan-wuzhishan-street-prototypes.md)
+
+### 陵水 · 金标准矩阵（首绘）
+
+| 场景 | 白天 wide | 夜景 wide | 方图 standard |
+|------|-----------|-----------|---------------|
+| 分界洲岛 | `lingshui_fenjiezhou_day_wide.png` ✅ | 待扩 | 待扩 |
+
+入库目录：`asserts/Street View/cn/hainan/lingshui/` · 原型 → [hainan-lingshui-street-prototypes.md](hainan-lingshui-street-prototypes.md)
+
+### 文昌 · 金标准矩阵（首绘）
+
+| 场景 | 白天 wide | 夜景 wide | 方图 standard |
+|------|-----------|-----------|---------------|
+| 东郊椰林 | `wenchang_dongjiao_yelin_day_wide.png` ✅ | 待扩 | 待扩 |
+
+入库目录：`asserts/Street View/cn/hainan/wenchang/` · 原型 → [hainan-wenchang-street-prototypes.md](hainan-wenchang-street-prototypes.md)
+
+### 澄迈 · 金标准矩阵（首绘）
+
+| 场景 | 白天 wide | 夜景 wide | 方图 standard |
+|------|-----------|-----------|---------------|
+| 福山咖啡文化风情镇 | `chengmai_fushan_coffee_day_wide.png` ✅ | 待扩 | 待扩 |
+
+入库目录：`asserts/Street View/cn/hainan/chengmai/` · 原型 → [hainan-chengmai-street-prototypes.md](hainan-chengmai-street-prototypes.md)
 
 ### 备选 / 实验稿
 

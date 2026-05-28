@@ -69,8 +69,10 @@ export function initThemeToggle(): void {
   if (!THEME_TOGGLE_TOPBAR_ENABLED) {
     btn.disabled = true;
     btn.setAttribute("aria-disabled", "true");
-    btn.setAttribute("title", "Theme switch temporarily unavailable");
-    btn.setAttribute("aria-label", "Theme switch temporarily unavailable");
+    const unavailable =
+      btn.getAttribute("data-theme-unavailable") ?? "Theme switch temporarily unavailable";
+    btn.setAttribute("title", unavailable);
+    btn.setAttribute("aria-label", unavailable);
     btn.classList.add("theme-toggle-btn--paused");
     return;
   }

@@ -90,7 +90,7 @@ const postersMoreHref = regionGalleryHref(lang, country, regionId, { hash: "post
   data-route-scene-id={embedded ? undefined : initialSceneId}
 >
   {showCrumb && (
-    <nav class="alt-crumb container-wide" aria-label="breadcrumbs">
+    <nav class="alt-crumb container-wide" aria-label={t(UI.a11y.breadcrumbs, lang)}>
       <a href={localePath(lang, "/")}>{t(UI.nav.world, lang).toUpperCase()}</a>
       <span class="sep">›</span>
       <a href={localePath(lang, `/${country}`)}>{t(c.name, lang).toUpperCase()}</a>

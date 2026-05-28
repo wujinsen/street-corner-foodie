@@ -37,6 +37,7 @@ const SPOT_REGION: Partial<Record<CountryId, string>> = {
   za: "south_africa",
   nz: "nz",
   antarctica: "antarctica",
+  arctic: "arctic",
 };
 
 /** Legacy city-card labels (cn/jp/us design brief). */

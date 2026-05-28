@@ -12,5 +12,6 @@
 | **南非** | [south-africa.md](south-africa.md) | `south_africa/agulhas/` · `south_africa/good_hope/` · `za_cape_*` | 厄加勒斯角 3 张 ✅ · 好望角 night_wide ✅ |
 | **新西兰** | [newzealand.md](newzealand.md) | `new_zealand/` · 本土菜 | **Hāngī** 海报 ✅ |
 | **南极** | [antarctica.md](antarctica.md) | `antarctica/paradise_harbor/` · `antarctica_paradise_harbor_*` | 天堂湾 day/night/sunset wide_no_char ✅ |
+| **北极** | [arctic.md](arctic.md) | `arctic/north_pole/` · `arctic_north_pole_*` | 地理北极点 night_wide ✅ |
 
 > 新增：`docs/world/{国家}.md`，`type: country`；街景新图优先 `jp_tokyo_ikebukuro_*`、`us_nyc_*` 等形式。

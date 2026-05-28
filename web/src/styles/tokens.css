@@ -96,7 +96,7 @@ html[data-country="us"] {
   --tile-radius-xs: 16px;
   --tile-blur: 20px;
   --tile-saturate: 1.2;
-  --topbar-h: 64px;
+  --topbar-h: 72px;
   --dock-h: 88px;
   --footer-alt-h: 72px;
 
@@ -219,6 +219,9 @@ html[data-country="antarctica"][data-theme="dark"],
 html[data-country="antarctica"]:not([data-theme]) { --accent-c: #7EB8E8; --accent-c-soft: #B8DCF0; }
 html[data-country="antarctica"][data-theme="light"] { --accent-c: #4A90C4; --accent-c-soft: #7EB8E8; }
 
+html[data-country="arctic"]:not([data-theme]) { --accent-c: #A8D8FF; --accent-c-soft: #D4EEFF; }
+html[data-country="arctic"][data-theme="light"] { --accent-c: #6BB8F0; --accent-c-soft: #A8D8FF; }
+
 /* v0.6.5 · country hero glow (landing map + country page) */
 html[data-country="cn"] { --country-glow-a: rgba(230,0,18,.14); --country-glow-b: rgba(255,107,71,.08); }
 html[data-country="jp"] { --country-glow-a: rgba(255,59,122,.14); --country-glow-b: rgba(180,80,255,.08); }
@@ -238,6 +241,23 @@ html[data-country="de"][data-theme="light"] { --country-glow-a: rgba(201,160,0,.
 html[data-country="za"][data-theme="light"] { --country-glow-a: rgba(0,92,58,.10); --country-glow-b: rgba(0,122,77,.06); }
 html[data-country="nz"][data-theme="light"] { --country-glow-a: rgba(17,17,17,.08); --country-glow-b: rgba(51,51,51,.06); }
 html[data-country="antarctica"][data-theme="light"] { --country-glow-a: rgba(74,144,196,.10); --country-glow-b: rgba(126,184,232,.06); }
+html[data-country="arctic"] { --country-glow-a: rgba(168,216,255,.14); --country-glow-b: rgba(212,238,255,.08); }
+html[data-country="arctic"][data-theme="light"] { --country-glow-a: rgba(107,184,240,.10); --country-glow-b: rgba(168,216,255,.06); }
+
+/* v0.6.8 · Top country switch keeps CN vermillion accent (all countries) */
+html[data-country][data-theme="dark"],
+html[data-country]:not([data-theme]) {
+  --accent-c: #E60012;
+  --accent-c-soft: #FF6B47;
+  --country-glow-a: rgba(230, 0, 18, 0.14);
+  --country-glow-b: rgba(255, 107, 71, 0.08);
+}
+html[data-country][data-theme="light"] {
+  --accent-c: #D32F2F;
+  --accent-c-soft: #E55B4B;
+  --country-glow-a: rgba(211, 47, 47, 0.12);
+  --country-glow-b: rgba(255, 183, 77, 0.08);
+}
 
 /* Fallback accent when no country set (use CN dark) */
 :root { --accent-c: #E60012; --accent-c-soft: #FF6B47; }

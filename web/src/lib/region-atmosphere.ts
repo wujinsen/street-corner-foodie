@@ -157,6 +157,13 @@ const ATMOSPHERE: Record<string, RegionAtmosphere> = {
     climate: { zh: "极地", en: "Polar", ja: "極地" },
     climatePreset: "continental",
   },
+  "arctic/arctic": {
+    mood: { zh: "极光", en: "Aurora", ja: "オーロラ" },
+    sunsetLocal: "—",
+    tempC: -28,
+    climate: { zh: "北极浮冰", en: "Arctic ice", ja: "北極浮冰" },
+    climatePreset: "continental",
+  },
 };
 
 export function getRegionAtmosphere(

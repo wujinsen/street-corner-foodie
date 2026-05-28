@@ -43,6 +43,8 @@ class WeatherAmbientEngine {
   private audio: HTMLAudioElement | null = null;
   private scene: WeatherAmbientScene | null = null;
   private playing = false;
+  /** Bumped on stop — ignores in-flight play() callbacks after collapse. */
+  private playGeneration = 0;
   private fadeRaf = 0;
   private stopTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -110,6 +112,7 @@ class WeatherAmbientEngine {
 
     const audio = this.ensureAudio();
     const src = WEATHER_AMBIENT_TRACKS[scene];
+    const generation = ++this.playGeneration;
 
     if (this.stopTimer) {
       clearTimeout(this.stopTimer);
@@ -137,12 +140,17 @@ class WeatherAmbientEngine {
       started = true;
       void ret
         ?.then(() => {
+          if (generation !== this.playGeneration) {
+            audio.pause();
+            audio.currentTime = 0;
+            return;
+          }
           this.scene = scene;
           this.playing = true;
           this.fadeVolume(0, MASTER_PEAK, FADE_IN_SEC);
         })
         .catch(() => {
-          this.playing = false;
+          if (generation === this.playGeneration) this.playing = false;
         });
     } catch {
       return false;
@@ -152,7 +160,8 @@ class WeatherAmbientEngine {
   }
 
   isPlaying(): boolean {
-    return this.playing && !!this.audio && !this.audio.paused;
+    const audio = this.audio;
+    return !!audio && !audio.paused && (this.playing || audio.volume > 0.02);
   }
 
   currentScene(): WeatherAmbientScene | null {
@@ -164,26 +173,40 @@ class WeatherAmbientEngine {
   }
 
   async stop(): Promise<void> {
+    this.playGeneration += 1;
+
     if (this.stopTimer) {
       clearTimeout(this.stopTimer);
       this.stopTimer = null;
     }
+    this.cancelFade();
 
     const audio = this.audio;
-    if (!audio || !this.playing) {
-      this.playing = false;
-      this.scene = null;
+    this.playing = false;
+    this.scene = null;
+
+    if (!audio) return;
+
+    const from = audio.volume;
+    const finish = (): void => {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.volume = 0;
+    };
+
+    if (audio.paused && from <= 0.001) {
+      finish();
       return;
     }
 
-    this.playing = false;
-    const from = audio.volume;
+    if (from <= 0.001) {
+      finish();
+      return;
+    }
 
     await new Promise<void>((resolve) => {
       this.fadeVolume(from, 0, FADE_OUT_SEC, () => {
-        audio.pause();
-        audio.currentTime = 0;
-        this.scene = null;
+        finish();
         resolve();
       });
     });

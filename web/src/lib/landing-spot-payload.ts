@@ -105,6 +105,14 @@ export const LANDING_SPOT_TILES: Record<
     streetHubMood: "night",
     sceneSpotMood: "day",
   },
+  arctic: {
+    regionId: "arctic",
+    streetHubId: "north_pole",
+    sceneSpotId: "north_pole",
+    cityHeroSceneId: "north_pole",
+    streetHubMood: "night",
+    sceneSpotMood: "day",
+  },
 };
 
 export type LandingSpotTiles = (typeof LANDING_SPOT_TILES)[CountryId];
@@ -187,6 +195,7 @@ export const LANDING_BENTO_COUNTRIES: CountryId[] = [
   "za",
   "nz",
   "antarctica",
+  "arctic",
 ];
 
 export interface LandingSpotPayload {

@@ -315,6 +315,8 @@ function stopLoop(instance: StarsInstance): void {
 }
 
 function resizeCanvas(instance: StarsInstance, cssWidth: number, cssHeight: number): void {
+  const prevW = instance.width;
+  const prevH = instance.height;
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   instance.dpr = dpr;
   instance.width = cssWidth;
@@ -324,9 +326,32 @@ function resizeCanvas(instance: StarsInstance, cssWidth: number, cssHeight: numb
   instance.canvas.style.width = `${cssWidth}px`;
   instance.canvas.style.height = `${cssHeight}px`;
   instance.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  instance.stars = seedStars(cssWidth, cssHeight, instance.density);
-  resetMeteorState(instance);
-  instance.startTs = 0;
+
+  const widthStable = prevW >= 1 && Math.abs(cssWidth - prevW) < 2;
+  const hasStars = instance.stars.length > 0;
+
+  if (hasStars && widthStable && prevH >= 1 && Math.abs(cssHeight - prevH) > 0.5) {
+    if (cssHeight > prevH) {
+      const ratio = cssHeight / prevH;
+      for (const star of instance.stars) star.y *= ratio;
+      const band = seedStars(cssWidth, cssHeight - prevH, instance.density);
+      for (const star of band) {
+        star.y += prevH;
+        instance.stars.push(star);
+      }
+    } else {
+      const ratio = cssHeight / prevH;
+      for (const star of instance.stars) star.y *= ratio;
+      instance.stars = instance.stars.filter((star) => star.y <= cssHeight + 2);
+    }
+    return;
+  }
+
+  if (prevW < 1 || prevH < 1 || !widthStable) {
+    instance.stars = seedStars(cssWidth, cssHeight, instance.density);
+    resetMeteorState(instance);
+    instance.startTs = 0;
+  }
 }
 
 function setStarsActive(chip: HTMLElement, active: boolean): void {

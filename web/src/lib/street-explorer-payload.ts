@@ -85,7 +85,7 @@ function pickEatHere(
     if (p) {
       picked.push({
         slug: p.slug,
-        name: p.name.zh,
+        name: t(p.name, lang),
         nameEn: p.romaji ?? p.name.en,
         href: localePath(lang, `/${countryId}/${regionId}/poster/${p.slug}`),
         thumbUrl: posterImageUrl(p, false),
@@ -98,7 +98,7 @@ function pickEatHere(
     if (!picked.some((x) => x.slug === p.slug)) {
       picked.push({
         slug: p.slug,
-        name: p.name.zh,
+        name: t(p.name, lang),
         nameEn: p.romaji ?? p.name.en,
         href: localePath(lang, `/${countryId}/${regionId}/poster/${p.slug}`),
         thumbUrl: posterImageUrl(p, false),

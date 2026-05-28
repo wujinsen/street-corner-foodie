@@ -61,14 +61,28 @@ function streetAssetUrl(
   return streetImageUrl(config, sceneId, assets.time, assets.frame);
 }
 
+function streetAssetUrlWithFallback(
+  config: StreetRegionConfig,
+  sceneId: string,
+  sel: StreetViewSelection,
+): string | null {
+  const url = streetAssetUrl(config, sceneId, sel);
+  if (url && scfSourceExists(url)) return url;
+  if (url?.endsWith(".png")) {
+    const legacy = url.replace(/\.png$/, "_no_char.png");
+    if (scfSourceExists(legacy)) return legacy;
+  }
+  return null;
+}
+
 function firstExistingStreetUrl(
   config: StreetRegionConfig,
   sceneId: string,
   tries: StreetViewSelection[],
 ): string | null {
   for (const t of tries) {
-    const url = streetAssetUrl(config, sceneId, t);
-    if (url && scfSourceExists(url)) return url;
+    const url = streetAssetUrlWithFallback(config, sceneId, t);
+    if (url) return url;
   }
   return null;
 }
@@ -79,8 +93,8 @@ export function pickDefaultStreetViewForScene(
   sceneId: string,
 ): StreetViewSelection {
   const fallback = getStreetDefaultView(config);
-  const nightWide = streetAssetUrl(config, sceneId, { mood: "night", frame: "wide" });
-  if (nightWide && scfSourceExists(nightWide)) {
+  const nightWide = streetAssetUrlWithFallback(config, sceneId, { mood: "night", frame: "wide" });
+  if (nightWide) {
     return { mood: "night", frame: "wide" };
   }
   return fallback;
@@ -198,6 +212,56 @@ export const STREET_REGIONS: Partial<Record<CountryId, Record<string, StreetRegi
           geo: [109.528, 18.221],
           path: "cn/hainan/sanya/",
           filePattern: (id) => `sanya_${id}_{TIME}_{FRAME}.png`,
+        },
+        {
+          id: "riyue_bay",
+          name: { zh: "日月湾", en: "Riyue Bay", ja: "日月湾" },
+          tag: { zh: "冲浪海湾", en: "Surf bay", ja: "サーフ湾" },
+          posterSlugs: ["houan_fen", "hele_xie", "qingbuliang", "yezi_ji"],
+          mapPin: { x: 62, y: 78 },
+          geo: [110.286, 18.531],
+          path: "cn/hainan/wanning/",
+          filePattern: () => `wanning_riyue_bay_{TIME}_{FRAME}.png`,
+        },
+        {
+          id: "rainforest",
+          name: { zh: "五指山雨林", en: "Wuzhi Rainforest", ja: "五指山雨林" },
+          tag: { zh: "热带五峰", en: "Tropical peaks", ja: "熱帯五峰" },
+          posterSlugs: ["lijia_zhutongfan", "shanlan_jiu", "wuse_fan", "qingbuliang"],
+          mapPin: { x: 48, y: 62 },
+          geo: [109.702, 18.876],
+          path: "cn/hainan/wuzhishan/",
+          filePattern: () => `wuzhishan_rainforest_{TIME}_{FRAME}.png`,
+        },
+        {
+          id: "fenjiezhou",
+          name: { zh: "分界洲岛", en: "Fenjiezhou Island", ja: "分界洲島" },
+          tag: { zh: "离岛潜水", en: "Island diving", ja: "離島ダイビング" },
+          posterSlugs: ["lingshui_suanfen", "qingbuliang", "yezi_ji", "hele_xie"],
+          mapPin: { x: 58, y: 86 },
+          geo: [110.197, 18.581],
+          path: "cn/hainan/lingshui/",
+          filePattern: () => `lingshui_fenjiezhou_{TIME}_{FRAME}.png`,
+        },
+        {
+          id: "dongjiao_yelin",
+          name: { zh: "东郊椰林", en: "Dongjiao Coconut Grove", ja: "東郊ココナッツ林" },
+          tag: { zh: "滨海椰乡", en: "Coastal coconuts", ja: "浜辺の椰林" },
+          posterSlugs: ["baoluo_fen", "wenchang_jifan", "yezi_ji", "qingbuliang", "yezi_shui"],
+          mapPin: { x: 72, y: 52 },
+          geo: [110.827, 19.548],
+          path: "cn/hainan/wenchang/",
+          filePattern: () => `wenchang_dongjiao_yelin_{TIME}_{FRAME}.png`,
+        },
+        {
+          id: "fushan_coffee",
+          name: { zh: "福山咖啡镇", en: "Fushan Coffee Town", ja: "福山コーヒー町" },
+          tag: { zh: "咖啡风情", en: "Coffee culture", ja: "コーヒー文化" },
+          posterSlugs: ["fushan_kafei", "hainan_tanshao_kafei", "qingbuliang", "laobacha"],
+          mapPin: { x: 38, y: 48 },
+          geo: [110.012, 19.918],
+          path: "cn/hainan/chengmai/",
+          filePattern: () => `chengmai_fushan_coffee_{TIME}_{FRAME}.png`,
         },
       ],
       filePattern: (id) => `haikou_${id}_{TIME}_{FRAME}.png`,
@@ -540,7 +604,23 @@ export const STREET_REGIONS: Partial<Record<CountryId, Record<string, StreetRegi
           geo: [-62.55, -64.75],
         },
       ],
-      filePattern: () => `antarctica_paradise_harbor_{TIME}_{FRAME}_no_char.png`,
+      filePattern: () => `antarctica_paradise_harbor_{TIME}_{FRAME}.png`,
+    },
+  },
+  arctic: {
+    arctic: {
+      path: "arctic/north_pole/",
+      defaultSceneId: "north_pole",
+      defaultView: { mood: "night", frame: "wide" },
+      scenes: [
+        {
+          id: "north_pole",
+          name: { zh: "地理北极点", en: "Geographic North Pole", ja: "地理北極点" },
+          tag: { zh: "90°N 浮冰", en: "90°N sea ice", ja: "北緯90度" },
+          geo: [0, 89.5],
+        },
+      ],
+      filePattern: () => `arctic_north_pole_{TIME}_{FRAME}.png`,
     },
   },
 };

@@ -113,6 +113,7 @@ export function renderForecastStrip(
   days: DailyForecastDay[],
   lang: Lang,
 ): void {
+  container.setAttribute("aria-hidden", "false");
   container.replaceChildren();
   const strip = document.createElement("div");
   strip.className = "bento-weather-forecast-strip";

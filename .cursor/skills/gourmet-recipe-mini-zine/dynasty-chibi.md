@@ -126,7 +126,10 @@
 | `pretzel` | **`us_roaring_20s`** | 1920s newsboy cap suspenders subway cart | Badge **NYC Flavor** · zine EN ✅ 四套 2026-05 |
 | `ny_pizza` | 海报 **`us_gilded`** · zine **`us_contemporary`** | 各自定代 | Badge **NYC Flavor** · zine EN ✅ 四套 2026-05 |
 | `three_sisters` | **`us_indigenous`**（海报） | 3 女 · 4料横木牌 · 三道姐妹炖 | boluo清新风·**东部林地/易洛魁系**缎带衫（非农场围裙）·禁穿模·**EN**；`us/three_sisters_poster.png` ✅ 2026-05-19 服饰修正 · 强锚定 |
+| `wild_rice` | **`us_indigenous`** 固定 | 3 女 · 4料横木牌 · Wild Rice | boluo清新风·**大湖/Anishinaabe 系** leather-trim apron · **EN only** · Great Lakes Flavor；海报 ✅ · zine **p01–p06** `us/wild_rice_mini_zine_p*.png` · 2026-05-24 · 禁穿模 · 禁刻板丑化 |
+| `wild_rice` | **`us_indigenous`**（海报） | 3 女 · **4**料横木牌 · Wild rice | boluo清新风·**大湖/Anishinaabe 系** leather-trim+birch（非易洛魁缎带衫）·**EN only**·Great Lakes Flavor·湖岸一字排；`us/wild_rice_poster.png` ✅ 2026-05-19 · 禁穿模 |
 | `cheeseburger` | **`us_80s_nyc`** | 1980s 防风外套、大步裤、街头快餐店围裙（汉堡池 `sum(ord)%4`） | 角标美国味道 |
+| `chinatown_takeout` | **`us_contemporary`**（海报） | **4** 女 · **5** 料横木牌 · 唐人街外卖 | boluo清新风·**EN only**·NYC Flavor·L形蒸汽取餐窗（炒镬/捞面/装盒/递窗）；`us/chinatown_takeout_poster.png` · NYC takeout 池 `sum(ord)%4`→`us_contemporary` · 禁穿模 · 禁刻板丑化 |
 | `full_english_breakfast` | **`uk_wartime`** 固定 | 4 女 · 6料横木牌 · Full English | boluo清新风·**EN only**·British Flavor；海报 ✅ · zine **p01–p06** `united_kingdom/full_english_breakfast_mini_zine_p*.png` · 2026-05-19 |
 | `afternoon_tea` | **`uk_edwardian`** 固定 | 4 女 · 6料横木牌 · Afternoon Tea | boluo清新风·**EN only**·British Flavor；海报 ✅ · zine **p01–p06** `united_kingdom/afternoon_tea_mini_zine_p*.png` · 2026-05-24 · 禁穿模 |
 | `hangi` | **`nz_maori_traditional`** 固定 | 5 女 · 6料横木牌 · Hāngī | boluo清新风·**EN only**·Aotearoa Flavor；海报 ✅ · zine **p01–p06** `new_zealand/hangi_mini_zine_p*.png` · 2026-05-24 · 半圆围 umu · 禁穿模 · 禁刻板丑化 |

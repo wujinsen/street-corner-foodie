@@ -1,4 +1,4 @@
-/** Full-screen zine view with wheel / button zoom — lightbox always upgrades to full PNG. */
+/** Full-screen zine / poster view — click spread or thumbs · wheel / ± zoom · backdrop / Esc close. */
 
 const ZOOM_MIN = 1;
 const ZOOM_MAX = 3;
@@ -8,8 +8,7 @@ function spreadImg(spread: HTMLElement | null): HTMLImageElement | null {
   return spread?.querySelector("img") ?? null;
 }
 
-function spreadDisplaySrc(spread: HTMLElement | null): string {
-  const img = spreadImg(spread);
+function imgDisplaySrc(img: HTMLImageElement | null): string {
   if (!img) return "";
   return (
     img.getAttribute("data-display-src") ||
@@ -20,13 +19,20 @@ function spreadDisplaySrc(spread: HTMLElement | null): string {
   );
 }
 
-/** Original `/asserts/…` PNG. */
-function spreadFullSrc(spread: HTMLElement | null): string {
-  const img = spreadImg(spread);
+function imgFullSrc(img: HTMLImageElement | null): string {
   if (!img) return "";
   const full = img.getAttribute("data-full-src");
   if (full) return full;
-  return spreadDisplaySrc(spread);
+  return imgDisplaySrc(img);
+}
+
+function spreadDisplaySrc(spread: HTMLElement | null): string {
+  return imgDisplaySrc(spreadImg(spread));
+}
+
+/** Original `/asserts/…` PNG. */
+function spreadFullSrc(spread: HTMLElement | null): string {
+  return imgFullSrc(spreadImg(spread));
 }
 
 export function initZineLightbox(root: HTMLElement): void {
@@ -39,9 +45,11 @@ export function initZineLightbox(root: HTMLElement): void {
   const btnIn = dialog?.querySelector<HTMLButtonElement>("[data-zine-zoom-in]");
   const btnOut = dialog?.querySelector<HTMLButtonElement>("[data-zine-zoom-out]");
   const btnReset = dialog?.querySelector<HTMLButtonElement>("[data-zine-zoom-reset]");
+  const btnClose = dialog?.querySelector<HTMLButtonElement>("[data-zine-zoom-close]");
   if (!dialog || !spread || !scroll || !stage || !lbImg) return;
 
   let scale = ZOOM_MIN;
+  let lastFocus: HTMLElement | null = null;
 
   const syncPct = (): void => {
     if (pctEl) pctEl.textContent = `${Math.round(scale * 100)}%`;
@@ -81,29 +89,70 @@ export function initZineLightbox(root: HTMLElement): void {
     if (full && full !== displaySrc) applyFullRes(full, displaySrc);
   };
 
+  const openWithSrc = (displaySrc: string, fullSrc: string, alt?: string): void => {
+    if (!displaySrc && !fullSrc) return;
+    const display = displaySrc || fullSrc;
+    const full = fullSrc || display;
+    const label = alt ?? spreadImg(spread)?.alt ?? "";
+    setImage(display, label, full);
+    if (typeof dialog.showModal === "function") dialog.showModal();
+    btnClose?.focus();
+  };
+
   const open = (): void => {
     const display = spreadDisplaySrc(spread);
     const full = spreadFullSrc(spread);
-    if (!display && !full) return;
-    const alt = spreadImg(spread)?.alt ?? "";
-    setImage(display || full, alt, full || display);
-    if (typeof dialog.showModal === "function") dialog.showModal();
+    openWithSrc(display, full, spreadImg(spread)?.alt);
   };
 
   const close = (): void => {
     if (dialog.open) dialog.close();
     resetZoom();
     lbImg.classList.remove("is-full-res");
+    lastFocus?.focus();
+    lastFocus = null;
   };
+
+  const isLightboxContent = (target: HTMLElement): boolean =>
+    !!target.closest(".zine-lightbox-bar, .zine-lightbox-stage, .zine-lightbox-img");
 
   root.querySelector<HTMLButtonElement>("[data-zine-zoom-open]")?.addEventListener("click", (e) => {
     e.stopPropagation();
+    lastFocus = e.currentTarget instanceof HTMLElement ? e.currentTarget : null;
     open();
   });
 
+  spread.setAttribute("tabindex", "0");
+  spread.setAttribute("role", "button");
+  const spreadLabel = spreadImg(spread)?.alt;
+  if (spreadLabel && !spread.getAttribute("aria-label")) {
+    spread.setAttribute("aria-label", spreadLabel);
+  }
+
   spread.addEventListener("click", (e) => {
     if ((e.target as HTMLElement).closest("[data-zine-zoom-open]")) return;
-    if ((e.target as HTMLElement).closest("img, picture")) open();
+    lastFocus = spread;
+    open();
+  });
+
+  spread.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    e.preventDefault();
+    lastFocus = spread;
+    open();
+  });
+
+  root.querySelectorAll<HTMLAnchorElement>(".alt-zine-thumbs .thumb").forEach((thumb) => {
+    thumb.addEventListener("click", (e) => {
+      const hit = e.target as HTMLElement;
+      if (!hit.closest("img, picture")) return;
+      const img = thumb.querySelector("img");
+      const display = imgDisplaySrc(img);
+      const full = imgFullSrc(img);
+      if (!display && !full) return;
+      lastFocus = thumb;
+      queueMicrotask(() => openWithSrc(display, full, img?.alt || spreadImg(spread)?.alt));
+    });
   });
 
   const zoomBy = (delta: number): void => {
@@ -137,9 +186,14 @@ export function initZineLightbox(root: HTMLElement): void {
     { passive: false },
   );
 
-  dialog.querySelector("[data-zine-zoom-close]")?.addEventListener("click", close);
+  btnClose?.addEventListener("click", close);
+
+  /** Scroll fills the dialog — backdrop clicks hit scroll, not dialog. */
   dialog.addEventListener("click", (e) => {
-    if (e.target === dialog) close();
+    if (!dialog.open) return;
+    const target = e.target as HTMLElement;
+    if (isLightboxContent(target)) return;
+    close();
   });
   dialog.addEventListener("cancel", (e) => {
     e.preventDefault();
@@ -148,6 +202,11 @@ export function initZineLightbox(root: HTMLElement): void {
 
   dialog.addEventListener("keydown", (e) => {
     if (!dialog.open) return;
+    if (e.key === "Escape") {
+      e.preventDefault();
+      close();
+      return;
+    }
     if (e.key === "+" || e.key === "=") {
       e.preventDefault();
       zoomBy(ZOOM_STEP);

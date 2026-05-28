@@ -36,8 +36,12 @@ const canNav = slides.length > 1;
           <ScfPicture
             src={slide.src}
             alt={slide.alt}
+            class={variant === "photo" ? "bento-carousel__media" : undefined}
             loading={i === 0 && eager ? "eager" : "lazy"}
             fetchpriority={i === 0 && eager ? "high" : undefined}
+            resolution={variant === "photo" ? "display" : "responsive"}
+            sizes={variant === "photo" ? "(max-width: 720px) 92vw, min(480px, 42vw)" : undefined}
+            preferWebp={variant === "photo"}
           />
         </div>
       ))}

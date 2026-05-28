@@ -429,4 +429,23 @@ export const REGION_BINDINGS: RegionBinding[] = [
     streetFilter: (e) =>
       e.includes("antarctica_paradise_harbor") || e.includes("antarctica/paradise_harbor"),
   },
+  {
+    docSuffix: "world/arctic.md",
+    countryId: "arctic",
+    regionId: "arctic",
+    name: { zh: "北极点", en: "North Pole", ja: "北極点" },
+    tagline: {
+      zh: "90°N 浮冰与极光 — 探险热可可与北极熊的极夜营地。",
+      en: "Sea ice at 90°N — aurora camp, hot cocoa, and polar bears.",
+      ja: "北緯90度の浮冰 — オーロラとホットココアの基地。",
+    },
+    flavors: {
+      zh: ["探险饮食", "热饮", "浮冰营地"],
+      en: ["Expedition", "Hot drinks", "Ice camp"],
+      ja: ["探検食", "ホットドリンク", "浮冰基地"],
+    },
+    posterFilter: () => false,
+    streetPathOverride: "arctic/north_pole/",
+    streetFilter: (e) => e.includes("arctic_north_pole") || e.includes("arctic/north_pole"),
+  },
 ];

@@ -106,7 +106,7 @@ const prefetchFeatured = featured
   ogImage={ogImage}
 >
   <div class="alt-gallery container-wide" data-gallery-tabs data-active-tab="posters" data-gallery-lang={lang}>
-    <nav class="alt-crumb h-track" aria-label="breadcrumbs">
+    <nav class="alt-crumb h-track" aria-label={t(UI.a11y.breadcrumbs, lang)}>
       <a href={localePath(lang, "/")}>{t(UI.nav.world, lang).toUpperCase()}</a>
       <span class="sep">›</span>
       <a href={localePath(lang, `/${country}`)}>{t(c.name, lang).toUpperCase()}</a>
@@ -212,6 +212,7 @@ const prefetchFeatured = featured
         )}
         <div class="gallery-main-foot">
           <GalleryPagination
+            lang={lang}
             total={posters.length}
             pageSize={posterPageSize}
             pageParam="page"

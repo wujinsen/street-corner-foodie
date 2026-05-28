@@ -568,6 +568,20 @@ async function ensureSearchIndex(): Promise<SearchIndexEntry[]> {
 
 
 
+function isSearchOpen(): boolean {
+
+
+  const overlay = document.getElementById("search-overlay");
+
+
+  return !!overlay && !overlay.hidden;
+
+
+}
+
+
+
+
 function openSearch(): void {
 
 
@@ -577,6 +591,9 @@ function openSearch(): void {
   const input = document.getElementById("search-input") as HTMLInputElement | null;
 
 
+  const panel = overlay?.querySelector<HTMLElement>(".search-panel");
+
+
   if (!overlay || !input) return;
 
 
@@ -584,6 +601,9 @@ function openSearch(): void {
 
 
   overlay.classList.add("show");
+
+
+  panel?.setAttribute("aria-hidden", "false");
 
 
   input.value = "";
@@ -607,13 +627,45 @@ function closeSearch(): void {
   const overlay = document.getElementById("search-overlay");
 
 
-  if (!overlay) return;
+  const input = document.getElementById("search-input") as HTMLInputElement | null;
+
+
+  const panel = overlay?.querySelector<HTMLElement>(".search-panel");
+
+
+  if (!overlay || overlay.hidden) return;
 
 
   overlay.classList.remove("show");
 
 
   overlay.hidden = true;
+
+
+  panel?.setAttribute("aria-hidden", "true");
+
+
+  input?.blur();
+
+
+}
+
+
+
+
+function handleSearchEscape(e: KeyboardEvent): void {
+
+
+  if (e.key !== "Escape" || !isSearchOpen()) return;
+
+
+  e.preventDefault();
+
+
+  e.stopPropagation();
+
+
+  closeSearch();
 
 
 }
@@ -790,11 +842,15 @@ export function initSiteChrome(): void {
 
 
 
-  document.getElementById("search-btn")?.addEventListener("click", openSearch);
+  /* 2026-05-28 · P1：search/fav 同时由 topbar / 底部 dock / 其它入口触发。
+   * 直接绑定到 selector 列表，避免 dock dispatch click 转发的 hacky 链。 */
+  document
+    .querySelectorAll<HTMLElement>('#search-btn, #dock-search-btn, [data-action="open-search"]')
+    .forEach((el) => el.addEventListener("click", openSearch));
 
-
-  document.getElementById("fav-btn")?.addEventListener("click", openFavPanel);
-
+  document
+    .querySelectorAll<HTMLElement>('#fav-btn, #dock-fav-btn, [data-action="open-fav"]')
+    .forEach((el) => el.addEventListener("click", openFavPanel));
 
   document.getElementById("fav-close")?.addEventListener("click", closeFavPanel);
 
@@ -811,10 +867,19 @@ export function initSiteChrome(): void {
   input?.addEventListener("input", () => void runSearch(input.value));
 
 
+  input?.addEventListener("keydown", handleSearchEscape);
 
 
 
-  document.getElementById("search-overlay")?.addEventListener("click", (e) => {
+
+
+  const searchOverlay = document.getElementById("search-overlay");
+
+
+  searchOverlay?.addEventListener("keydown", handleSearchEscape);
+
+
+  searchOverlay?.addEventListener("click", (e) => {
 
 
     if ((e.target as HTMLElement).id === "search-overlay") closeSearch();
@@ -859,7 +924,19 @@ export function initSiteChrome(): void {
     if (e.key === "Escape") {
 
 
-      closeSearch();
+      if (isSearchOpen()) {
+
+
+        e.preventDefault();
+
+
+        closeSearch();
+
+
+        return;
+
+
+      }
 
 
       closeFavPanel();

@@ -46,7 +46,7 @@ const ctaLabel =
   class:list={["landing-manifesto", variant === "bento-slot" && "landing-manifesto--bento-slot"]}
   aria-labelledby="landing-manifesto-quote"
 >
-  <div class="landing-manifesto__card tile tile-shine">
+  <div class="landing-manifesto__card tile tile-shine" data-landing-manifesto-card>
     <span class="tile-glint" aria-hidden="true"></span>
     <span class="tile-edge" aria-hidden="true"></span>
     <div class="landing-manifesto__glow" aria-hidden="true"></div>
@@ -71,12 +71,7 @@ const ctaLabel =
                 {
                   parts1.map((part) =>
                     part.startsWith("\0") ? (
-                      <em
-                        class="landing-manifesto__accent landing-manifesto__accent--corner"
-                        tabindex="0"
-                      >
-                        {part.slice(1, -1)}
-                      </em>
+                      <em class="landing-manifesto__accent">{part.slice(1, -1)}</em>
                     ) : (
                       part
                     ),
@@ -133,12 +128,7 @@ const ctaLabel =
                 {
                   parts1.map((part) =>
                     part.startsWith("\0") ? (
-                      <em
-                        class="landing-manifesto__accent landing-manifesto__accent--corner"
-                        tabindex="0"
-                      >
-                        {part.slice(1, -1)}
-                      </em>
+                      <em class="landing-manifesto__accent">{part.slice(1, -1)}</em>
                     ) : (
                       part
                     ),
@@ -149,9 +139,7 @@ const ctaLabel =
                 {
                   parts2.map((part) =>
                     part.startsWith("\0") ? (
-                      <em class="landing-manifesto__accent landing-manifesto__accent--breathe">
-                        {part.slice(1, -1)}
-                      </em>
+                      <em class="landing-manifesto__accent">{part.slice(1, -1)}</em>
                     ) : (
                       part
                     ),

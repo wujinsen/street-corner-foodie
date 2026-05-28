@@ -1,5 +1,5 @@
 ---
-import type { Lang } from "../lib/i18n";
+import { UI, t, type Lang } from "../lib/i18n";
 
 interface Props {
   lang: Lang;
@@ -17,7 +17,7 @@ const { lang, worldLabel, hintWorld, landing = false } = Astro.props as Props;
     landing && "world-atlas-explorer__crumbs--landing",
   ]}
   data-world-atlas-crumbs
-  aria-label={lang === "en" ? "Map level" : lang === "ja" ? "マップ階層" : "地图层级"}
+  aria-label={t(UI.gallery.map_crumb_aria, lang)}
 >
   <ol class="world-atlas-explorer__crumb-trail">
     <li class="world-atlas-explorer__crumb-item">

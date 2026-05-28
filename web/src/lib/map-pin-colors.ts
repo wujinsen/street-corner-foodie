@@ -57,13 +57,18 @@ export const MAP_PIN_BY_COUNTRY: Record<CountryId, MapPinStyle> = {
     glow: "rgba(126, 184, 232, 0.88)",
     ripple: "rgba(126, 184, 232, 0.45)",
   },
+  arctic: {
+    core: "#A8D8FF",
+    glow: "rgba(168, 216, 255, 0.88)",
+    ripple: "rgba(168, 216, 255, 0.45)",
+  },
 };
 
 export function mapPinStyle(countryId: CountryId): MapPinStyle {
   return MAP_PIN_BY_COUNTRY[countryId] ?? MAP_PIN_BY_COUNTRY.cn;
 }
 
-/** Browser chrome / meta theme-color · matches `--accent-c` core. */
-export function countryThemeColor(countryId: CountryId): string {
-  return MAP_PIN_BY_COUNTRY[countryId]?.core ?? MAP_PIN_BY_COUNTRY.cn.core;
+/** Browser chrome / meta theme-color · unified CN vermillion (matches `--accent-c`). */
+export function countryThemeColor(_countryId: CountryId): string {
+  return MAP_PIN_BY_COUNTRY.cn.core;
 }

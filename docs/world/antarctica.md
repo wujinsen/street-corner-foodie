@@ -22,6 +22,8 @@ gourmet_posters: []
 mini_zine: []
 mini_zine_locale: en
 street_view_approved:
+  - antarctica/paradise_harbor/antarctica_paradise_harbor_day_wide.png
+  - antarctica/paradise_harbor/antarctica_paradise_harbor_night_wide.png
   - antarctica/paradise_harbor/antarctica_paradise_harbor_night_wide_no_char.png
   - antarctica/paradise_harbor/antarctica_paradise_harbor_sunset_wide_no_char.png
   - antarctica/paradise_harbor/antarctica_paradise_harbor_day_wide_no_char.png
@@ -36,7 +38,7 @@ web_posters: {}
 
 **味型关键词**：expedition hot chocolate、ship galley、base canteen、polar ration。
 
-**资源状态（2026-05）**：街景 **天堂湾** `night_wide_no_char` · `sunset_wide_no_char` · `day_wide_no_char` ✅；海报 / zine 待扩。
+**资源状态（2026-05）**：街景 **天堂湾** v2 `day_wide` · `night_wide`（星夜镜海 · Gentoo 企鹅 · Expedition Café）✅；v1 `_no_char` 三件套并存；海报 / zine 待扩。
 
 > 新西兰本土菜 → [newzealand.md](newzealand.md)（**不含**南极场景）。
 
@@ -54,7 +56,7 @@ web_posters: {}
 
 | 场景 | slug | night_wide | sunset_wide | day_wide | 备注 |
 |------|------|------------|-------------|----------|------|
-| 天堂湾 | `paradise_harbor` | `antarctica_paradise_harbor_night_wide_no_char.png` ✅ | `…_sunset_wide_no_char.png` ✅ | `…_day_wide_no_char.png` ✅ | 远景 · 无人物 |
+| 天堂湾 | `paradise_harbor` | `…_night_wide.png` ✅ **v2** · 星夜镜海 | `…_sunset_wide_no_char.png` ✅ v1 | `…_day_wide.png` ✅ **v2** · 镜海企鹅 | v1 `_no_char` 与 v2 并存；Web 优先 v2 |
 
 原型 → [antarctica-paradise-harbor-street-prototypes.md](antarctica-paradise-harbor-street-prototypes.md)
 

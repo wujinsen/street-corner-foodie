@@ -5,13 +5,21 @@
  * Effective theme is applied by Base.astro's inline FOUC script BEFORE this hydrates,
  * so first paint is always correct.
  */
+import { UI, t, type Lang } from "../lib/i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props as Props;
 ---
 <button
   type="button"
   id="theme-toggle"
   class="icon-btn-glass theme-toggle-btn"
-  aria-label="Toggle theme"
-  title="Toggle theme (Ctrl+Shift+L)"
+  aria-label={t(UI.settings.theme_toggle, lang)}
+  title={t(UI.settings.theme_toggle_shortcut, lang)}
+  data-theme-unavailable={t(UI.settings.theme_unavailable, lang)}
 >
   <svg class="sun-ic" viewBox="0 0 24 24" aria-hidden="true">
     <circle cx="12" cy="12" r="4" />

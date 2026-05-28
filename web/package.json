@@ -23,11 +23,13 @@
     "sync:web-posters": "python scripts/export-poster-meta-bundle.py && node scripts/sync-web-posters-to-md.mjs"
   },
   "dependencies": {
+    "@types/three": "^0.184.1",
     "astro": "^4.16.0",
     "echarts": "^5.6.0",
     "gray-matter": "^4.0.3",
     "lottie-web": "^5.13.0",
-    "suncalc": "^1.9.0"
+    "suncalc": "^1.9.0",
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",

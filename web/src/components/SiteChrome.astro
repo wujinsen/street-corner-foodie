@@ -31,8 +31,8 @@ const settingsLabels = JSON.stringify({
     kindScene: t(UI.search.kind_scene, lang),
   })}
 >
-  <div class="overlay" id="search-overlay" hidden>
-    <div class="search-panel" role="dialog" aria-modal="true" aria-label={t(UI.search.title, lang)}>
+  <div class="overlay" id="search-overlay" hidden tabindex="-1">
+    <div class="search-panel" role="dialog" aria-modal="true" aria-hidden="true" aria-label={t(UI.search.title, lang)}>
       <div class="search-input-row">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
@@ -47,7 +47,7 @@ const settingsLabels = JSON.stringify({
   <aside class="fav-panel" id="fav-panel" aria-hidden="true">
     <div class="head">
       <h3>{t(UI.fav.title, lang)}</h3>
-      <button type="button" class="close" id="fav-close" aria-label="Close">X</button>
+      <button type="button" class="close" id="fav-close" aria-label={t(UI.common.close, lang)}>X</button>
     </div>
     <div class="body" id="fav-body"></div>
   </aside>
@@ -63,7 +63,7 @@ const settingsLabels = JSON.stringify({
     >
       <div class="settings-head">
         <h3>{t(UI.settings.title, lang)}</h3>
-        <button type="button" class="close" id="settings-close" aria-label="Close">×</button>
+        <button type="button" class="close" id="settings-close" aria-label={t(UI.common.close, lang)}>×</button>
       </div>
       <div class="settings-body">
         <p class="h-track settings-section-label">{t(UI.settings.theme, lang)}</p>

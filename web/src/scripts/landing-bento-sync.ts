@@ -24,6 +24,9 @@ function resetInteractive(scope: HTMLElement): void {
   });
   scope.querySelectorAll<HTMLElement>("[data-landing-weather]").forEach((el) => {
     el.dataset.weatherInit = "false";
+    el.querySelector<HTMLButtonElement>("[data-bento-weather-toggle]")?.removeAttribute(
+      "data-weather-expand-bound",
+    );
   });
 }
 
