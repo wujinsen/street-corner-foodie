@@ -43,7 +43,7 @@
 | `danzhou_milan` | **`contemporary`**（海报） | 4 女 · 5料横木牌 · 米烂浇卤 | boluo清晰风；竖牌**海南味道**；仅 `_poster.png` · `cn/hainan/` ✅ 2026-05-19 重绘 |
 | `jiaji_ya` | **`contemporary`**（海报） | 4 女 · 5料横木牌 · 白切加积鸭 | boluo清晰风；竖牌**海南味道**；仅 `_poster.png` · `cn/hainan/` ✅ 2026-05-19 重绘 |
 | `hainan_shaoya` | **`contemporary`**（海报） | 4 女 · 5料横木牌 · 海南烧鸭 | boluo清新风·禁穿模；竖牌**海南味道**；`cn/hainan/hainan_shaoya_poster.png` ✅ 2026-05-19 |
-| `yezi_fan` | **`contemporary`** | 4 女 · 5料横木牌 · 椰壳糯米饭 · 度假围裙 | boluo清晰风；竖牌**海南味道**；海报 `yezi_fan_poster.png` ✅ · zine **p01–p06** `cn/hainan/yezi_fan_mini_zine_p*.png` · 全员女性 · 与椰子鸡区分 |
+| `yezi_fan` | **`contemporary`** | **3** 女 · **2** 料横木牌 · 整椰糯米饭（**纯**：糯米+椰子） | boluo清新风·竖牌**海南味道**·椰壳蒸灶三角站位；`cn/hainan/yezi_fan_poster.png` ✅ 2026-05-19 纯料重绘 · 禁穿模 |
 | `dongshan_yang` | **`contemporary`**（海报池） | 围裙/卫衣；山羊 | 海报 ✅ |
 | `manhan_quanxi` | **`qing`** 强锚定 | 5 女 · 5料横木牌 · 合宴意象 | 烤鸭/海参/猴头/酸菜白肉/鹿尾；竖牌**北京味道**；`cn/beijing/` 海报+zine **p01–p06** ✅ · **文案**：清宫无专名、今宴代表菜组合 |
 | `beijing_kaoya` | **`qing`** | 挂炉烤鸭坊 changshan 围裙；片鸭卷饼 | 竖牌**北京味道**；海报 ✅ |
@@ -52,9 +52,9 @@
 | `luzhu_huoshao` | **`republic`** | 卤煮摊 qipao 围裙；肠肺火烧 | 竖牌**北京味道**；海报 ✅ |
 | `chaogan` | **`republic`** | 4 女 · 5料横木牌 | 炒肝；竖牌**北京味道**；仅 `_poster.png` · `cn/beijing/` ✅ 2026-05-21 重绘 |
 | `douzhi_jiaoquan` | **`republic`** | 护国寺早点 qipao；豆汁焦圈 | 竖牌**北京味道**；海报 ✅ |
-| `wenchang_jifan` | **`song`**（海报） | 5 女 · 5料横木牌 · 文昌鸡饭 | boluo清新风·禁穿模；竖牌**海南味道**；`cn/hainan/wenchang_jifan_poster.png` ✅ 2026-05-19 · zine p01–p06 · 源流明代得名 |
+| `wenchang_jifan` | **`song`**（海报） | 5 女 · 5料横木牌 · 文昌鸡饭 | boluo清新风·禁穿模；竖牌**海南味道**；海报 ✅ 2026-05-19 · zine **p01–p06** `cn/hainan/wenchang_jifan_mini_zine_p*.png` · **2026-06-02 资料修正**（潭牛天赐村散养·相传野枣极甜·方志明代得名·三蘸） |
 | `hainan_jifan` | **`song`** 固定 | 5 女 · 5料横木牌 | 海南鸡饭；boluo清晰风；竖牌**海南味道**；仅 `_poster.png` · `cn/hainan/` ✅ 2026-05-19 重绘 · zine p01–p06 |
-| `lijia_zhutongfan` | **`ethnic`** 固定 | 4 女 · 4料横木牌 | 黎家竹筒饭；竖牌**海南味道**；仅 `_poster.png` · `cn/hainan/` ✅ 2026-05-21 重绘 |
+| `lijia_zhutongfan` | **`ethnic`** 固定 | 4 女 · 4料横木牌（海报） | 黎家竹筒饭；竖牌**海南味道**；海报 ✅ 2026-05-21 · zine **p01–p06** `cn/hainan/lijia_zhutongfan_mini_zine_p*.png` · **2026-06 资料修正**（山兰米·猪肉粒·芭蕉叶炭烤·山兰酒配饮；禁误写山法酱） |
 | `wuse_fan` | **`ethnic`** 固定 | 黎苗节庆五彩糯米饭 | 角标海南风味 |
 | `shanlan_jiu` | **`ethnic`** 固定 | 黎族山兰米酒 | 角标海南风味 |
 | `danjia_yutang` | **`qing`** 固定 | 疍家渔家清汤鲜鱼；changshan 头巾 | 角标海南风味 |
@@ -129,7 +129,7 @@
 | `wild_rice` | **`us_indigenous`** 固定 | 3 女 · 4料横木牌 · Wild Rice | boluo清新风·**大湖/Anishinaabe 系** leather-trim apron · **EN only** · Great Lakes Flavor；海报 ✅ · zine **p01–p06** `us/wild_rice_mini_zine_p*.png` · 2026-05-24 · 禁穿模 · 禁刻板丑化 |
 | `wild_rice` | **`us_indigenous`**（海报） | 3 女 · **4**料横木牌 · Wild rice | boluo清新风·**大湖/Anishinaabe 系** leather-trim+birch（非易洛魁缎带衫）·**EN only**·Great Lakes Flavor·湖岸一字排；`us/wild_rice_poster.png` ✅ 2026-05-19 · 禁穿模 |
 | `cheeseburger` | **`us_80s_nyc`** | 1980s 防风外套、大步裤、街头快餐店围裙（汉堡池 `sum(ord)%4`） | 角标美国味道 |
-| `chinatown_takeout` | **`us_contemporary`**（海报） | **4** 女 · **5** 料横木牌 · 唐人街外卖 | boluo清新风·**EN only**·NYC Flavor·L形蒸汽取餐窗（炒镬/捞面/装盒/递窗）；`us/chinatown_takeout_poster.png` · NYC takeout 池 `sum(ord)%4`→`us_contemporary` · 禁穿模 · 禁刻板丑化 |
+| `chinatown_takeout` | **`us_contemporary`** 固定 | **4** 女 · **5** 料横木牌 · Chinatown Takeout | boluo清新风·**EN only**·NYC Flavor·L形蒸汽取餐窗；海报 ✅ · zine **p01–p06** `us/chinatown_takeout_mini_zine_p*.png` · 2026-05-24 · 禁穿模 · 禁刻板丑化 |
 | `full_english_breakfast` | **`uk_wartime`** 固定 | 4 女 · 6料横木牌 · Full English | boluo清新风·**EN only**·British Flavor；海报 ✅ · zine **p01–p06** `united_kingdom/full_english_breakfast_mini_zine_p*.png` · 2026-05-19 |
 | `afternoon_tea` | **`uk_edwardian`** 固定 | 4 女 · 6料横木牌 · Afternoon Tea | boluo清新风·**EN only**·British Flavor；海报 ✅ · zine **p01–p06** `united_kingdom/afternoon_tea_mini_zine_p*.png` · 2026-05-24 · 禁穿模 |
 | `hangi` | **`nz_maori_traditional`** 固定 | 5 女 · 6料横木牌 · Hāngī | boluo清新风·**EN only**·Aotearoa Flavor；海报 ✅ · zine **p01–p06** `new_zealand/hangi_mini_zine_p*.png` · 2026-05-24 · 半圆围 umu · 禁穿模 · 禁刻板丑化 |

@@ -42,6 +42,7 @@ const HAINAN_SCENE_METRO: Record<string, string> = {
   riyue_bay: "wanning",
   fenjiezhou: "lingshui",
   rainforest: "wuzhishan",
+  li_village: "wuzhishan",
   dongjiao_yelin: "wenchang",
   fushan_coffee: "chengmai",
 };

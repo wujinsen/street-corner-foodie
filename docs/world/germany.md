@@ -78,7 +78,7 @@ web_posters: {}
 |------|------|
 | geo | `de_` · `de_cologne_*` · `de_frankfurt_*` |
 | 文档 | 仅更新 **本文** `germany.md` |
-| 品牌 | **Street Corner Foodie / 街角食客**（见 [BRAND.md](../../BRAND.md)） |
+| 品牌 | **Street Corner Foodie / 街角美食**（见 [BRAND.md](../../BRAND.md)） |
 
 ---
 

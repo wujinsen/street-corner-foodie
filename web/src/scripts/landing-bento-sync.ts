@@ -4,7 +4,7 @@
  */
 
 import { initLandingBentoCarousels } from "./landing-bento-carousel";
-import { initLandingBentoWeather } from "./landing-bento-weather";
+import { initLandingBentoWeather, resetLandingWeatherExpand } from "./landing-bento-weather";
 import { getVisibleBentoScope } from "./landing-bento-scope";
 
 export { getVisibleBentoScope } from "./landing-bento-scope";
@@ -19,11 +19,13 @@ function syncCnRegionPanels(cnPanel: HTMLElement, regionId: string): void {
 }
 
 function resetInteractive(scope: HTMLElement): void {
+  resetLandingWeatherExpand(scope);
   scope.querySelectorAll<HTMLElement>("[data-landing-bento-carousel]").forEach((el) => {
     el.dataset.bentoCarouselInit = "false";
   });
   scope.querySelectorAll<HTMLElement>("[data-landing-weather]").forEach((el) => {
     el.dataset.weatherInit = "false";
+    el.removeAttribute("data-weather-expand-key-bound");
     el.querySelector<HTMLButtonElement>("[data-bento-weather-toggle]")?.removeAttribute(
       "data-weather-expand-bound",
     );
@@ -56,8 +58,8 @@ export function syncLandingBento(countryId: string, regionId?: string): void {
     syncCnRegionPanels(countryPanel, activeRegion);
   }
 
-  const scope = getVisibleBentoScope(root);
-  if (scope) bootScope(scope);
+  const scope = getVisibleBentoScope(root) ?? root;
+  bootScope(scope);
 
   window.dispatchEvent(
     new CustomEvent("scf:landing-bento-synced", {

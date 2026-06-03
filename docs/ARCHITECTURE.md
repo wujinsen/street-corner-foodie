@@ -346,4 +346,4 @@ SITE_URL=https://your-domain.example npm run build
 2. **三主题等价**：每加一个新组件 CSS 都必须在三个 country 下视觉合理
 3. **资源单源**：所有 PNG 只在 `/asserts/` 下，不复制副本
 4. **路径无空格泄漏**：`Gourmet recipe2` 这种空格必须 `encodeURI()`
-5. **品牌名硬性**：UI 上的 brand 文字三语必须是 `Street Corner Foodie / 街角食客 / 街角フーディー`；改动需先动 [BRAND.md](../../BRAND.md) 与 [scf-brand.mdc](../../.cursor/rules/scf-brand.mdc)
+5. **品牌名硬性**：UI 上的 brand 文字三语必须是 `Street Corner Foodie / 街角美食 / 街角グルメ`；改动需先动 [BRAND.md](../../BRAND.md) 与 [scf-brand.mdc](../../.cursor/rules/scf-brand.mdc)

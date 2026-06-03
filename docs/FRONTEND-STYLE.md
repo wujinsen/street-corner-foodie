@@ -67,4 +67,4 @@
 
 ## 5 · 与品牌
 
-UI 文案遵循 [BRAND.md](../../BRAND.md) / `.cursor/rules/scf-brand.mdc`（Street Corner Foodie / 街角食客 / 街角フーディー）。
+UI 文案遵循 [BRAND.md](../../BRAND.md) / `.cursor/rules/scf-brand.mdc`（Street Corner Foodie / 街角美食 / 街角グルメ）。

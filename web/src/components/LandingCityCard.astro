@@ -1,6 +1,6 @@
 ---
 import { formatLandingCoordsHtml } from "../lib/landing-coords";
-import { t } from "../lib/i18n";
+import { UI, t } from "../lib/i18n";
 import type { Lang } from "../lib/i18n";
 import type { Multilang } from "../lib/types";
 
@@ -10,24 +10,32 @@ interface Props {
   city: Multilang;
   citySub: Multilang;
   coords: string;
+  regionHref: string;
 }
 
-const { lang, heroUrl, city, citySub, coords } = Astro.props as Props;
+const { lang, heroUrl, city, citySub, coords, regionHref } = Astro.props as Props;
 const cityDisplay =
   lang === "zh" ? city.zh : lang === "ja" ? city.ja : city.en;
 const citySubText = t(citySub, lang).trim();
+const ctaLabel = t(UI.landing.eat_here, lang);
 ---
 
-<article class="landing-city-card tile tile-shine" data-map-city-card>
+<a
+  href={regionHref}
+  class="landing-city-card tile tile-shine is-link"
+  data-map-city-card
+  data-map-city-link
+>
   <span class="tile-glint" aria-hidden="true"></span>
   <span class="tile-edge" aria-hidden="true"></span>
-  <div
+  <span
     class:list={["landing-city-card-bg", heroUrl && "is-visible"]}
     data-map-city-bg
     style={heroUrl ? `background-image:url('${heroUrl}')` : undefined}
     aria-hidden="true"
   />
   <div class="landing-city-card-inner">
+    <p class="label h-track">{t(UI.landing.region_tag, lang)}</p>
     <h2 class="name h-serif-dish">
       <span data-map-city-display>{cityDisplay}</span>
     </h2>
@@ -42,6 +50,7 @@ const citySubText = t(citySub, lang).trim();
         data-map-city-coords
         set:html={formatLandingCoordsHtml(coords)}
       />
+      <span class="map-region-cta h-track">{ctaLabel}</span>
     </footer>
   </div>
-</article>
+</a>

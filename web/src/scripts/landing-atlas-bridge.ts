@@ -12,6 +12,7 @@ type CardSpot = {
   citySub: { zh: string; en: string; ja: string };
   coords: string;
   heroUrl: string | null;
+  regionHref: string;
 };
 
 type CountrySpot = CardSpot & { id: string };
@@ -90,6 +91,9 @@ function applyCardSpot(
   const subEl = root.querySelector<HTMLElement>("[data-map-city-sub]");
   const coordsEl = root.querySelector<HTMLElement>("[data-map-city-coords]");
   const bg = root.querySelector<HTMLElement>("[data-map-city-bg]");
+  const linkEl = root.querySelector<HTMLAnchorElement>("[data-map-city-link]");
+
+  if (linkEl) linkEl.href = spot.regionHref;
 
   if (cityDisplayEl) {
     cityDisplayEl.textContent = pickText(spot.city, lang);

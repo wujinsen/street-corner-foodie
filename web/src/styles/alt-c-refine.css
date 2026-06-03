@@ -14,6 +14,10 @@ html[data-theme="light"] body.has-altc {
 body.has-altc {
   --tab-glow: 0 0 16px 2px color-mix(in oklab, var(--accent-c) 50%, transparent);
   --dock-active-ring: inset 0 0 0 1px color-mix(in oklab, var(--accent-c) 55%, transparent);
+  --dock-h: 68px;
+  /* 顶栏 / 底栏 · 暖玻璃 · 街角灯火（全局统一，勿再分冷蓝顶 + 暖色底） */
+  --dock-neon-cyan: #ffb86b;
+  --dock-neon-ice: #fff2dd;
 }
 
 /* ---------- Global typography (prototype §2.2 · web/docs/FRONTEND-STYLE.md §3) ---------- */
@@ -38,7 +42,7 @@ body.has-altc .icon-btn-glass.with-hint .kbd-hint {
   opacity: 0.85;
 }
 
-/* ---------- Topbar · 赛博霓虹胶囊（与底部 dock 同款 · 烟雾深色 + 冷蓝脉动 + 电路网格 + 红涡 + 红/金粒子） ---------- */
+/* ---------- Topbar · 暖玻璃霓虹胶囊（与底部 dock 同款 · 琥珀脉动 + 网格 + 红涡） ---------- */
 
 body.has-altc .topbar-glass .topbar-inner {
   display: grid;
@@ -58,7 +62,7 @@ body.has-altc .topbar-glass .topbar-actions {
   margin-left: 0;
 }
 
-/* === 容器：半透明黑色胶囊 + 冷蓝呼吸 box-shadow === */
+/* === 容器：暖玻璃胶囊（与 .dock 同底 / 同描边 / 同外发光） === */
 body.has-altc .topbar-glass .topbar-center {
   --topbar-capsule-pad-y: 6px;
   --topbar-capsule-pad-x: 24px; /* 原 12px → 16px（+30%）→ 24px（再 +50%） */
@@ -76,21 +80,19 @@ body.has-altc .topbar-glass .topbar-center {
    * 文字外发光被下方 filter bar 视觉遮住 */
   box-sizing: border-box;
   border-radius: 999px;
-  background:
-    radial-gradient(
-      ellipse 80% 110% at 50% 50%,
-      rgba(10, 16, 26, 0.55) 0%,
-      rgba(4, 8, 14, 0.78) 75%
-    );
-  border: 1px solid color-mix(in oklab, var(--dock-neon-cyan) 50%, transparent);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(22px) saturate(175%);
+  -webkit-backdrop-filter: blur(22px) saturate(175%);
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--bg-1) 50%, #1c1108 50%) 0%,
+    color-mix(in oklab, var(--bg-1) 64%, #2a1c10 36%) 100%
+  );
+  border: 1px solid color-mix(in oklab, var(--dock-neon-cyan) 38%, var(--accent-c) 24%);
   box-shadow:
-    0 0 28px color-mix(in oklab, var(--dock-neon-cyan) 28%, transparent),
-    0 0 56px color-mix(in oklab, var(--dock-neon-cyan) 14%, transparent),
-    0 14px 36px rgba(0, 0, 0, 0.55),
-    inset 0 0 26px color-mix(in oklab, var(--dock-neon-cyan) 11%, transparent),
-    inset 0 1px 0 color-mix(in oklab, #fff 18%, transparent);
+    0 0 28px color-mix(in oklab, var(--dock-neon-cyan) 22%, transparent),
+    0 10px 36px color-mix(in oklab, #000 38%, transparent),
+    inset 0 0 28px color-mix(in oklab, var(--dock-neon-cyan) 9%, transparent),
+    inset 0 1px 0 color-mix(in oklab, #fff 16%, transparent);
   animation: topbar-edge-pulse 3.6s ease-in-out infinite;
 }
 
@@ -98,22 +100,20 @@ body.has-altc .topbar-glass .topbar-center {
   0%,
   100% {
     box-shadow:
-      0 0 22px color-mix(in oklab, var(--dock-neon-cyan) 20%, transparent),
-      0 0 42px color-mix(in oklab, var(--dock-neon-cyan) 10%, transparent),
-      0 14px 36px rgba(0, 0, 0, 0.55),
-      inset 0 0 22px color-mix(in oklab, var(--dock-neon-cyan) 8%, transparent),
-      inset 0 1px 0 color-mix(in oklab, #fff 16%, transparent);
-    border-color: color-mix(in oklab, var(--dock-neon-cyan) 42%, transparent);
+      0 0 22px color-mix(in oklab, var(--dock-neon-cyan) 18%, transparent),
+      0 10px 32px color-mix(in oklab, #000 34%, transparent),
+      inset 0 0 22px color-mix(in oklab, var(--dock-neon-cyan) 7%, transparent),
+      inset 0 1px 0 color-mix(in oklab, #fff 14%, transparent);
+    border-color: color-mix(in oklab, var(--dock-neon-cyan) 32%, var(--accent-c) 20%);
   }
 
   50% {
     box-shadow:
-      0 0 40px color-mix(in oklab, var(--dock-neon-cyan) 48%, transparent),
-      0 0 72px color-mix(in oklab, var(--dock-neon-cyan) 22%, transparent),
-      0 14px 36px rgba(0, 0, 0, 0.55),
-      inset 0 0 32px color-mix(in oklab, var(--dock-neon-cyan) 18%, transparent),
-      inset 0 1px 0 color-mix(in oklab, #fff 24%, transparent);
-    border-color: color-mix(in oklab, var(--dock-neon-cyan) 70%, transparent);
+      0 0 36px color-mix(in oklab, var(--dock-neon-cyan) 32%, transparent),
+      0 12px 40px color-mix(in oklab, #000 42%, transparent),
+      inset 0 0 32px color-mix(in oklab, var(--dock-neon-cyan) 14%, transparent),
+      inset 0 1px 0 color-mix(in oklab, #fff 22%, transparent);
+    border-color: color-mix(in oklab, var(--dock-neon-cyan) 52%, var(--accent-c) 28%);
   }
 }
 
@@ -121,7 +121,7 @@ body.has-altc .topbar-glass .topbar-actions .switch-glass {
   position: relative;
 }
 
-/* === Tech 层 · 电路网格 + 冷蓝扫光 + 漂浮粒子（红/金/冰蓝） === */
+/* === Tech 层 · 电路网格 + 琥珀扫光 + 漂浮粒子（红/金/暖白） === */
 body.has-altc .topbar-glass .topbar-center .topbar-tech {
   position: absolute;
   inset: 0;
@@ -613,11 +613,6 @@ html[data-country] body.has-altc .topbar-glass .logo-mark {
   color: var(--accent-c);
 }
 
-html[data-theme="light"] body.has-altc .topbar-glass .topbar-center {
-  background: color-mix(in oklab, #fff 78%, transparent);
-  border-color: color-mix(in oklab, var(--fg-mute) 28%, var(--tile-border));
-}
-
 html[data-theme="light"] body.has-altc .topbar-glass .topbar-center .tab:not(.active) {
   color: color-mix(in oklab, var(--fg-mute) 96%, var(--fg-weak));
   opacity: 0.68;
@@ -857,7 +852,7 @@ body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atla
   z-index: 1;
 }
 
-@media (min-width: 721px) {
+@media (min-width: 1025px) {
   body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atlas.map-hero--map-only {
     position: fixed;
     top: var(--landing-map-fixed-top, var(--topbar-h));
@@ -963,7 +958,7 @@ body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card 
   transition: none;
 }
 
-@media (min-width: 721px) {
+@media (min-width: 1025px) {
   body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card {
     top: var(--landing-map-visible-h, var(--bento-zine-row-top));
     bottom: 16px;
@@ -1202,31 +1197,33 @@ body.has-altc .alt-landing .map-hero.map-hero--map-only:not(.map-hero--design):n
   box-shadow: var(--tile-shadow);
 }
 
-/* landing · 世界图鉴：无边框全幅底图（须高于泛化 map-hero--map-only 与 components.css padding） */
-body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atlas.map-hero.map-hero--map-only:not(.map-hero--design) {
-  flex: none;
-  min-height: 0;
-  max-height: none;
-  padding: 0;
-  margin: 0;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  background:
-    radial-gradient(ellipse 55% 45% at 72% 38%, color-mix(in oklab, #e60012 10%, transparent), transparent 68%),
-    radial-gradient(ellipse 42% 38% at 22% 40%, color-mix(in oklab, #00d9e0 8%, transparent), transparent 65%),
-    linear-gradient(165deg, #121820 0%, #0f1117 50%, #080a10 100%);
-}
+/* landing · 世界图鉴：桌面底图光晕（≥1025 · 勿覆盖手机居中样式） */
+@media (min-width: 1025px) {
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atlas.map-hero.map-hero--map-only:not(.map-hero--design) {
+    flex: none;
+    min-height: 0;
+    max-height: none;
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background:
+      radial-gradient(ellipse 55% 45% at 72% 38%, color-mix(in oklab, #e60012 10%, transparent), transparent 68%),
+      radial-gradient(ellipse 42% 38% at 22% 40%, color-mix(in oklab, #00d9e0 8%, transparent), transparent 65%),
+      linear-gradient(165deg, #121820 0%, #0f1117 50%, #080a10 100%);
+  }
 
-html[data-theme="light"]
-  body.landing-page.has-altc
-  .alt-landing
-  .landing-spotlight
-  > .landing-world-atlas.map-hero.map-hero--map-only:not(.map-hero--design) {
-  background:
-    radial-gradient(ellipse 55% 45% at 72% 38%, color-mix(in oklab, #e60012 8%, transparent), transparent 68%),
-    radial-gradient(ellipse 42% 38% at 22% 40%, color-mix(in oklab, #00d9e0 6%, transparent), transparent 65%),
-    linear-gradient(165deg, #121820 0%, #0f1117 50%, #080a10 100%);
+  html[data-theme="light"]
+    body.landing-page.has-altc
+    .alt-landing
+    .landing-spotlight
+    > .landing-world-atlas.map-hero.map-hero--map-only:not(.map-hero--design) {
+    background:
+      radial-gradient(ellipse 55% 45% at 72% 38%, color-mix(in oklab, #e60012 8%, transparent), transparent 68%),
+      radial-gradient(ellipse 42% 38% at 22% 40%, color-mix(in oklab, #00d9e0 6%, transparent), transparent 65%),
+      linear-gradient(165deg, #121820 0%, #0f1117 50%, #080a10 100%);
+  }
 }
 
 body.landing-page.has-altc .world-atlas-explorer--landing .world-atlas-explorer__stage--landing {
@@ -1250,7 +1247,18 @@ html[data-theme="light"]
     pointer-events: none;
   }
 
-  body.landing-page.has-altc .alt-landing .landing-grid :is(a, button, input, select, textarea, [tabindex], [data-landing-bento-mosaic]) {
+  body.landing-page.has-altc .alt-landing .landing-grid :is(
+    a,
+    button,
+    input,
+    select,
+    textarea,
+    [tabindex],
+    [data-landing-bento-mosaic],
+    [data-map-city-link],
+    [data-world-atlas-host],
+    .landing-world-atlas
+  ) {
     pointer-events: auto;
   }
 
@@ -1259,10 +1267,6 @@ html[data-theme="light"]
     width: 100%;
     overflow: visible;
     pointer-events: none;
-  }
-
-  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card {
-    pointer-events: auto;
   }
 
   body.landing-page.has-altc .alt-landing .landing-feature--bento-only {
@@ -1644,6 +1648,19 @@ body.has-altc .alt-landing .landing-city-card {
   flex: 0 0 auto;
 }
 
+body.has-altc .alt-landing a.landing-city-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.has-altc .alt-landing a.landing-city-card:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent-c) 55%, transparent);
+  outline-offset: 3px;
+}
+
 body.has-altc .alt-landing .landing-city-card .name {
   font-family: var(--font-display);
   font-size: clamp(28px, 3.4vw, 42px);
@@ -1778,24 +1795,41 @@ body.landing-page.has-altc .alt-landing {
 body.landing-page.has-altc .alt-landing .landing-grid {
   flex: 1 1 auto;
   align-items: stretch;
-  min-height: min(calc(100dvh - var(--topbar-h) - 200px), 840px);
+  min-height: 0;
 }
 
 body.landing-page.has-altc .alt-landing .landing-left {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   min-height: 0;
-  height: 100%;
+  height: auto;
   align-self: stretch;
 }
 
 body.landing-page.has-altc .alt-landing .landing-left--stack.landing-spotlight {
-  flex: 1 1 auto;
-  min-height: var(--bento-mosaic-h);
-  height: 100%;
+  flex: 0 1 auto;
+  min-height: 0;
+  height: auto;
   width: 100%;
   align-self: stretch;
+}
+
+@media (min-width: 1025px) {
+  body.landing-page.has-altc .alt-landing .landing-grid {
+    min-height: min(calc(100dvh - var(--topbar-h) - 200px), 840px);
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-left {
+    flex: 1 1 auto;
+    height: 100%;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-left--stack.landing-spotlight {
+    flex: 1 1 auto;
+    min-height: var(--bento-mosaic-h);
+    height: 100%;
+  }
 }
 
 body.landing-page.has-altc .alt-landing .landing-spotlight > .map-hero.map-hero--map-only {
@@ -2141,14 +2175,25 @@ body.has-altc .scf-bottom-stack .dock-wrap {
   margin-top: 0;
   padding: 0;
   width: 100%;
+  z-index: auto;
 }
 
 body.landing-page.has-altc .scf-bottom-stack {
   max-width: var(--scf-layout-max);
   margin-inline: auto;
-  margin-top: 10px;
+  margin-top: 16px;
   padding: 4px var(--scf-layout-pad-x) 8px;
   gap: 10px;
+  flex-shrink: 0;
+}
+
+/* 首页：禁止 dock sticky 浮在 bento 上（components.css 默认 sticky + z-index:40） */
+body.landing-page.has-altc .scf-bottom-stack .dock-wrap,
+body.landing-page.has-altc .dock-wrap {
+  position: static;
+  bottom: auto;
+  margin-top: 12px;
+  z-index: auto;
 }
 
 body.landing-page.has-altc .footer.footer-alt {
@@ -2805,8 +2850,14 @@ body.has-altc .glass-poster-flag {
 }
 
 /* ---------- Gallery · gallery.png / light/gallery.png ---------- */
-body.has-altc .alt-gallery .gallery-hero-strip {
+body.has-altc .alt-gallery .gallery-hero-strip:not(.country-hero--banner) {
   padding: 26px 30px 22px;
+  margin-bottom: 14px;
+}
+
+/* 国家书柜 banner（海报/小志共用 hero）：勿叠 strip 内边距，避免 overlay 被 72% 压成窄条 */
+body.has-altc .country-hero--banner.gallery-hero-strip {
+  padding: 0;
   margin-bottom: 14px;
 }
 
@@ -3130,6 +3181,15 @@ body.has-altc .gallery-weather-icon {
 /* Filter bar: rows + character toggle on one row (gallery.png) */
 body.has-altc .gallery-filter-inner {
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+}
+
+/* 与右侧「有人物」等操作并排时，恢复横排 + 底对齐 */
+body.has-altc .gallery-filter-inner:has(.gallery-filter-actions) {
+  flex-direction: row;
   align-items: flex-end;
   gap: 18px 24px;
 }
@@ -3137,6 +3197,8 @@ body.has-altc .gallery-filter-inner {
 body.has-altc .gallery-filter-inner .gallery-filter-rows {
   flex: 1;
   min-width: 0;
+  width: 100%;
+  align-self: stretch;
 }
 
 body.has-altc .gallery-filter-inner .gallery-filter-actions {
@@ -3165,6 +3227,51 @@ body.has-altc .gallery-featured-img > img {
     padding-top: 8px;
     border-top: 1px solid color-mix(in oklab, var(--tile-border) 65%, transparent);
   }
+
+  /* 国家书柜 · 筛选条：标签置顶 + 药丸横滑（勿折行限高裁切） */
+  body.has-altc .country-filter-bar.gallery-filter-bar,
+  body.has-altc .alt-country .gallery-filter-bar {
+    padding: 12px 14px;
+    gap: 10px;
+    overflow: visible;
+  }
+
+  body.has-altc .gallery-filter-row:not(.gallery-filter-row--country) {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  body.has-altc .gallery-filter-row--country {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  body.has-altc .country-filter-bar .filter-pill-track.is-wrap .filter-pill-scroll,
+  body.has-altc .gallery-filter-bar .filter-pill-track.is-wrap .filter-pill-scroll {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-height: none;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 8px;
+  }
+
+  body.has-altc .country-filter-bar .filter-pill-track.is-wrap::before,
+  body.has-altc .country-filter-bar .filter-pill-track.is-wrap::after {
+    display: block;
+  }
+
+  body.has-altc .country-filter-bar .filter-pill-scroll {
+    pointer-events: auto;
+    gap: 8px;
+    padding: 4px 2px 6px;
+  }
+
+  body.has-altc .alt-gallery .filter-pill-scroll a {
+    min-height: 40px;
+    padding: 10px 16px;
+  }
 }
 
 /* ---------- Country · theme-cn/jp/us.png ---------- */
@@ -3176,6 +3283,70 @@ body.has-altc .country-hero {
 
 body.has-altc .country-hero--banner {
   min-height: clamp(240px, 34vw, 340px);
+}
+
+body.has-altc .country-hero--banner .country-hero-overlay {
+  max-width: min(38rem, 92%);
+}
+
+body.has-altc .country-hero--banner .gallery-hero-sub,
+body.has-altc .country-hero--banner .gallery-hero-title {
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
+}
+
+body.has-altc .country-hero--banner .gallery-country-kicker {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
+}
+
+/* 小志 Tab 背景多为街景插画，左侧遮罩略加重 */
+body.has-altc .alt-gallery[data-active-tab="zines"] .country-hero--banner .country-hero-scene::after {
+  background: linear-gradient(
+    105deg,
+    color-mix(in oklab, var(--bg-1) 96%, transparent) 0%,
+    color-mix(in oklab, var(--bg-1) 78%, transparent) 52%,
+    transparent 80%
+  );
+}
+
+@media (max-width: 900px) {
+  body.has-altc .country-hero--banner .country-hero-overlay {
+    max-width: none;
+    width: 100%;
+    padding: 44px 18px 20px;
+    box-sizing: border-box;
+  }
+
+  body.has-altc .country-hero--banner .gallery-hero-sub {
+    max-width: none;
+  }
+
+  body.has-altc .country-hero--banner .gallery-hero-chips {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  body.has-altc .country-hero--banner .country-hero-scene::after {
+    background: linear-gradient(
+      105deg,
+      color-mix(in oklab, var(--bg-1) 94%, transparent) 0%,
+      color-mix(in oklab, var(--bg-1) 72%, transparent) 48%,
+      transparent 78%
+    );
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="zines"] .country-hero--banner .country-hero-scene::after {
+    background: linear-gradient(
+      105deg,
+      color-mix(in oklab, var(--bg-1) 96%, transparent) 0%,
+      color-mix(in oklab, var(--bg-1) 76%, transparent) 50%,
+      transparent 82%
+    );
+  }
+
+  body.has-altc .alt-gallery.container-wide > .alt-crumb {
+    margin-bottom: 12px;
+  }
 }
 
 /* 图片上不叠推广/栏目标签（theme-cn · landing · bento） */
@@ -3229,10 +3400,97 @@ body.has-altc .country-poster-grid .glass-poster.is-featured {
   }
 }
 
-body.has-altc .country-filter-bar {
-  position: sticky;
-  top: calc(var(--topbar-h) + 4px);
-  z-index: 12;
+@media (min-width: 901px) {
+  body.has-altc .country-filter-bar {
+    position: sticky;
+    top: calc(var(--topbar-h) + 4px);
+    z-index: 12;
+    /* 桌面：筛选项浮在网格上；容器不拦点击，仅交互子元素可点 */
+    pointer-events: none;
+  }
+
+  body.has-altc .gallery-filter-collapse .gallery-filter-collapse__body {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
+
+/* 仅真实控件可点；药丸滚动槽本身不挡下方海报/小志网格（滚动仍可在链接上拖） */
+body.has-altc .country-filter-bar :is(
+  a,
+  button,
+  summary,
+  input,
+  select,
+  textarea,
+  .country-picker,
+  .gallery-filter-collapse__summary
+) {
+  pointer-events: auto;
+}
+
+@media (min-width: 901px) {
+  body.has-altc .country-filter-bar .filter-pill-track,
+  body.has-altc .country-filter-bar .filter-pill-scroll,
+  body.has-altc .country-filter-bar .switch-glass.filter-pill-scroll {
+    pointer-events: none;
+  }
+
+  body.has-altc .country-filter-bar .filter-pill-track a,
+  body.has-altc .country-filter-bar .filter-pill-scroll a {
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  /* 手机：整块筛选条不 sticky，避免展开时盖住海报；仅收起条吸顶 */
+  body.has-altc .country-filter-bar,
+  body.has-altc .alt-country .gallery-filter-bar,
+  body.has-altc .alt-gallery .gallery-filter-bar {
+    position: static;
+    top: auto;
+    pointer-events: none;
+  }
+
+  body.has-altc .gallery-filter-collapse__summary {
+    position: sticky;
+    top: calc(var(--topbar-h) + 4px);
+    z-index: 13;
+    pointer-events: auto;
+    background: color-mix(in oklab, var(--tile-bg) 96%, var(--bg-2));
+    backdrop-filter: blur(14px) saturate(1.12);
+    -webkit-backdrop-filter: blur(14px) saturate(1.12);
+    box-shadow: 0 6px 20px color-mix(in oklab, var(--bg-1) 55%, transparent);
+  }
+
+  body.has-altc .gallery-filter-collapse__body {
+    pointer-events: auto;
+  }
+
+  body.has-altc .gallery-filter-bar .gallery-filter-collapse__body,
+  body.has-altc .gallery-filter-bar .filter-pill-track,
+  body.has-altc .gallery-filter-bar .filter-pill-scroll,
+  body.has-altc .gallery-filter-bar .switch-glass.filter-pill-scroll {
+    pointer-events: auto;
+    touch-action: pan-x;
+  }
+
+  body.has-altc .country-filter-bar:has(.gallery-filter-collapse),
+  body.has-altc .gallery-filter-bar:has(.gallery-filter-collapse) {
+    padding: 10px 12px 12px;
+  }
+
+  body.has-altc .alt-gallery .gallery-tab-panel .gallery-main,
+  body.has-altc .alt-gallery .gallery-tab-panel .gallery-zines--tab {
+    scroll-margin-top: calc(var(--topbar-h) + 52px);
+  }
+}
+
+body.has-altc .gallery-main :is(a.glass-poster.is-link, a.glass-zine-card.is-link) {
+  position: relative;
+  z-index: 1;
 }
 
 body.has-altc .country-region-bento {
@@ -3289,7 +3547,7 @@ body.has-altc :is(#zine-reader-root, #poster-reader-root).alt-zine {
   padding-bottom: 0;
 }
 
-/* 海报/小志详情 · 撑满 topbar↔footer，卡片行 flex 吃满剩余高度 */
+/* 海报/小志详情 · 桌面默认：撑满 topbar↔footer，三栏 flex 链（≥1101px 保持） */
 body.has-altc:has(#poster-reader-root) main,
 body.has-altc:has(#zine-reader-root) main {
   flex: 1 1 0;
@@ -3608,11 +3866,20 @@ body.has-altc #poster-reader-root .alt-zine-center-panel .alt-zine-spread {
   }
 }
 
-body.has-altc #poster-reader-root .alt-zine-center-panel .alt-zine-spread .alt-zine-spread-media {
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-spread .alt-zine-spread-media {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+}
+
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-spread-media picture,
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-spread-media picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
 }
 
 body.has-altc #zine-reader-root .alt-zine-center-panel .alt-zine-spread {
@@ -3620,13 +3887,43 @@ body.has-altc #zine-reader-root .alt-zine-center-panel .alt-zine-spread {
   min-height: min(38dvh, 320px);
 }
 
-body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumbs {
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumbs-row {
   flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin: auto 0 0;
-  padding: 16px 18px 12px;
-  gap: 16px;
+  padding: 16px 14px 12px;
   border-top: 1px solid color-mix(in oklab, var(--tile-border) 85%, transparent);
   background: color-mix(in oklab, var(--bg-1) 35%, transparent);
+}
+
+body.has-altc #zine-reader-root .alt-zine-center-panel .alt-zine-thumbs-nav {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--tile-border) 90%, transparent);
+  background: color-mix(in oklab, var(--bg-2) 55%, transparent);
+  color: var(--fg-strong);
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+body.has-altc #zine-reader-root .alt-zine-center-panel .alt-zine-thumbs-nav:hover:not(:disabled) {
+  border-color: color-mix(in oklab, var(--accent-c) 55%, var(--tile-border));
+  color: var(--accent-c);
+  box-shadow: 0 0 12px color-mix(in oklab, var(--accent-c) 25%, transparent);
+}
+
+body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumbs {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  gap: 16px;
+  border-top: none;
+  background: transparent;
 }
 
 body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-hint {
@@ -3864,17 +4161,68 @@ body.has-altc #poster-reader-root .alt-zine-center-panel .alt-zine-thumbs--space
   pointer-events: none;
 }
 
-/* 小志/海报 · 窄屏底栏（static + safe-area，紧贴内容） */
+/* 小志/海报 · 窄屏：整页滚动 + 底栏滚走（仅 ≤1100；桌面 ≥1101 仍三栏撑满） */
 @media (max-width: 1100px) {
+  body.has-altc:has(#poster-reader-root) main,
+  body.has-altc:has(#zine-reader-root) main {
+    flex: 1 1 auto;
+    min-height: auto;
+    overflow: visible;
+    padding-bottom: 0;
+  }
+
   body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack {
     position: static;
-    margin-top: 0;
+    margin-top: 12px;
     margin-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  }
+
+  /* 小志/海报详情 · 平板/手机：主图在上、信息在下；勿 shrink 读者块 */
+  body.has-altc:has(#poster-reader-root) main > #poster-reader-root.container-wide,
+  body.has-altc:has(#zine-reader-root) main > #zine-reader-root.container-wide {
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    min-height: auto;
+  }
+
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-layout {
+    flex-direction: column;
+    overflow: visible;
+    flex: 0 1 auto;
+    max-height: none;
+  }
+
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel {
+    flex: 0 0 auto;
+    order: -1;
+    min-height: auto;
+    overflow: visible;
+  }
+
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-right {
+    order: 0;
+    flex: 0 0 auto;
+  }
+
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-spread {
+    flex: 0 0 auto;
+    min-height: min(46dvh, 400px);
+    height: auto;
+    max-height: none;
+    aspect-ratio: 3 / 2;
+  }
+
+  body.has-altc #zine-reader-root .alt-zine-center-panel .alt-zine-spread {
+    aspect-ratio: auto;
+    min-height: min(52dvh, 440px);
   }
 }
 
-body.has-altc:has(#zine-reader-root) main {
-  scroll-padding-bottom: calc(var(--dock-h) + 24px);
+@media (max-width: 1100px) {
+  body.has-altc:has(#zine-reader-root) main,
+  body.has-altc:has(#poster-reader-root) main {
+    scroll-padding-bottom: 24px;
+  }
 }
 
 /* ---------- Gallery tab panels (posters | zines | streets) ---------- */
@@ -5436,6 +5784,7 @@ body.landing-page .bento-weather-body {
 body.landing-page .bento-weather-toggle {
   flex-shrink: 0;
   position: relative;
+  z-index: 8;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -5448,6 +5797,7 @@ body.landing-page .bento-weather-toggle {
   opacity: var(--weather-icon-opacity);
   border-radius: 12px;
   cursor: pointer;
+  pointer-events: auto;
   isolation: isolate;
   transition:
     transform 0.32s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
@@ -5819,20 +6169,30 @@ body.landing-page .bento-weather-forecast-collapse {
   z-index: 5;
   flex: 0 0 auto;
   width: 100%;
-  max-height: 0;
+  max-height: var(--weather-forecast-panel-h, 0px);
   overflow: hidden;
   visibility: hidden;
   pointer-events: none;
-  transition: max-height var(--weather-expand-duration, 0.48s)
-    var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1));
+  opacity: 0;
+  transition:
+    max-height var(--weather-expand-duration, 0.48s)
+      var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    opacity 0.22s ease,
+    visibility 0s linear var(--weather-expand-duration, 0.48s);
 }
 
 body.landing-page .bento-weather-live[data-weather-expanded="true"] .bento-weather-forecast-collapse {
-  max-height: none;
-  min-height: var(--weather-forecast-panel-h, 110px);
+  max-height: var(--weather-forecast-panel-h, 96px);
+  min-height: var(--weather-forecast-panel-h, 96px);
   visibility: visible;
   pointer-events: auto;
   overflow: visible;
+  opacity: 1;
+  transition:
+    max-height var(--weather-expand-duration, 0.48s)
+      var(--weather-expand-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    opacity 0.28s ease 0.04s,
+    visibility 0s;
 }
 
 body.landing-page .bento-weather-panel {
@@ -9140,7 +9500,59 @@ body.has-altc .alt-street--embed .street-geo-minimap {
   z-index: 14;
 }
 
-/* 场景列表左 · 视角矩阵右（顶对齐，小地图在矩阵内，消右上留白） */
+/* 场景列表左 · 右下角时段/画幅工具条（视角矩阵侧栏已移除） */
+body.has-altc .alt-street-stage .street-view-toolbar {
+  position: absolute;
+  right: var(--street-edge, 20px);
+  bottom: var(--street-rails-bottom, 368px);
+  z-index: 14;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 8px 10px;
+  max-width: min(420px, calc(100% - var(--street-edge, 20px) * 2 - var(--street-scenes-w, 240px) - 16px));
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border-radius: var(--tile-radius);
+  background: color-mix(in oklab, var(--tile-bg) 62%, transparent);
+  border: 1px solid var(--tile-border);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  pointer-events: auto;
+}
+
+body.has-altc .alt-street-stage .street-view-toolbar__group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
+body.has-altc .alt-street-stage .street-view-toolbar__label {
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--fg-muted);
+}
+
+body.has-altc .alt-street-stage .street-view-toolbar__actions,
+body.has-altc .alt-street-stage .street-view-toolbar__deep {
+  flex-shrink: 0;
+}
+
+body.has-altc .alt-street-stage .street-view-toolbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+body.has-altc .alt-street-matrix,
+body.has-altc .street-matrix-panel {
+  display: none !important;
+}
+
 body.has-altc .alt-street-stage .alt-street-scenes {
   left: var(--street-edge, 20px);
   right: auto;
@@ -9692,14 +10104,6 @@ html[data-theme="light"] body.has-altc .street-eat-carousel__nav {
   }
 
   body.has-altc .alt-street-stage .alt-street-scenes,
-  body.has-altc .alt-street-stage .alt-street-matrix,
-  body.has-altc .alt-street-stage .street-matrix-panel {
-    position: absolute !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-  }
-
   body.has-altc .alt-street-stage .alt-street-scenes {
     position: absolute;
     top: var(--street-edge, 10px);
@@ -9711,17 +10115,10 @@ html[data-theme="light"] body.has-altc .street-eat-carousel__nav {
     max-width: min(260px, 42vw);
   }
 
-  body.has-altc .alt-street-stage .alt-street-matrix,
-  body.has-altc .alt-street-stage .street-matrix-panel {
-    position: absolute;
-    top: var(--street-edge, 10px);
-    bottom: auto;
-    height: fit-content;
-    right: var(--street-edge);
-    margin: 0;
-    max-height: calc(100% - var(--street-edge, 10px) - var(--street-rails-bottom));
-    width: var(--street-matrix-w);
-    max-width: min(280px, 44vw);
+  body.has-altc .alt-street-stage .street-view-toolbar {
+    right: var(--street-edge, 10px);
+    bottom: var(--street-rails-bottom);
+    max-width: min(360px, calc(100% - var(--street-edge, 10px) * 2));
   }
 
   body.has-altc .alt-street-bg {
@@ -9733,12 +10130,6 @@ html[data-theme="light"] body.has-altc .street-eat-carousel__nav {
     background-position: center center;
   }
 
-  body.has-altc .alt-street-matrix .street-geo-minimap,
-  body.has-altc .street-matrix-panel .street-geo-minimap {
-    width: min(100%, 100px);
-    height: 100px;
-    margin-bottom: 10px;
-  }
 }
 
 /* 真·窄屏（≈手机）才上下堆叠；浏览器放大到 ~900px 仍保持浮层 */
@@ -9786,9 +10177,7 @@ html[data-theme="light"] body.has-altc .street-eat-carousel__nav {
     background-position: center center;
   }
 
-  body.has-altc .alt-street-stage .alt-street-scenes,
-  body.has-altc .alt-street-stage .alt-street-matrix,
-  body.has-altc .alt-street-stage .street-matrix-panel {
+  body.has-altc .alt-street-stage .alt-street-scenes {
     position: static !important;
     width: auto;
     max-width: none;
@@ -9797,6 +10186,13 @@ html[data-theme="light"] body.has-altc .street-eat-carousel__nav {
     max-height: min(200px, 38vh);
     top: auto;
     bottom: auto;
+  }
+
+  body.has-altc .alt-street-stage .street-view-toolbar {
+    position: static !important;
+    width: calc(100% - 24px);
+    max-width: none;
+    margin: 0 12px 10px;
   }
 
   body.has-altc .street-geo-minimap {
@@ -9816,6 +10212,119 @@ html[data-theme="light"] body.has-altc .street-eat-carousel__nav {
     margin-right: auto;
     padding: 12px 0;
     box-sizing: border-box;
+  }
+}
+
+/* 街景 Tab · ≤960 手机/平板竖屏：主图 21:9 铺满、顶栏不挡、取消沉浸负 margin */
+@media (max-width: 960px) {
+  body.has-altc .alt-gallery[data-active-tab="streets"] {
+    --street-immersive-top: calc(var(--topbar-h) + 4.75rem + env(safe-area-inset-top, 0px));
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"].container-wide {
+    padding-top: 0;
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] > .alt-crumb {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    z-index: auto;
+    width: 100%;
+    max-width: none;
+    margin: 0 0 8px;
+    padding: 0;
+    color: inherit;
+    text-shadow: none;
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] .gallery-tab-panel[data-tab="streets"]:not([hidden]),
+  body.has-altc .alt-gallery[data-active-tab="streets"] .gallery-tab-panel[data-tab="streets"]:not([hidden]) > .alt-street-embed-host {
+    flex: 0 1 auto;
+    min-height: 0;
+    padding-top: 0;
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-embed-host
+    > .street-explorer-region:not(.is-gallery-region-hidden)
+    > .alt-street--embed,
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street--embed {
+    margin-top: 0;
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-embed-host
+    > .street-explorer-region:not(.is-gallery-region-hidden)
+    .alt-street--embed
+    .alt-street-stage,
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street--embed .alt-street-stage {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: hidden;
+    border-radius: var(--tile-radius);
+    background: #080a10;
+    box-sizing: border-box;
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-bg {
+    position: relative;
+    flex: 0 0 auto;
+    order: 0;
+    width: 100%;
+    aspect-ratio: 21 / 9;
+    min-height: min(44vw, 200px);
+    max-height: min(52dvh, 380px);
+    height: auto;
+    margin: 0;
+    border-radius: var(--tile-radius) var(--tile-radius) 0 0;
+    background-color: #080a10;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage::before,
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage::after {
+    display: none;
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage .alt-street-scenes,
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage .alt-street-matrix,
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage .street-matrix-panel {
+    position: static !important;
+    order: 1;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    width: auto;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    max-height: min(36dvh, 260px);
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage .alt-street-scenes {
+    border-radius: 0 0 var(--tile-radius) var(--tile-radius);
+    padding: 10px 12px 12px;
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage .alt-street-matrix,
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage .street-matrix-panel {
+    margin-top: 8px;
+    border-radius: var(--tile-radius);
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street--embed > .alt-street-eat--below {
+    margin-top: 12px;
   }
 }
 
@@ -10075,23 +10584,12 @@ body.has-altc .alt-gallery.container-wide > .gallery-dock-wrap:not(.gallery-dock
   padding-bottom: 4px;
 }
 
-/* dock · 街角浮轨 v3 · 科技霓虹（发光 · 粒子；无滑轨胶囊） */
-
-body.has-altc {
-  --dock-h: 68px;
-  --dock-neon-cyan: #5ec8ff;
-  --dock-neon-ice: #e8f6ff;
-}
+/* dock · 街角浮轨 v3 · 暖玻璃霓虹（与顶栏胶囊共用 --dock-neon-* token） */
 
 body.has-altc .dock {
   --dock-tab-glow: var(--tab-glow);
   --dock-pad-x: 12px;
   --dock-item-gap: 3px;
-  /* === 2026-05-28 · P4：底部 dock 走「暖玻璃 · 街角灯火」色温，
-   * 与顶部胶囊「冷蓝霓虹 · 内容」形成上看 / 下用 的视觉分层。
-   * 只在 .dock 作用域内覆盖 token，topbar 不受影响。 */
-  --dock-neon-cyan: #ffb86b;
-  --dock-neon-ice: #fff2dd;
   position: relative;
   isolation: isolate;
   align-items: center;
@@ -10443,24 +10941,21 @@ body.has-altc #dock-fav-btn:active .ic {
 }
 
 html[data-theme="light"] body.has-altc {
-  --dock-neon-cyan: #2d8fc4;
-  --dock-neon-ice: #1a3a52;
-}
-
-html[data-theme="light"] body.has-altc .dock {
-  /* P4 light：dock 同样走暖色（米/琥珀），与顶部冷蓝胶囊区分 */
   --dock-neon-cyan: #c97a2c;
   --dock-neon-ice: #6b3a14;
+}
+
+html[data-theme="light"] body.has-altc :is(.dock, .topbar-glass .topbar-center) {
   background: linear-gradient(
     145deg,
     color-mix(in oklab, var(--bg-1) 88%, #fbeede 12%) 0%,
     color-mix(in oklab, var(--bg-1) 92%, #f8e3c8 8%) 100%
   );
-  border-color: color-mix(in oklab, #c97a2c 36%, var(--accent-c) 26%);
+  border-color: color-mix(in oklab, var(--dock-neon-cyan) 36%, var(--accent-c) 26%);
   box-shadow:
-    0 0 20px color-mix(in oklab, #c97a2c 16%, transparent),
+    0 0 20px color-mix(in oklab, var(--dock-neon-cyan) 16%, transparent),
     0 8px 24px color-mix(in oklab, #000 10%, transparent),
-    inset 0 0 16px color-mix(in oklab, #c97a2c 6%, transparent);
+    inset 0 0 16px color-mix(in oklab, var(--dock-neon-cyan) 6%, transparent);
 }
 
 html[data-theme="light"] body.has-altc .dock .dock-tech-grid {
@@ -10515,12 +11010,138 @@ body.has-altc .footer.footer-alt .inner {
 }
 
 @media (max-width: 1024px) {
+  body.landing-page.has-altc .alt-landing {
+    flex: 0 1 auto;
+  }
+
   body.landing-page.has-altc .alt-landing .landing-grid {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 auto;
+    min-height: 0;
+    gap: 14px;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-left,
+  body.landing-page.has-altc .alt-landing .landing-left--stack.landing-spotlight,
+  body.landing-page.has-altc .alt-landing .landing-feature--bento-only {
+    flex: 0 0 auto;
+    height: auto;
     min-height: 0;
   }
 
   body.landing-page.has-altc .alt-landing .landing-left--stack.landing-spotlight {
-    min-height: min(48vh, 480px);
+    min-height: 0;
+    margin-inline: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* 地图 · 单列通栏居中（取消桌面 fixed/偏右绘区） */
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atlas.map-hero--map-only {
+    position: relative !important;
+    inset: auto !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    max-width: 100%;
+    margin-inline: auto;
+    background:
+      radial-gradient(ellipse 55% 45% at 50% 38%, color-mix(in oklab, #e60012 10%, transparent), transparent 68%),
+      radial-gradient(ellipse 42% 38% at 50% 42%, color-mix(in oklab, #00d9e0 8%, transparent), transparent 65%),
+      linear-gradient(165deg, #121820 0%, #0f1117 50%, #080a10 100%);
+  }
+
+  body.landing-page.has-altc .world-atlas-explorer--landing,
+  body.landing-page.has-altc .world-atlas-explorer--landing .world-atlas-explorer__stage--landing,
+  body.landing-page.has-altc .world-atlas-explorer--landing [data-world-atlas-host] {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  /* 品牌条：≤1024 取消 cqh 容器，避免统计数字与标签挤在一起 */
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+    min-height: 0;
+    container-type: normal;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__quote {
+    font-size: clamp(17px, 4.2vw, 24px);
+    line-height: 1.38;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__deck--ad {
+    font-size: var(--type-ui-sm, 14px);
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__aside--ad {
+    align-self: stretch;
+    width: 100%;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stats {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__hero {
+    min-height: 0;
+    flex: 0 0 auto;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__aside--ad {
+    flex: 0 0 auto;
+    align-self: stretch;
+    margin-top: 0;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stats {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stat {
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 12px;
+    overflow: visible;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stat-n {
+    font-size: clamp(20px, 5.5vw, 26px);
+    line-height: 1.1;
+    flex-shrink: 0;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stat-l {
+    margin-top: 0;
+    text-align: right;
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: var(--type-ui-sm, 14px);
+    line-height: 1.25;
+    white-space: normal;
+    overflow: visible;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stat:hover {
+    transform: none;
   }
 
   body.landing-page.has-altc {
@@ -10533,12 +11154,15 @@ body.has-altc .footer.footer-alt .inner {
     --bento-zine-row-top: calc(var(--bento-row1-h) + var(--bento-mosaic-gap));
   }
 
-  body.landing-page.has-altc .right-bento.landing-bento-mosaic {
-    --bento-weather-h: 360px;
-    min-height: var(--bento-mosaic-h);
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-rows: minmax(var(--bento-row1-min), 30vw) minmax(var(--bento-row2-min), 26vw)
-      minmax(var(--bento-row3-min), 17vw);
+  /* 1024 内仍保持单列 auto 高度（勿恢复双列，否则天气/品牌条与 dock 叠压） */
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 {
+    --bento-weather-h: min(280px, 52vw);
+    min-height: 0;
+    height: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-rows: auto;
   }
 }
 
@@ -10549,12 +11173,13 @@ body.has-altc .footer.footer-alt .inner {
   }
 
   body.landing-page.has-altc .alt-landing .landing-left--stack.landing-spotlight {
-    --landing-map-visible-h: min(36vw, 200px);
+    --landing-map-visible-h: min(34vw, 168px);
     --landing-map-band-h: calc(var(--landing-map-visible-h) / 0.6667);
     min-height: 0;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
+    padding-bottom: 6px;
   }
 
   body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card {
@@ -10564,12 +11189,41 @@ body.has-altc .footer.footer-alt .inner {
     bottom: auto;
     order: 2;
     height: auto;
-    min-height: 0;
+    min-height: 152px;
     max-height: none;
-    margin: 0 14px;
-    margin-top: calc(-1 * var(--landing-map-visible-h));
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
     box-shadow: var(--tile-shadow);
     z-index: 3;
+    pointer-events: auto;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card .landing-city-card-inner {
+    height: auto;
+    max-height: none;
+    min-height: 152px;
+    padding: 18px 18px 16px;
+    gap: 8px;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card .name {
+    font-size: clamp(26px, 6.8vw, 34px);
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card .label {
+    font-size: var(--type-label, 13px);
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card .sub {
+    font-size: var(--type-ui-sm, 14px);
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card-foot .map-region-cta {
+    font-size: var(--type-ui-sm, 14px);
+    padding: 8px 14px;
   }
 
   body.landing-page.has-altc .alt-landing .landing-spotlight > .map-hero.map-hero--map-only,
@@ -10592,56 +11246,82 @@ body.has-altc .footer.footer-alt .inner {
   }
 
   body.landing-page.has-altc .alt-landing .landing-left--stack.landing-spotlight {
-    margin-inline: calc(-1 * var(--scf-layout-pad-x, 16px));
-    width: calc(100% + 2 * var(--scf-layout-pad-x, 16px));
+    margin-inline: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     border-radius: 0;
     border: none;
     box-shadow: none;
     background: transparent;
   }
 
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atlas.map-hero--map-only,
+  body.landing-page.has-altc .world-atlas-explorer--landing,
+  body.landing-page.has-altc .world-atlas-explorer--landing .world-atlas-explorer__stage--landing {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
   body.landing-page.has-altc .landing-feature--bento-only {
     min-height: 0;
   }
 
-  body.landing-page.has-altc .right-bento.landing-bento-mosaic {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--bento-mosaic-gap, 12px);
-    min-height: 0;
+  /* Bento 栅格在 §mobile.png 末段改为 flex 单列，此处勿再双列 */
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .bento-radar--fill.tile.t-radar,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .bento-radar--fill.tile.t-chip {
+    padding: 4px 8px 6px;
+    max-height: 76px;
+    height: auto;
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .bento-radar--fill .flavor-radar {
+    container-type: normal;
+    flex: 0 0 auto;
+    height: auto;
+    max-height: 64px;
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .bento-radar--fill .flavor-radar svg {
+    width: auto;
+    height: auto;
+    max-width: min(220px, 72vw);
+    max-height: 56px;
   }
 
   body.landing-page.has-altc .right-bento.landing-bento-mosaic > .tile,
-  body.landing-page.has-altc .right-bento.landing-bento-mosaic > .bento-col2-stack {
-    grid-column: unset;
-    grid-row: unset;
-  }
-
-  body.landing-page.has-altc .right-bento.landing-bento-mosaic .bento-col2-stack {
-    display: contents;
-  }
-
-  body.landing-page.has-altc .right-bento.landing-bento-mosaic .bento-dish,
-  body.landing-page.has-altc .right-bento.landing-bento-mosaic .bento-zine {
-    grid-column: 1 / -1;
-  }
-
-  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .bento-radar {
-    grid-column: 1;
-    min-height: 112px;
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 > .tile,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic > .bento-col2-stack,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
   }
 
   body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col {
-    display: contents;
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic .bento-col2-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--bento-mosaic-gap, 12px);
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--bento-mosaic-gap, 12px);
   }
 
   body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col .bento-weather {
-    grid-column: 2;
-    align-self: stretch;
+    position: relative;
     width: 100%;
-    max-width: none;
     height: auto;
-    min-height: var(--bento-weather-h, 240px);
+    min-height: var(--bento-weather-h, 220px);
     max-height: none;
   }
 
@@ -10649,11 +11329,10 @@ body.has-altc .footer.footer-alt .inner {
     .right-bento.landing-bento-mosaic--4
     .landing-bento-right-col
     .bento-weather:has([data-weather-expanded="true"]) {
-    min-height: calc(var(--bento-weather-h, 240px) + var(--weather-forecast-panel-h, 96px));
+    min-height: calc(var(--bento-weather-h, 220px) + var(--weather-forecast-panel-h, 96px));
   }
 
   body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-manifesto--bento-slot {
-    grid-column: 1 / -1;
     width: 100%;
     max-width: none;
     min-height: 0;
@@ -10662,15 +11341,30 @@ body.has-altc .footer.footer-alt .inner {
   body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-manifesto--bento-slot .landing-manifesto__card {
     height: auto;
     min-height: 0;
+    container-type: normal;
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .bento-dish--proto .photo,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .bento-zine--proto .photo {
+    aspect-ratio: 3 / 4;
+    min-height: min(42vw, 150px);
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic > .tile,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 > .tile,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col {
+    height: auto;
+    min-height: 0;
+    max-height: none;
   }
 
   body.has-altc .alt-landing .map-hero.map-hero--map-only:not(.map-hero--design) {
-    min-height: 260px;
+    min-height: 0;
     max-height: none;
   }
 
   body.landing-page.has-altc .alt-landing .map-hero.map-hero--map-only:not(.map-hero--design) {
-    min-height: 260px;
+    min-height: 0;
   }
 
   body.has-altc .alt-landing .landing-spotlight > .map-hero.map-hero--map-only.map-hero--design {
@@ -10741,28 +11435,40 @@ body.has-altc .footer.footer-alt .inner {
     padding: 7px 4px 8px;
   }
 
+  body.has-altc:has(#poster-reader-root) main > #poster-reader-root.container-wide,
+  body.has-altc:has(#zine-reader-root) main > #zine-reader-root.container-wide {
+    flex: 0 0 auto;
+    flex-shrink: 0;
+  }
+
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-layout {
     flex-direction: column;
-    flex: 1 1 0;
-    min-height: 0;
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    min-height: auto;
+    max-height: none;
+    overflow: visible;
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left,
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel,
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-right {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     width: 100%;
     min-width: 0;
     max-width: none;
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel {
-    flex: 1 1 0;
-    min-height: 0;
+    flex: 0 0 auto;
+    min-height: auto;
+    overflow: visible;
+    order: -1;
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-right {
     flex: 0 0 auto;
+    order: 0;
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-side-left,
@@ -10782,28 +11488,260 @@ body.has-altc .footer.footer-alt .inner {
     padding-bottom: 0;
   }
 
-  body.has-altc main > :is(#poster-reader-root, #zine-reader-root) + .scf-bottom-stack {
-    padding-bottom: max(4px, env(safe-area-inset-bottom, 0px));
-  }
-
-  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel {
-    min-height: 0;
-  }
-
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-spread {
+    flex: 0 0 auto;
+    min-height: min(48dvh, 420px);
+    height: auto;
     max-height: none;
-    min-height: min(34dvh, 300px);
+  }
+
+  body.has-altc #zine-reader-root .alt-zine-center-panel .alt-zine-spread {
+    aspect-ratio: auto;
+    min-height: min(52dvh, 440px);
+  }
+
+  /* 底栏页码 · 横向滑动（勿 wrap 竖排；左右页码须完整可滚到） */
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumbs-row {
+    padding: 12px 10px 14px;
+    gap: 8px;
+  }
+
+  body.has-altc #zine-reader-root .alt-zine-center-panel .alt-zine-thumbs-nav {
+    width: 36px;
+    height: 36px;
+  }
+
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumbs {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-end;
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 14px;
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+  }
+
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumb-item {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumbs .thumb {
-    width: 151px;
-    height: 101px;
+    width: clamp(76px, 24vw, 112px);
+    height: auto;
+    aspect-ratio: 3 / 2;
   }
 
   body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumb-no {
-    font-size: 12px;
+    font-size: 11px;
   }
 
+}
+
+/* ==========================================================================
+ * iPhone / 窄手机竖屏 (≤520px) · 首页 Landing
+ * Safari 逻辑宽约 390–428px；仅窄屏生效，桌面全屏不受影响。
+ * ========================================================================== */
+@media (max-width: 960px) {
+  /* 小志阅读器 · 底栏页码横滑（721–960 与 ≤720 同规） */
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumbs {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 14px;
+  }
+
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumb-item {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+  }
+
+  body.has-altc :is(#zine-reader-root, #poster-reader-root) .alt-zine-center-panel .alt-zine-thumbs .thumb {
+    width: clamp(76px, 20vw, 128px);
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+
+  body.has-altc .gallery-bottom-stack .gallery-pagination {
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-inline: 12px;
+    scrollbar-width: thin;
+  }
+
+  /* dock 已在文档流内，勿再预留 sticky 高度 */
+  body.landing-page.has-altc main {
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 0px));
+  }
+
+  body.landing-page.has-altc .alt-landing {
+    flex: 0 1 auto;
+    min-height: 0;
+    padding-bottom: 8px;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-grid {
+    min-height: 0;
+    flex: 0 1 auto;
+  }
+
+  body.landing-page.has-altc .landing-feature--bento-only {
+    flex: 0 1 auto;
+    min-height: 0;
+    height: auto;
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 {
+    flex: 0 1 auto;
+    min-height: 0;
+    height: auto;
+    align-content: start;
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic > .tile,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 > .tile,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+
+  body.landing-page.has-altc .scf-bottom-stack {
+    margin-top: 20px;
+    order: 10;
+    position: relative;
+    z-index: 2;
+  }
+
+  body.landing-page.has-altc .scf-bottom-stack .dock-wrap {
+    position: static;
+    bottom: auto;
+    z-index: auto;
+  }
+
+  body.landing-page.has-altc .footer.footer-alt {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 520px) {
+  body.landing-page.has-altc .alt-landing .landing-grid {
+    min-height: 0;
+    gap: 14px;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  body.has-altc .alt-landing .landing-city-card-foot {
+    gap: 10px;
+  }
+
+  /* Manifesto 品牌条：取消 cqh 容器排版，统计数字不再与标签叠字 */
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 14px 12px;
+    height: auto;
+    min-height: 0;
+    container-type: normal;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__hero {
+    min-height: 0;
+    gap: 10px;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__quote {
+    font-size: clamp(17px, 4.6vw, 22px);
+    line-height: 1.38;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__deck--ad {
+    font-size: var(--type-ui-sm, 14px);
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__aside--ad {
+    align-self: stretch;
+    width: 100%;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stats {
+    flex: 0 0 auto;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stat {
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    min-height: 48px;
+    padding: 10px 12px;
+    transform: none;
+    overflow: visible;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stat-n {
+    font-size: clamp(20px, 5.5vw, 26px);
+    line-height: 1.15;
+    flex-shrink: 0;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stat-l {
+    margin-top: 0;
+    font-size: var(--type-ui-sm, 14px);
+    line-height: 1.3;
+    text-align: right;
+    white-space: normal;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__cta,
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__cta--ad {
+    width: 100%;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .bento-dish--proto .photo,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .bento-zine--proto .photo {
+    min-height: min(52vw, 220px);
+  }
+
+  body.landing-page.has-altc .scf-bottom-stack {
+    padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+  }
+
+  body.landing-page.has-altc .footer.footer-alt {
+    padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  }
 }
 
 /* ============================================================
@@ -10822,7 +11760,9 @@ body.has-altc .world-atlas-explorer {
 
 /* World Atlas · immersive full-bleed (align street-explorer background fill) */
 body.has-altc:has(.world-atlas-page) {
-  --world-atlas-immersive-top: calc(var(--topbar-h) + 2.25rem);
+  /* 地图浮层顶边：默认单行顶栏；≤960 在下方媒体查询改为双行高度 */
+  --world-atlas-chrome-top: var(--topbar-h);
+  --world-atlas-immersive-top: calc(var(--world-atlas-chrome-top) + 2.25rem);
   overflow-x: visible;
 }
 
@@ -11169,7 +12109,7 @@ body.has-altc .world-atlas-explorer__key-count {
 
 body.has-altc .world-atlas-page > .world-atlas-explorer:not(.world-atlas-explorer--landing) .world-atlas-explorer__crumbs {
   position: fixed;
-  top: var(--topbar-h);
+  top: var(--world-atlas-chrome-top, var(--topbar-h));
   left: 0;
   right: 0;
   z-index: 24;
@@ -11357,7 +12297,7 @@ body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atla
   -webkit-backdrop-filter: none !important;
 }
 
-@media (min-width: 721px) {
+@media (min-width: 1025px) {
   body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atlas.map-hero,
   body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atlas.map-hero.map-hero--map-only {
     position: fixed !important;
@@ -11428,7 +12368,7 @@ body.has-altc:has(.world-atlas-page) {
   --world-atlas-chip-pad-y: 8px;
   --world-atlas-chip-pad-x: 14px;
   --world-atlas-chip-font: 14px;
-  --world-atlas-chip-top: calc(var(--topbar-h, 56px) + 8px);
+  --world-atlas-chip-top: calc(var(--world-atlas-chrome-top, var(--topbar-h, 56px)) + 8px);
   --world-atlas-chip-glass-bg: color-mix(in oklab, #080a10 62%, transparent);
   --world-atlas-chip-glass-border: color-mix(in oklab, #f5f7fb 24%, transparent);
   --world-atlas-chip-glass-fg: color-mix(in oklab, #f5f7fb 94%, transparent);
@@ -11897,71 +12837,680 @@ body.has-altc:has(.world-atlas-page) .bento-weather-temp-fx-portal .bento-weathe
 }
 
 /* ============================================================================
- * 2026-05-28 · P3 · 移动端 ≤720 适配（顶部胶囊 + 右侧 actions）
- * 目的：4 个 tab + 右侧 actions 在窄屏不挤、不溢出、不抢底部 dock 焦点。
- * - 顶部胶囊：进一步缩小字号、padding、隐藏 capsule 内的扫光/粒子装饰
- * - 顶部右侧 actions：country picker 只留国旗、语言切换缩成单字母、保留主题切换隐藏（≤900 已隐）
+ * P3 · 窄屏顶栏 ≤960（Chrome 设备模式 / iPad 竖屏 / 手机）
+ * 双行：字标 + CN 上行；Tab 胶囊下行全宽。覆盖默认 grid-column:2 单行叠 Logo。
  * ========================================================================== */
-@media (max-width: 720px) {
+@media (max-width: 960px) {
+  body.has-altc .topbar-glass,
   body.has-altc .topbar-glass .topbar-inner {
-    gap: 6px;
-    padding-inline: 8px;
+    height: auto;
+    min-height: var(--topbar-h, 72px);
   }
 
-  /* 顶部 4 tab 胶囊：紧凑模式，字号 11px，padding 收紧，gap 0 */
+  body.has-altc .topbar-glass .topbar-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    row-gap: 8px;
+    column-gap: 8px;
+    padding: 8px 10px 10px;
+    flex-wrap: nowrap;
+  }
+
+  /* 窄屏：保留中文品牌名，英文主标题与「· 首页」提示收起 */
+  body.has-altc .topbar-glass .logo-text--altc {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+    max-width: min(38vw, 132px);
+  }
+
+  body.has-altc .topbar-glass .logo-title,
+  body.has-altc .topbar-glass .logo-home-hint {
+    display: none;
+  }
+
+  body.has-altc .topbar-glass .logo-sub {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  body.has-altc .topbar-glass .logo {
+    grid-column: 1;
+    grid-row: 1;
+    z-index: 4;
+    max-width: min(48vw, 168px);
+    min-width: 0;
+    margin-left: 0;
+  }
+
+  body.has-altc .topbar-glass .topbar-actions {
+    grid-column: 3;
+    grid-row: 1;
+    z-index: 4;
+    margin-left: 0;
+  }
+
   body.has-altc .topbar-glass .topbar-center {
-    --topbar-capsule-pad-y: 4px;
-    --topbar-capsule-pad-x: 12px;
-    gap: 1px;
+    display: flex;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    --topbar-capsule-pad-y: 5px;
+    --topbar-capsule-pad-x: 8px;
+    gap: 2px;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   body.has-altc .topbar-glass .topbar-center .tab,
   body.has-altc .topbar-glass .topbar-center .tab.active {
-    padding: 3px 3px 4px;
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+    padding: 4px 2px 5px;
     font-size: 11px;
-    letter-spacing: 0.01em;
-    grid-template-rows: 22px minmax(1em, auto);
-    gap: 1px;
+    letter-spacing: 0;
+    grid-template-rows: 24px minmax(1em, auto);
+    gap: 2px;
   }
 
-  /* tab icon 收小 */
+  body.has-altc .topbar-glass .topbar-center .tab .tab-label {
+    font-size: 10px;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
   body.has-altc .topbar-glass .topbar-center .tab .tab-ic-wrap {
     width: 26px;
-    height: 22px;
-  }
-  body.has-altc .topbar-glass .topbar-center .tab .tab-ic {
-    width: 15px;
-    height: 15px;
+    height: 24px;
   }
 
-  /* capsule 内的扫光 / 粒子 / 网格在窄屏上属于装饰噪声 → 隐 */
+  body.has-altc .topbar-glass .topbar-center .tab .tab-ic {
+    width: 16px;
+    height: 16px;
+  }
+
   body.has-altc .topbar-glass .topbar-center .topbar-tech-scan,
   body.has-altc .topbar-glass .topbar-center .topbar-tech-dust {
     display: none;
   }
 
-  /* 顶部右侧 actions：language switch 收成单字母按钮 */
   body.has-altc .topbar-glass .topbar-actions {
     gap: 4px;
   }
+
   body.has-altc .topbar-glass .topbar-actions .switch-glass a {
     padding: 4px 7px;
     font-size: 11px;
     min-width: auto;
   }
 
-  /* country picker 只留国旗，隐藏 label 文字 */
   body.has-altc .topbar-glass .country-picker--topbar .country-picker__label {
     display: none;
   }
+
   body.has-altc .topbar-glass .country-picker--topbar {
     padding: 4px 6px;
   }
+
+  /* 世界街景 · 双行顶栏：面包屑「世界」+ 右侧特效钮下移，避免被 Tab 胶囊挡住 */
+  body.has-altc:has(.world-atlas-page) {
+    --world-atlas-chrome-top: calc(var(--topbar-h) + 4.75rem + env(safe-area-inset-top, 0px));
+    --world-atlas-immersive-top: calc(var(--world-atlas-chrome-top) + 2.25rem);
+  }
 }
 
-/* ≤520（典型手机竖屏）：actions 进一步收纳 —— 隐藏语言切换，全交给 setting sheet */
+/* ≤520（典型手机竖屏 · iPhone 390–428px）：顶栏图标化 + 刘海安全区 */
 @media (max-width: 520px) {
+  body.has-altc .topbar-glass {
+    padding-top: max(0px, env(safe-area-inset-top, 0px));
+  }
+
+  body.has-altc .topbar-glass .topbar-inner {
+    padding-inline: 6px;
+    row-gap: 6px;
+  }
+
+  body.has-altc .topbar-glass .logo-sub {
+    font-size: 12px;
+  }
+
+  body.has-altc .topbar-glass .topbar-center {
+    --topbar-capsule-pad-x: 4px;
+    --topbar-capsule-pad-y: 4px;
+  }
+
+  /* ≤520：图标 + 小字标签（海报/小志/街景/地图） */
+  body.has-altc .topbar-glass .topbar-center .tab,
+  body.has-altc .topbar-glass .topbar-center .tab.active {
+    grid-template-rows: 22px minmax(0, auto);
+    padding: 3px 1px 4px;
+    gap: 1px;
+  }
+
+  body.has-altc .topbar-glass .topbar-center .tab .tab-label {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    clip: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border: 0;
+    font-size: 9px;
+    line-height: 1.1;
+    max-width: 100%;
+  }
+
+  body.has-altc .topbar-glass .topbar-center .tab .tab-ic-wrap {
+    width: 24px;
+    height: 22px;
+  }
+
+  body.has-altc .topbar-glass .topbar-center .tab .tab-ic {
+    width: 17px;
+    height: 17px;
+  }
+
+  /* 保留 中/EN/日（勿隐藏；与 CN 国家选择并列） */
   body.has-altc .topbar-glass .topbar-actions .switch-glass {
+    display: inline-flex;
+    flex-shrink: 0;
+    padding: 2px;
+    gap: 1px;
+  }
+
+  body.has-altc .topbar-glass .topbar-actions .switch-glass a {
+    padding: 3px 5px;
+    font-size: 10px;
+    min-width: 0;
+    letter-spacing: 0;
+  }
+}
+
+/* ==========================================================================
+ * Landing · design/alt-c/mobile.png（≤720 · 单列 feed · 居中 16px 边距）
+ * 左屏：品牌顶栏 → 城市 hero → 海报/小志横条 → 天气 → 品牌条；底栏 dock 带字
+ * ========================================================================== */
+@media (max-width: 720px) {
+  body.landing-page.has-altc .alt-landing.container-wide {
+    padding-inline: 16px;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-grid {
+    gap: 12px;
+  }
+
+  /* 顶栏 · 双行：品牌 + CN 上行；海报/小志/街景/地图 胶囊下行（保留导航） */
+  body.landing-page.has-altc .topbar-glass .topbar-inner {
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    row-gap: 8px;
+    column-gap: 10px;
+    padding: 10px 16px 10px;
+    min-height: var(--topbar-h, 72px);
+  }
+
+  body.landing-page.has-altc .topbar-glass .topbar-center {
+    display: flex;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  body.landing-page.has-altc .topbar-glass .logo {
+    grid-column: 1;
+    grid-row: 1;
+    max-width: min(58vw, 220px);
+  }
+
+  body.landing-page.has-altc .topbar-glass .topbar-actions {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  body.landing-page.has-altc .topbar-glass .logo-text--altc {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    gap: 0;
+    max-width: none;
+    min-width: 0;
+  }
+
+  body.landing-page.has-altc .topbar-glass .logo-title {
+    display: inline;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--fg-weak);
+  }
+
+  body.landing-page.has-altc .topbar-glass .logo-title::after {
+    content: " · ";
+    color: var(--fg-mute);
+  }
+
+  body.landing-page.has-altc .topbar-glass .logo-sub {
+    display: inline;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--fg-strong);
+  }
+
+  body.landing-page.has-altc .topbar-glass .logo-home-hint {
     display: none;
+  }
+
+  /* Hero · 地图 + 城市卡上下叠、通栏居中 */
+  body.landing-page.has-altc .alt-landing .landing-left--stack.landing-spotlight {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atlas.map-hero--map-only {
+    display: block;
+    position: relative;
+    order: 1;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    height: var(--landing-map-band-h, min(36vw, 200px));
+    min-height: min(34vw, 180px);
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 55% 45% at 50% 38%, color-mix(in oklab, #e60012 10%, transparent), transparent 68%),
+      radial-gradient(ellipse 42% 38% at 50% 42%, color-mix(in oklab, #00d9e0 8%, transparent), transparent 65%),
+      linear-gradient(165deg, #121820 0%, #0f1117 50%, #080a10 100%);
+  }
+
+  body.landing-page.has-altc .world-atlas-explorer--landing,
+  body.landing-page.has-altc .world-atlas-explorer--landing .world-atlas-explorer__stage--landing,
+  body.landing-page.has-altc .world-atlas-explorer--landing [data-world-atlas-host] {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card {
+    order: 2;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    min-height: 160px;
+    border-radius: 0 0 24px 24px;
+    overflow: hidden;
+    pointer-events: auto;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card .landing-city-card-inner {
+    min-height: 160px;
+    height: auto;
+    padding: 20px 18px 16px;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card .name {
+    font-size: clamp(28px, 7.5vw, 36px);
+    text-shadow: none;
+    color: var(--fg-strong);
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card .label {
+    font-size: 12px;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card-foot .map-region-cta {
+    padding: 9px 16px;
+    font-size: 13px;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card .sub,
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card-foot .coords {
+    color: var(--fg-weak);
+    text-shadow: none;
+  }
+
+  html[data-theme="light"] body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card .name,
+  html[data-theme="light"] body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card .sub,
+  html[data-theme="light"] body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-city-card-foot .coords {
+    text-shadow: 0 1px 8px rgba(255, 252, 245, 0.65);
+  }
+
+  /* Bento · 单列 feed */
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 > .tile,
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .bento-radar {
+    display: none;
+  }
+
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* 海报 / 小志 · 通栏全幅（轮播铺满卡片，勿缩成左侧细条） */
+  body.landing-page.has-altc .right-bento .bento-dish--proto.tile.t-feature,
+  body.landing-page.has-altc .right-bento .bento-zine--proto.tile.t-feature {
+    display: block;
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    min-height: min(52vw, 220px);
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish--proto .photo,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    aspect-ratio: auto;
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-carousel,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-carousel {
+    position: absolute;
+    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-carousel--photo .bento-carousel__viewport,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-carousel--photo .bento-carousel__viewport,
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-carousel--photo .bento-carousel__track,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-carousel--photo .bento-carousel__track,
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-carousel--photo .bento-carousel__slide,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-carousel--photo .bento-carousel__slide {
+    width: 100%;
+    height: 100%;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-media-grad,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-media-grad {
+    display: block;
+    z-index: 1;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish-copy,
+  body.landing-page.has-altc .right-bento .bento-zine-copy {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 34px;
+    z-index: 2;
+    padding: 0;
+    color: #fff;
+    pointer-events: none;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish-copy .n-zh,
+  body.landing-page.has-altc .right-bento .bento-zine-copy .n-zh {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 5.2vw, 26px);
+    font-weight: var(--type-weight-strong, 700);
+    line-height: 1.12;
+    color: #fff;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-flag,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-flag {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    left: auto;
+    z-index: 3;
+    margin: 0;
+    font-size: 18px;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-carousel__nav,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-carousel__nav {
+    z-index: 5;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-carousel__nav--prev,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-carousel__nav--prev {
+    left: 6px;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-carousel__nav--next,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-carousel__nav--next {
+    right: 6px;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-carousel__dots,
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-carousel__dots {
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    padding-inline: 40px;
+    justify-content: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+    gap: 5px;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish--proto .bento-carousel__dots [data-bento-dot],
+  body.landing-page.has-altc .right-bento .bento-zine--proto .bento-carousel__dots [data-bento-dot] {
+    flex: 0 0 auto;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-tile-dots span {
+    width: 20px;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-tile-dots span.is-active {
+    width: 28px;
+  }
+
+  body.landing-page.has-altc .right-bento .bento-dish-copy,
+  body.landing-page.has-altc .right-bento .bento-zine-copy {
+    bottom: 26px;
+  }
+
+  /* 天气 · 通栏宽卡 */
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col .bento-weather {
+    min-height: min(42vw, 168px);
+    max-height: none;
+    border-radius: 24px;
+  }
+
+  /* 品牌条 · 通栏自然高度，统计行勿 flex-grow 叠压 */
+  body.landing-page.has-altc .right-bento.landing-bento-mosaic--4 .landing-bento-right-col .landing-manifesto--bento-slot {
+    flex: 0 0 auto;
+    min-height: auto;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot {
+    flex: 0 0 auto;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    container-type: normal;
+    border-radius: 24px;
+    padding: 14px 16px 14px;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__quote {
+    font-size: clamp(17px, 4.4vw, 22px);
+    line-height: 1.38;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__deck--ad {
+    font-size: var(--type-ui-sm, 14px);
+    line-height: 1.35;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stats {
+    flex: 0 0 auto;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stat {
+    flex: 0 0 auto;
+    width: 100%;
+    min-height: 48px;
+    transform: none;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stat-n {
+    font-size: clamp(22px, 5.8vw, 28px);
+    line-height: 1.15;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__stat-l {
+    font-size: var(--type-ui-sm, 14px);
+    line-height: 1.3;
+  }
+
+  body.landing-page.has-altc .landing-manifesto--bento-slot .landing-manifesto__cta--ad {
+    flex: 0 0 auto;
+    margin-top: 4px;
+  }
+
+  body.landing-page.has-altc .scf-bottom-stack {
+    padding-inline: 16px;
+  }
+
+  body.landing-page.has-altc .scf-bottom-stack .dock,
+  body.landing-page.has-altc .dock {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  body.landing-page.has-altc .dock .dock-label,
+  body.landing-page.has-altc .dock .dock-item > span:last-child {
+    font-size: 11px;
+  }
+}
+
+/* ==========================================================================
+ * Landing · 手机地图最终覆盖（≤1024 · 通栏贴边 + 绘区居中 · 压过桌面残留规则）
+ * ========================================================================== */
+@media (max-width: 1024px) {
+  body.landing-page.has-altc .alt-landing .landing-left--stack.landing-spotlight {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atlas.map-hero--map-only,
+  body.landing-page.has-altc
+    .alt-landing
+    .landing-spotlight
+    > .landing-world-atlas.map-hero.map-hero--map-only:not(.map-hero--design) {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    inset: auto !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    box-sizing: border-box;
+    background:
+      radial-gradient(ellipse 55% 45% at 50% 38%, color-mix(in oklab, #e60012 10%, transparent), transparent 68%),
+      radial-gradient(ellipse 42% 38% at 50% 42%, color-mix(in oklab, #00d9e0 8%, transparent), transparent 65%),
+      linear-gradient(165deg, #121820 0%, #0f1117 50%, #080a10 100%) !important;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-world-atlas,
+  body.landing-page.has-altc .world-atlas-explorer--landing,
+  body.landing-page.has-altc .world-atlas-explorer--landing .world-atlas-explorer__stage--landing,
+  body.landing-page.has-altc .world-atlas-explorer--landing [data-world-atlas-host] {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: auto;
+  }
+
+  body.landing-page.has-altc .world-atlas-explorer--landing [data-world-atlas-host] canvas {
+    display: block;
+    margin-inline: auto;
+    touch-action: manipulation;
+  }
+
+  body.landing-page.has-altc .alt-landing .landing-spotlight > .landing-world-atlas.map-hero--map-only,
+  body.landing-page.has-altc .world-atlas-explorer--landing [data-world-atlas-host] {
+    touch-action: manipulation;
   }
 }

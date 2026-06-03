@@ -1044,11 +1044,11 @@
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
   "/asserts/Gourmet recipe2/cn/hainan/yezi_fan_poster.png": {
-    "sig": "1779481059898.3435:2826467",
-    "hash": "34ecec996af4",
+    "sig": "1780176501924.0159:2924683",
+    "hash": "9350c253486f",
     "fallback": "/asserts/Gourmet recipe2/cn/hainan/yezi_fan_poster.png",
-    "avif": "/scf-img/34ecec996af4/320.avif 320w, /scf-img/34ecec996af4/720.avif 720w, /scf-img/34ecec996af4/1280.avif 1280w, /scf-img/34ecec996af4/1536.avif 1536w",
-    "webp": "/scf-img/34ecec996af4/320.webp 320w, /scf-img/34ecec996af4/720.webp 720w, /scf-img/34ecec996af4/1280.webp 1280w, /scf-img/34ecec996af4/1536.webp 1536w",
+    "avif": "/scf-img/9350c253486f/320.avif 320w, /scf-img/9350c253486f/720.avif 720w, /scf-img/9350c253486f/1536.avif 1536w",
+    "webp": "/scf-img/9350c253486f/320.webp 320w, /scf-img/9350c253486f/720.webp 720w, /scf-img/9350c253486f/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
@@ -7286,17 +7286,21 @@
   },
   "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_page03_street_redraw.png": {
     "sig": "1779341599770.0774:3192335",
+    "hash": "1af9c017f72d",
     "fallback": "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_page03_street_redraw.png",
-    "avif": "/scf-img/9ee5cd0cd1fe/320.avif 320w, /scf-img/9ee5cd0cd1fe/720.avif 720w",
-    "webp": "/scf-img/9ee5cd0cd1fe/320.webp 320w, /scf-img/9ee5cd0cd1fe/720.webp 720w",
-    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px"
+    "avif": "/scf-img/1af9c017f72d/320.avif 320w, /scf-img/1af9c017f72d/720.avif 720w, /scf-img/1af9c017f72d/1536.avif 1536w",
+    "webp": "/scf-img/1af9c017f72d/320.webp 320w, /scf-img/1af9c017f72d/720.webp 720w, /scf-img/1af9c017f72d/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
   "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_page04_ingredients_redraw.png": {
     "sig": "1779341549108.5432:3247539",
+    "hash": "191db4bb82cb",
     "fallback": "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_page04_ingredients_redraw.png",
-    "avif": "/scf-img/afcc73a1d56b/320.avif 320w, /scf-img/afcc73a1d56b/720.avif 720w",
-    "webp": "/scf-img/afcc73a1d56b/320.webp 320w, /scf-img/afcc73a1d56b/720.webp 720w",
-    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px"
+    "avif": "/scf-img/191db4bb82cb/320.avif 320w, /scf-img/191db4bb82cb/720.avif 720w, /scf-img/191db4bb82cb/1536.avif 1536w",
+    "webp": "/scf-img/191db4bb82cb/320.webp 320w, /scf-img/191db4bb82cb/720.webp 720w, /scf-img/191db4bb82cb/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
   "/asserts/mini-zine/cn/hainan/wenchang_jifan_story_eating_mini_zine_narrative_redraw.png": {
     "sig": "1779341352034.4326:3254208",
@@ -7374,56 +7378,56 @@
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px"
   },
   "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p01_story_eating.png": {
-    "sig": "1779472139462.7136:3356921",
-    "hash": "cd1c6ce8e10a",
+    "sig": "1780396268189.3232:3428445",
+    "hash": "b15fe8a32309",
     "fallback": "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p01_story_eating.png",
-    "avif": "/scf-img/cd1c6ce8e10a/320.avif 320w, /scf-img/cd1c6ce8e10a/720.avif 720w, /scf-img/cd1c6ce8e10a/1280.avif 1280w, /scf-img/cd1c6ce8e10a/1536.avif 1536w",
-    "webp": "/scf-img/cd1c6ce8e10a/320.webp 320w, /scf-img/cd1c6ce8e10a/720.webp 720w, /scf-img/cd1c6ce8e10a/1280.webp 1280w, /scf-img/cd1c6ce8e10a/1536.webp 1536w",
+    "avif": "/scf-img/b15fe8a32309/320.avif 320w, /scf-img/b15fe8a32309/720.avif 720w, /scf-img/b15fe8a32309/1536.avif 1536w",
+    "webp": "/scf-img/b15fe8a32309/320.webp 320w, /scf-img/b15fe8a32309/720.webp 720w, /scf-img/b15fe8a32309/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
   "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p02_narr_story.png": {
-    "sig": "1779472139462.7136:3254208",
-    "hash": "ffebd5c734ba",
+    "sig": "1780396783086.9976:3396367",
+    "hash": "88bb6b8916c8",
     "fallback": "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p02_narr_story.png",
-    "avif": "/scf-img/ffebd5c734ba/320.avif 320w, /scf-img/ffebd5c734ba/720.avif 720w, /scf-img/ffebd5c734ba/1280.avif 1280w, /scf-img/ffebd5c734ba/1536.avif 1536w",
-    "webp": "/scf-img/ffebd5c734ba/320.webp 320w, /scf-img/ffebd5c734ba/720.webp 720w, /scf-img/ffebd5c734ba/1280.webp 1280w, /scf-img/ffebd5c734ba/1536.webp 1536w",
+    "avif": "/scf-img/88bb6b8916c8/320.avif 320w, /scf-img/88bb6b8916c8/720.avif 720w, /scf-img/88bb6b8916c8/1536.avif 1536w",
+    "webp": "/scf-img/88bb6b8916c8/320.webp 320w, /scf-img/88bb6b8916c8/720.webp 720w, /scf-img/88bb6b8916c8/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
   "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p03_narr_culture.png": {
-    "sig": "1779472139462.7136:3473278",
-    "hash": "183cf3f3b794",
+    "sig": "1780396776855.167:3368925",
+    "hash": "b31a85347bff",
     "fallback": "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p03_narr_culture.png",
-    "avif": "/scf-img/183cf3f3b794/320.avif 320w, /scf-img/183cf3f3b794/720.avif 720w, /scf-img/183cf3f3b794/1280.avif 1280w, /scf-img/183cf3f3b794/1536.avif 1536w",
-    "webp": "/scf-img/183cf3f3b794/320.webp 320w, /scf-img/183cf3f3b794/720.webp 720w, /scf-img/183cf3f3b794/1280.webp 1280w, /scf-img/183cf3f3b794/1536.webp 1536w",
+    "avif": "/scf-img/b31a85347bff/320.avif 320w, /scf-img/b31a85347bff/720.avif 720w, /scf-img/b31a85347bff/1536.avif 1536w",
+    "webp": "/scf-img/b31a85347bff/320.webp 320w, /scf-img/b31a85347bff/720.webp 720w, /scf-img/b31a85347bff/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
   "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p04_narr_street.png": {
-    "sig": "1779472139462.7136:3192335",
-    "hash": "552f79fa2d58",
+    "sig": "1780396495717.8257:2895438",
+    "hash": "a124134ad67a",
     "fallback": "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p04_narr_street.png",
-    "avif": "/scf-img/552f79fa2d58/320.avif 320w, /scf-img/552f79fa2d58/720.avif 720w, /scf-img/552f79fa2d58/1280.avif 1280w, /scf-img/552f79fa2d58/1536.avif 1536w",
-    "webp": "/scf-img/552f79fa2d58/320.webp 320w, /scf-img/552f79fa2d58/720.webp 720w, /scf-img/552f79fa2d58/1280.webp 1280w, /scf-img/552f79fa2d58/1536.webp 1536w",
+    "avif": "/scf-img/a124134ad67a/320.avif 320w, /scf-img/a124134ad67a/720.avif 720w, /scf-img/a124134ad67a/1536.avif 1536w",
+    "webp": "/scf-img/a124134ad67a/320.webp 320w, /scf-img/a124134ad67a/720.webp 720w, /scf-img/a124134ad67a/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
   "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p05_narr_ingredients.png": {
-    "sig": "1779472139463.2217:3247539",
-    "hash": "b4245184a9be",
+    "sig": "1780396411022.6194:3424796",
+    "hash": "c6713c03b6f2",
     "fallback": "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p05_narr_ingredients.png",
-    "avif": "/scf-img/b4245184a9be/320.avif 320w, /scf-img/b4245184a9be/720.avif 720w, /scf-img/b4245184a9be/1280.avif 1280w, /scf-img/b4245184a9be/1536.avif 1536w",
-    "webp": "/scf-img/b4245184a9be/320.webp 320w, /scf-img/b4245184a9be/720.webp 720w, /scf-img/b4245184a9be/1280.webp 1280w, /scf-img/b4245184a9be/1536.webp 1536w",
+    "avif": "/scf-img/c6713c03b6f2/320.avif 320w, /scf-img/c6713c03b6f2/720.avif 720w, /scf-img/c6713c03b6f2/1536.avif 1536w",
+    "webp": "/scf-img/c6713c03b6f2/320.webp 320w, /scf-img/c6713c03b6f2/720.webp 720w, /scf-img/c6713c03b6f2/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
   "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p06_recipe.png": {
-    "sig": "1779472139463.2217:3150931",
-    "hash": "341a63367419",
+    "sig": "1780396423876.1057:2910664",
+    "hash": "6581d03932f0",
     "fallback": "/asserts/mini-zine/cn/hainan/wenchang_jifan_mini_zine_p06_recipe.png",
-    "avif": "/scf-img/341a63367419/320.avif 320w, /scf-img/341a63367419/720.avif 720w, /scf-img/341a63367419/1280.avif 1280w, /scf-img/341a63367419/1536.avif 1536w",
-    "webp": "/scf-img/341a63367419/320.webp 320w, /scf-img/341a63367419/720.webp 720w, /scf-img/341a63367419/1280.webp 1280w, /scf-img/341a63367419/1536.webp 1536w",
+    "avif": "/scf-img/6581d03932f0/320.avif 320w, /scf-img/6581d03932f0/720.avif 720w, /scf-img/6581d03932f0/1536.avif 1536w",
+    "webp": "/scf-img/6581d03932f0/320.webp 320w, /scf-img/6581d03932f0/720.webp 720w, /scf-img/6581d03932f0/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
@@ -9869,6 +9873,124 @@
     "fallback": "/asserts/Street View/cn/hainan/chengmai/chengmai_fushan_coffee_day_wide.png",
     "avif": "/scf-img/ca4bf8ca7cc9/320.avif 320w, /scf-img/ca4bf8ca7cc9/720.avif 720w, /scf-img/ca4bf8ca7cc9/1536.avif 1536w",
     "webp": "/scf-img/ca4bf8ca7cc9/320.webp 320w, /scf-img/ca4bf8ca7cc9/720.webp 720w, /scf-img/ca4bf8ca7cc9/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
+    "sizesBanner": "(max-width: 1280px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p01_story_eating.png": {
+    "sig": "1780396202003.7163:2874597",
+    "hash": "988603ef8e9c",
+    "fallback": "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p01_story_eating.png",
+    "avif": "/scf-img/988603ef8e9c/320.avif 320w, /scf-img/988603ef8e9c/720.avif 720w, /scf-img/988603ef8e9c/1536.avif 1536w",
+    "webp": "/scf-img/988603ef8e9c/320.webp 320w, /scf-img/988603ef8e9c/720.webp 720w, /scf-img/988603ef8e9c/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p02_narr_story.png": {
+    "sig": "1780396206819.985:3116926",
+    "hash": "1b43f42625d0",
+    "fallback": "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p02_narr_story.png",
+    "avif": "/scf-img/1b43f42625d0/320.avif 320w, /scf-img/1b43f42625d0/720.avif 720w, /scf-img/1b43f42625d0/1536.avif 1536w",
+    "webp": "/scf-img/1b43f42625d0/320.webp 320w, /scf-img/1b43f42625d0/720.webp 720w, /scf-img/1b43f42625d0/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p03_narr_culture.png": {
+    "sig": "1780396213725.4521:3205622",
+    "hash": "c7a8fd402b44",
+    "fallback": "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p03_narr_culture.png",
+    "avif": "/scf-img/c7a8fd402b44/320.avif 320w, /scf-img/c7a8fd402b44/720.avif 720w, /scf-img/c7a8fd402b44/1536.avif 1536w",
+    "webp": "/scf-img/c7a8fd402b44/320.webp 320w, /scf-img/c7a8fd402b44/720.webp 720w, /scf-img/c7a8fd402b44/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p04_narr_street.png": {
+    "sig": "1780396450861.5234:2844156",
+    "hash": "8b4977968d97",
+    "fallback": "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p04_narr_street.png",
+    "avif": "/scf-img/8b4977968d97/320.avif 320w, /scf-img/8b4977968d97/720.avif 720w, /scf-img/8b4977968d97/1536.avif 1536w",
+    "webp": "/scf-img/8b4977968d97/320.webp 320w, /scf-img/8b4977968d97/720.webp 720w, /scf-img/8b4977968d97/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p05_narr_ingredients.png": {
+    "sig": "1780396469285.4607:3263526",
+    "hash": "0bd5fb713873",
+    "fallback": "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p05_narr_ingredients.png",
+    "avif": "/scf-img/0bd5fb713873/320.avif 320w, /scf-img/0bd5fb713873/720.avif 720w, /scf-img/0bd5fb713873/1536.avif 1536w",
+    "webp": "/scf-img/0bd5fb713873/320.webp 320w, /scf-img/0bd5fb713873/720.webp 720w, /scf-img/0bd5fb713873/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p06_recipe.png": {
+    "sig": "1780396462936.3494:2852045",
+    "hash": "d1d28b66dc27",
+    "fallback": "/asserts/mini-zine/us/chinatown_takeout_mini_zine_p06_recipe.png",
+    "avif": "/scf-img/d1d28b66dc27/320.avif 320w, /scf-img/d1d28b66dc27/720.avif 720w, /scf-img/d1d28b66dc27/1536.avif 1536w",
+    "webp": "/scf-img/d1d28b66dc27/320.webp 320w, /scf-img/d1d28b66dc27/720.webp 720w, /scf-img/d1d28b66dc27/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p01_story_eating.png": {
+    "sig": "1780451516483.6453:3191426",
+    "hash": "8fbc913327cf",
+    "fallback": "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p01_story_eating.png",
+    "avif": "/scf-img/8fbc913327cf/320.avif 320w, /scf-img/8fbc913327cf/720.avif 720w, /scf-img/8fbc913327cf/1536.avif 1536w",
+    "webp": "/scf-img/8fbc913327cf/320.webp 320w, /scf-img/8fbc913327cf/720.webp 720w, /scf-img/8fbc913327cf/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p02_narr_story.png": {
+    "sig": "1780451546057.46:3187306",
+    "hash": "b64033f5c16a",
+    "fallback": "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p02_narr_story.png",
+    "avif": "/scf-img/b64033f5c16a/320.avif 320w, /scf-img/b64033f5c16a/720.avif 720w, /scf-img/b64033f5c16a/1536.avif 1536w",
+    "webp": "/scf-img/b64033f5c16a/320.webp 320w, /scf-img/b64033f5c16a/720.webp 720w, /scf-img/b64033f5c16a/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p03_narr_culture.png": {
+    "sig": "1780451523362.943:3401964",
+    "hash": "40bfc7bafb99",
+    "fallback": "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p03_narr_culture.png",
+    "avif": "/scf-img/40bfc7bafb99/320.avif 320w, /scf-img/40bfc7bafb99/720.avif 720w, /scf-img/40bfc7bafb99/1536.avif 1536w",
+    "webp": "/scf-img/40bfc7bafb99/320.webp 320w, /scf-img/40bfc7bafb99/720.webp 720w, /scf-img/40bfc7bafb99/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p04_narr_street.png": {
+    "sig": "1780451773115.0298:2808704",
+    "hash": "c3ee3c609c53",
+    "fallback": "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p04_narr_street.png",
+    "avif": "/scf-img/c3ee3c609c53/320.avif 320w, /scf-img/c3ee3c609c53/720.avif 720w, /scf-img/c3ee3c609c53/1536.avif 1536w",
+    "webp": "/scf-img/c3ee3c609c53/320.webp 320w, /scf-img/c3ee3c609c53/720.webp 720w, /scf-img/c3ee3c609c53/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p05_narr_ingredients.png": {
+    "sig": "1780451760070.7207:3280314",
+    "hash": "a18174318342",
+    "fallback": "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p05_narr_ingredients.png",
+    "avif": "/scf-img/a18174318342/320.avif 320w, /scf-img/a18174318342/720.avif 720w, /scf-img/a18174318342/1536.avif 1536w",
+    "webp": "/scf-img/a18174318342/320.webp 320w, /scf-img/a18174318342/720.webp 720w, /scf-img/a18174318342/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p06_recipe.png": {
+    "sig": "1780451686968.2668:2653243",
+    "hash": "3d98db337a83",
+    "fallback": "/asserts/mini-zine/cn/hainan/lijia_zhutongfan_mini_zine_p06_recipe.png",
+    "avif": "/scf-img/3d98db337a83/320.avif 320w, /scf-img/3d98db337a83/720.avif 720w, /scf-img/3d98db337a83/1536.avif 1536w",
+    "webp": "/scf-img/3d98db337a83/320.webp 320w, /scf-img/3d98db337a83/720.webp 720w, /scf-img/3d98db337a83/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Street View/cn/hainan/wuzhishan/wuzhishan_li_village_day_wide.png": {
+    "sig": "1780453452018.792:3291428",
+    "hash": "ac4610125b0c",
+    "fallback": "/asserts/Street View/cn/hainan/wuzhishan/wuzhishan_li_village_day_wide.png",
+    "avif": "/scf-img/ac4610125b0c/320.avif 320w, /scf-img/ac4610125b0c/720.avif 720w, /scf-img/ac4610125b0c/1536.avif 1536w",
+    "webp": "/scf-img/ac4610125b0c/320.webp 320w, /scf-img/ac4610125b0c/720.webp 720w, /scf-img/ac4610125b0c/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px",
     "sizesBanner": "(max-width: 1280px) 100vw, 1280px"

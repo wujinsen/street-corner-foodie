@@ -257,7 +257,18 @@ const readerConfig = JSON.stringify({
           </div>
         </dialog>
 
-        <nav class="alt-zine-thumbs" aria-label="pages">
+        <div class="alt-zine-thumbs-row">
+          <button
+            type="button"
+            class="alt-zine-thumbs-nav"
+            data-zine-thumb-prev
+            aria-label={t(UI.zine.prev, lang)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+          <nav class="alt-zine-thumbs" aria-label="pages">
           {useVariantThumbs
             ? variants.map((v, i) => {
                 const thumb = zineImageUrl(zine, v.mode, false, 0);
@@ -309,7 +320,18 @@ const readerConfig = JSON.stringify({
                   </span>
                 </div>
               ))}
-        </nav>
+          </nav>
+          <button
+            type="button"
+            class="alt-zine-thumbs-nav"
+            data-zine-thumb-next
+            aria-label={t(UI.zine.next, lang)}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
         <p class="alt-zine-hint h-track">
           {t(UI.zine.keyboard, lang)} · {t(UI.zine.zoom_hint, lang)}
         </p>

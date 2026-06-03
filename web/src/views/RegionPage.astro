@@ -9,6 +9,7 @@ import GlassPosterCard from "../components/GlassPosterCard.astro";
 import GlassZineCard from "../components/GlassZineCard.astro";
 import GalleryFeaturedRail from "../components/GalleryFeaturedRail.astro";
 import GalleryFilterPillRow from "../components/GalleryFilterPillRow.astro";
+import GalleryFilterCollapse from "../components/GalleryFilterCollapse.astro";
 import CountryPicker from "../components/CountryPicker.astro";
 import GalleryPagination from "../components/GalleryPagination.astro";
 import GalleryRevealFooter from "../components/GalleryRevealFooter.astro";
@@ -44,6 +45,11 @@ const search = Astro.url.search;
 const posters = getRecipePosters(country, regionId);
 const flavors = region.flavors[lang] ?? region.flavors.zh;
 const activeFlavor = Astro.url.searchParams.get("flavor");
+const filterSummaryParts = [
+  t(c.name, lang),
+  t(region.name, lang),
+  activeFlavor ?? t(UI.filters.all, lang),
+];
 const posterPageSize = GALLERY_ZINE_PAGE_SIZE;
 const posterPageCount = pageCountFor(posters.length, posterPageSize);
 const posterPage = pageFromSearch(search, "page", posterPageCount);
@@ -161,6 +167,7 @@ const prefetchFeatured = featured
     </header>
 
     <div class="gallery-filter-bar tile xs gallery-tab-posters-only">
+      <GalleryFilterCollapse lang={lang} summaryParts={filterSummaryParts}>
       <div class="gallery-filter-inner">
       <div class="gallery-filter-rows">
         <div class="gallery-filter-row gallery-filter-row--country">
@@ -170,7 +177,7 @@ const prefetchFeatured = featured
       {countryRegions.length > 1 && (
           <GalleryFilterPillRow
             label={gt(GALLERY_UI.filter_province, lang)}
-            wrapOver={6}
+            wrapOver={20}
             class="gallery-province-pills"
           >
             {countryRegions.map((r) => (
@@ -189,6 +196,7 @@ const prefetchFeatured = featured
         </GalleryFilterPillRow>
       </div>
       </div>
+      </GalleryFilterCollapse>
     </div>
 
     <div class="gallery-tab-panel" data-tab="posters">

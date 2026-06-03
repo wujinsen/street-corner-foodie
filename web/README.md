@@ -1,6 +1,6 @@
 # web/ · Street Corner Foodie (Astro)
 
-> 街角食客 · Web 应用骨架。基于 [Astro 4](https://astro.build/)，零运行时框架依赖，TypeScript 严格模式。
+> 街角美食 · Web 应用骨架。基于 [Astro 4](https://astro.build/)，零运行时框架依赖，TypeScript 严格模式。
 
 ## 启动
 

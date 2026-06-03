@@ -1,7 +1,5 @@
 /** Home · bento tile image carousel (prev/next + dots + adjacent preload) */
 
-import { getVisibleBentoScope } from "./landing-bento-scope";
-
 const preloadedUrls = new Set<string>();
 
 function findTileRoot(carousel: HTMLElement): HTMLElement | null {
@@ -214,15 +212,4 @@ export function initLandingBentoCarousels(root: ParentNode = document): void {
   root.querySelectorAll<HTMLElement>("[data-landing-bento-carousel]").forEach(initCarousel);
 }
 
-if (typeof document !== "undefined") {
-  const bootVisibleCarousels = (): void => {
-    const visible = getVisibleBentoScope();
-    initLandingBentoCarousels(visible ?? document);
-  };
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bootVisibleCarousels, { once: true });
-  } else {
-    bootVisibleCarousels();
-  }
-}
+/* 初始化由 landing-bento-sync.ts 在面板可见性就绪后统一调用。 */

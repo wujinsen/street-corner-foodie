@@ -68,6 +68,12 @@ function shouldShowAllThumbs(config: ZineReaderConfig): boolean {
   return (config.variants?.length ?? 0) > 1;
 }
 
+function navFlags(config: ZineReaderConfig): { hasSpreadNav: boolean; hasVariants: boolean } {
+  const hasSpreadNav = !!config.hasNarrativeSpreads && (config.spreads?.length ?? 0) > 0;
+  const hasVariants = !hasSpreadNav && (config.variants?.length ?? 0) > 1;
+  return { hasSpreadNav, hasVariants };
+}
+
 function setSpreadImage(
   reader: HTMLElement,
   fullUrl: string,
@@ -134,6 +140,80 @@ function syncThumbs(
     item.hidden = !show;
     a.classList.toggle("active", lm === mode && lp === page);
   });
+  scrollActiveThumbIntoView(root);
+}
+
+function visibleThumbItems(root: HTMLElement): HTMLElement[] {
+  return [...root.querySelectorAll<HTMLElement>(".alt-zine-thumb-item")].filter((item) => !item.hidden);
+}
+
+function activeThumbIndex(root: HTMLElement): number {
+  return visibleThumbItems(root).findIndex((item) => item.querySelector(".thumb.active"));
+}
+
+function canNavigateByDelta(
+  root: HTMLElement,
+  delta: number,
+  mode: "story" | "recipe",
+  page: number,
+): boolean {
+  const items = visibleThumbItems(root);
+  const idx = activeThumbIndex(root);
+  if (idx >= 0) return !!items[idx + delta];
+
+  const configEl = root.querySelector<HTMLElement>("#zine-reader");
+  if (!(configEl instanceof HTMLElement)) return false;
+  let config: ZineReaderConfig;
+  try {
+    config = JSON.parse(configEl.dataset.config ?? "{}") as ZineReaderConfig;
+  } catch {
+    return false;
+  }
+  const { hasSpreadNav, hasVariants } = navFlags(config);
+  const total = pageTotalForMode(config, mode);
+
+  if (hasSpreadNav && (config.spreads?.length ?? 0) > 0) {
+    const spreadIdx = config.spreads!.findIndex((s) => s.mode === mode && s.page === page);
+    const nextIdx = spreadIdx + delta;
+    return nextIdx >= 0 && nextIdx < config.spreads!.length;
+  }
+
+  if (hasVariants) {
+    const variantIdx = variantIndex(config, mode);
+    const nextIdx = variantIdx + delta;
+    return nextIdx >= 0 && nextIdx < (config.variants?.length ?? 0);
+  }
+
+  const nextPage = page + delta;
+  return nextPage >= 0 && nextPage < total;
+}
+
+function scrollActiveThumbIntoView(root: HTMLElement): void {
+  const active = root.querySelector<HTMLElement>(".alt-zine-thumb-item:not([hidden]) .thumb.active");
+  active?.closest(".alt-zine-thumb-item")?.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest",
+    inline: "center",
+  });
+}
+
+function readActiveThumbState(
+  root: HTMLElement,
+): { mode: "story" | "recipe"; page: number } | null {
+  const active = root.querySelector<HTMLAnchorElement>(".alt-zine-thumb-item:not([hidden]) a.thumb.active[href]");
+  if (!active) return null;
+  return linkModePage(active.getAttribute("href") ?? "");
+}
+function syncThumbNavButtons(
+  root: HTMLElement,
+  mode: "story" | "recipe",
+  page: number,
+): void {
+  const prev = root.querySelector<HTMLButtonElement>("[data-zine-thumb-prev]");
+  const next = root.querySelector<HTMLButtonElement>("[data-zine-thumb-next]");
+  if (!prev && !next) return;
+  if (prev) prev.disabled = !canNavigateByDelta(root, -1, mode, page);
+  if (next) next.disabled = !canNavigateByDelta(root, 1, mode, page);
 }
 
 function updateDownloadButton(root: HTMLElement, url: string): void {
@@ -174,6 +254,7 @@ function applySpread(
 
   syncToolbar(root, mode);
   syncThumbs(root, mode, clamped, shouldShowAllThumbs(config));
+  syncThumbNavButtons(root, mode, clamped);
   updateDownloadButton(root, entry?.url ?? "");
 
   if (pushUrl) history.pushState(null, "", buildSpreadUrl(mode, clamped));
@@ -202,9 +283,70 @@ function applyVariant(
 
   syncToolbar(root, mode);
   syncThumbs(root, mode, page, shouldShowAllThumbs(config));
+  syncThumbNavButtons(root, mode, page);
   updateDownloadButton(root, entry?.url ?? "");
 
   if (pushUrl) history.pushState(null, "", buildSpreadUrl(mode, page));
+}
+
+function navigateByDelta(
+  root: HTMLElement,
+  config: ZineReaderConfig,
+  apply: (mode: "story" | "recipe", page: number) => void,
+  delta: number,
+): boolean {
+  const items = visibleThumbItems(root);
+  const idx = activeThumbIndex(root);
+
+  if (idx >= 0) {
+    const neighbor = items[idx + delta];
+    const href = neighbor?.querySelector<HTMLAnchorElement>("a[href]")?.getAttribute("href");
+    if (href) {
+      const { mode, page } = linkModePage(href);
+      apply(mode, page);
+      return true;
+    }
+    return false;
+  }
+
+  const state = readActiveThumbState(root) ?? readStateFromUrl();
+  const { mode, page } = state;
+  const total = pageTotalForMode(config, mode);
+  const { hasSpreadNav, hasVariants } = navFlags(config);
+
+  if (hasSpreadNav && (config.spreads?.length ?? 0) > 0) {
+    const spreads = config.spreads!;
+    const spreadIdx = spreads.findIndex((s) => s.mode === mode && s.page === page);
+    const nextIdx = spreadIdx + delta;
+    if (nextIdx >= 0 && nextIdx < spreads.length) {
+      const s = spreads[nextIdx]!;
+      apply(s.mode, s.page);
+      return true;
+    }
+  } else if (hasSpreadNav) {
+    const nextPage = page + delta;
+    if (nextPage >= 0 && nextPage < total) {
+      apply(mode, nextPage);
+      return true;
+    }
+  } else if (hasVariants) {
+    const list = config.variants!;
+    const variantIdx = variantIndex(config, mode);
+    const nextIdx = variantIdx + delta;
+    if (nextIdx >= 0 && nextIdx < list.length) {
+      const v = list[nextIdx]!;
+      apply(v.mode, page);
+      return true;
+    }
+  } else {
+    const nextPage = page + delta;
+    if (nextPage >= 0 && nextPage < total) {
+      apply(mode, nextPage);
+      return true;
+    }
+  }
+
+  return false;
 }
 
 /** Left rail: bounded scroll + wheel capture (page scroll steals wheel otherwise). */
@@ -246,8 +388,7 @@ export function initZineReader(root: HTMLElement): void {
     return;
   }
 
-  const hasSpreadNav = !!config.hasNarrativeSpreads && (config.spreads?.length ?? 0) > 0;
-  const hasVariants = !hasSpreadNav && (config.variants?.length ?? 0) > 1;
+  const { hasSpreadNav, hasVariants } = navFlags(config);
 
   const applyFromUrl = (pushUrl: boolean): void => {
     const { mode, page } = readStateFromUrl();
@@ -280,49 +421,25 @@ export function initZineReader(root: HTMLElement): void {
 
   window.addEventListener("popstate", () => applyFromUrl(false));
 
-  if (!config.hrefs?.prev || !config.hrefs?.next) return;
+  const applyNav = (mode: "story" | "recipe", page: number): void => {
+    applyVariant(root, reader, config, mode, page, true);
+  };
+
+  root.querySelector<HTMLButtonElement>("[data-zine-thumb-prev]")?.addEventListener("click", () => {
+    navigateByDelta(root, config, applyNav, -1);
+  });
+  root.querySelector<HTMLButtonElement>("[data-zine-thumb-next]")?.addEventListener("click", () => {
+    navigateByDelta(root, config, applyNav, 1);
+  });
 
   document.addEventListener("keydown", (e) => {
     const tag = document.activeElement?.tagName;
     if (tag === "INPUT" || tag === "TEXTAREA") return;
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
 
-    const { mode, page } = readStateFromUrl();
-    const total = pageTotalForMode(config, mode);
     const delta = e.key === "ArrowLeft" ? -1 : 1;
-
-    if (hasSpreadNav && (config.spreads?.length ?? 0) > 0) {
-      const spreads = config.spreads!;
-      const idx = spreads.findIndex((s) => s.mode === mode && s.page === page);
-      const nextIdx = idx + delta;
-      if (nextIdx >= 0 && nextIdx < spreads.length) {
-        e.preventDefault();
-        const s = spreads[nextIdx]!;
-        applySpread(root, reader, config, s.mode, s.page, true);
-        return;
-      }
-    } else if (hasSpreadNav) {
-      const nextPage = page + delta;
-      if (nextPage >= 0 && nextPage < total) {
-        e.preventDefault();
-        applySpread(root, reader, config, mode, nextPage, true);
-        return;
-      }
+    if (navigateByDelta(root, config, applyNav, delta)) {
+      e.preventDefault();
     }
-
-    if (hasVariants) {
-      const list = config.variants!;
-      const idx = variantIndex(config, mode);
-      const nextIdx = idx + delta;
-      if (nextIdx >= 0 && nextIdx < list.length) {
-        e.preventDefault();
-        const v = list[nextIdx]!;
-        applyVariant(root, reader, config, v.mode, page, true);
-        return;
-      }
-    }
-
-    e.preventDefault();
-    location.assign(e.key === "ArrowLeft" ? config.hrefs.prev : config.hrefs.next);
   });
 }

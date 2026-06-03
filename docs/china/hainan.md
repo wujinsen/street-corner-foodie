@@ -1,4 +1,4 @@
-﻿---
+---
 region: 海南
 region_en: Hainan
 country: 中国
@@ -11,7 +11,6 @@ cuisine_tags:
   - 椰香
   - 酸辣开胃
   - 海鲜
-# 国家画廊 · 顶栏背景（country-hero-scene）· 首页地图城市卡
 web_gallery_hero_landing: haikou_wanlv_night_wide.png
 web_gallery_hero_posters: haikou_jiari_haitan_night_wide.png
 web_gallery_hero_zines: haikou_fucheng_night_wide.png
@@ -170,6 +169,12 @@ mini_zine:
   - cn/hainan/lijia_zhutongfan_recipe_mini_zine.png
   - cn/hainan/lijia_zhutongfan_story_eating_mini_zine_no_char.png
   - cn/hainan/lijia_zhutongfan_recipe_mini_zine_no_char.png
+  - cn/hainan/lijia_zhutongfan_mini_zine_p01_story_eating.png
+  - cn/hainan/lijia_zhutongfan_mini_zine_p02_narr_story.png
+  - cn/hainan/lijia_zhutongfan_mini_zine_p03_narr_culture.png
+  - cn/hainan/lijia_zhutongfan_mini_zine_p04_narr_street.png
+  - cn/hainan/lijia_zhutongfan_mini_zine_p05_narr_ingredients.png
+  - cn/hainan/lijia_zhutongfan_mini_zine_p06_recipe.png
   - cn/hainan/wuse_fan_story_eating_mini_zine.png
   - cn/hainan/wuse_fan_recipe_mini_zine.png
   - cn/hainan/wuse_fan_story_eating_mini_zine_no_char.png
@@ -391,6 +396,7 @@ street_view_approved:
   - sanya/sanya_dadonghai_night_wide.png
   - wanning/wanning_riyue_bay_day_wide.png
   - wuzhishan/wuzhishan_rainforest_day_wide.png
+  - wuzhishan/wuzhishan_li_village_day_wide.png
   - lingshui/lingshui_fenjiezhou_day_wide.png
   - wenchang/wenchang_dongjiao_yelin_day_wide.png
   - chengmai/chengmai_fushan_coffee_day_wide.png
@@ -419,6 +425,20 @@ web_posters:
       zh: 文昌抱罗汤粉或干拌，汤头清鲜。
       en: Wenchang Baoluo noodles in clear broth.
       ja: 文昌抱羅の澄まし麺。
+  boluo_chaofan:
+    name:
+      zh: boluo chaofan
+      en: boluo chaofan
+      ja: boluo chaofan
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 海南
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
   changliu_suanfen:
     name:
       zh: 长流酸粉
@@ -459,66 +479,6 @@ web_posters:
       zh: 鲜果或椰奶炒成冰沙，加炼乳椰果，夜市消暑标配。
       en: Hainan night-market shaved ice with fruit and coconut.
       ja: 海南夜市のフルーツ炒冰。
-  chaoshan_shaguozhou:
-    name:
-      zh: 潮汕砂锅粥
-      en: Teochew Clay Pot Porridge
-      ja: 潮汕砂锅粥
-    tags:
-      zh:
-        - 蟹粥
-        - 夜宵
-      en:
-        - Crab porridge
-        - Late night
-      ja:
-        - 蟹粥
-        - 夜食
-    pin: 海南·海口
-    desc:
-      zh: 潮汕砂锅技法，海口长堤新港慢煲蟹粥、虾粥，浓稠鲜香。
-      en: Teochew-style clay pot porridge on Haikou's Changdi Road.
-      ja: 潮汕土鍋粥、海口長堤の蟹粥。
-  chunlin_yuebing:
-    name:
-      zh: 春临月饼
-      en: Chunlin Mooncake
-      ja: 春臨月餅
-    tags:
-      zh:
-        - 酥皮
-        - 中秋
-      en:
-        - Flaky pastry
-        - Mid-Autumn
-      ja:
-        - サクサク
-        - 中秋
-    pin: 海南·临高
-    desc:
-      zh: 临高老字号酥皮蛋蓉椰丝月饼，中秋伴手礼。
-      en: Lingao heritage flaky mooncakes with coconut and egg.
-      ja: 臨高の春臨月餅、ココナッツ入り。
-  jishiteng_guozai:
-    name:
-      zh: 鸡屎藤粿仔
-      en: Jishiteng Herb Rice Balls
-      ja: 雞屎藤粿仔
-    tags:
-      zh:
-        - 草本
-        - 糖水
-      en:
-        - Herbal
-        - Sweet soup
-      ja:
-        - ハーブ
-        - 甘い汁
-    pin: 海南·海口
-    desc:
-      zh: 鸡屎藤叶与糯米粉制小团，煮入红糖水或椰奶，清明与夏日消暑甜品。
-      en: Glutinous balls with jishiteng leaves in brown sugar or coconut milk.
-      ja: 雞屎藤の葉と糯米の小団子、红糖水やココナッツミルクで。
   danzhou_milan:
     name:
       zh: 儋州米烂
@@ -679,6 +639,20 @@ web_posters:
       zh: 与文昌鸡一脉，鸡油饭 + 白切鸡 + 蘸料，简餐店普及。
       en: Chicken-oil rice with poached chicken and dipping sauces.
       ja: 文昌鶏系の鶏油飯と白切鶏。
+  hainan_shaoya:
+    name:
+      zh: hainan shaoya
+      en: hainan shaoya
+      ja: hainan shaoya
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 海南
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
   hainan_yanfen:
     name:
       zh: 海南腌粉
@@ -699,26 +673,6 @@ web_posters:
       zh: 干拌腌粉，酸笋、腌菜、炸酥，夏季开胃。
       en: Cold tossed noodles with pickles and crispy bits.
       ja: 酸っぱい干拌い麺。
-  hainan_tanshao_kafei:
-    name:
-      zh: 海南炭烧咖啡
-      en: Hainan Charcoal-Roasted Coffee
-      ja: 海南炭焼コーヒー
-    tags:
-      zh:
-        - 炭焙
-        - 岛西
-      en:
-        - Charcoal roast
-        - West Hainan
-      ja:
-        - 炭焙
-        - 島西
-    pin: 海南·岛西
-    desc:
-      zh: 炭火慢焙本地咖啡豆，焦香醇厚，岛西小馆代表做法。
-      en: Local beans slow-roasted over charcoal, rich and smoky.
-      ja: 地元豆を炭火で深煎り、コクと焦香が特徴。
   hele_xie:
     name:
       zh: 和乐蟹
@@ -799,6 +753,20 @@ web_posters:
       zh: 琼海加积鸭，肥而不腻，白切名物。
       en: 'Qionghai Jiaji duck, classic poached.'
       ja: 琼海加積鴨、白切。
+  jian_haikou_majiao:
+    name:
+      zh: jian haikou majiao
+      en: jian haikou majiao
+      ja: jian haikou majiao
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 海南
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
   jiazi_fen:
     name:
       zh: 甲子粉
@@ -836,7 +804,7 @@ web_posters:
         - 点心
     pin: 海南·海口
     desc:
-      zh: 早茶下午茶，主饮龙井或铁观音，配点心、肠粉、凤爪与糕点。
+      zh: 早茶下午茶，配点心、肠粉、凤爪与糕点。
       en: Hainan tea culture with dim sum and pastries.
       ja: 海南の早茶文化。
   latang_fan:
@@ -859,6 +827,20 @@ web_posters:
       zh: 水巷口传统早餐，辣汤配猪杂猪血浇饭，胡椒浓香暖胃。
       en: Shuixiangkou breakfast — spicy offal soup over rice.
       ja: 水巷口の朝食、辛いスープ丼。
+  lijia_zhutongfan:
+    name:
+      zh: lijia zhutongfan
+      en: lijia zhutongfan
+      ja: lijia zhutongfan
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 海南
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
   lingao_fen:
     name:
       zh: 临高粉
@@ -939,26 +921,6 @@ web_posters:
       zh: 卤香浓郁，五花肉卤制切片，卤汁浇饭。
       en: Savory braised pork over rice.
       ja: 香ばしい煮込み豚肉丼。
-  nanhai_yuanyang_yu:
-    name:
-      zh: 南海远洋渔获
-      en: South China Sea Catch
-      ja: 南海の漁獲
-    tags:
-      zh:
-        - 海鲜
-        - 舌尖
-      en:
-        - Seafood
-        - Documentary
-      ja:
-        - 海鮮
-        - ドキュメンタリー
-    pin: 海南
-    desc:
-      zh: 《舌尖上的中国》第一季深海渔获意象，鸳鸯鱼等多种海鱼同盘。
-      en: Deep-sea catch platter inspired by A Bite of China S1.
-      ja: 『舌の先の中国』シーズン1の深海漁獲イメージ。
   majiao_yuwan_tang:
     name:
       zh: 马鲛鱼丸汤
@@ -979,6 +941,20 @@ web_posters:
       zh: 铺前马鲛制丸，汤清味鲜，鱼丸弹牙，家常配汤。
       en: Wenchang mackerel balls in clear fragrant broth.
       ja: 文昌のサワラ団子、澄んだスープ。
+  nanhai_yuanyang_yu:
+    name:
+      zh: nanhai yuanyang yu
+      en: nanhai yuanyang yu
+      ja: nanhai yuanyang yu
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 海南
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
   niunan_fan:
     name:
       zh: 牛腩饭
@@ -1402,7 +1378,7 @@ web_posters:
 
 | 名菜 | 产地/特色 | 常见吃法 |
 |------|-----------|----------|
-| **文昌鸡** | 文昌，皮薄肉嫩、皮黄骨酥；**明代得名**（方志献鸡传说），非宋代起菜 | 白切蘸姜葱油或青桔酱油；配鸡油饭为「文昌鸡饭」 |
+| **文昌鸡** | 文昌**潭牛天赐村**等地散养，皮薄肉嫩、皮黄骨酥；方志载**明代得名**（献鸡传说）；**相传**本地野枣极甜，鸡啄食久则肉质滑嫩（与文献「啄食榕籽、野果」并行表述） | 白切蘸姜葱油或青桔酱油；配鸡油饭为「文昌鸡饭」 |
 | **加积鸭** | 琼海加积，肥而不腻 | 白切、烤鸭、老鸭汤 |
 | **东山羊** | 万宁东山，膻味轻、肉质细 | 清汤、红烧、火锅 |
 | **和乐蟹** | 万宁和乐，膏满肉鲜 | 清蒸最能体现本味 |
@@ -1466,7 +1442,7 @@ web_posters:
 | **陵水酸粉** | 酸辣开胃，配鱼酥、腌菜、黄灯笼辣椒 |
 | **后安粉** | 万宁后安，汤粉，常配猪杂、油条 |
 | **儋州米烂** | 儋州，米丝配多种卤料、小菜 |
-| **椰子饭** | 糯米或香米装入嫩椰蒸熟，椰香渗入米粒（zine `yezi_fan` ✅ p01–p06 · `contemporary` · 与海报同代） |
+| **椰子饭** | 糯米装入嫩椰蒸熟，仅糯米与椰子，椰香渗入米粒（海报 **2 料** · zine `yezi_fan` ✅ p01–p06 · `contemporary`） |
 
 ---
 
@@ -1506,7 +1482,7 @@ web_posters:
 
 | 名称 | 特点 | slug | mini-zine |
 |------|------|------|-----------|
-| **黎家竹筒饭** | 黎族，糯米与肉类装入竹筒炭烤，竹香渗入饭粒 | `lijia_zhutongfan` | ✅ 四套 + 海报 · `ethnic` |
+| **黎家竹筒饭** | 黎族，**山兰米**与**猪肉粒**装入新鲜青竹，芭蕉叶封口**炭火慢烤**，竹香渗入饭粒；配饮**山兰酒**；远行/打猎/待客传统饭食 | `lijia_zhutongfan` | ✅ **p01–p06** · `ethnic` · 2026-06 资料修正重做 |
 | **五色饭** | 黎、苗族节庆，植物染色的五彩糯米饭 | `wuse_fan` | ✅ 四套 · `ethnic` |
 | **疍家鱼汤** | 沿海疍民，鲜鱼快煮清汤，配蘸料，突出本味 | `danjia_yutang` | ✅ 四套 · `qing` |
 | **山兰酒** | 黎族，糯米发酵米酒，节庆饮品 | `shanlan_jiu` | ✅ 四套 · `ethnic` |
@@ -1608,14 +1584,14 @@ web_posters:
 | **海南烧鸭** | `hainan_shaoya_poster.png` | — · **`contemporary`** · 4 女 · 5 料横木牌 ✅ · boluo **清新风** · 2026-05-19 首绘（仅有人物·禁穿模） |
 | 琼山猪血汤 | `qiongshan_zhuxuetang_poster.png` | `qiongshan_zhuxuetang_poster_no_char.png` |
 | 演丰咸水鸭 | `yanfeng_xianshuiya_poster.png` | `yanfeng_xianshuiya_poster_no_char.png` |
-| 椰子饭 | `yezi_fan_poster.png` | — · **`contemporary`** · 4 女 · 5 料横木牌 ✅ · boluo 清晰风 · 2026-05-19 重绘（仅有人物） |
+| 椰子饭 | `yezi_fan_poster.png` | — · **`contemporary`** · **3** 女 · **2** 料横木牌 ✅ · boluo **清新风** · **纯料**（糯米+椰子）· 2026-05-19 重绘 |
 | 南海远洋渔获（舌尖 S1E1） | `nanhai_yuanyang_yu_poster.png` | `nanhai_yuanyang_yu_poster_no_char.png` | mini-zine ✅ 四套 |
 
 **定稿（南海远洋渔获 · 舌尖 S1E1）**：`republic` qipao/changshan · 4 女 · 深海渔获拼盘 · 竖牌「海南味道」。
 
 **定稿（椰子鸡 · 2026-05-19 重绘）**：`contemporary` 度假围裙 · **4 女** · 椰壳火锅居中（倒椰青/取椰肉/舀汤/端蘸料）· 底行 5 料横木牌（椰青·文昌鸡肉·椰肉·沙姜·青金桔酱油）· 顶题棕刷字奶油描边 · 竖牌「海南味道」· **boluo 清晰风** · **仅** `yezi_ji_poster.png` · 海报 `contemporary`；zine **p01–p06** `yezi_ji_mini_zine_p*.png`（池 `song`·`contemporary` → `sum(ord)%2`=`contemporary`，与海报同代）。
 
-**定稿（椰子饭 · 2026-05-19 重绘）**：`contemporary` 度假围裙 · **4 女** · 开椰盛饭整椰居中（开椰/盛饭/加椰肉/端椰）· 底行 5 料横木牌（糯米·椰青·椰肉·炼乳·红枣）· 顶题棕刷字奶油描边 · 竖牌「海南味道」· **boluo 清晰风** · **仅** `yezi_fan_poster.png` · zine **p01–p06** `yezi_fan_mini_zine_p*.png` · 同代 `contemporary`。
+**定稿（椰子饭 · 2026-05-19 boluo 清新风 · 纯料重绘）**：`contemporary` 度假围裙 · **3 女** · **椰壳蒸饭灶** 三角站位（开椰填米/扣壳上灶/揭盖盛饭，**非** 2+2）· 主菜：**整颗嫩椰** 剖开盛满晶莹糯米饭居中 · 底行 **仅 2** 料横木牌（**糯米 · 椰子**；禁炼乳/红枣/椰青）· 顶题 **椰子饭** · 竖牌 **海南味道** · 对白 ×3 · 禁穿模 · **仅** `yezi_fan_poster.png` · zine p01–p06 仍为 `contemporary`（海报料表以本行为准）。
 
 **定稿（猪脚饭 · 2026-05-19 重绘）**：`contemporary` 卫衣围裙 · **4 女** · 猪脚盖饭大盘居中（浇汁/举猪脚/端酸菜/递卤蛋）· 底行 5 料横木牌（猪脚·卤蛋·酸菜·卤汁·辣椒酱）· 顶题棕刷字奶油描边 · 竖牌「海南味道」· **boluo 清晰风** · **仅** `zhujiao_fan_poster.png` · 与 zine 同代 `contemporary`。
 
@@ -1655,7 +1631,9 @@ web_posters:
 
 **定稿（菠萝炒饭 · boluo 清新风主锚）**：`ming` · **4 女** · 菠萝壳咖喱炒饭 · 5 料横木牌 · **`boluo_chaofan_poster.png` = 全库清新风金标准**（明亮通透、户外木桌、棕刷顶题、横木牌、四角 chibi）；`_no_char` 仅辅参考光影 · 竖牌「海南味道」。
 
-**定稿（文昌鸡饭 · 2026-05-19 boluo 清新风）**：`song` 宋服 · **5 女** · 白切文昌鸡+鸡油饭居中 · 底行 5 料横木牌（姜葱油·辣椒酱·青金桔·鸡油饭·黄瓜）· 画风对齐 `boluo_chaofan_poster.png` · 顶题棕刷奶油描边 · 竖牌「海南味道」· 对白体 ×5 · **仅** `wenchang_jifan_poster.png` · 与 zine 同代 `song`（服饰宋、源流明代得名）。
+**定稿（文昌鸡饭 · 2026-05-19 boluo 清新风）**：`song` 宋服 · **5 女** · 白切文昌鸡+鸡油饭居中 · 底行 5 料横木牌（姜葱油·辣椒酱·青金桔·鸡油饭·黄瓜）· 画风对齐 `boluo_chaofan_poster.png` · 顶题棕刷奶油描边 · 竖牌「海南味道」· 对白体 ×5 · **仅** `wenchang_jifan_poster.png` · 与 zine 同代 `song`（服饰宋；**源流**潭牛天赐村散养 + 方志明代得名 + **相传**野枣极甜）。
+
+**定稿（文昌鸡饭 zine · 2026-06-02 资料修正重做 · p01–p06）**：删除旧版 p03「千年文昌」、未核「邢宥献鸡」及 p02/p03 仅写「椰林散养」之误；现以**潭牛天赐村散养**、文献**榕籽/野果** + **相传本地野枣极甜**（老师口述乡土说法，与央广/CCTV 榕籽记载并行）、**白切三蘸+鸡油饭**为主轴 · `song` · 全员女性 3D chibi · `cn/hainan/wenchang_jifan_mini_zine_p*.png` · p05：文昌鸡·海南香米·姜葱·青金桔·花生油·榕籽·野枣(相传)·两款蘸料。
 
 **定稿（海南鸡饭 · 2026-05-19 重绘）**：`song` 宋服 · **5 女** · 白切鸡+鸡油饭居中 · 底行 5 料横木牌（姜葱油·辣椒酱·青金桔·鸡油饭·黄瓜）· 顶题棕刷字奶油描边 · 竖牌「海南味道」· **boluo 清晰风** · **仅** `hainan_jifan_poster.png` · 与 zine 同代 `song`。
 
@@ -1665,7 +1643,9 @@ web_posters:
 
 **定稿（煎海口马鲛鱼 · 2026-05-21 重绘）**：`qing` changshan · 3 女 · 西门大排档香煎厚片 · 底行 4 料横木牌（马鲛鱼片·姜丝·蒜茸·花生油）· 竖牌「海南味道」· **仅** `jian_haikou_majiao_poster.png` · 与 zine 同代 `qing`。
 
-**定稿（黎家竹筒饭 · 2026-05-21 重绘）**：`ethnic` 黎族盛装 · 4 女 · 山村炭烤竹筒饭居中 · 底行 4 料横木牌（糯米·腊肉·鲜竹筒·山法酱）· 竖牌「海南味道」· **仅** `lijia_zhutongfan_poster.png`（禁止 `_no_char`）· 与 zine 同代 `ethnic`。
+**定稿（黎家竹筒饭 · 2026-05-21 重绘）**：`ethnic` 黎族盛装 · 4 女 · 山村炭烤竹筒饭居中 · 底行 4 料横木牌（糯米·腊肉·鲜竹筒·山法酱）· 竖牌「海南味道」· **仅** `lijia_zhutongfan_poster.png`（禁止 `_no_char`）· 与 zine 同代 `ethnic`。（**注**：海报料签为展示简化；**zine 定稿以文献为准**见下。）
+
+**定稿（黎家竹筒饭 zine · 2026-06 资料修正重做 · p01–p06）**：修正旧版泛写「糯米+腊肉+山法酱」——文献主材为**山兰米**、**猪肉粒**（《海南省人民政府网》特产稿、新民晚报黎族采访稿）；**芭蕉叶/布条封口**炭火慢翻；传统配饮**山兰酒**（非「山法酱」，后者无可靠出处）；民谚「一家香饭熟，百户闻竹香」· `ethnic` 全员女性 3D chibi · `cn/hainan/lijia_zhutongfan_mini_zine_p*.png` · p05：山兰米·猪肉·新鲜青竹·芭蕉叶·猪油·五香粉·山兰酒(配饮)。
 
 ### 2026-05 补全（zine 已有 · 海报独立定代）
 
@@ -1673,7 +1653,7 @@ web_posters:
 |------|------|------|------|
 | 海南粉 / 腌粉 / 抱罗粉 / 老爸茶 / 和乐蟹 / 演丰咸水鸭 | `republic` | 4～5 女 | 海南味道 |
 | 琼山猪血汤 / 海口炸炸 / 砂锅粥 | `qing` | 4～5 女 | 海南味道 |
-| 海口鱼煲 / 儋州米烂 / 东山羊 / 加积鸭 / 椰子饭 | `contemporary` | 4～5 女 | 海南味道 |
+| 海口鱼煲 / 儋州米烂 / 东山羊 / 加积鸭 / 椰子饭 | `contemporary` | 3～5 女（椰子饭海报 **3** 女 · **2** 料） | 海南味道 |
 
 路径：`asserts/Gourmet recipe2/cn/hainan/`。无人物版版式见 `qingbuliang_poster_no_char.png` 金标准。
 
@@ -1759,7 +1739,7 @@ web_posters:
 | 炒冰 | `chaobing_story_eating_mini_zine.png` | `chaobing_recipe_mini_zine.png` | `chaobing_story_eating_mini_zine_no_char.png` | `chaobing_recipe_mini_zine_no_char.png` |
 | 定安粽子 | `dingan_zongzi_story_eating_mini_zine.png` | `dingan_zongzi_recipe_mini_zine.png` | `dingan_zongzi_story_eating_mini_zine_no_char.png` | `dingan_zongzi_recipe_mini_zine_no_char.png` |
 | 临高粉 | `lingao_fen_story_eating_mini_zine.png` | `lingao_fen_recipe_mini_zine.png` | `lingao_fen_story_eating_mini_zine_no_char.png` | `lingao_fen_recipe_mini_zine_no_char.png` |
-| 黎家竹筒饭 | `cn/hainan/lijia_zhutongfan_story_eating_mini_zine.png` | `cn/hainan/lijia_zhutongfan_recipe_mini_zine.png` | `cn/hainan/lijia_zhutongfan_story_eating_mini_zine_no_char.png` | `cn/hainan/lijia_zhutongfan_recipe_mini_zine_no_char.png` |
+| 黎家竹筒饭 | `cn/hainan/lijia_zhutongfan_mini_zine_p01_story_eating.png` | `cn/hainan/lijia_zhutongfan_mini_zine_p06_recipe.png` | —（无人物版已废除） | — |
 | 五色饭 | `cn/hainan/wuse_fan_story_eating_mini_zine.png` | `cn/hainan/wuse_fan_recipe_mini_zine.png` | `cn/hainan/wuse_fan_story_eating_mini_zine_no_char.png` | `cn/hainan/wuse_fan_recipe_mini_zine_no_char.png` |
 | 疍家鱼汤 | `cn/hainan/danjia_yutang_story_eating_mini_zine.png` | `cn/hainan/danjia_yutang_recipe_mini_zine.png` | `cn/hainan/danjia_yutang_story_eating_mini_zine_no_char.png` | `cn/hainan/danjia_yutang_recipe_mini_zine_no_char.png` |
 | 山兰酒 | `cn/hainan/shanlan_jiu_story_eating_mini_zine.png` | `cn/hainan/shanlan_jiu_recipe_mini_zine.png` | `cn/hainan/shanlan_jiu_story_eating_mini_zine_no_char.png` | `cn/hainan/shanlan_jiu_recipe_mini_zine_no_char.png` |
@@ -1799,6 +1779,7 @@ web_posters:
 | 鱼片粥 | `yupian_zhou_mini_zine_p02_narr_story.png` | `yupian_zhou_mini_zine_p03_narr_culture.png` | `yupian_zhou_mini_zine_p04_narr_street.png` | `yupian_zhou_mini_zine_p05_narr_ingredients.png` |
 | 海南鸡饭 | `hainan_jifan_mini_zine_p02_narr_story.png` | `hainan_jifan_mini_zine_p03_narr_culture.png` | `hainan_jifan_mini_zine_p04_narr_street.png` | `hainan_jifan_mini_zine_p05_narr_ingredients.png` |
 | 文昌鸡饭 | `wenchang_jifan_mini_zine_p02_narr_story.png` | `wenchang_jifan_mini_zine_p03_narr_culture.png` | `wenchang_jifan_mini_zine_p04_narr_street.png` | `wenchang_jifan_mini_zine_p05_narr_ingredients.png` |
+| 黎家竹筒饭 | `lijia_zhutongfan_mini_zine_p02_narr_story.png` | `lijia_zhutongfan_mini_zine_p03_narr_culture.png` | `lijia_zhutongfan_mini_zine_p04_narr_street.png` | `lijia_zhutongfan_mini_zine_p05_narr_ingredients.png` |
 | 春临月饼 | `chunlin_yuebing_mini_zine_p02_narr_story.png` | `chunlin_yuebing_mini_zine_p03_narr_culture.png` | `chunlin_yuebing_mini_zine_p04_narr_street.png` | `chunlin_yuebing_mini_zine_p05_narr_ingredients.png` |
 | 鸡屎藤粿仔 | `jishiteng_guozai_mini_zine_p02_narr_story.png` | `jishiteng_guozai_mini_zine_p03_narr_culture.png` | `jishiteng_guozai_mini_zine_p04_narr_street.png` | `jishiteng_guozai_mini_zine_p05_narr_ingredients.png` |
 | 清补凉 | `qingbuliang_mini_zine_p02_narr_story.png` | `qingbuliang_mini_zine_p03_narr_culture.png` | `qingbuliang_mini_zine_p04_narr_street.png` | `qingbuliang_mini_zine_p05_narr_ingredients.png` |
@@ -1857,6 +1838,7 @@ web_posters:
 | 场景 | 白天 wide | 夜景 wide | 方图 standard |
 |------|-----------|-----------|---------------|
 | 热带雨林风景区 | `wuzhishan_rainforest_day_wide.png` ✅ | 待扩 | 待扩 |
+| 黎族村寨 | `wuzhishan_li_village_day_wide.png` ✅ | 待扩 | 待扩 |
 
 入库目录：`asserts/Street View/cn/hainan/wuzhishan/` · 原型 → [hainan-wuzhishan-street-prototypes.md](hainan-wuzhishan-street-prototypes.md)
 

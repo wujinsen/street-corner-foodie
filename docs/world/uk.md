@@ -224,7 +224,7 @@ web_posters: {}
 |------|------|
 | geo | `uk_` · `uk_london_*` · `uk_edinburgh_*` |
 | 文档 | 仅更新 **本文** `uk.md`；勿写入 `hainan.md` / `japan.md` |
-| 品牌 | 对外 **Street Corner Foodie / 街角食客**（见 [BRAND.md](../../BRAND.md)） |
+| 品牌 | 对外 **Street Corner Foodie / 街角美食**（见 [BRAND.md](../../BRAND.md)） |
 
 ---
 

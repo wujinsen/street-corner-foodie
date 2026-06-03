@@ -1,7 +1,8 @@
 # Street Corner Foodie · Web 部署
 
 > 静态站点（`output: "static"`）。产物：`web/dist/`。  
-> **推荐**：Cloudflare Pages + GitHub Actions（[deploy-cloudflare.yml](../../.github/workflows/deploy-cloudflare.yml)）。
+> **推荐**：Cloudflare Pages + GitHub Actions（[deploy-cloudflare.yml](../../.github/workflows/deploy-cloudflare.yml)）。  
+> **图片约 6 GB、不进 Git**：见 **[DEPLOY-R2.md](./DEPLOY-R2.md)**（R2 + 瘦 Pages 分包）。
 
 ## 正式域名
 
@@ -24,6 +25,13 @@ npm run images:quick   # 或 npm run images（全尺寸）
 SITE_URL=https://streetcornerfoodie.com npm run build
 npm run preview
 ```
+
+### 预览 `dist` 时注意
+
+- **不要**用资源管理器双击 `dist/index.html`（`file://` 下模块脚本与气温 API 均无法正常工作）。
+- **不要**用 Live Server 把仓库根目录当站点根（`/_astro/*.js` 会 404）。
+- **请用** `npm run preview`（在 `web/` 目录），由 Astro 以 `http://localhost:4321` 正确托管 `dist/`。
+- 首页气温卡片依赖联网访问 [Open-Meteo](https://open-meteo.com/)（浏览器 `fetch`）。
 
 ## Cloudflare Pages · 一次性设置
 

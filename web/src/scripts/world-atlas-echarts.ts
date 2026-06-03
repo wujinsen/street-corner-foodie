@@ -497,41 +497,101 @@ interface LandingWorldFrame {
   aspectScale: number;
 }
 
+/** 与 landing-city-zine-sync · CSS 单列断点一致 */
+const LANDING_STACK_MQ = "(max-width: 1024px)";
+
+/** 仅视口 ≤1024（CSS 单列）· 勿用 host 宽度（桌面双栏左列常 <1025 但仍走 fixed 地图） */
+function isLandingStackLayout(_host?: HTMLElement): boolean {
+  return typeof window !== "undefined" && window.matchMedia(LANDING_STACK_MQ).matches;
+}
+
+/** Landing stage pixels · stack 用 getBoundingClientRect，避免 clientWidth=0 时绘区偏一侧 */
+function landingStageSize(host?: HTMLElement): { w: number; h: number } {
+  const shell = host?.closest(".landing-world-atlas") as HTMLElement | null;
+  const hostRect = host?.getBoundingClientRect();
+  const shellRect = shell?.getBoundingClientRect();
+  const stack = isLandingStackLayout(host);
+  const w = stack
+    ? Math.max(shellRect?.width ?? 0, hostRect?.width ?? 0, host?.clientWidth ?? 0)
+    : Math.max(host?.clientWidth ?? 0, hostRect?.width ?? 0, 320);
+  const h = stack
+    ? Math.max(host?.clientHeight ?? 0, hostRect?.height ?? 0, 1)
+    : Math.max(
+        host?.clientHeight ?? 0,
+        hostRect?.height ?? 0,
+        shellRect?.height ?? 0,
+        260,
+      );
+  return {
+    w: Math.max(w, stack ? 280 : 320),
+    h: Math.max(h, stack ? 120 : 1),
+  };
+}
+
 /**
- * Landing world · Tokyo pin at poster-side edge; Alaska visible on the left.
+ * Landing world · mobile: centered in stage; desktop: Tokyo near poster column (legacy).
  */
+function landingStackAspect(host?: HTMLElement, fallbackW = 1, fallbackH = 1): number {
+  if (!host) return fallbackW / fallbackH;
+  const rect = host.getBoundingClientRect();
+  const rw = Math.max(rect.width, host.clientWidth, 1);
+  const rh = Math.max(rect.height, host.clientHeight, 1);
+  return rw / rh;
+}
+
 function landingWorldFrame(
   payload: WorldAtlasPayload,
   host?: HTMLElement,
 ): LandingWorldFrame {
-  const w = host?.clientWidth ?? 720;
-  const h = Math.max(host?.clientHeight ?? 260, 1);
-  const aspect = w / h;
+  const { w, h } = landingStageSize(host);
+  const stackLayout = isLandingStackLayout(host);
+  const aspect = stackLayout ? landingStackAspect(host, w, h) : w / h;
   const wide = aspect >= 1.55;
   const tokyo = tokyoAnchorFromPayload(payload.scenes);
   const alaska = LANDING_ALASKA_GEO;
-  const tokyoScreenX = readLandingTokyoScreenX(host);
+  const tokyoScreenX = stackLayout ? 50 : readLandingTokyoScreenX(host);
   const pacificSpan = shortLngSpan(alaska[0], tokyo[0]) + 8;
 
-  const center: AtlasCoord = [
-    tokyo[0],
-    alaska[1] * 0.24 + tokyo[1] * 0.76 - 2,
-  ];
+  const center: AtlasCoord = stackLayout
+    ? [
+        pacificLngMid(alaska[0], tokyo[0]),
+        alaska[1] * 0.32 + tokyo[1] * 0.68 - 3,
+      ]
+    : [tokyo[0], alaska[1] * 0.24 + tokyo[1] * 0.76 - 2];
   const zoom =
     payload.initialZoom *
-    (wide
-      ? 1.78 + Math.min(0.22, pacificSpan / 100) - Math.min(0.06, (aspect - 1.55) * 0.04)
-      : 1.68);
-  const sizePct = wide
-    ? Math.round(106 + Math.min(14, (aspect - 1.55) * 10))
-    : 102;
+    (stackLayout
+      ? 1.42 + Math.min(0.12, pacificSpan / 120)
+      : wide
+        ? 1.78 + Math.min(0.22, pacificSpan / 100) - Math.min(0.06, (aspect - 1.55) * 0.04)
+        : 1.68);
+  /** Stack · wide short band: geo layout is height-limited — land hugs left unless we shift X + enlarge layoutSize. */
+  const stackWide = stackLayout && aspect >= 1.25;
+  const sizePct = stackLayout
+    ? stackWide
+      ? Math.round(155 + aspect * 28)
+      : Math.round(122 + Math.min(10, Math.max(0, 0.85 - aspect) * 18))
+    : wide
+      ? Math.round(106 + Math.min(14, (aspect - 1.55) * 10))
+      : 102;
+  const stackLayoutCenterX = stackWide
+    ? 50 + Math.min(32, Math.max(0, (aspect - 1) * 30))
+    : 50;
 
   return {
     center,
     zoom,
-    layoutCenter: [`${tokyoScreenX}%`, "46%"],
+    layoutCenter: stackLayout
+      ? [`${stackLayoutCenterX}%`, "50%"]
+      : [`${tokyoScreenX}%`, "46%"],
     layoutSize: `${sizePct}%`,
-    aspectScale: wide ? 0.73 : 0.77,
+    aspectScale: stackLayout
+      ? stackWide
+        ? Math.min(0.95, 0.85 + aspect * 0.04)
+        : 0.82
+      : wide
+        ? 0.73
+        : 0.77,
   };
 }
 
@@ -1122,12 +1182,26 @@ export function createWorldAtlasChart(
 
   const onLandingLayout = (): void => {
     if (!landing || state.view !== "world" || !chart) return;
+    if (isLandingStackLayout(host)) {
+      landingViewCustomized = false;
+    }
     requestAnimationFrame(() => {
       chart?.resize();
-      syncCards();
+      render();
     });
   };
   window.addEventListener("scf:landing-map-layout", onLandingLayout);
+
+  const stackMq = window.matchMedia(LANDING_STACK_MQ);
+  const onStackMqChange = (): void => {
+    if (!landing || state.view !== "world" || !chart) return;
+    landingViewCustomized = false;
+    requestAnimationFrame(() => {
+      chart?.resize();
+      render();
+    });
+  };
+  stackMq.addEventListener("change", onStackMqChange);
 
   const onKey = (ev: KeyboardEvent): void => {
     if (ev.key !== "Escape") return;
@@ -1157,6 +1231,7 @@ export function createWorldAtlasChart(
       disposed = true;
       resizeObs.disconnect();
       window.removeEventListener("scf:landing-map-layout", onLandingLayout);
+      stackMq.removeEventListener("change", onStackMqChange);
       crumbs?.removeEventListener("click", onCrumbClick);
       root.removeEventListener("keydown", onKey);
       clearSpiderCards(host);

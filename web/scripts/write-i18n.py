@@ -20,7 +20,7 @@ export const HTML_LANG: Record<Lang, string> = {
 };
 
 export const UI = {
-  brand: { zh: "街角食客", en: "Street Corner Foodie", ja: "街角フーディー" },
+  brand: { zh: "街角美食", en: "Street Corner Foodie", ja: "街角グルメ" },
   tagline: {
     zh: "拐进世界的每个街角，看食物与城市如何一起呼吸。",
     en: "A diorama atlas of world street food & cityscapes",
@@ -140,9 +140,9 @@ export const UI = {
   },
   footer: {
     copy: {
-      zh: "© 2026 Street Corner Foodie · 街角食客 · 原型 v0.6",
+      zh: "© 2026 Street Corner Foodie · 街角美食 · 原型 v0.6",
       en: "© 2026 Street Corner Foodie · prototype v0.6",
-      ja: "© 2026 Street Corner Foodie · 街角フーディー · プロトタイプ v0.6",
+      ja: "© 2026 Street Corner Foodie · 街角グルメ · プロトタイプ v0.6",
     },
   },
 } as const;

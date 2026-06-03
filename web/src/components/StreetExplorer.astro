@@ -10,10 +10,9 @@ import {
   initialStreetViewFromUrl,
 } from "../lib/street-explorer-payload";
 import { localePath, regionGalleryHref } from "../lib/locale-path";
-import { scfBestSrc, scfSpreadUrls } from "../lib/scf-image";
+import { scfSpreadUrls } from "../lib/scf-image";
 import {
   streetViewImageUrl,
-  countUniqueStreetPhotoUrlsForScene,
   type StreetFrameMode,
   type StreetMood,
 } from "../lib/streets";
@@ -62,19 +61,10 @@ const mainSrc = streetViewImageUrl(config, scene.id, initialView);
 const mainUrls = scfSpreadUrls(mainSrc);
 const mainDisplay = mainUrls.display ?? mainSrc;
 const mainFull = mainUrls.full ?? mainSrc;
-const matrix = payload.matrixByScene[scene.id] ?? [];
-const gridCells = matrix.filter(
-  (cell, idx, arr) =>
-    cell.available && cell.url && arr.findIndex((c) => c.url === cell.url) === idx,
-);
 const eatHere = payload.eatHereByScene[scene.id] ?? [];
 /** ≤4 张：SSR 居中；>4 张：SSR 左对齐可滚，避免刷新布局跳变 */
 const eatTrackFitsSsr = eatHere.length > 0 && eatHere.length <= 4;
 const eatTrackScrollSsr = eatHere.length > 4;
-const sceneUniqueCount = countUniqueStreetPhotoUrlsForScene(config, scene.id);
-const photosMeta = t(UI.street.photos_meta, lang)
-  .replace("{unique}", String(sceneUniqueCount))
-  .replace("{views}", String(matrix.length));
 const exportFilename = `${country}_${regionId}_${scene.id}_${initialView.mood}_${initialView.frame}.png`;
 
 const moods: StreetMood[] = payload.moods;
@@ -197,24 +187,9 @@ const postersMoreHref = regionGalleryHref(lang, country, regionId, { hash: "post
       ))}
     </aside>
 
-    <aside class="alt-street-matrix street-matrix-panel" aria-label={t(UI.street.matrix_view, lang)} data-street-matrix>
-      <nav class="street-geo-minimap tile" aria-label={t(UI.street.minimap, lang)} data-street-minimap>
-        <span class="street-geo-minimap__water" aria-hidden="true"></span>
-        {payload.scenes.map((s) => (
-          <button
-            type="button"
-            class:list={["street-geo-pin", s.id === scene.id && "active"]}
-            style={`left:${s.mapPin.x}%;top:${s.mapPin.y}%`}
-            title={s.name}
-            data-scene-id={s.id}
-            aria-current={s.id === scene.id ? "true" : undefined}
-          />
-        ))}
-      </nav>
-      <h2 class="h-track">{t(UI.street.matrix_view, lang)}</h2>
-
-      <div class="matrix-block">
-        <span class="matrix-block-label h-track">{t(UI.street.time, lang)}</span>
+    <div class="street-view-toolbar" data-street-toolbar aria-label={t(UI.street.side_panel, lang)}>
+      <div class="street-view-toolbar__group">
+        <span class="street-view-toolbar__label h-track">{t(UI.street.time, lang)}</span>
         <div class="matrix-time-arc" role="group" data-street-moods>
           {moods.map((m) => (
             <button
@@ -228,8 +203,8 @@ const postersMoreHref = regionGalleryHref(lang, country, regionId, { hash: "post
         </div>
       </div>
 
-      <div class="matrix-block">
-        <span class="matrix-block-label h-track">{t(UI.street.frame, lang)}</span>
+      <div class="street-view-toolbar__group">
+        <span class="street-view-toolbar__label h-track">{t(UI.street.frame, lang)}</span>
         <div class="matrix-frame-pills switch-glass" role="group" data-street-frames>
           {frames.map((fr) => (
             <button
@@ -244,65 +219,28 @@ const postersMoreHref = regionGalleryHref(lang, country, regionId, { hash: "post
       </div>
 
       <div
-        class="matrix-block matrix-block-export"
+        class="street-view-toolbar__actions"
         data-street-export
         data-image-url={mainSrc ?? ""}
         data-page-url={url.href}
         data-filename={exportFilename}
       >
-        <span class="matrix-block-label h-track">{t(UI.street.export, lang)}</span>
-        <div class="matrix-export-btns">
-          {mainDisplay && (
-            <button type="button" class="btn-glass sm" data-street-zoom-open>
-              {t(UI.street.zoom, lang)}
-            </button>
-          )}
-          <button type="button" class="btn-glass sm" data-export="png">{t(UI.street.export_png, lang)}</button>
-          <button type="button" class="btn-glass sm" data-export="wallpaper">{t(UI.street.export_wallpaper, lang)}</button>
-          <button type="button" class="btn-glass sm" data-export="share" data-share-title={scene.name}>
-            {t(UI.street.export_share, lang)}
+        {mainDisplay && (
+          <button type="button" class="btn-glass sm" data-street-zoom-open>
+            {t(UI.street.zoom, lang)}
           </button>
-        </div>
-      </div>
-
-      <div class="matrix-block" data-street-available>
-        <span class="matrix-block-label h-track">{t(UI.street.available, lang)}</span>
-        <p class="matrix-available-meta h-track" data-street-available-meta>
-          {photosMeta} · {payload.regionName}
-        </p>
-        <div class="matrix-available-grid" data-street-available-grid>
-          {gridCells.map((cell) => {
-            const active = cell.mood === initialView.mood && cell.frame === initialView.frame;
-            const cellThumb = cell.url ? scfBestSrc(cell.url) : null;
-            return cell.available ? (
-              <button
-                type="button"
-                class:list={["matrix-available-cell", active && "active"]}
-                data-mood={cell.mood}
-                data-frame={cell.frame}
-                aria-label={cell.label}
-                title={cell.label}
-              >
-                {cellThumb && <span class="thumb" style={`background-image:url('${cellThumb}')`} />}
-                <span class="matrix-check" aria-hidden="true">✓</span>
-              </button>
-            ) : (
-              <span class="matrix-available-cell is-missing" aria-label={cell.label} title={cell.label}>
-                {cellThumb && <span class="thumb" style={`background-image:url('${cellThumb}')`} />}
-              </span>
-            );
-          })}
-        </div>
+        )}
+        <button type="button" class="btn-glass sm" data-export="share" data-share-title={scene.name}>
+          {t(UI.street.export_share, lang)}
+        </button>
       </div>
 
       {!embedded && (
-        <p class="street-explorer-deep-link">
-          <a class="btn-glass sm" href={scene.deepLink} data-street-deep-link>
-            {gt(GALLERY_UI.explore_scene, lang)} →
-          </a>
-        </p>
+        <a class="btn-glass sm street-view-toolbar__deep" href={scene.deepLink} data-street-deep-link>
+          {gt(GALLERY_UI.explore_scene, lang)} →
+        </a>
       )}
-    </aside>
+    </div>
 
     {!embedded && (
       <StreetEatPanel
@@ -372,12 +310,6 @@ const postersMoreHref = regionGalleryHref(lang, country, regionId, { hash: "post
       root.querySelectorAll("[data-street-frames] .matrix-pill").forEach(function (pill) {
         var on = pill.getAttribute("data-frame") === frame;
         pill.classList.toggle("active", on);
-      });
-      root.querySelectorAll(".street-geo-pin").forEach(function (pin) {
-        var on = pin.getAttribute("data-scene-id") === sceneId;
-        pin.classList.toggle("active", on);
-        if (on) pin.setAttribute("aria-current", "true");
-        else pin.removeAttribute("aria-current");
       });
     })();
   </script>

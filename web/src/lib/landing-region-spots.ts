@@ -1,6 +1,7 @@
 import { findRegion } from "./countries";
 import { formatLandingGeoCoords } from "./landing-coords";
 import { regionHeroImageUrl } from "./region-hero";
+import { localePath, regionGalleryHref } from "./locale-path";
 import { COUNTRY_FALLBACK, REGION_GEO } from "./street-geo";
 import type { Lang, Multilang, CountryId } from "./types";
 import { buildWorldAtlasPayload } from "./world-atlas-payload";
@@ -65,6 +66,9 @@ export function buildLandingRegionSpots(lang: Lang): LandingRegionSpot[] {
         : (region?.tagline ?? { zh: "", en: "", ja: "" }),
       coords: REGION_COORDS_OVERRIDE[regionKey] ?? formatLandingGeoCoords(geo),
       heroUrl: region ? regionHeroImageUrl(row.countryId, region, "landing") : null,
+      regionHref: region
+        ? regionGalleryHref(lang, row.countryId, row.regionId)
+        : localePath(lang, `/${row.countryId}/`),
     });
   }
 

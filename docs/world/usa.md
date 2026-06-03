@@ -68,6 +68,12 @@ mini_zine:
   - wild_rice_mini_zine_p04_narr_street.png
   - wild_rice_mini_zine_p05_narr_ingredients.png
   - wild_rice_mini_zine_p06_recipe.png
+  - chinatown_takeout_mini_zine_p01_story_eating.png
+  - chinatown_takeout_mini_zine_p02_narr_story.png
+  - chinatown_takeout_mini_zine_p03_narr_culture.png
+  - chinatown_takeout_mini_zine_p04_narr_street.png
+  - chinatown_takeout_mini_zine_p05_narr_ingredients.png
+  - chinatown_takeout_mini_zine_p06_recipe.png
 mini_zine_zh: []
 mini_zine_ja: []
 street_view_approved:
@@ -444,7 +450,7 @@ web_posters:
 | **纽约披萨** | 薄底大扇、折角吃、窑烤 | `ny_pizza` |
 | **费城芝士牛排** | 薄切牛肉、芝士酱、长卷 | `philly_cheesesteak` |
 | **百吉饼 + 烟熏三文鱼** | NYC 早餐经典 | `bagel_lox` |
-| **唐人街外卖**（Chinatown takeout） | 华埠快餐窗、炒饭捞面、纸盒带走 | `chinatown_takeout` ✅ 海报 |
+| **唐人街外卖**（Chinatown takeout） | 华埠快餐窗、炒饭捞面、纸盒带走 | `chinatown_takeout` ✅ 海报 · zine p01–p06 |
 
 ### 原住民 · Indigenous（`us_indigenous*` 强锚定）
 
@@ -549,6 +555,7 @@ web_posters:
 | 2 | Soft Pretzel | `pretzel` | `us_roaring_20s` | **EN** ✅ | `pretzel_story_eating_mini_zine.png` | `pretzel_recipe_mini_zine.png` |
 | 3 | NY Pizza Slice | `ny_pizza` | `us_contemporary` | **EN** ✅ | `ny_pizza_story_eating_mini_zine.png` | `ny_pizza_recipe_mini_zine.png` |
 | 4 | Wild Rice | `wild_rice` | `us_indigenous` | **EN** ✅ | `wild_rice_mini_zine_p01_story_eating.png` | `wild_rice_mini_zine_p06_recipe.png` |
+| 5 | Chinatown Takeout | `chinatown_takeout` | `us_contemporary` | **EN** ✅ | `chinatown_takeout_mini_zine_p01_story_eating.png` | `chinatown_takeout_mini_zine_p06_recipe.png` |
 
 **六页叙事**（`wild_rice` · p02–p05）：
 
@@ -557,6 +564,14 @@ web_posters:
 | Wild Rice | `wild_rice_mini_zine_p02_narr_story.png` | `wild_rice_mini_zine_p03_narr_culture.png` | `wild_rice_mini_zine_p04_narr_street.png` | `wild_rice_mini_zine_p05_narr_ingredients.png` |
 
 **Wild Rice 定稿（2026-05-24 · p01–p06 · EN）**：`us_indigenous` **大湖/Anishinaabe 系** · **3 女** · 角标 **Great Lakes Flavor** · 食材 p05：Wild Rice · Broth · Wild Onion · Berries (optional) · 与海报 `wild_rice_poster.png` 同代。
+
+**六页叙事**（`chinatown_takeout` · p02–p05）：
+
+| 菜品 | 01 故事 | 02 文化 | 03 街景 | 04 食材 |
+|------|---------|---------|---------|---------|
+| Chinatown Takeout | `chinatown_takeout_mini_zine_p02_narr_story.png` | `chinatown_takeout_mini_zine_p03_narr_culture.png` | `chinatown_takeout_mini_zine_p04_narr_street.png` | `chinatown_takeout_mini_zine_p05_narr_ingredients.png` |
+
+**Chinatown Takeout 定稿（2026-05-24 · p01–p06 · EN）**：`us_contemporary` **华埠外卖厨** · **4 女** · L 形蒸汽取餐窗 · 角标 **NYC Flavor** · 食材 p05：Rice · Soy Sauce · Eggs · Vegetables · Noodles · 与海报 `chinatown_takeout_poster.png` 同代。
 
 每菜另有 `_story_eating_mini_zine_no_char.png`、`_recipe_mini_zine_no_char.png`。**2026-05** 三菜四套由中英混杂旧稿重做为 **EN-only**。
 

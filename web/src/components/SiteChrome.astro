@@ -1,11 +1,13 @@
 ---
-import { UI, t, type Lang } from "../lib/i18n";
+import { UI, LANG_LABELS, LANGS, t, type Lang } from "../lib/i18n";
+import { switchLocalePath } from "../lib/locale-path";
 
 interface Props {
   lang: Lang;
 }
 
 const { lang } = Astro.props as Props;
+const pageUrl = Astro.url;
 const settingsLabels = JSON.stringify({
   title: t(UI.settings.title, lang),
   theme: t(UI.settings.theme, lang),
@@ -66,6 +68,17 @@ const settingsLabels = JSON.stringify({
         <button type="button" class="close" id="settings-close" aria-label={t(UI.common.close, lang)}>×</button>
       </div>
       <div class="settings-body">
+        <p class="h-track settings-section-label">{t(UI.nav.language, lang)}</p>
+        <div class="switch-glass settings-lang-picks" role="group" aria-label={t(UI.nav.language, lang)}>
+          {LANGS.map((l) => (
+            <a
+              href={switchLocalePath(l, pageUrl)}
+              class={l === lang ? "active" : ""}
+            >
+              {LANG_LABELS[l]}
+            </a>
+          ))}
+        </div>
         <p class="h-track settings-section-label">{t(UI.settings.theme, lang)}</p>
         <div class="switch-glass settings-theme-picks" role="group">
           <button type="button" data-theme-pick="dark">{t(UI.settings.theme_dark, lang)}</button>

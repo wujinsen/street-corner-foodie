@@ -1,6 +1,6 @@
 # 贡献 · Street Corner Foodie
 
-感谢参与 **Street Corner Foodie / 街角食客** 内容或 Web 开发。
+感谢参与 **Street Corner Foodie / 街角美食** 内容或 Web 开发。
 
 ## 仓库结构
 
@@ -37,4 +37,4 @@ npm run check
 
 ## 品牌
 
-对外名称见 [BRAND.md](BRAND.md)：**Street Corner Foodie / 街角食客 / 街角フーディー**（勿写「美食图鉴」）。
+对外名称见 [BRAND.md](BRAND.md)：**Street Corner Foodie / 街角美食 / 街角グルメ**（勿写「美食图鉴」）。

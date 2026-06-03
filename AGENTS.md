@@ -30,7 +30,7 @@
 2. **三语 / 三主题 / 资源单源** 三大等价不变量
 3. **零 JS 默认**；island 必须先在 ROADMAP 登记预算
 4. `asserts/` 是输入，**只读**；web/ 不复制 PNG 副本，靠 NTFS junction `web/public/asserts → ../../asserts`
-5. UI 字串必遵 [scf-brand.mdc](.cursor/rules/scf-brand.mdc)：**Street Corner Foodie / 街角食客 / 街角フーディー**
+5. UI 字串必遵 [scf-brand.mdc](.cursor/rules/scf-brand.mdc)：**Street Corner Foodie / 街角美食 / 街角グルメ**
 
 ## 规范索引（对话无历史时从这里读）
 

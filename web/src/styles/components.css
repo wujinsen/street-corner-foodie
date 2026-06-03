@@ -727,9 +727,14 @@ body[data-scf-favorites="disabled"] :is(
   gap: 12px;
 }
 .settings-section-label { margin: 0; }
+.settings-lang-picks,
 .settings-theme-picks {
   width: 100%;
   justify-content: stretch;
+}
+.settings-lang-picks a {
+  flex: 1;
+  text-align: center;
 }
 .settings-theme-picks button {
   flex: 1;
@@ -1198,6 +1203,14 @@ body.has-altc .scf-bottom-stack .dock-wrap {
   bottom: auto;
   margin-top: 0;
   padding: 0;
+  z-index: auto;
+}
+
+body.landing-page.has-altc .scf-bottom-stack .dock-wrap {
+  position: static;
+  bottom: auto;
+  margin-top: 12px;
+  z-index: auto;
 }
 .gallery-dock-wrap {
   margin-top: 10px;
@@ -2539,6 +2552,101 @@ body.landing-page .alt-landing .landing-spotlight > .landing-city-card .landing-
   position: relative;
   z-index: 2;
 }
+
+/* Collapsible filter panel · mobile only (desktop rules below) */
+.gallery-filter-collapse {
+  display: block;
+  min-width: 0;
+}
+.gallery-filter-collapse__summary {
+  display: none;
+  list-style: none;
+  align-items: center;
+  gap: 8px 10px;
+  min-height: 44px;
+  padding: 10px 12px;
+  margin: 0;
+  border-radius: var(--tile-radius-xs);
+  border: 1px solid color-mix(in oklab, var(--accent-c) 22%, var(--tile-border));
+  background: color-mix(in oklab, var(--tile-bg) 88%, transparent);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.gallery-filter-collapse__summary::-webkit-details-marker {
+  display: none;
+}
+.gallery-filter-collapse__title {
+  flex-shrink: 0;
+  font-size: var(--type-label, 13px);
+  font-weight: var(--type-weight-ui, 600);
+  color: var(--fg-strong);
+}
+.gallery-filter-collapse__value {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg-weak);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: start;
+}
+.gallery-filter-collapse__sep {
+  opacity: 0.55;
+}
+.gallery-filter-collapse__chev {
+  flex-shrink: 0;
+  color: var(--fg-mute);
+  transition: transform 0.2s ease;
+}
+.gallery-filter-collapse[open] .gallery-filter-collapse__chev {
+  transform: rotate(180deg);
+}
+.gallery-filter-collapse__body {
+  padding-top: 10px;
+}
+@media (max-width: 900px) {
+  .gallery-filter-bar:has(.gallery-filter-collapse) {
+    padding: 10px 12px 12px;
+    gap: 0;
+    position: static;
+  }
+  .gallery-filter-collapse__summary {
+    display: flex;
+    position: sticky;
+    top: calc(var(--topbar-h, 56px) + 4px);
+    z-index: 13;
+  }
+  .gallery-filter-collapse:not([open]) .gallery-filter-collapse__body {
+    display: none;
+  }
+  .gallery-filter-collapse[open] .gallery-filter-collapse__body {
+    padding-top: 12px;
+  }
+}
+@media (min-width: 901px) {
+  .gallery-filter-collapse__summary {
+    display: none !important;
+  }
+  /* 桌面：不依赖 open 属性，避免 details[closed] 时省份/风味被 UA 藏起 */
+  .gallery-filter-collapse .gallery-filter-collapse__body {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding-top: 0;
+    width: 100%;
+  }
+  body.has-altc .gallery-filter-collapse .gallery-filter-inner,
+  body.has-altc .gallery-filter-collapse .gallery-filter-rows {
+    align-items: stretch;
+    align-self: stretch;
+    width: 100%;
+    max-width: 100%;
+  }
+}
 .gallery-main,
 .gallery-layout {
   scroll-margin-top: calc(var(--topbar-h) + 12px);
@@ -2576,7 +2684,17 @@ body.landing-page .alt-landing .landing-spotlight > .landing-city-card .landing-
 }
 .filter-pill-track {
   position: relative;
+  width: 100%;
   min-width: 0;
+}
+/* 药丸条复用 switch-glass 皮肤，但必须块级限宽才能 overflow-x 横滑 */
+.filter-pill-track .filter-pill-scroll,
+.filter-pill-track .switch-glass.filter-pill-scroll {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 .filter-pill-track::before,
 .filter-pill-track::after {
@@ -2628,6 +2746,42 @@ body.landing-page .alt-landing .landing-spotlight > .landing-city-card .landing-
 .filter-pill-track.is-wrap::before,
 .filter-pill-track.is-wrap::after {
   display: none;
+}
+@media (max-width: 900px) {
+  .gallery-filter-row:not(.gallery-filter-row--country) {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .gallery-filter-bar {
+    padding: 12px 14px;
+    gap: 10px;
+    overflow: visible;
+  }
+  .filter-pill-track.is-wrap .filter-pill-scroll {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-height: none;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 8px;
+  }
+  .filter-pill-track.is-wrap::before,
+  .filter-pill-track.is-wrap::after {
+    display: block;
+  }
+  .filter-pill-scroll {
+    gap: 8px;
+    padding: 4px 2px 6px;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+  }
+  .filter-pill-scroll a,
+  .filter-pill-scroll button {
+    min-height: 40px;
+    padding: 10px 16px;
+    touch-action: manipulation;
+  }
 }
 .gallery-filter-group {
   display: flex;
@@ -3766,14 +3920,15 @@ body.has-altc .alt-zine-spread-media picture img {
   max-height: 100dvh;
   overflow: auto;
   padding: 64px 16px 24px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  display: grid;
+  place-items: center;
+  align-content: safe center;
 }
 .zine-lightbox-stage {
-  transform-origin: center top;
+  transform-origin: center center;
   transition: transform 0.12s ease-out;
   display: inline-block;
+  max-width: 100%;
 }
 .zine-lightbox-img {
   display: block;
@@ -3799,12 +3954,47 @@ body.has-altc .alt-zine-spread-media picture img {
   cursor: pointer;
   backdrop-filter: blur(8px);
 }
+.alt-zine-thumbs-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.alt-zine-thumbs-nav {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--tile-border);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--bg-2) 70%, transparent);
+  color: var(--fg-strong);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+.alt-zine-thumbs-nav:hover {
+  border-color: var(--tile-border-hover);
+  color: var(--accent-c);
+}
+.alt-zine-thumbs-nav:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent-c) 75%, transparent);
+  outline-offset: 2px;
+}
+.alt-zine-thumbs-nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 .alt-zine-thumbs {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
   overflow-x: auto;
   padding-bottom: 2px;
 }
@@ -4177,8 +4367,15 @@ body.has-altc .alt-zine-spread-media picture img {
   .alt-zine-layout { grid-template-columns: 1fr; }
   #zine-reader-root .alt-zine-side-left,
   #poster-reader-root .alt-zine-side-left { display: none; }
+  /* 手机：主图栏在上、信息栏在下（见 alt-c-refine.css ≤1100） */
+  #zine-reader-root .alt-zine-center-panel,
+  #poster-reader-root .alt-zine-center-panel {
+    order: -1;
+  }
   #zine-reader-root .alt-zine-side-right,
-  #poster-reader-root .alt-zine-side-right { order: -1; }
+  #poster-reader-root .alt-zine-side-right {
+    order: 0;
+  }
 }
 /* Country landing · theme hero (v0.6.5) */
 .country-hero {
@@ -4269,6 +4466,28 @@ body.has-altc .alt-zine-spread-media picture img {
   z-index: 1;
   max-width: min(72%, 640px);
   padding: 52px 28px 28px 30px;
+  box-sizing: border-box;
+}
+/* 街景 banner：勿用双列 grid（vstrip 等会挤窄 overlay）；场景层绝对铺满 */
+.country-hero--banner.gallery-hero-strip {
+  display: block;
+  padding: 0;
+}
+.country-hero--banner .country-hero-overlay {
+  max-width: min(38rem, 92%);
+}
+@media (max-width: 900px) {
+  .country-hero--banner .country-hero-overlay {
+    max-width: none;
+    width: 100%;
+    padding: 44px 18px 20px;
+  }
+  .country-hero--banner .gallery-hero-sub {
+    max-width: none;
+  }
+  .country-hero--banner .country-vstrip {
+    display: none;
+  }
 }
 .country-hero-title {
   display: flex;

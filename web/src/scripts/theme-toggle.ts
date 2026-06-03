@@ -6,6 +6,9 @@
 export const STORAGE_KEY = "scf:theme";
 export type Theme = "dark" | "light" | "auto";
 
+/** First visit default · alt-c 设计稿为深色；勿用 auto（iPhone 浅色系统会变米白底） */
+export const THEME_DEFAULT: Theme = "dark";
+
 /** Topbar theme button + ⌘⇧L — flip to re-enable. Settings sheet theme picks stay active. */
 export const THEME_TOGGLE_TOPBAR_ENABLED = false;
 
@@ -18,7 +21,7 @@ export function readStored(): Theme {
     }
   })();
   if (v === "dark" || v === "light" || v === "auto") return v;
-  return "auto";
+  return THEME_DEFAULT;
 }
 
 export function writeStored(t: Theme): void {

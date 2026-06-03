@@ -193,24 +193,18 @@ web_posters:
     romaji: monjayaki
   rafute:
     name:
-      zh: 琉球红烧肉（ラフテー）
-      en: Okinawa Rafute
-      ja: ラフテー
+      zh: rafute
+      en: rafute
+      ja: rafute
     tags:
-      zh:
-        - 泡盛
-        - 黑糖
-      en:
-        - Awamori
-        - Brown sugar
-      ja:
-        - 泡盛
-        - 黒糖
-    pin: 沖縄
+      zh: []
+      en: []
+      ja: []
+    pin: 東京
     desc:
-      zh: 泡盛与黑糖慢炖五花肉，软糯香甜，琉球宫廷名菜。
-      en: Pork belly braised in awamori and Okinawan brown sugar.
-      ja: 泡盛と黒糖で煮込んだ豚バラの琉球料理。
+      zh: ''
+      en: ''
+      ja: ''
   ramen:
     name:
       zh: 东京拉面

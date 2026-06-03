@@ -7,7 +7,6 @@ import {
 } from "../lib/street-explorer-path";
 import { initStreetEatCarousel, refreshStreetEatCarousels, syncStreetEatTrack } from "./street-eat-carousel";
 import {
-  countUniqueStreetPhotoUrlsForScene,
   getStreetConfig,
   pickDefaultStreetViewForScene,
   streetViewImageUrl,
@@ -16,7 +15,6 @@ import {
   type StreetRegionConfig,
   type StreetViewSelection,
 } from "../lib/streets";
-import { UI, t, type Lang } from "../lib/i18n";
 import type { CountryId } from "../lib/types";
 import { scfSpreadUrls } from "../lib/scf-image";
 import { galleryTabFromHash } from "./gallery-tab-hash";
@@ -108,16 +106,6 @@ function buildUrl(
   return u.pathname + u.search + u.hash;
 }
 
-function downloadUrl(url: string, filename: string): void {
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.rel = "noopener";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
 function setMainImage(root: HTMLElement, url: string | null, alt: string, mood: StreetMood): void {
   const host = root.querySelector<HTMLElement>("[data-street-main]");
   if (!host) return;
@@ -185,27 +173,6 @@ function syncActiveClasses(
     }
   });
 
-  const matrix = payload.matrixByScene[state.sceneId] ?? [];
-  root.querySelectorAll<HTMLButtonElement>("[data-street-available-grid] [data-mood]").forEach((btn) => {
-    const m = btn.dataset.mood as StreetMood;
-    const f = btn.dataset.frame as StreetFrameMode;
-    btn.classList.toggle("active", m === state.mood && f === state.frame);
-  });
-
-  const meta = root.querySelector<HTMLElement>("[data-street-available-meta]");
-  if (meta && config) {
-    const lang = (document.documentElement.lang === "ja"
-      ? "ja"
-      : document.documentElement.lang === "en"
-        ? "en"
-        : "zh") as Lang;
-    const unique = countUniqueStreetPhotoUrlsForScene(config, state.sceneId);
-    const photosMeta = t(UI.street.photos_meta, lang)
-      .replace("{unique}", String(unique))
-      .replace("{views}", String(matrix.length));
-    meta.textContent = `${photosMeta} · ${payload.regionName}`;
-  }
-
   const exportRoot = root.querySelector<HTMLElement>("[data-street-export]");
   if (exportRoot) {
     const scene = payload.scenes.find((s) => s.id === state.sceneId);
@@ -230,31 +197,6 @@ function syncActiveClasses(
   }
 }
 
-function rebuildAvailableGrid(
-  root: HTMLElement,
-  state: ViewState,
-  payload: StreetExplorerPayload,
-  config: StreetRegionConfig,
-): void {
-  const grid = root.querySelector<HTMLElement>("[data-street-available-grid]");
-  if (!grid) return;
-  const matrix = payload.matrixByScene[state.sceneId] ?? [];
-  const gridCells = matrix.filter(
-    (cell, idx, arr) =>
-      cell.available && cell.url && arr.findIndex((c) => c.url === cell.url) === idx,
-  );
-  grid.innerHTML = gridCells
-    .map((cell) => {
-      const active = cell.mood === state.mood && cell.frame === state.frame;
-      const thumb = cell.url ? `style="background-image:url('${cell.url}')"` : "";
-      if (!cell.available) {
-        return `<span class="matrix-available-cell is-missing" aria-label="${cell.label}" title="${cell.label}"><span class="thumb" ${thumb}></span></span>`;
-      }
-      return `<button type="button" class="matrix-available-cell${active ? " active" : ""}" data-mood="${cell.mood}" data-frame="${cell.frame}" aria-label="${cell.label}" title="${cell.label}"><span class="thumb" ${thumb}></span><span class="matrix-check" aria-hidden="true">✓</span></button>`;
-    })
-    .join("");
-}
-
 function applyState(
   root: HTMLElement,
   payload: StreetExplorerPayload,
@@ -267,7 +209,6 @@ function applyState(
 
   const url = streetViewImageUrl(config, state.sceneId, { mood: state.mood, frame: state.frame });
   setMainImage(root, url, scene.name, state.mood);
-  rebuildAvailableGrid(root, state, payload, config);
   syncActiveClasses(root, state, payload, config);
 
   const eatCards = payload.eatHereByScene[state.sceneId] ?? [];
@@ -315,7 +256,7 @@ export function initStreetExplorer(root: HTMLElement): void {
     const target = e.target as HTMLElement;
 
     const sceneBtn = target.closest<HTMLElement>("[data-scene-id]");
-    if (sceneBtn && (sceneBtn.classList.contains("scene-item") || sceneBtn.classList.contains("street-geo-pin"))) {
+    if (sceneBtn && sceneBtn.classList.contains("scene-item")) {
       const id = sceneBtn.dataset.sceneId;
       if (id && id !== state.sceneId) {
         e.preventDefault();
@@ -341,16 +282,6 @@ export function initStreetExplorer(root: HTMLElement): void {
       return;
     }
 
-    const cellBtn = target.closest<HTMLButtonElement>(".matrix-available-cell[data-mood]");
-    if (cellBtn) {
-      e.preventDefault();
-      state = {
-        sceneId: state.sceneId,
-        mood: cellBtn.dataset.mood as StreetMood,
-        frame: cellBtn.dataset.frame as StreetFrameMode,
-      };
-      applyState(root, payload, config, state, true);
-    }
   });
 
   window.addEventListener("popstate", () => syncFromUrl(false));
@@ -370,13 +301,7 @@ export function initStreetExplorer(root: HTMLElement): void {
     exportRoot.querySelectorAll<HTMLButtonElement>("[data-export]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const kind = btn.dataset.export;
-        const imgUrl = exportRoot.dataset.imageUrl;
         const pageUrl = exportRoot.dataset.pageUrl ?? location.href;
-        const filename = exportRoot.dataset.filename ?? "street-corner-foodie-street.png";
-        if (kind === "png" || kind === "wallpaper") {
-          if (imgUrl) downloadUrl(imgUrl, filename);
-          return;
-        }
         if (kind === "share") {
           const title = btn.dataset.shareTitle ?? "Street Corner Foodie";
           if (navigator.share) {

@@ -1,6 +1,6 @@
 # Street Corner Foodie · 品牌手册
 
-> 项目名称定于 2026-05-18，替代旧称「Meishi Atlas / 美食图鉴」。 
+> 项目名称定于 2026-05-18，替代旧称「Meishi Atlas / 美食图鉴」。**中文正名 2026-05-28 起为 街角美食**（2026-05-18～2026-05-27 曾用「街角食客」）；**日文正名同日起为 街角グルメ**（曾用「街角フーディー」）。 
 > 资产目录（`asserts/`）、文档目录（`docs/`）、文件命名前缀（`cn_hainan_…`、`jp_tokyo_…`）**保持不变** —— 这些是技术路径，与品牌名解耦。
 
 ---
@@ -11,8 +11,8 @@
 |------|------|--------|
 | **英文** | **Street Corner Foodie** | 默认；全球品牌名 |
 | 英文短名 | **SCF** | 内部代号、git/包名、build label |
-| **中文** | **街角食客** | 中文区界面、中文宣发 |
-| **日文** | **街角フーディー** | 日本市场界面 |
+| **中文** | **街角美食** | 中文区界面、中文宣发 |
+| **日文** | **街角グルメ** | 日本市场界面 |
 
 域名约定：正式站 **`https://streetcornerfoodie.com`**（Cloudflare Pages + GitHub `SITE_URL`）；注册备选 `.world` / `.food`；社媒 @streetcornerfoodie 或 @scfworld。部署见 [web/docs/DEPLOY.md](web/docs/DEPLOY.md)。
 
@@ -53,8 +53,8 @@
 |------|------|
 | 英文标头 (Street Corner Foodie) | **Playfair Display** 600/700 |
 | 英文小标 caps (STREET · CORNER · FOODIE) | **JetBrains Mono** 500，字距 .24em |
-| 中文标头（街角食客） | **Noto Serif SC** 700 |
-| 日文标头（街角フーディー） | **Noto Serif JP** 700 |
+| 中文标头（街角美食） | **Noto Serif SC** 700 |
+| 日文标头（街角グルメ） | **Noto Serif JP** 700 |
 
 ### 3.3 色板（同 index.html `:root`）
 
@@ -101,7 +101,7 @@
 
 - **正式书写**：Street Corner Foodie（每词首字母大写）；不写 `street corner foodie` 全小写、不写 `STREET CORNER FOODIE` 除非作 caps 字标
 - **缩写**：仅在内部技术语境用 `scf`（小写），如 `scf-web`、`@scf/data`
-- **中文**：街角食客（不写"街角的食客"、不写"街角馋客"等变体）
-- **日文**：街角フーディー（カタカナ"フーディー"，不写「フーディ」）
+- **中文**：街角美食（不写「街角的食客」「街角馋客」「街角食客」等变体；2026-05-28 前称「街角食客」）
+- **日文**：街角グルメ（不写「街角フーディー」「フーディ」等旧称；2026-05-28 前称「街角フーディー」）
 - **拼写易错**：Foodie 不是 Foodies、不是 Foody
 - **不允许**：自行翻译成法/西/德等其他语种之前，先在本文件登记

@@ -17,7 +17,7 @@ export const HTML_LANG: Record<Lang, string> = {
 };
 
 export const UI = {
-  brand: { zh: "街角食客", en: "Street Corner Foodie", ja: "街角フーディー" },
+  brand: { zh: "街角美食", en: "Street Corner Foodie", ja: "街角グルメ" },
   tagline: {
     zh: "拐进世界的每个街角，看食物与城市如何一起呼吸。",
     en: "A diorama atlas of world street food & cityscapes",
@@ -248,6 +248,12 @@ export const UI = {
     zines_count: { zh: "册", en: "BOOKS", ja: "冊" },
     filter_country: { zh: "国家", en: "Country", ja: "国" },
     filter_province: { zh: "省份", en: "Province", ja: "地域" },
+    filter_panel: { zh: "筛选", en: "Filters", ja: "絞り込み" },
+    filter_panel_hint: {
+      zh: "展开或收起国家、省份与风味筛选",
+      en: "Expand or collapse country, region, and flavor filters",
+      ja: "国・地域・味の絞り込みを開閉",
+    },
     with_chef: { zh: "有人物", en: "With Chef", ja: "シェフあり" },
     no_char_short: { zh: "无人物", en: "No Char", ja: "人物なし" },
     linked_street: { zh: "关联街景", en: "Linked street", ja: "関連する街角" },
@@ -394,9 +400,9 @@ export const UI = {
   },
   footer: {
     copy: {
-      zh: "© 2026 Street Corner Foodie · 街角食客 · 原型 v0.6",
+      zh: "© 2026 Street Corner Foodie · 街角美食 · 原型 v0.6",
       en: "© 2026 Street Corner Foodie · prototype v0.6",
-      ja: "© 2026 Street Corner Foodie · 街角フーディー · プロトタイプ v0.6",
+      ja: "© 2026 Street Corner Foodie · 街角グルメ · プロトタイプ v0.6",
     },
   },
 } as const;

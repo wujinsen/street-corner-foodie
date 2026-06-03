@@ -70,7 +70,10 @@ const fontsHref = googleFontsHref(lang, country);
 <html lang={HTML_LANG[lang]} data-country={country}>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    {landingPage && altc && (
+      <meta name="scf-layout-rev" content="20260602-map-mobile-geo-fill" />
+    )}
     <title>{pageTitle}</title>
     <meta name="description" content={desc} />
     <link rel="canonical" href={canonical} />
@@ -112,8 +115,17 @@ const fontsHref = googleFontsHref(lang, country);
       (function () {
         try {
           var k = "scf:theme";
+          var mig = "scf:theme-default-dark-v1";
           var pref = localStorage.getItem(k);
-          if (pref !== "dark" && pref !== "light" && pref !== "auto") pref = "auto";
+          if (pref !== "dark" && pref !== "light" && pref !== "auto") pref = "dark";
+          /* 旧默认 auto + iOS 浅色 → 米白底；一次性改为深色（用户可在设置里再选浅色/跟随系统） */
+          if (pref === "auto" && !localStorage.getItem(mig)) {
+            pref = "dark";
+            try {
+              localStorage.setItem(k, "dark");
+              localStorage.setItem(mig, "1");
+            } catch (e2) {}
+          }
           var eff = pref;
           if (pref === "auto") {
             eff = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
@@ -123,7 +135,7 @@ const fontsHref = googleFontsHref(lang, country);
           root.setAttribute("data-theme-pref", pref);
         } catch (e) {
           document.documentElement.setAttribute("data-theme", "dark");
-          document.documentElement.setAttribute("data-theme-pref", "auto");
+          document.documentElement.setAttribute("data-theme-pref", "dark");
         }
       })();
     </script>
@@ -180,7 +192,11 @@ const fontsHref = googleFontsHref(lang, country);
       initTopbarVortexWebGL();
     </script>
   </head>
-  <body class={bodyClass} {...(navTab ? { "data-nav-tab": navTab } : {})}>
+  <body
+    class={bodyClass}
+    {...(navTab ? { "data-nav-tab": navTab } : {})}
+    {...(landingPage && altc ? { "data-scf-layout-rev": "20260602-gallery-card-clicks" } : {})}
+  >
     <Topbar
       lang={lang}
       country={country}

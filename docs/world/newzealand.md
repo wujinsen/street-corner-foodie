@@ -235,7 +235,7 @@ web_posters: {}
 |------|------|
 | geo | `nz_` · `nz_auckland_*` · `nz_wellington_*` · `nz_rotorua_*` |
 | 文档 | 仅更新 **本文** `newzealand.md` |
-| 品牌 | **Street Corner Foodie / 街角食客**（见 [BRAND.md](../../BRAND.md)） |
+| 品牌 | **Street Corner Foodie / 街角美食**（见 [BRAND.md](../../BRAND.md)） |
 | 澳新交叉 | **pavlova**、 **ANZAC biscuit**、 **flat white** 与澳大利亚共享叙事；海报 slug 按国别目录区分 |
 
 ---

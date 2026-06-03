@@ -14,6 +14,11 @@ web/public/scf-img/
 
 # Cursor image output (copy to asserts/ via workflow)
 assets/
+.cursor/checkpoints/
+
+# Local-only · 不入 GitHub（本机 junction / 设计稿；CI 需自备 asserts 或对象存储）
+asserts/
+design/
 
 # OS / logs
 .DS_Store

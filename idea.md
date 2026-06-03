@@ -1,7 +1,7 @@
 
 # Street Corner Foodie · 项目想法簿
 
-> 项目名称已定（2026-05-18）：**Street Corner Foodie / 街角食客 / 街角フーディー**。详见 [BRAND.md](BRAND.md)。
+> 项目名称已定（2026-05-18）：**Street Corner Foodie / 街角美食 / 街角グルメ**。详见 [BRAND.md](BRAND.md)。
 
 ---
 
@@ -23,7 +23,7 @@
 
 | 项 | 决定 |
 |----|------|
-| 项目名 | Street Corner Foodie（英）/ 街角食客（中）/ 街角フーディー（日） |
+| 项目名 | Street Corner Foodie（英）/ 街角美食（中）/ 街角グルメ（日） |
 | 三类资产 | 海报 `Gourmet recipe2/` · 小志 `mini-zine/` · 街景 `Street View/` |
 | 行政层级 | 国家 → 省/都府/州 → 市/区 |
 | 主题切换 | CN 朱红 / JP 墨红霓虹 / US 蓝黄 Diner（CSS 变量驱动） |

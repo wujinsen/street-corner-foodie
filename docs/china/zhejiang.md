@@ -55,6 +55,34 @@ gourmet_posters:
   - xuecai_rousichao_poster.png
   - xuecai_rousichao_poster_no_char.png
 web_posters:
+  congyou_chaofan:
+    name:
+      zh: congyou chaofan
+      en: congyou chaofan
+      ja: congyou chaofan
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 浙江·杭州
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
+  dongpo_doufu:
+    name:
+      zh: dongpo doufu
+      en: dongpo doufu
+      ja: dongpo doufu
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 浙江·杭州
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
   dongpo_rou:
     name:
       zh: 东坡肉
@@ -75,6 +103,62 @@ web_posters:
       zh: 带皮五花肉方块，冰糖黄酒酱油慢炖，色如玛瑙、软烂不腻。
       en: 'Hangzhou braised pork belly — caramel soy glaze, melt-soft.'
       ja: 杭州名物の豚バラ煮込み、琥珀色の甘辛ダレ。
+  meigan_cai_chaofan:
+    name:
+      zh: meigan cai chaofan
+      en: meigan cai chaofan
+      ja: meigan cai chaofan
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 浙江·杭州
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
+  shaoxing_choudoufu:
+    name:
+      zh: shaoxing choudoufu
+      en: shaoxing choudoufu
+      ja: shaoxing choudoufu
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 浙江·杭州
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
+  suichang_dongsun:
+    name:
+      zh: suichang dongsun
+      en: suichang dongsun
+      ja: suichang dongsun
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 浙江·杭州
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
+  xiefen_doufu:
+    name:
+      zh: xiefen doufu
+      en: xiefen doufu
+      ja: xiefen doufu
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 浙江·杭州
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
   xihu_cuyu:
     name:
       zh: 西湖醋鱼
@@ -95,6 +179,20 @@ web_posters:
       zh: 杭帮名菜，活草鱼以镇江醋糖汁浇成琥珀色，嫩中带甜酸。
       en: Hangzhou's classic — amber sweet-vinegar glaze over grass carp.
       ja: 杭州の名菜、酢と砂糖の琥珀色。
+  xuecai_rousichao:
+    name:
+      zh: xuecai rousichao
+      en: xuecai rousichao
+      ja: xuecai rousichao
+    tags:
+      zh: []
+      en: []
+      ja: []
+    pin: 浙江·杭州
+    desc:
+      zh: ''
+      en: ''
+      ja: ''
 ---
 
 # 浙江美食

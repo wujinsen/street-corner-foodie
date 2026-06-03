@@ -104,7 +104,12 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
           <span class="topbar-tech-scan"></span>
           <span class="topbar-tech-dust"></span>
         </span>
-        <a href={tabHref("posters")} data-topbar-tab="posters" class={`tab ${navTab === "posters" ? "active" : ""}`}>
+        <a
+          href={tabHref("posters")}
+          data-topbar-tab="posters"
+          class={`tab ${navTab === "posters" ? "active" : ""}`}
+          aria-label={t(UI.nav.poster, pageLang)}
+        >
           <span class="tab-comet-trail tab-comet-trail--l" aria-hidden="true"></span>
           <span class="tab-comet-trail tab-comet-trail--r" aria-hidden="true"></span>
           <span class="tab-ic-wrap" aria-hidden="true">
@@ -116,7 +121,12 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
           </span>
           <span class="tab-label">{t(UI.nav.poster, pageLang)}</span>
         </a>
-        <a href={tabHref("zines")} data-topbar-tab="zines" class={`tab ${navTab === "zines" ? "active" : ""}`}>
+        <a
+          href={tabHref("zines")}
+          data-topbar-tab="zines"
+          class={`tab ${navTab === "zines" ? "active" : ""}`}
+          aria-label={t(UI.nav.zine, pageLang)}
+        >
           <span class="tab-comet-trail tab-comet-trail--l" aria-hidden="true"></span>
           <span class="tab-comet-trail tab-comet-trail--r" aria-hidden="true"></span>
           <span class="tab-ic-wrap" aria-hidden="true">
@@ -144,6 +154,7 @@ function tabHref(kind: "posters" | "zines" | "streets"): string {
             href={worldAtlasHref}
             class={`tab ${worldAtlasActive ? "active" : ""}`}
             data-world-atlas-link
+            aria-label={t(UI.nav.world_atlas, pageLang)}
           >
             <span class="tab-comet-trail tab-comet-trail--l" aria-hidden="true"></span>
             <span class="tab-comet-trail tab-comet-trail--r" aria-hidden="true"></span>

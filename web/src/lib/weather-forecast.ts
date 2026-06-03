@@ -1,4 +1,5 @@
 import { t, type Lang } from "./i18n";
+import { fetchTimeoutSignal } from "./fetch-timeout";
 import { wmoCodeToSky, skyShortLabel, type WeatherSky } from "./weather-chip";
 
 export interface DailyForecastDay {
@@ -69,7 +70,7 @@ export async function fetchDailyForecast(config: ForecastConfig): Promise<DailyF
     forecast_days: "5",
   });
   const res = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`, {
-    signal: AbortSignal.timeout(8000),
+    signal: fetchTimeoutSignal(8000),
   });
   if (!res.ok) throw new Error("forecast fetch failed");
 

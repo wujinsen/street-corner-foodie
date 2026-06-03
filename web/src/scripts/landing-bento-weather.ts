@@ -24,7 +24,7 @@ import { syncWeatherRainCanvas } from "../lib/weather-rain-canvas";
 import { bootWeatherStarsCanvas } from "../lib/weather-stars-canvas";
 import { inferWeatherMoodCopy, type WeatherMoodInput } from "../lib/weather-mood-copy";
 import { initWeatherTempPoke, syncWeatherTempPokeValue } from "../lib/weather-temp-poke";
-import { getVisibleBentoScope } from "./landing-bento-scope";
+import { fetchTimeoutSignal } from "../lib/fetch-timeout";
 
 export interface LandingWeatherConfig {
   lat: number;
@@ -118,7 +118,7 @@ async function fetchCurrentWeather(
     timezone: config.timezone,
   });
   const res = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`, {
-    signal: AbortSignal.timeout(8000),
+    signal: fetchTimeoutSignal(8000),
   });
   if (!res.ok) return null;
   const data = (await res.json()) as {
@@ -140,6 +140,15 @@ function parseConfig(el: HTMLElement): LandingWeatherConfig | null {
   } catch {
     return null;
   }
+}
+
+function langFromChip(el: HTMLElement): LandingWeatherConfig["lang"] {
+  const cfg = parseConfig(el);
+  if (cfg) return cfg.lang;
+  const docLang = document.documentElement.lang.toLowerCase();
+  if (docLang.startsWith("ja")) return "ja";
+  if (docLang.startsWith("en")) return "en";
+  return "zh";
 }
 
 function placeLabel(config: LandingWeatherConfig): string {
@@ -408,9 +417,13 @@ function setExpanded(el: HTMLElement, expanded: boolean, config?: LandingWeather
     }
 
     applyForecastPanelHeight(el, panel, tile, WEATHER_FORECAST_MIN_H);
-    requestAnimationFrame(() => syncForecastPanelHeight(el));
+    requestAnimationFrame(() => {
+      syncForecastPanelHeight(el);
+      notifyLandingMapLayout();
+    });
 
     if (cfg) void loadForecast(el, cfg);
+    else panel.textContent = forecastErrorLabel(langFromChip(el));
     return;
   }
 
@@ -525,28 +538,57 @@ function initHoverLight(el: HTMLElement): void {
   }
 }
 
+let weatherToggleDelegationBound = false;
+
+/** 罗盘按钮 · 文档级委托（地区切换 re-init 后仍有效） */
+function ensureWeatherToggleDelegation(): void {
+  if (weatherToggleDelegationBound || typeof document === "undefined") return;
+  weatherToggleDelegationBound = true;
+
+  document.addEventListener("click", (ev) => {
+    const target = ev.target;
+    if (!(target instanceof Element)) return;
+    const toggle = target.closest<HTMLButtonElement>("[data-bento-weather-toggle]");
+    if (!toggle) return;
+    const chip = toggle.closest<HTMLElement>("[data-landing-weather]");
+    if (!chip || !chip.isConnected) return;
+
+    const panel = chip.closest<HTMLElement>("[data-landing-bento-panel]");
+    if (panel?.hasAttribute("hidden")) return;
+
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    const config = parseConfig(chip);
+    const next = chip.dataset.weatherExpanded !== "true";
+    setExpanded(chip, next, config ?? undefined);
+  });
+}
+
 function initExpand(el: HTMLElement, config: LandingWeatherConfig): void {
   const toggle = el.querySelector<HTMLButtonElement>("[data-bento-weather-toggle]");
-  if (!toggle || toggle.dataset.weatherExpandBound === "true") return;
-  toggle.dataset.weatherExpandBound = "true";
-
-  toggle.addEventListener("click", () => {
-    const next = el.dataset.weatherExpanded !== "true";
-    if (!next) {
-      setExpanded(el, false, config);
-      return;
-    }
-    setExpanded(el, true, config);
-  });
+  if (!toggle) return;
 
   if (el.dataset.weatherExpanded === "true") {
     void loadForecast(el, config);
   }
 
+  if (el.dataset.weatherExpandKeyBound === "true") return;
+  el.dataset.weatherExpandKeyBound = "true";
+
   el.addEventListener("keydown", (ev) => {
     if (ev.key === "Escape" && el.dataset.weatherExpanded === "true") {
       setExpanded(el, false, config);
       toggle.focus();
+    }
+  });
+}
+
+/** 切换 bento 地区时收起预报，避免隐藏面板上残留展开态 */
+export function resetLandingWeatherExpand(scope: ParentNode): void {
+  scope.querySelectorAll<HTMLElement>("[data-landing-weather]").forEach((el) => {
+    if (el.dataset.weatherExpanded === "true") {
+      setExpanded(el, false, parseConfig(el) ?? undefined);
     }
   });
 }
@@ -584,6 +626,13 @@ async function enhanceWeatherChip(el: HTMLElement): Promise<void> {
 }
 
 export function initLandingBentoWeather(root: ParentNode = document): void {
+  ensureWeatherToggleDelegation();
+
+  if (typeof location !== "undefined" && location.protocol === "file:") {
+    console.warn(
+      "[Street Corner Foodie] 气温卡片需要 HTTP 服务才能加载脚本与 Open-Meteo。请用：cd web && npm run preview",
+    );
+  }
   root.querySelectorAll<HTMLElement>("[data-landing-weather]").forEach((el) => {
     if (el.dataset.weatherInit === "true") return;
     el.dataset.weatherInit = "true";
@@ -592,14 +641,11 @@ export function initLandingBentoWeather(root: ParentNode = document): void {
 }
 
 if (typeof document !== "undefined") {
-  const bootVisibleWeather = (): void => {
-    const visible = getVisibleBentoScope();
-    initLandingBentoWeather(visible ?? document);
-  };
-
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", bootVisibleWeather, { once: true });
+    document.addEventListener("DOMContentLoaded", ensureWeatherToggleDelegation, { once: true });
   } else {
-    bootVisibleWeather();
+    ensureWeatherToggleDelegation();
   }
 }
+
+/* 初始化由 landing-bento-sync.ts 在面板可见性就绪后统一调用，避免 DOMContentLoaded 竞态。 */

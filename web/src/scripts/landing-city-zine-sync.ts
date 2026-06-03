@@ -5,14 +5,15 @@
 
 import { getVisibleBentoScope } from "./landing-bento-scope";
 
-const STACK_MQ = "(max-width: 720px)";
-const DESKTOP_MAP_MQ = "(min-width: 721px)";
+/** 与 CSS：≤1024 单列堆叠、≥1025 桌面双栏 + fixed map 对齐 */
+const STACK_MQ = "(max-width: 1024px)";
+const DESKTOP_MAP_MQ = "(min-width: 1025px)";
 const CARD_BOTTOM_INSET = 16;
 /** Fraction of map band visible above the city card (aligned to zine row). */
 const MAP_VISIBLE_RATIO = 2 / 3;
 /** Gap before poster/bento column — close but must not overlap. */
 const MAP_RIGHT_INSET = 8;
-/** Tokyo pin target · px left of poster column inner edge. */
+/** Tokyo pin target · px left of poster column inner edge (desktop only). */
 const TOKYO_POSTER_GAP = 18;
 
 function query() {
@@ -51,6 +52,11 @@ function clearSpotLayout(
   map?.style.removeProperty("height");
   map?.style.removeProperty("width");
   map?.style.removeProperty("max-width");
+  map?.style.removeProperty("left");
+  map?.style.removeProperty("top");
+  map?.style.removeProperty("right");
+  map?.style.removeProperty("bottom");
+  map?.style.removeProperty("position");
 }
 
 function mapRightBoundary(
@@ -90,6 +96,9 @@ function syncCityCardToZine(): void {
 
   if (window.matchMedia(STACK_MQ).matches) {
     clearSpotLayout(spot, card, map);
+    requestAnimationFrame(() => {
+      window.dispatchEvent(new Event("scf:landing-map-layout"));
+    });
     return;
   }
 

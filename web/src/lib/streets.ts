@@ -234,6 +234,16 @@ export const STREET_REGIONS: Partial<Record<CountryId, Record<string, StreetRegi
           filePattern: () => `wuzhishan_rainforest_{TIME}_{FRAME}.png`,
         },
         {
+          id: "li_village",
+          name: { zh: "黎族村寨", en: "Li Village", ja: "黎族村寨" },
+          tag: { zh: "船型屋风情", en: "Li stilt houses", ja: "船形屋の里" },
+          posterSlugs: ["lijia_zhutongfan", "shanlan_jiu", "wuse_fan"],
+          mapPin: { x: 42, y: 56 },
+          geo: [109.516, 18.901],
+          path: "cn/hainan/wuzhishan/",
+          filePattern: () => `wuzhishan_li_village_{TIME}_{FRAME}.png`,
+        },
+        {
           id: "fenjiezhou",
           name: { zh: "分界洲岛", en: "Fenjiezhou Island", ja: "分界洲島" },
           tag: { zh: "离岛潜水", en: "Island diving", ja: "離島ダイビング" },
