@@ -205,6 +205,8 @@
 
 | `ramen` | **`jp_heisei`**（`sum(ord)%13`→11；海报 `jp_showa`） | 4 女 · 醤油ラーメン · 東京横丁 | boluo高键·禁穿模；`jp/ramen_poster.png` ✅ · zine **p01–p06** `jp/ramen_mini_zine_p*.png` · 全员女性 |
 | `gyoza` | **`jp_showa`**（`sum(ord)%13`→8） | 3 女 · 4料横木牌 · 煎饺 | boluo清新风；竖牌**日本の味**；`jp/gyoza_poster.png` ✅ · zine **p01–p06** `jp/gyoza_mini_zine_p*.png` · 東京 · 全员女性 |
+| `tsukemen` | **`jp_meiji`**（海报·`sum(ord)%6` 拉面/つけ麺池） | **4** 女 · **5** 料横木牌 · つけ麺 | boluo清新风·**全日文**·縦牌**東京の味**·L形つけ麺台；`jp/tsukemen_poster.png` · 禁穿模 |
+| `tempura` | **`jp_edo`**（海报·浅草强锚定） | **4** 女 · **5** 料横木牌 · 天ぷら | boluo清新风·**全日文**·縦牌**江戸の味**·浅草炸台一字排；`jp/tempura_poster.png` · **非** 餃子/ラーメン台 · 禁穿模 |
 | `sushi` | **`jp_edo`**（海报） | 3 女 · 4料横木牌 · 握り寿司 | boluo清新风；竖牌**日本の味**；`jp/sushi_poster.png` ✅ 2026-05-19 · zine 池 `sum(ord)%4` |
 | `xianggelila_songrong` | **`contemporary`** | 围裙卫衣；黄油煎松茸 | 角标**云南风味** · 海报+zine ✅ 四套 · 舌尖 S1E1 |
 | `nuodeng_huotui` | pool → **`ming`** | 明制短袄；手切诺邓火腿 | 竖牌**云南味道**；舌尖 S1E1 ✅ |
@@ -273,8 +275,9 @@
 | `you_doufu_niang` | **`song`** | 闽赣宋服 · 3 女 · 底行4碗 | 竖牌**福建味道**；`cn/fujian/` ✅ 2026-05 |
 | `zha_doufu` | **`contemporary`**（海报） | 3 女 · 4料横木牌 · 炸豆腐 | boluo清新风·摊边禁穿模；竖牌**江苏味道**；`cn/jiangsu/zha_doufu_poster.png` ✅ 2026-05-19 |
 | `tonkotsu_ramen` | **`jp_showa`**（`sum(ord)%13`→8） | 白濁豚骨·細麺·かえ玉·池袋 | zine **p01–p06** `jp/tonkotsu_ramen_mini_zine_p*.png` · 東京の味 · 全员女性 · boluo 高键 |
-| `okinawa_soba` | **`jp_nara_heian`** | `sum(ord)%13`·冲绳 | 角标**沖縄の味** · zine ✅ |
+| `okinawa_soba` | **`jp_nara_heian`** | `sum(ord)%13`→1·冲绳 | 角标**沖縄の味** · zine ✅ · 海报 **`jp_nara_heian`** **4**女·**5**料·L形そば屋；`jp/okinawa_soba_poster.png` |
 | `rafute` | **`jp_90s`**（`sum(ord)%13`→10；海报 `jp_taisho`） | 4 女 · 泡盛黒糖豚バラ · 首里城/碧海 | 竖牌**沖縄の味**；`jp/rafute_poster.png` ✅ · zine **p01–p06** `jp/rafute_mini_zine_p*.png` · 全员女性 |
+| `goya_champuru` | **`jp_meiji`**（`sum(ord)%13`→5；海报 **`jp_showa`** 强锚定·Spam 台味） | **4** 女 · **5** 料横木牌 · チャンプルー鍋 | boluo清新风·**全日文**·縦牌**沖縄の味**·L形沖縄キッチン；`jp/goya_champuru_poster.png` |
 
 **日本 mini-zine**（`jp/`）：属地定画面 → 服饰 **13 档全集** `sum(ord(slug))%13`（例 `gyoza`→`jp_edo`）；**不用**下表强锚定/场景池。见 [mini-zine-dynasty-chibi.md](../../../docs/style/mini-zine-dynasty-chibi.md) §日本 mini-zine 定调。
 

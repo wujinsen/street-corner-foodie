@@ -1,5 +1,5 @@
 ---
-import { formatLandingCoordsHtml } from "../lib/landing-coords";
+import { formatLandingCoordsInnerHtml } from "../lib/landing-coords";
 import { UI, t } from "../lib/i18n";
 import type { Lang } from "../lib/i18n";
 import type { Multilang } from "../lib/types";
@@ -35,7 +35,6 @@ const ctaLabel = t(UI.landing.eat_here, lang);
     aria-hidden="true"
   />
   <div class="landing-city-card-inner">
-    <p class="label h-track">{t(UI.landing.region_tag, lang)}</p>
     <h2 class="name h-serif-dish">
       <span data-map-city-display>{cityDisplay}</span>
     </h2>
@@ -48,7 +47,8 @@ const ctaLabel = t(UI.landing.eat_here, lang);
       <span
         class="coords h-track landing-city-coords"
         data-map-city-coords
-        set:html={formatLandingCoordsHtml(coords)}
+        data-coords-value={coords}
+        set:html={formatLandingCoordsInnerHtml(coords)}
       />
       <span class="map-region-cta h-track">{ctaLabel}</span>
     </footer>

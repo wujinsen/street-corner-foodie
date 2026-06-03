@@ -829,18 +829,24 @@ web_posters:
       ja: 水巷口の朝食、辛いスープ丼。
   lijia_zhutongfan:
     name:
-      zh: lijia zhutongfan
-      en: lijia zhutongfan
-      ja: lijia zhutongfan
+      zh: 黎家竹筒饭
+      en: Li Bamboo Tube Rice
+      ja: リー族竹筒飯
     tags:
-      zh: []
-      en: []
-      ja: []
-    pin: 海南
+      zh:
+        - 黎族
+        - 竹香
+      en:
+        - Li cuisine
+        - Bamboo aroma
+      ja:
+        - リー族
+        - 竹の香り
+    pin: 海南·五指山
     desc:
-      zh: ''
-      en: ''
-      ja: ''
+      zh: 黎族传统，山兰米与猪肉粒装入青竹，芭蕉叶封口炭火慢烤，竹香渗入饭粒；配山兰酒。
+      en: Li bamboo tube rice — hill rice and pork charcoal-roasted in fresh bamboo; served with Shanlan wine.
+      ja: リー族の竹筒飯、山蘭米と豚肉を青竹で炭火焼き、山蘭酒と共に。
   lingao_fen:
     name:
       zh: 临高粉

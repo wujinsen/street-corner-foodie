@@ -43,34 +43,49 @@ interface StarsInstance {
   showerAngle: number;
   showerMeteorsLeft: number;
   lastMeteorSpawn: number;
+  showerUiActive: boolean;
+  chip: HTMLElement;
 }
 
 const instances = new WeakMap<HTMLElement, StarsInstance>();
 
+/** Meteor shower cadence (seconds). */
+const SHOWER_FIRST_S = [6, 12] as const;
+const SHOWER_INTERVAL_S = [26, 36] as const;
+const SHOWER_BURST_S = [3.4, 5.2] as const;
+const SHOWER_COUNT = [12, 18] as const;
+
 /** Seconds until first / next meteor shower after canvas boot. */
 function scheduleNextShower(fromElapsed = 0, first = false): number {
-  const delay = first ? rand(10, 22) : rand(22, 48);
-  return fromElapsed + delay;
+  const [lo, hi] = first ? SHOWER_FIRST_S : SHOWER_INTERVAL_S;
+  return fromElapsed + rand(lo, hi);
 }
 
 function resetMeteorState(instance: StarsInstance, elapsed = 0): void {
   instance.meteors = [];
-  instance.nextShowerAt = scheduleNextShower(elapsed);
+  instance.nextShowerAt = scheduleNextShower(elapsed, elapsed <= 0);
   instance.showerUntil = 0;
   instance.showerAngle = rand(Math.PI * 0.18, Math.PI * 0.32);
   instance.showerMeteorsLeft = 0;
   instance.lastMeteorSpawn = 0;
+  instance.showerUiActive = false;
+  delete instance.chip.dataset.weatherMeteorShower;
+}
+
+function meteorScale(width: number, height: number): number {
+  return Math.max(0.85, Math.min(1.35, Math.min(width, height) / 220));
 }
 
 function spawnMeteor(width: number, height: number, angle: number, scale = 1): Meteor {
+  const s = scale * meteorScale(width, height);
   return {
-    x: rand(width * -0.08, width * 0.92),
-    y: rand(height * 0.02, height * 0.48),
-    len: rand(30, 68) * scale,
-    angle: angle + rand(-0.05, 0.05),
+    x: rand(width * -0.12, width * 0.95),
+    y: rand(height * 0.01, height * 0.52),
+    len: rand(36, 82) * s,
+    angle: angle + rand(-0.06, 0.06),
     progress: 0,
-    speed: rand(0.032, 0.052),
-    tailLen: rand(20, 42) * scale,
+    speed: rand(0.038, 0.058),
+    tailLen: rand(28, 56) * s,
   };
 }
 
@@ -79,25 +94,41 @@ function drawMeteor(ctx: CanvasRenderingContext2D, meteor: Meteor): void {
   const headY = meteor.y + Math.sin(meteor.angle) * meteor.len * meteor.progress;
   const tailX = headX - Math.cos(meteor.angle) * meteor.tailLen;
   const tailY = headY - Math.sin(meteor.angle) * meteor.tailLen;
-  const fade = 1 - meteor.progress * 0.4;
+  const fade = 1 - meteor.progress * 0.35;
 
   const grad = ctx.createLinearGradient(tailX, tailY, headX, headY);
   grad.addColorStop(0, "rgba(255, 255, 255, 0)");
-  grad.addColorStop(0.45, `rgba(210, 225, 255, ${0.45 * fade})`);
-  grad.addColorStop(0.82, `rgba(255, 255, 255, ${0.88 * fade})`);
-  grad.addColorStop(1, `rgba(255, 255, 255, ${0.98 * fade})`);
+  grad.addColorStop(0.35, `rgba(190, 215, 255, ${0.55 * fade})`);
+  grad.addColorStop(0.72, `rgba(240, 248, 255, ${0.92 * fade})`);
+  grad.addColorStop(1, `rgba(255, 255, 255, ${1 * fade})`);
   ctx.strokeStyle = grad;
-  ctx.lineWidth = meteor.tailLen > 32 ? 1.35 : 1.05;
+  ctx.lineWidth = meteor.tailLen > 38 ? 1.65 : 1.25;
   ctx.lineCap = "round";
   ctx.beginPath();
   ctx.moveTo(tailX, tailY);
   ctx.lineTo(headX, headY);
   ctx.stroke();
 
-  ctx.fillStyle = `rgba(255, 255, 255, ${0.92 * fade})`;
+  ctx.fillStyle = `rgba(255, 255, 255, ${0.96 * fade})`;
   ctx.beginPath();
-  ctx.arc(headX, headY, 1.1, 0, Math.PI * 2);
+  ctx.arc(headX, headY, meteor.tailLen > 38 ? 1.45 : 1.15, 0, Math.PI * 2);
   ctx.fill();
+
+  ctx.fillStyle = `rgba(200, 225, 255, ${0.35 * fade})`;
+  ctx.beginPath();
+  ctx.arc(headX, headY, meteor.tailLen > 38 ? 3.2 : 2.6, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function syncMeteorShowerUi(instance: StarsInstance, elapsed: number): void {
+  const active = elapsed < instance.showerUntil;
+  if (active === instance.showerUiActive) return;
+  instance.showerUiActive = active;
+  if (active) {
+    instance.chip.dataset.weatherMeteorShower = "active";
+  } else {
+    delete instance.chip.dataset.weatherMeteorShower;
+  }
 }
 
 function updateMeteors(instance: StarsInstance, elapsed: number): void {
@@ -105,32 +136,27 @@ function updateMeteors(instance: StarsInstance, elapsed: number): void {
   if (width < 1 || height < 1) return;
 
   if (elapsed >= instance.nextShowerAt && elapsed >= instance.showerUntil) {
-    instance.showerUntil = elapsed + rand(2.4, 4.2);
-    instance.showerAngle = rand(Math.PI * 0.17, Math.PI * 0.33);
-    instance.showerMeteorsLeft = Math.round(rand(5, 9));
-    instance.lastMeteorSpawn = elapsed - rand(0.2, 0.5);
+    instance.showerUntil = elapsed + rand(SHOWER_BURST_S[0], SHOWER_BURST_S[1]);
+    instance.showerAngle = rand(Math.PI * 0.16, Math.PI * 0.34);
+    instance.showerMeteorsLeft = Math.round(rand(SHOWER_COUNT[0], SHOWER_COUNT[1]));
+    instance.lastMeteorSpawn = elapsed - rand(0.15, 0.45);
     instance.nextShowerAt = scheduleNextShower(elapsed);
   }
 
   if (elapsed < instance.showerUntil && instance.showerMeteorsLeft > 0) {
     const gap = elapsed - instance.lastMeteorSpawn;
-    if (gap > rand(0.14, 0.38)) {
-      instance.meteors.push(spawnMeteor(width, height, instance.showerAngle, rand(0.92, 1.12)));
+    if (gap > rand(0.1, 0.28)) {
+      instance.meteors.push(spawnMeteor(width, height, instance.showerAngle, rand(0.95, 1.18)));
       instance.showerMeteorsLeft -= 1;
       instance.lastMeteorSpawn = elapsed;
     }
-  }
-
-  if (elapsed >= instance.showerUntil && Math.random() < 0.00065) {
-    instance.meteors.push(
-      spawnMeteor(width, height, rand(Math.PI * 0.14, Math.PI * 0.34), rand(0.75, 0.95)),
-    );
   }
 
   for (const meteor of instance.meteors) {
     meteor.progress = Math.min(1, meteor.progress + meteor.speed);
   }
   instance.meteors = instance.meteors.filter((m) => m.progress < 1);
+  syncMeteorShowerUi(instance, elapsed);
 }
 
 function rand(min: number, max: number): number {
@@ -372,6 +398,7 @@ function destroyInstance(chip: HTMLElement): void {
   instances.delete(chip);
   setStarsActive(chip, false);
   delete chip.dataset.weatherStarsReady;
+  delete chip.dataset.weatherMeteorShower;
 }
 
 function ensureCanvas(chip: HTMLElement, density: StarDensity): StarsInstance | null {
@@ -389,6 +416,7 @@ function ensureCanvas(chip: HTMLElement, density: StarDensity): StarsInstance | 
     if (!ctx) return null;
 
     instance = {
+      chip,
       canvas,
       ctx,
       stars: [],
@@ -424,6 +452,7 @@ function ensureCanvas(chip: HTMLElement, density: StarDensity): StarsInstance | 
       showerAngle: rand(Math.PI * 0.18, Math.PI * 0.32),
       showerMeteorsLeft: 0,
       lastMeteorSpawn: 0,
+      showerUiActive: false,
     };
 
     instance.resizeObserver.observe(host);

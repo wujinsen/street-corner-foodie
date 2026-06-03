@@ -1712,6 +1712,164 @@ body.has-altc .alt-landing .landing-city-card-foot .coords.h-track {
   color: var(--fg-weak);
 }
 
+/* 城市卡 · 经纬度纯装饰（罗盘 + 半球色 + 换城滚动） */
+body.has-altc .alt-landing .landing-city-coords {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px 7px;
+  font-variant-numeric: tabular-nums;
+}
+
+body.has-altc .alt-landing .landing-city-coords__compass {
+  flex: 0 0 auto;
+  width: 13px;
+  height: 13px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--accent-c) 38%, transparent);
+  position: relative;
+  opacity: 0.72;
+  transition: opacity 0.25s ease, box-shadow 0.25s ease;
+}
+
+body.has-altc .alt-landing .landing-city-coords__compass::before,
+body.has-altc .alt-landing .landing-city-coords__compass::after {
+  content: "";
+  position: absolute;
+  background: color-mix(in oklab, var(--accent-c) 62%, transparent);
+  border-radius: 1px;
+}
+
+body.has-altc .alt-landing .landing-city-coords__compass::before {
+  left: 50%;
+  top: 2px;
+  bottom: 2px;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+body.has-altc .alt-landing .landing-city-coords__compass::after {
+  top: 50%;
+  left: 2px;
+  right: 2px;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+body.has-altc .alt-landing a.landing-city-card:hover .landing-city-coords__compass,
+body.has-altc .alt-landing a.landing-city-card:focus-visible .landing-city-coords__compass {
+  opacity: 1;
+  box-shadow: 0 0 10px color-mix(in oklab, var(--accent-c) 28%, transparent);
+}
+
+body.has-altc .alt-landing .landing-city-coords__pair {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  white-space: nowrap;
+}
+
+body.has-altc .alt-landing .landing-city-coords__num {
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+body.has-altc .alt-landing .landing-city-coords__deg {
+  opacity: 0.88;
+}
+
+body.has-altc .alt-landing .landing-city-coords__sep {
+  opacity: 0.45;
+  user-select: none;
+}
+
+body.has-altc .alt-landing .landing-city-coords__hemi {
+  margin-left: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  letter-spacing: 0.08em;
+  transition: color 0.25s ease, text-shadow 0.25s ease;
+}
+
+body.has-altc .alt-landing .landing-city-coords__hemi--n {
+  color: color-mix(in oklab, #7eb8ff 72%, var(--fg-weak));
+}
+
+body.has-altc .alt-landing .landing-city-coords__hemi--s {
+  color: color-mix(in oklab, #6ec9c9 72%, var(--fg-weak));
+}
+
+body.has-altc .alt-landing .landing-city-coords__hemi--e {
+  color: color-mix(in oklab, var(--accent-c) 78%, var(--fg-weak));
+}
+
+body.has-altc .alt-landing .landing-city-coords__hemi--w {
+  color: color-mix(in oklab, #c4a0ff 72%, var(--fg-weak));
+}
+
+body.has-altc .alt-landing .landing-city-coords--swap .landing-city-coords__num {
+  animation: landing-coords-num-roll 0.52s cubic-bezier(0.34, 1.28, 0.48, 1) both;
+}
+
+body.has-altc .alt-landing .landing-city-coords--swap .landing-city-coords__pair--lng .landing-city-coords__num {
+  animation-delay: 0.05s;
+}
+
+body.has-altc .alt-landing .landing-city-coords--swap .landing-city-coords__hemi {
+  animation: landing-coords-hemi-flash 0.48s ease both;
+}
+
+body.has-altc .alt-landing .landing-city-coords--swap .landing-city-coords__compass {
+  animation: landing-coords-compass-spin 0.65s cubic-bezier(0.34, 1.2, 0.48, 1) both;
+}
+
+@keyframes landing-coords-num-roll {
+  0% {
+    opacity: 0.35;
+    transform: translateY(6px);
+    filter: blur(2px);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(-2px);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: none;
+  }
+}
+
+@keyframes landing-coords-hemi-flash {
+  0%,
+  100% {
+    text-shadow: none;
+  }
+  40% {
+    text-shadow: 0 0 8px color-mix(in oklab, currentColor 45%, transparent);
+  }
+}
+
+@keyframes landing-coords-compass-spin {
+  0% {
+    transform: rotate(-28deg) scale(0.88);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.has-altc .alt-landing .landing-city-coords--swap .landing-city-coords__num,
+  body.has-altc .alt-landing .landing-city-coords--swap .landing-city-coords__hemi,
+  body.has-altc .alt-landing .landing-city-coords--swap .landing-city-coords__compass {
+    animation: none;
+  }
+}
+
 body.has-altc .alt-landing .landing-city-card-foot .map-region-cta {
   font-size: var(--type-ui-sm, 14px);
   font-weight: var(--type-weight-ui, 600);
@@ -5465,6 +5623,51 @@ body.landing-page .bento-weather-stars {
   height: 100%;
   pointer-events: none;
   border-radius: inherit;
+}
+
+/* 定时流星雨 · 星野 canvas 流星 + 卡片边缘冷光 */
+body.landing-page .bento-weather-live[data-weather-meteor-shower="active"] .bento-weather-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    radial-gradient(ellipse 90% 55% at 72% 8%, rgba(190, 220, 255, 0.22), transparent 58%),
+    radial-gradient(ellipse 70% 45% at 18% 22%, rgba(160, 190, 255, 0.12), transparent 52%);
+  box-shadow:
+    inset 0 0 0 1px rgba(200, 225, 255, 0.14),
+    inset 0 -24px 48px rgba(120, 160, 255, 0.06);
+  animation: weather-meteor-shower-glow 1.1s ease-out both;
+}
+
+body.landing-page .bento-weather-live[data-weather-meteor-shower="active"] .bento-weather-stars {
+  filter: brightness(1.06);
+  transition: filter 0.35s ease;
+}
+
+@keyframes weather-meteor-shower-glow {
+  0% {
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.72;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.landing-page .bento-weather-live[data-weather-meteor-shower="active"] .bento-weather-bg::after {
+    animation: none;
+    opacity: 0.35;
+  }
+
+  body.landing-page .bento-weather-live[data-weather-meteor-shower="active"] .bento-weather-stars {
+    filter: none;
+  }
 }
 
 /* Temp FX scrim · overlays static starfield (background itself does not move) */
@@ -9500,59 +9703,6 @@ body.has-altc .alt-street--embed .street-geo-minimap {
   z-index: 14;
 }
 
-/* 场景列表左 · 右下角时段/画幅工具条（视角矩阵侧栏已移除） */
-body.has-altc .alt-street-stage .street-view-toolbar {
-  position: absolute;
-  right: var(--street-edge, 20px);
-  bottom: var(--street-rails-bottom, 368px);
-  z-index: 14;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: flex-end;
-  gap: 8px 10px;
-  max-width: min(420px, calc(100% - var(--street-edge, 20px) * 2 - var(--street-scenes-w, 240px) - 16px));
-  padding: 10px 12px;
-  box-sizing: border-box;
-  border-radius: var(--tile-radius);
-  background: color-mix(in oklab, var(--tile-bg) 62%, transparent);
-  border: 1px solid var(--tile-border);
-  backdrop-filter: blur(10px) saturate(140%);
-  -webkit-backdrop-filter: blur(10px) saturate(140%);
-  pointer-events: auto;
-}
-
-body.has-altc .alt-street-stage .street-view-toolbar__group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 4px;
-  min-width: 0;
-}
-
-body.has-altc .alt-street-stage .street-view-toolbar__label {
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  color: var(--fg-muted);
-}
-
-body.has-altc .alt-street-stage .street-view-toolbar__actions,
-body.has-altc .alt-street-stage .street-view-toolbar__deep {
-  flex-shrink: 0;
-}
-
-body.has-altc .alt-street-stage .street-view-toolbar__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
-}
-
-body.has-altc .alt-street-matrix,
-body.has-altc .street-matrix-panel {
-  display: none !important;
-}
-
 body.has-altc .alt-street-stage .alt-street-scenes {
   left: var(--street-edge, 20px);
   right: auto;
@@ -9584,9 +9734,9 @@ body.has-altc .alt-street-stage .street-matrix-panel {
   left: auto;
   position: absolute;
   top: var(--street-edge, 20px);
-  bottom: auto;
-  height: fit-content;
-  max-height: calc(100% - var(--street-edge, 20px) - var(--street-rails-bottom, 368px));
+  bottom: var(--street-rails-bottom, 368px);
+  height: auto;
+  max-height: none;
   width: var(--street-matrix-w);
   max-width: min(320px, 40vw);
   min-width: min(180px, 36vw);
@@ -9633,11 +9783,199 @@ body.has-altc .street-matrix-panel .matrix-block:last-child {
 }
 
 body.has-altc .street-matrix-panel .matrix-block-label {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  font-family: var(--font-body);
+  font-size: var(--type-ui-sm, 14px);
+  font-weight: var(--type-weight-strong, 700);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--fg-strong) 94%, transparent);
 }
 
 body.has-altc .street-matrix-panel .matrix-pill {
-  padding: 5px 9px;
+  padding: 8px 12px;
+  font-family: var(--font-body);
+  font-size: var(--type-label, 13px);
+  font-weight: var(--type-weight-ui, 600);
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: color-mix(in oklab, var(--fg-strong) 82%, transparent);
+}
+
+body.has-altc .street-matrix-panel .matrix-frame-pills .matrix-pill.active {
+  font-weight: var(--type-weight-strong, 700);
+  color: var(--fg-strong);
+}
+
+/* 时段 · 日轨弧线 + 滑动光点 */
+body.has-altc .matrix-block--time .matrix-block-label--time {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+body.has-altc .matrix-block-label__clock {
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+
+body.has-altc .matrix-time-arc {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 4px;
+}
+
+body.has-altc .matrix-time-arc__sky {
+  position: relative;
+  height: 40px;
+  margin: 0 4px 2px;
+  color: color-mix(in oklab, var(--fg-muted) 88%, transparent);
+}
+
+body.has-altc .matrix-time-arc__curve {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+body.has-altc .matrix-time-arc__dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 2px color-mix(in oklab, var(--bg-1) 55%, transparent),
+    0 0 12px 2px color-mix(in oklab, #fff 45%, transparent);
+  transition:
+    left 0.42s cubic-bezier(0.33, 1, 0.68, 1),
+    top 0.42s cubic-bezier(0.33, 1, 0.68, 1),
+    box-shadow 0.35s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+body.has-altc [data-street-moods][data-active-mood="dawn"] .matrix-time-arc__dot {
+  left: 12.5%;
+  top: 72%;
+}
+
+body.has-altc [data-street-moods][data-active-mood="day"] .matrix-time-arc__dot {
+  left: 37.5%;
+  top: 18%;
+}
+
+body.has-altc [data-street-moods][data-active-mood="sunset"] .matrix-time-arc__dot {
+  left: 62.5%;
+  top: 18%;
+  box-shadow:
+    0 0 0 2px color-mix(in oklab, var(--bg-1) 55%, transparent),
+    0 0 14px 3px color-mix(in oklab, #ff6b4a 55%, transparent);
+}
+
+body.has-altc [data-street-moods][data-active-mood="night"] .matrix-time-arc__dot {
+  left: 87.5%;
+  top: 72%;
+}
+
+body.has-altc .matrix-time-arc__wire {
+  height: 1px;
+  margin: 0 14% 10px;
+  background: color-mix(in oklab, var(--fg-muted) 35%, transparent);
+}
+
+body.has-altc .matrix-time-arc__stops {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  align-items: start;
+}
+
+body.has-altc .matrix-time-stop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 2px 2px;
+  border: none;
+  background: transparent;
+  color: color-mix(in oklab, var(--fg-strong) 76%, transparent);
+  cursor: pointer;
+  font: inherit;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+body.has-altc .matrix-time-stop__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  transition: color 0.3s ease, filter 0.35s ease, transform 0.3s ease;
+}
+
+body.has-altc .matrix-time-stop__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+body.has-altc .matrix-time-stop__label {
+  font-family: var(--font-body);
+  font-size: var(--type-caption, 12px);
+  font-weight: var(--type-weight-ui, 600);
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+}
+
+body.has-altc .matrix-time-stop:hover {
+  color: var(--fg-strong);
+}
+
+body.has-altc .matrix-time-stop:hover .matrix-time-stop__icon {
+  transform: translateY(-1px);
+}
+
+body.has-altc .matrix-time-stop.active {
+  color: var(--fg-strong);
+}
+
+body.has-altc .matrix-time-stop[data-mood="dawn"].active .matrix-time-stop__icon {
+  color: #ffd4a8;
+  filter: drop-shadow(0 0 7px color-mix(in oklab, #ffb86c 75%, transparent));
+}
+
+body.has-altc .matrix-time-stop[data-mood="day"].active .matrix-time-stop__icon {
+  color: #fff4d6;
+  filter: drop-shadow(0 0 8px color-mix(in oklab, #ffe08a 70%, transparent));
+}
+
+body.has-altc .matrix-time-stop[data-mood="sunset"].active .matrix-time-stop__icon {
+  color: #ff7a5c;
+  filter: drop-shadow(0 0 10px color-mix(in oklab, #ff5c3a 85%, transparent));
+}
+
+body.has-altc .matrix-time-stop[data-mood="night"].active .matrix-time-stop__icon {
+  color: #b8c8ff;
+  filter: drop-shadow(0 0 9px color-mix(in oklab, #6b8cff 75%, transparent));
+}
+
+body.has-altc .matrix-time-stop:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--accent-c) 70%, transparent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.has-altc .matrix-time-arc__dot,
+  body.has-altc .matrix-time-stop,
+  body.has-altc .matrix-time-stop__icon {
+    transition: none;
+  }
 }
 
 body.has-altc .street-geo-minimap {
@@ -9657,13 +9995,21 @@ body.has-altc .alt-street--embed .alt-street-stage {
 /* 场景列表 · 对齐小志阅读器左侧 alt-zine-side-card */
 body.has-altc .alt-street-scenes > h2.h-track {
   margin-bottom: 12px;
-  font-size: 13px;
+  font-size: var(--type-ui-sm, 14px);
+  font-weight: var(--type-weight-strong, 700);
+  letter-spacing: 0.05em;
+  color: var(--fg-strong);
 }
 
 body.has-altc .alt-street-scenes .alt-street-scenes-meta {
   margin: 0 0 14px;
-  font-size: 10px;
-  color: var(--fg-mute);
+  font-family: var(--font-body);
+  font-size: var(--type-caption, 12px);
+  font-weight: var(--type-weight-ui, 600);
+  letter-spacing: 0.04em;
+  text-transform: none;
+  line-height: 1.45;
+  color: color-mix(in oklab, var(--fg-strong) 80%, transparent);
 }
 
 body.has-altc .alt-street-scenes .scene-item {
@@ -9784,9 +10130,9 @@ body.has-altc .alt-street-scenes .scene-item__cap strong {
   display: -webkit-box;
   margin: 0;
   font-family: var(--font-poster-dish);
-  font-size: 15px;
+  font-size: clamp(16px, 1.05rem, 18px);
   font-weight: 700;
-  line-height: 1.25;
+  line-height: 1.3;
   color: var(--fg-strong);
   overflow: hidden;
   -webkit-box-orient: vertical;
@@ -9795,11 +10141,37 @@ body.has-altc .alt-street-scenes .scene-item__cap strong {
 
 body.has-altc .alt-street-scenes .scene-item__tag {
   display: block;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-mute);
+  font-family: var(--font-body);
+  font-size: var(--type-caption, 12px);
+  font-weight: var(--type-weight-ui, 600);
+  letter-spacing: 0.03em;
+  text-transform: none;
+  color: color-mix(in oklab, var(--fg-strong) 72%, transparent);
+}
+
+/* 街景右栏 · 导出 / 已生成 / 探索（覆盖 components 10px） */
+body.has-altc .alt-street-stage .street-matrix-panel .matrix-export-btns .btn-glass.sm,
+body.has-altc .alt-street-stage .street-matrix-panel .street-explorer-deep-link .btn-glass.sm {
+  font-family: var(--font-body);
+  font-size: var(--type-label, 13px);
+  font-weight: var(--type-weight-ui, 600);
+  letter-spacing: 0.02em;
+  padding: 8px 14px;
+}
+
+body.has-altc .alt-street-stage .street-matrix-panel .matrix-available-meta {
+  font-family: var(--font-body);
+  font-size: var(--type-caption, 12px);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  line-height: 1.45;
+  color: color-mix(in oklab, var(--fg-strong) 78%, transparent);
+}
+
+body.has-altc .alt-street-stage .alt-street-scenes,
+body.has-altc .alt-street-stage .street-matrix-panel {
+  -webkit-font-smoothing: antialiased;
 }
 
 body.has-altc .alt-street-scenes .scene-item .name,
@@ -10115,10 +10487,14 @@ html[data-theme="light"] body.has-altc .street-eat-carousel__nav {
     max-width: min(260px, 42vw);
   }
 
-  body.has-altc .alt-street-stage .street-view-toolbar {
+  body.has-altc .alt-street-stage .alt-street-matrix,
+  body.has-altc .alt-street-stage .street-matrix-panel {
+    top: var(--street-edge, 10px);
     right: var(--street-edge, 10px);
     bottom: var(--street-rails-bottom);
-    max-width: min(360px, calc(100% - var(--street-edge, 10px) * 2));
+    width: var(--street-matrix-w);
+    max-width: min(280px, 44vw);
+    max-height: none;
   }
 
   body.has-altc .alt-street-bg {
@@ -10188,11 +10564,25 @@ html[data-theme="light"] body.has-altc .street-eat-carousel__nav {
     bottom: auto;
   }
 
-  body.has-altc .alt-street-stage .street-view-toolbar {
-    position: static !important;
-    width: calc(100% - 24px);
-    max-width: none;
-    margin: 0 12px 10px;
+  body.has-altc .alt-street-stage .alt-street-matrix,
+  body.has-altc .alt-street-stage .street-matrix-panel {
+    position: absolute !important;
+    top: var(--street-edge, 10px);
+    right: var(--street-edge, 10px);
+    bottom: var(--street-rails-bottom);
+    left: auto;
+    width: min(280px, calc(100% - var(--street-edge, 10px) * 2));
+    max-width: min(280px, 46vw);
+    min-width: min(160px, 40vw);
+    margin: 0;
+    max-height: none;
+  }
+
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage .alt-street-matrix,
+  body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage .street-matrix-panel {
+    top: calc(var(--street-immersive-top) + var(--street-edge, 10px));
+    bottom: var(--street-rails-bottom);
+    max-height: none;
   }
 
   body.has-altc .street-geo-minimap {
@@ -10319,7 +10709,20 @@ html[data-theme="light"] body.has-altc .street-eat-carousel__nav {
 
   body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage .alt-street-matrix,
   body.has-altc .alt-gallery[data-active-tab="streets"] .alt-street-stage .street-matrix-panel {
-    margin-top: 8px;
+    position: absolute !important;
+    top: var(--street-edge, 10px);
+    right: var(--street-edge, 10px);
+    bottom: auto !important;
+    left: auto;
+    z-index: 14;
+    width: min(260px, calc(100% - var(--street-edge, 10px) * 2));
+    max-width: min(260px, 44vw);
+    min-width: 0;
+    margin: 0;
+    height: min(52dvh, 380px, calc((100vw - 24px) * 9 / 21));
+    max-height: min(52dvh, 380px);
+    min-height: min(44vw, 200px);
+    box-sizing: border-box;
     border-radius: var(--tile-radius);
   }
 

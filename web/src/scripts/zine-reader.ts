@@ -413,9 +413,13 @@ export function initZineReader(root: HTMLElement): void {
     ".alt-zine-toolbar .switch-glass a[href], .alt-zine-thumbs a[href]",
   ).forEach((a) => {
     a.addEventListener("click", (e) => {
-      if (!hasVariants && !hasSpreadNav) return;
+      const href = a.getAttribute("href") ?? "";
+      const isThumb = !!a.closest(".alt-zine-thumbs");
+      if (!isThumb && !hasVariants && !hasSpreadNav) return;
+      if (!href) return;
       e.preventDefault();
-      navigateFromHref(a.getAttribute("href") ?? "", true);
+      e.stopPropagation();
+      navigateFromHref(href, true);
     });
   });
 

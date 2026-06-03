@@ -3,6 +3,7 @@
  *
  * 正式：`inferTempFxId()`（见 docs/weather-temp-fx-rules.md）
  * 调试：`data-weather-temp-fx-debug="cycle"` → 每次点击轮播六款主特效
+ * 锁定：`data-weather-temp-fx-lock="sun-beam"` → 始终太阳照射（首页气温卡）
  */
 
 import type { Lang } from "./i18n";
@@ -100,7 +101,16 @@ function isDebugCycle(chip: HTMLElement): boolean {
   return chip.dataset.weatherTempFxDebug === "cycle";
 }
 
+function readFxLock(chip: HTMLElement): TempFxId | null {
+  const lock = chip.dataset.weatherTempFxLock;
+  if (lock === "sun-beam" || lock === "sun") return "FX_Sun_Beam";
+  return null;
+}
+
 function resolveSceneFx(chip: HTMLElement, state: BindState): TempFxId | null {
+  const locked = readFxLock(chip);
+  if (locked) return locked;
+
   if (isDebugCycle(chip)) {
     const fxId = DEBUG_FX_CYCLE[state.debugCycleIndex % DEBUG_FX_CYCLE.length]!;
     state.debugCycleIndex = (state.debugCycleIndex + 1) % DEBUG_FX_CYCLE.length;
@@ -114,7 +124,8 @@ function resolveSceneFx(chip: HTMLElement, state: BindState): TempFxId | null {
 
 function markLastFx(chip: HTMLElement, fxId: TempFxId, debug: boolean): void {
   chip.dataset.weatherTempFxLast = fxIdToDataAttr(fxId);
-  chip.dataset.weatherTempFxMode = debug ? "debug-cycle" : "climate-temp";
+  const locked = readFxLock(chip);
+  chip.dataset.weatherTempFxMode = debug ? "debug-cycle" : locked ? "lock-sun-beam" : "climate-temp";
   if (!debug) {
     const tempC = readTempC(chip);
     if (tempC !== null) {

@@ -1,4 +1,4 @@
-/** Full-screen zine / poster view — click spread or thumbs · wheel / ± zoom · backdrop / Esc close. */
+/** Full-screen zine / poster view — click spread or zoom btn · wheel / ± zoom · backdrop / Esc close. */
 
 const ZOOM_MIN = 1;
 const ZOOM_MAX = 3;
@@ -140,19 +140,6 @@ export function initZineLightbox(root: HTMLElement): void {
     e.preventDefault();
     lastFocus = spread;
     open();
-  });
-
-  root.querySelectorAll<HTMLAnchorElement>(".alt-zine-thumbs .thumb").forEach((thumb) => {
-    thumb.addEventListener("click", (e) => {
-      const hit = e.target as HTMLElement;
-      if (!hit.closest("img, picture")) return;
-      const img = thumb.querySelector("img");
-      const display = imgDisplaySrc(img);
-      const full = imgFullSrc(img);
-      if (!display && !full) return;
-      lastFocus = thumb;
-      queueMicrotask(() => openWithSrc(display, full, img?.alt || spreadImg(spread)?.alt));
-    });
   });
 
   const zoomBy = (delta: number): void => {
