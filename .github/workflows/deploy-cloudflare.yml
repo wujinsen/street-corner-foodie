@@ -132,15 +132,29 @@ jobs:
           name: scf-web-dist
           path: web/dist
 
+      - name: Verify dist before deploy
+        working-directory: web
+        run: |
+          set -euo pipefail
+          test -f dist/index.html
+          echo "dist files: $(find dist -type f | wc -l)"
+          du -sh dist
+
       - name: Deploy to Cloudflare Pages
         id: deploy
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name=street-corner-foodie --branch=${{ needs.build.outputs.deploy_branch }}
-          workingDirectory: web
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: web
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euxo pipefail
+          npx wrangler@3 pages project create street-corner-foodie --production-branch=main || true
+          npx wrangler@3 pages deploy dist \
+            --project-name=street-corner-foodie \
+            --branch="${{ needs.build.outputs.deploy_branch }}" \
+            --commit-dirty=true 2>&1 | tee deploy-log.txt
+          URL=$(grep -Eo 'https://[a-z0-9.-]+\.pages\.dev' deploy-log.txt | tail -1 || true)
+          echo "deployment-url=${URL:-https://street-corner-foodie.pages.dev}" >> "$GITHUB_OUTPUT"
 
       - name: Deployment summary
         run: |

@@ -47,9 +47,12 @@ npm run preview
 
 1. Cloudflare → **My Profile** → **API Tokens** → **Create Token**  
 2. 模板：**Edit Cloudflare Workers**（含 Pages 部署权限）或自定义：
-   - Account → Cloudflare Pages → Edit  
-   - Account → Account Settings → Read  
-3. 复制 token。
+   - Account → **Cloudflare Pages** → **Edit**（缺此项时 deploy 报 `wrangler-action` / `exit code 1`）  
+   - Account → **Account Settings** → **Read**  
+3. 复制 token。  
+4. **`CLOUDFLARE_ACCOUNT_ID`** 填仪表盘右侧 **Account ID**（32 位十六进制），**不是** Zone ID、不是邮箱。
+
+**deploy 失败排查**：Actions → deploy job → **Deploy to Cloudflare Pages** 展开日志；常见 `Authentication error` / `10000` → 重建 Token 并更新 GitHub Secret。
 
 ### 3. GitHub Secrets / Variables
 
