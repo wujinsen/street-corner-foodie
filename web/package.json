@@ -9,6 +9,7 @@
     "dev": "npm run vendor:echarts && npm run images:quick && astro dev",
     "dev:clean": "node scripts/clean-vite-cache.mjs && npm run dev",
     "build": "npm run vendor:echarts && npm run images && astro build",
+    "build:ci": "npm run vendor:echarts && npm run images:quick && astro build",
     "preview": "astro preview",
     "check": "npm run vendor:echarts && npm run map:design && npm run map:particles && npm run images:quick && astro check",
     "test:altc": "node scripts/altc-smoke.mjs && node scripts/country-poster-order.mjs",
@@ -20,7 +21,7 @@
     "map:design": "node scripts/crop-landing-map-art.mjs",
     "lhci": "lhci autorun",
     "deploy:cf": "wrangler pages deploy dist --project-name=street-corner-foodie --branch=main",
-    "sync:web-posters": "python scripts/export-poster-meta-bundle.py && node scripts/sync-web-posters-to-md.mjs"
+    "sync:web-posters": "python3 scripts/export-poster-meta-bundle.py && node scripts/sync-web-posters-to-md.mjs"
   },
   "dependencies": {
     "@types/three": "^0.184.1",

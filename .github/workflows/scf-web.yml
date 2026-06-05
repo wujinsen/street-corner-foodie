@@ -31,11 +31,23 @@ jobs:
           cache: npm
           cache-dependency-path: web/package-lock.json
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
       - name: Install
         run: npm ci
 
-      - name: Link asserts into public
-        run: ln -sf ../../asserts public/asserts
+      - name: Prepare public/asserts (CI: empty dir if asserts/ not in Git)
+        run: |
+          rm -rf public/asserts
+          mkdir -p public/asserts
+          if [ -d ../asserts ] && [ -n "$(ls -A ../asserts 2>/dev/null)" ]; then
+            rm -rf public/asserts
+            ln -sf ../asserts public/asserts
+          else
+            touch public/asserts/.gitkeep
+          fi
 
       - name: Sync web_posters (bundle + md)
         run: npm run sync:web-posters

@@ -75,12 +75,35 @@
 
 ### 3.2 允许公开读（自定义域名，推荐）
 
-1. 桶 → **Settings** → **Public access** → **Allow Access**（或连接 **Custom Domain**）
-2. **Custom Domain** → 添加例如：`assets.streetcornerfoodie.com`
-3. DNS：按提示在 Cloudflare 添加 CNAME（通常自动）
-4. 记下最终源站根 URL：`https://assets.streetcornerfoodie.com`（**无尾斜杠**）
+**前置（必做，否则报 “domain was not found on your account”）**
 
-> 测试可用 R2 提供的 `https://pub-xxxx.r2.dev`，不建议长期生产（限速/政策）。
+R2 自定义域名**只接受**「已在本 Cloudflare **账号**内、且 **DNS 由 Cloudflare 托管**」的域名，例如 `example.com`、`www.example.com`、`assets.example.com`。  
+填 `assets.streetcornerfoodie.com` 之前，必须先有 **Zone** `streetcornerfoodie.com`：
+
+1. Dashboard → **Websites** → **Add a site** → 输入 `streetcornerfoodie.com`
+2. 在域名注册商把 **Nameserver** 改成 Cloudflare 给出的两条（或按「仅 DNS」流程接入）
+3. 等站点状态为 **Active**（橙云可用）
+4. 确认 R2 桶与 Pages 在**同一** Cloudflare 账号（右上角切换账号核对）
+
+仅把 Pages 绑在 `*.pages.dev`、或域名还在 GoDaddy/阿里云 DNS **未迁入 Cloudflare**，都会出现：
+
+> *That domain was not found on your account. Public bucket access supports only domains on your account and managed through Cloudflare DNS.*
+
+**绑定 R2 域名**
+
+1. 桶 → **Settings** → **Public access** → **Allow Access**（或 **Connect domain**）
+2. **Custom Domain** → 填 **`assets.streetcornerfoodie.com`**（不要带 `https://` 或路径）
+3. Cloudflare 会在该 Zone 下**自动**创建指向 R2 的 DNS 记录（一般无需手填 CNAME）
+4. **Minimum TLS version (advanced)** 保持默认即可；与 “domain not found” 无关
+5. 记下源站根 URL：`https://assets.streetcornerfoodie.com`（**无尾斜杠**）
+
+> **临时测试**：桶 → Public access → 启用 **`pub-xxxx.r2.dev`**，把 `PUBLIC_ASSET_ORIGIN` 设为该 URL；生产仍应用自定义子域。
+
+| 现象 | 处理 |
+|------|------|
+| domain not found | 先完成上表「前置」；子域必须在已 Active 的 apex 下 |
+| 域名在别的 CF 账号 | 把 Zone 迁到本账号，或在本账号重新 Add site |
+| 只想先传图、不管域名 | 用 `pub-*.r2.dev` + rclone，稍后再绑 `assets.` |
 
 ### 3.3 CORS（若控制台有配置项）
 
