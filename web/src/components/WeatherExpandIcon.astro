@@ -1,10 +1,13 @@
 ---
 /** Weather chip expand toggle · cropped from brand reference (compass + hammock mascot). */
+import { publicAssetUrl } from "../lib/public-asset-origin";
+
+const iconSrc = publicAssetUrl("/scf-img/weather-expand-compass.png");
 ---
 
 <img
   class="bento-weather-expand-icon"
-  src="/scf-img/weather-expand-compass.png"
+  src={iconSrc}
   alt=""
   width="56"
   height="56"

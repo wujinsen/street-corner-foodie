@@ -1,6 +1,6 @@
 # Deploy web/dist → Cloudflare Pages
 # Secrets: CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID
-# Variables: SITE_URL (production canonical base, e.g. https://streetcornerfoodie.com)
+# Variables: SITE_URL, PUBLIC_ASSET_ORIGIN (e.g. https://assets.wu-jinsen.com)
 
 name: deploy-cloudflare
 
@@ -61,6 +61,7 @@ jobs:
         id: site
         env:
           VAR_SITE_URL: ${{ vars.SITE_URL }}
+          VAR_PUBLIC_ASSET_ORIGIN: ${{ vars.PUBLIC_ASSET_ORIGIN }}
           EVENT: ${{ github.event_name }}
           REF_TYPE: ${{ github.ref_type }}
           REF_NAME: ${{ github.ref_name }}
@@ -102,6 +103,7 @@ jobs:
       - name: Production build
         env:
           SITE_URL: ${{ steps.site.outputs.url }}
+          PUBLIC_ASSET_ORIGIN: ${{ steps.site.outputs.asset_origin }}
         run: npm run build:ci
 
       - name: Slim dist for Pages (images served from R2)

@@ -1,3 +1,5 @@
+import { publicAssetUrl } from "./public-asset-origin";
+
 /** Normalize assert-relative directory (trailing slash, no duplicate slashes). */
 export function joinAssertRelDir(...parts: string[]): string {
   const segments = parts
@@ -11,5 +13,5 @@ export function joinAssertRelDir(...parts: string[]): string {
 export function assertPublicUrl(base: string, relDir: string, file: string): string {
   const rel = joinAssertRelDir(relDir) + file.replace(/^\//, "");
   const prefix = base.endsWith("/") ? base : `${base}/`;
-  return prefix + encodeURI(rel);
+  return publicAssetUrl(prefix + encodeURI(rel));
 }

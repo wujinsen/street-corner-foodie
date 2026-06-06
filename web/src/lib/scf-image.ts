@@ -1,4 +1,5 @@
 import manifestData from "../../.scf-image-manifest.json";
+import { publicAssetKey, publicAssetUrl } from "./public-asset-origin";
 
 export interface ScfPictureData {
   fallback: string;
@@ -52,24 +53,42 @@ function withSigSrcset(srcset: string | undefined, sig: string | undefined): str
     .join(", ");
 }
 
+function withCdnSrcset(srcset: string | undefined, sig: string | undefined): string | undefined {
+  const signed = withSigSrcset(srcset, sig);
+  if (!signed) return signed;
+  return signed
+    .split(",")
+    .map((part) => {
+      const trimmed = part.trim();
+      const space = trimmed.lastIndexOf(" ");
+      if (space <= 0) return publicAssetUrl(trimmed);
+      return `${publicAssetUrl(trimmed.slice(0, space))} ${trimmed.slice(space + 1)}`;
+    })
+    .join(", ");
+}
+
+function withCdnPicture(hit: ScfPictureData): ScfPictureData {
+  const sig = hit.sig;
+  return {
+    ...hit,
+    fallback: publicAssetUrl(withSig(hit.fallback, sig)),
+    avif: withCdnSrcset(hit.avif, sig),
+    webp: withCdnSrcset(hit.webp, sig),
+  };
+}
+
 /** Resolve optimized <picture> sources for a public /asserts/… URL. */
 export function getScfPicture(src: string | null | undefined): ScfPictureData | null {
   if (!src) return null;
   if (isInlineOrAbsoluteUrl(src)) {
     return { fallback: src, sizes: "100vw" };
   }
-  const key = src.startsWith("/") ? src : `/${src}`;
+  const key = publicAssetKey(src);
   const hit = MANIFEST[key];
   if (hit) {
-    const sig = hit.sig;
-    return {
-      ...hit,
-      fallback: withSig(hit.fallback, sig),
-      avif: withSigSrcset(hit.avif, sig),
-      webp: withSigSrcset(hit.webp, sig),
-    };
+    return withCdnPicture(hit);
   }
-  return { fallback: key, sizes: "100vw" };
+  return { fallback: publicAssetUrl(key), sizes: "100vw" };
 }
 
 export function hasOptimizedVariants(src: string | null | undefined): boolean {
@@ -107,7 +126,7 @@ function largestFromSrcset(srcset: string | undefined): string | undefined {
 export function scfOriginalSrc(src: string | null | undefined): string | null {
   if (!src) return null;
   if (isInlineOrAbsoluteUrl(src)) return src;
-  return src.startsWith("/") ? src : `/${src}`;
+  return publicAssetUrl(publicAssetKey(src));
 }
 
 /** Largest AVIF/WebP derivative (~1280–1920w) for on-screen reading. */

@@ -136,8 +136,8 @@ Variables：
 
 | Variable | 示例 |
 |----------|------|
-| `SITE_URL` | `https://streetcornerfoodie.com` |
-| `PUBLIC_ASSET_ORIGIN` | `https://assets.streetcornerfoodie.com` |
+| `SITE_URL` | `https://scf.wu-jinsen.com` |
+| `PUBLIC_ASSET_ORIGIN` | `https://assets.wu-jinsen.com` |
 
 ---
 
@@ -228,31 +228,16 @@ npx wrangler pages deploy dist --project-name=street-corner-foodie --branch=main
 
 ---
 
-## 6 · 阶段 3 · 代码改动（构建时 CDN 前缀）
+## 6 · 阶段 3 · 构建时 CDN 前缀（已实现）
 
-当前站点写死 `/asserts/`、`/scf-img/`。上线 R2 需增加**单一前缀**（实现时二选一）：
+`PUBLIC_ASSET_ORIGIN` + `web/src/lib/public-asset-origin.ts` → `publicAssetUrl()` 在 `scf-image.ts`、`assert-path.ts`、`streets.ts` 等统一前缀。
 
-| 方案 | 做法 | 优点 |
-|------|------|------|
-| **A · 环境变量**（推荐） | `PUBLIC_ASSET_ORIGIN` + `publicAssetUrl()` 在 `scf-image.ts`、`assert-path.ts`、`posters.ts` 等统一前缀 | 清晰、本地不设变量仍走相对路径 |
-| **B · Pages Worker** | Functions 把 `/asserts/*` 反代到 R2 | 可不改 Astro；需维护 Worker |
-
-**方案 A 要点**（待实现）：
-
-```ts
-// web/src/lib/public-asset-origin.ts
-export const PUBLIC_ASSET_ORIGIN =
-  import.meta.env.PUBLIC_ASSET_ORIGIN?.replace(/\/$/, "") ?? "";
-
-export function publicAssetUrl(path: string): string {
-  const p = path.startsWith("/") ? path : `/${path}`;
-  return PUBLIC_ASSET_ORIGIN ? `${PUBLIC_ASSET_ORIGIN}${p}` : p;
-}
-```
-
-- `getScfPicture` 返回的 `fallback` / srcset 走 `publicAssetUrl`
-- `optimize-images.mjs` manifest 仍用 `/asserts/…` 作 key（构建机本地路径不变）
-- 本地开发：**不设置** `PUBLIC_ASSET_ORIGIN` → 仍用 junction `/asserts/`
+| 项 | 说明 |
+|----|------|
+| GitHub Variable | `PUBLIC_ASSET_ORIGIN` = `https://assets.wu-jinsen.com`（无尾斜杠） |
+| CI | `deploy-cloudflare` build 传入该变量 |
+| manifest | `optimize-images.mjs` 仍用 `/asserts/…` 作 key；输出 URL 加 CDN 前缀 |
+| 本地 dev | **不设置** `PUBLIC_ASSET_ORIGIN` → junction `/asserts/`、`/scf-img/` |
 
 ---
 

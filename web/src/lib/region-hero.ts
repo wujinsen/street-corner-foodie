@@ -1,4 +1,5 @@
 import { scfSourceExists } from "./scf-image";
+import { publicAssetUrl } from "./public-asset-origin";
 import {
   getStreetConfig,
   getStreetScenes,
@@ -12,7 +13,7 @@ export type RegionHeroTab = "posters" | "zines" | "streets" | "landing";
 
 function heroAssetUrl(heroPath: string, fileName: string): string {
   const base = heroPath.endsWith("/") ? heroPath : `${heroPath}/`;
-  return `${A_STREET}${base}${encodeURIComponent(fileName)}`;
+  return publicAssetUrl(`${A_STREET}${base}${encodeURIComponent(fileName)}`);
 }
 
 /** night → day fallbacks for a picked hero basename. */

@@ -1,4 +1,5 @@
 import { scfSourceExists } from "./scf-image";
+import { publicAssetUrl } from "./public-asset-origin";
 import type { CountryId, Multilang } from "./types";
 
 export type StreetTime = "day" | "night";
@@ -853,7 +854,7 @@ export function streetImageUrl(
     .replace("{TIME}", time)
     .replace("{FRAME}", frame);
   if (!pattern) return null;
-  return A_STREET + encodeURI(path + pattern);
+  return publicAssetUrl(A_STREET + encodeURI(path + pattern));
 }
 
 export function dishLinkedScene(

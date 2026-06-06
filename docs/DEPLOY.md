@@ -62,7 +62,8 @@ npm run preview
 |------|------|------|
 | `CLOUDFLARE_API_TOKEN` | Secret | 上一步 token |
 | `CLOUDFLARE_ACCOUNT_ID` | Secret | Cloudflare 仪表盘右侧 **Account ID** |
-| `SITE_URL` | Variable | `https://streetcornerfoodie.com`（无尾斜杠） |
+| `SITE_URL` | Variable | `https://scf.wu-jinsen.com`（或品牌域；无尾斜杠） |
+| `PUBLIC_ASSET_ORIGIN` | Variable | `https://assets.wu-jinsen.com`（R2 自定义域；无尾斜杠） |
 
 ### 4. 自定义域名
 
