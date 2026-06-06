@@ -18,6 +18,17 @@ type Manifest = Record<string, ScfPictureData>;
 
 const MANIFEST = manifestData as Manifest;
 
+/** Manifest keys use literal spaces (`/asserts/Street View/…`); URLs may be CDN-prefixed or `%20`-encoded. */
+function manifestLookupKey(src: string): string {
+  let keyed = publicAssetKey(src);
+  try {
+    keyed = decodeURI(keyed);
+  } catch {
+    /* keep keyed */
+  }
+  return keyed;
+}
+
 /** data:/blob:/http(s): — must not be prefixed with `/` for site-relative lookup. */
 export function isInlineOrAbsoluteUrl(src: string): boolean {
   return (
@@ -83,7 +94,7 @@ export function getScfPicture(src: string | null | undefined): ScfPictureData | 
   if (isInlineOrAbsoluteUrl(src)) {
     return { fallback: src, sizes: "100vw" };
   }
-  const key = publicAssetKey(src);
+  const key = manifestLookupKey(src);
   const hit = MANIFEST[key];
   if (hit) {
     return withCdnPicture(hit);
@@ -98,8 +109,9 @@ export function hasOptimizedVariants(src: string | null | undefined): boolean {
 
 /** True when optimize-images has registered this `/asserts/…` PNG (file on disk at last build). */
 export function scfSourceExists(src: string | null | undefined): boolean {
-  if (!src || isInlineOrAbsoluteUrl(src)) return false;
-  const key = src.startsWith("/") ? src : `/${src}`;
+  if (!src || src.startsWith("data:") || src.startsWith("blob:")) return false;
+  const key = manifestLookupKey(src);
+  if (!key.startsWith("/asserts/") && !key.startsWith("/scf-img/")) return false;
   return Object.prototype.hasOwnProperty.call(MANIFEST, key);
 }
 

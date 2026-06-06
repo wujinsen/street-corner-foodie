@@ -69,10 +69,6 @@ function streetAssetUrlWithFallback(
 ): string | null {
   const url = streetAssetUrl(config, sceneId, sel);
   if (url && scfSourceExists(url)) return url;
-  if (url?.endsWith(".png")) {
-    const legacy = url.replace(/\.png$/, "_no_char.png");
-    if (scfSourceExists(legacy)) return legacy;
-  }
   return null;
 }
 
