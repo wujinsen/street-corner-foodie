@@ -83,9 +83,13 @@ jobs:
             URL="${VAR_SITE_URL:-https://streetcornerfoodie.com}"
             BRANCH="main"
           fi
+          ORIGIN="${VAR_PUBLIC_ASSET_ORIGIN:-}"
+          ORIGIN="${ORIGIN%/}"
           echo "url=$URL" >> "$GITHUB_OUTPUT"
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "asset_origin=$ORIGIN" >> "$GITHUB_OUTPUT"
           echo "SITE_URL=$URL"
+          echo "PUBLIC_ASSET_ORIGIN=$ORIGIN"
           echo "Deploy branch: $BRANCH"
 
       - name: Install
@@ -104,7 +108,11 @@ jobs:
         env:
           SITE_URL: ${{ steps.site.outputs.url }}
           PUBLIC_ASSET_ORIGIN: ${{ steps.site.outputs.asset_origin }}
-        run: npm run build:ci
+        run: |
+          echo "Build SITE_URL=$SITE_URL"
+          echo "Build PUBLIC_ASSET_ORIGIN=$PUBLIC_ASSET_ORIGIN"
+          test -n "$PUBLIC_ASSET_ORIGIN" || echo "::warning::PUBLIC_ASSET_ORIGIN is empty — set GitHub Variable PUBLIC_ASSET_ORIGIN=https://assets.wu-jinsen.com"
+          npm run build:ci
 
       - name: Slim dist for Pages (images served from R2)
         run: rm -rf dist/asserts dist/scf-img

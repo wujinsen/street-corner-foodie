@@ -1,5 +1,7 @@
 import { defineConfig } from "astro/config";
 
+const publicAssetOrigin = (process.env.PUBLIC_ASSET_ORIGIN ?? "").replace(/\/$/, "");
+
 export default defineConfig({
   site: process.env.SITE_URL ?? "https://streetcornerfoodie.com",
   output: "static",
@@ -16,6 +18,9 @@ export default defineConfig({
   },
   server: { port: 4321, host: true },
   vite: {
+    define: {
+      "import.meta.env.PUBLIC_ASSET_ORIGIN": JSON.stringify(publicAssetOrigin),
+    },
     server: {
       fs: { allow: [".."] },
     },
