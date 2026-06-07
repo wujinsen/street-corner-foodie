@@ -8,11 +8,16 @@
   </a>
 </p>
 
-# Street Corner Foodie · 街角美食
+<center>
 
-*拐进世界的每个街角，看食物与城市如何一起呼吸。*
+# 街角美食
+# Street Corner Foodie
 
-**[streetcornerfoodie.com](https://streetcornerfoodie.com)** · 世界街角的美食与街景图鉴
+</center>
+
+## *带你拐进世界的每个街角，看食物与城市如何一起呼吸。*
+
+### **[streetcornerfoodie.com](https://streetcornerfoodie.com)** · 世界街角的美食与街景图鉴
 
 ---
 
