@@ -64,6 +64,11 @@ meishi/
 
 ---
 
-## License
+## License · 许可
 
-[MIT](LICENSE) · © 2026 [Street Corner Foodie](https://streetcornerfoodie.com)
+| 内容 | 许可 |
+|------|------|
+| 代码（`web/`、脚本、文档文字等） | [MIT](LICENSE) |
+| 视觉素材（海报 / 小志 / 街景 / 品牌图 / README 截图等） | [禁止商用](LICENSE-ASSETS.md) |
+
+© 2026 [Street Corner Foodie](https://streetcornerfoodie.com)

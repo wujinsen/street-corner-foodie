@@ -1,5 +1,7 @@
 # 资源分类 · 三大风格（禁止混用）
 
+> **许可**：入库 PNG 等视觉素材适用 [LICENSE-ASSETS.md](../LICENSE-ASSETS.md)（**禁止商用**）；Web 代码见 [LICENSE](../LICENSE)（MIT）。
+
 > **2026-05-21**：**无人物版已废除** — 禁止新建 `*_no_char*`；每 slug 海报 1 张、zine 2 张、街景 3 张矩阵。全文 → [asset-no-character-removed.md](style/asset-no-character-removed.md)
 
 `asserts/` 下按 **文件夹 = 一种视觉风格** 管理。生成、入库、引用时必须先选对目录，**不得跨类参考、跨类输出**。
