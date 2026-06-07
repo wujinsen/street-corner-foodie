@@ -397,6 +397,11 @@ export const UI = {
     primary: { zh: "主导航", en: "Primary navigation", ja: "メインナビ" },
     breadcrumbs: { zh: "面包屑", en: "Breadcrumbs", ja: "パンくず" },
     gallery_dock: { zh: "画廊导航", en: "Gallery dock", ja: "ギャラリードック" },
+    region_medal: {
+      zh: "地区章",
+      en: "Regional seal",
+      ja: "地域章",
+    },
   },
   footer: {
     copy: {

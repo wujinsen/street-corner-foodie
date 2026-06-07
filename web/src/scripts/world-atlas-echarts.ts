@@ -24,6 +24,7 @@ import {
 } from "../lib/world-atlas-clusters";
 import { mapPinStyle } from "../lib/map-pin-colors";
 import { clearSpiderCards, syncSpiderCards } from "./world-atlas-spider-cards";
+import { syncLandingMapMedals } from "./landing-map-medal";
 
 const MAP_BG = "#00050a";
 const ECHARTS_SCRIPT = "/vendor/echarts.min.js";
@@ -944,6 +945,7 @@ export function createWorldAtlasChart(
       spider: state.spider,
       onNavigate: onSceneNavigate,
     });
+    syncLandingMapMedals(chart, host, landing && state.view === "world");
   };
 
   let lastHostW = 0;
@@ -970,6 +972,7 @@ export function createWorldAtlasChart(
     if (!chart || disposed || !landing || state.view !== "world") return;
     const sceneSeries = sceneSeriesByCountry(payload, payload.scenes, state, landing);
     chart.setOption({ series: sceneSeries });
+    syncLandingMapMedals(chart, host, true);
   };
 
   const clearSpider = (): void => {

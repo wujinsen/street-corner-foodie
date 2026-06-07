@@ -11,6 +11,8 @@ type RegionGalleryMeta = Record<
     native: string | null;
     sub: string;
     stats: { poster: number; street: number; zine: number };
+    medalUrl: string | null;
+    medalAlt: string;
   }
 >;
 
@@ -126,6 +128,22 @@ function syncHero(gallery: HTMLElement, regionId: string, meta: RegionGalleryMet
   if (statPoster) statPoster.textContent = String(m.stats.poster);
   if (statStreet) statStreet.textContent = String(m.stats.street);
   if (statZine) statZine.textContent = String(m.stats.zine);
+
+  const medalWrap = hero.querySelector<HTMLElement>("[data-hero-medal-wrap]");
+  const medalBtn = hero.querySelector<HTMLButtonElement>("[data-region-medal-open]");
+  const medalImg = medalBtn?.querySelector<HTMLImageElement>("img");
+  if (medalWrap) {
+    if (m.medalUrl) {
+      medalWrap.hidden = false;
+      if (medalBtn) {
+        medalBtn.dataset.medalSrc = m.medalUrl;
+        medalBtn.setAttribute("aria-label", m.medalAlt);
+      }
+      if (medalImg) medalImg.src = m.medalUrl;
+    } else {
+      medalWrap.hidden = true;
+    }
+  }
 }
 
 export function initGalleryRegionFilter(root: ParentNode = document): void {

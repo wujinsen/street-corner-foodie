@@ -35,7 +35,6 @@ const atlasPayload = buildWorldAtlasPayload(lang);
 const landingSpots = buildLandingAtlasSpots(lang);
 const landingRegions = buildLandingRegionSpots(lang);
 const mapSpot = landingSpots.find((s) => s.id === featCountry)!;
-
 function totalStats(k: "poster" | "zine" | "street"): number {
   return COUNTRY_ORDER.reduce(
     (acc, c) => acc + REGIONS[c].reduce((a, r) => a + r.stats[k], 0),

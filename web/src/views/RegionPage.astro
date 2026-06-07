@@ -16,6 +16,8 @@ import GalleryRevealFooter from "../components/GalleryRevealFooter.astro";
 import GalleryStatChip from "../components/GalleryStatChip.astro";
 import StreetExplorer from "../components/StreetExplorer.astro";
 import ScfPicture from "../components/ScfPicture.astro";
+import RegionMedalSeal from "../components/RegionMedalSeal.astro";
+import { regionMedalUrl } from "../lib/region-medals";
 import { GALLERY_ZINE_PAGE_SIZE, pageCountFor, pageFromSearch } from "../lib/gallery-page";
 import { moreFromSearch, revealVisibleCount } from "../lib/gallery-reveal";
 import { filterTagsAttr } from "../lib/flavor-match";
@@ -100,6 +102,8 @@ const zineHref = (slug: string) => localePath(lang, zineReaderPath(country, regi
 const prefetchFeatured = featured
   ? (posterImageUrl(featured, false) ?? undefined)
   : undefined;
+const regionMedalAlt = `${t(region.name, lang)} · ${t(UI.a11y.region_medal, lang)}`;
+const showEmojiHeroMark = !regionMedalUrl(country, regionId);
 ---
 <Base
   lang={lang}
@@ -127,9 +131,18 @@ const prefetchFeatured = featured
     <header class="tile gallery-hero-strip">
       <div class="gallery-hero-main">
         <div class="gallery-hero-head">
-          <span class="gallery-hero-mark" aria-hidden="true">
-            {country === "cn" ? "🌴" : country === "jp" ? "🏮" : "🗽"}
-          </span>
+          <RegionMedalSeal
+            country={country}
+            regionId={regionId}
+            alt={regionMedalAlt}
+            class="gallery-hero-mark"
+            size="compact"
+          />
+          {showEmojiHeroMark && (
+            <span class="gallery-hero-mark gallery-hero-mark--emoji" aria-hidden="true">
+              {country === "cn" ? "🌴" : country === "jp" ? "🏮" : "🗽"}
+            </span>
+          )}
           <h1 class="gallery-hero-title gallery-hero-title--region">
             <span class="gallery-hero-track">
               {lang === "zh"

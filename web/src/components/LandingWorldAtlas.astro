@@ -5,6 +5,7 @@
  */
 import WorldAtlasBoot from "./WorldAtlasBoot.astro";
 import { UI, t, type Lang } from "../lib/i18n";
+import { listLandingRegionMedals } from "../lib/region-medals";
 import { buildWorldAtlasPayload, type WorldAtlasPayload } from "../lib/world-atlas-payload";
 
 interface Props {
@@ -14,6 +15,7 @@ interface Props {
 
 const { lang, payload: payloadProp } = Astro.props as Props;
 const payload = payloadProp ?? buildWorldAtlasPayload(lang);
+const landingMedals = listLandingRegionMedals();
 
 if (!payload) {
   return null;
@@ -40,6 +42,25 @@ if (!payload) {
       aria-label={payload.title}
     ></div>
   </section>
+
+  {
+    landingMedals.map((medal) => (
+      <img
+        class="landing-map-medal region-medal-seal"
+        data-landing-map-medal
+        data-region-key={medal.regionKey}
+        data-lng={String(medal.geo[0])}
+        data-lat={String(medal.geo[1])}
+        src={medal.url}
+        alt={`${t(UI.a11y.region_medal, lang)} · ${medal.regionId}`}
+        width={72}
+        height={72}
+        loading="lazy"
+        decoding="async"
+        hidden
+      />
+    ))
+  }
 
   <WorldAtlasBoot />
 </div>

@@ -15,6 +15,7 @@ export interface LandingRegionSpot {
   citySub: Multilang;
   coords: string;
   heroUrl: string | null;
+  regionHref: string;
 }
 
 /** Legacy city-card labels for default spotlight regions. */

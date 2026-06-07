@@ -1,0 +1,35 @@
+---
+import { regionMedalUrl } from "../lib/region-medals";
+import type { CountryId } from "../lib/types";
+
+interface Props {
+  country: CountryId;
+  regionId: string;
+  expandLabel: string;
+}
+
+const { country, regionId, expandLabel } = Astro.props as Props;
+const src = regionMedalUrl(country, regionId);
+---
+
+<div class="gallery-hero-medal-wrap" data-hero-medal-wrap hidden={!src}>
+  {
+    src && (
+      <button
+        type="button"
+        class="gallery-hero-medal-btn"
+        data-region-medal-open
+        data-medal-src={src}
+        aria-label={expandLabel}
+      >
+        <img
+          class="gallery-hero-medal-btn__img region-medal-seal"
+          src={src}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </button>
+    )
+  }
+</div>

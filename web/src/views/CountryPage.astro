@@ -14,6 +14,8 @@ import GalleryPagination from "../components/GalleryPagination.astro";
 import StreetExplorer from "../components/StreetExplorer.astro";
 import GlassZineCard from "../components/GlassZineCard.astro";
 import ScfPicture from "../components/ScfPicture.astro";
+import RegionMedalHeroButton from "../components/RegionMedalHeroButton.astro";
+import { regionMedalUrl } from "../lib/region-medals";
 import { getCountryStreetSpots, getCountryZineCards } from "../lib/country-gallery";
 import { countStreetPhotos, getStreetConfig, getStreetScenes } from "../lib/streets";
 import { GALLERY_ZINE_PAGE_SIZE, pageCountFor, pageFromSearch } from "../lib/gallery-page";
@@ -76,6 +78,7 @@ function regionHeroTitle(r: Region, pageLang: Lang): { track: string; native: st
 }
 
 const activeHeroTitle = regionHeroTitle(activeRegion, lang);
+const regionMedalExpandLabel = `${t(activeRegion.name, lang)} · ${t(UI.zine.zoom, lang)}`;
 
 const search = Astro.url.search;
 const activeFlavor = Astro.url.searchParams.get("flavor");
@@ -161,6 +164,8 @@ const regionGalleryMeta = Object.fromEntries(
         native: ht.native,
         sub: t(r.tagline, lang),
         stats: r.stats,
+        medalUrl: regionMedalUrl(country, r.id),
+        medalAlt: `${t(r.name, lang)} · ${t(UI.zine.zoom, lang)}`,
       },
     ];
   }),
@@ -258,7 +263,14 @@ const zineHref = (regionId: string, zSlug: string) =>
       <div class="gallery-hero-main country-hero-overlay">
         <p class="h-track gallery-country-kicker" data-hero-kicker>{c.flag} {t(activeRegion.name, lang)}</p>
         <h1 class="gallery-hero-title country-hero-title gallery-hero-title--region">
-          <span class="gallery-hero-track" data-hero-track>{activeHeroTitle.track}</span>
+          <span class="gallery-hero-track-row">
+            <span class="gallery-hero-track" data-hero-track>{activeHeroTitle.track}</span>
+            <RegionMedalHeroButton
+              country={country}
+              regionId={activeRegionId}
+              expandLabel={regionMedalExpandLabel}
+            />
+          </span>
           {activeHeroTitle.native && (
             <span class="gallery-hero-native" data-hero-native>{activeHeroTitle.native}</span>
           )}
@@ -434,6 +446,37 @@ const zineHref = (regionId: string, zSlug: string) =>
     </div>
     )}
 
+    <dialog
+      class="zine-lightbox region-medal-lightbox"
+      data-region-medal-lightbox
+      aria-label={t(UI.zine.zoom, lang)}
+    >
+      <div class="zine-lightbox-bar">
+        <div class="zine-lightbox-zoom-controls" role="group" aria-label={t(UI.zine.zoom, lang)}>
+          <button type="button" class="zine-lightbox-zoom-btn" data-region-medal-zoom-out aria-label={t(UI.zine.zoom_out, lang)}>−</button>
+          <span class="zine-lightbox-zoom-pct h-track" data-region-medal-zoom-pct>100%</span>
+          <button type="button" class="zine-lightbox-zoom-btn" data-region-medal-zoom-in aria-label={t(UI.zine.zoom_in, lang)}>+</button>
+          <button type="button" class="zine-lightbox-zoom-btn zine-lightbox-zoom-reset" data-region-medal-zoom-reset>
+            {t(UI.zine.zoom_reset, lang)}
+          </button>
+        </div>
+        <button type="button" class="zine-lightbox-close" data-region-medal-zoom-close aria-label={t(UI.zine.zoom_close, lang)}>
+          {t(UI.common.close, lang)}
+        </button>
+      </div>
+      <div class="zine-lightbox-scroll">
+        <div class="zine-lightbox-stage" data-region-medal-zoom-stage>
+          <img
+            class="zine-lightbox-img region-medal-lightbox-img"
+            data-region-medal-lightbox-img
+            alt=""
+            width={800}
+            height={800}
+          />
+        </div>
+      </div>
+    </dialog>
+
     <GalleryTabHashSync fallbackTab={activeGalleryTab} />
 
     <script
@@ -482,9 +525,11 @@ const zineHref = (regionId: string, zSlug: string) =>
   import { initGalleryFlavorFilter } from "../scripts/gallery-flavor-filter";
   import { initGalleryPagination } from "../scripts/gallery-pagination";
   import { initGalleryRegionFilter } from "../scripts/gallery-region-filter";
+  import { initRegionMedalLightbox } from "../scripts/region-medal-lightbox";
   import { initStreetEatCarousel } from "../scripts/street-eat-carousel";
 
   initGalleryRegionFilter();
+  initRegionMedalLightbox();
   initGalleryFlavorFilter();
   initGalleryPagination();
 

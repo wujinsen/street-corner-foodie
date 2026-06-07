@@ -3274,12 +3274,122 @@ body.has-altc .gallery-hero-mark {
   border: 1px solid var(--tile-border);
 }
 
+body.has-altc .gallery-hero-mark.region-medal-seal {
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.28));
+}
+
+body.has-altc .region-medal-seal--hero {
+  width: clamp(72px, 11vw, 104px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+}
+
+body.has-altc .gallery-hero-track-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  line-height: 1.05;
+}
+
+body.has-altc .country-hero .gallery-hero-track-row {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4.5vw, 52px);
+  letter-spacing: 0.06em;
+}
+
+body.has-altc .country-hero .gallery-hero-track-row .gallery-hero-track {
+  display: inline;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+body.has-altc .gallery-hero-track-row .gallery-hero-medal-wrap,
+body.has-altc .gallery-hero-track-row .gallery-hero-medal-btn {
+  font-size: inherit;
+}
+
+body.has-altc .gallery-hero-medal-wrap {
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+body.has-altc .gallery-hero-medal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: zoom-in;
+  border-radius: 50%;
+  transition: transform 0.2s var(--ease-out, ease-out), filter 0.2s var(--ease-out, ease-out);
+}
+
+body.has-altc .gallery-hero-medal-btn:hover,
+body.has-altc .gallery-hero-medal-btn:focus-visible {
+  transform: scale(1.06);
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.45));
+  outline: 2px solid color-mix(in oklab, var(--accent-c) 55%, transparent);
+  outline-offset: 3px;
+}
+
+body.has-altc .gallery-hero-medal-btn__img {
+  width: 1em;
+  height: 1em;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.42));
+  pointer-events: none;
+}
+
+body.has-altc .region-medal-lightbox-img {
+  max-width: min(92vmin, 720px);
+  max-height: min(88vmin, 720px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+body.has-altc .landing-world-atlas {
+  position: relative;
+}
+
+body.has-altc .landing-map-medal {
+  position: absolute;
+  z-index: 5;
+  width: clamp(56px, 9vw, 80px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.45));
+  opacity: 0.94;
+  transition: opacity 0.2s var(--ease-out, ease-out);
+}
+
+@media (max-width: 600px) {
+  body.has-altc .landing-map-medal {
+    width: 52px;
+  }
+}
+
 body.has-altc .gallery-hero-title--region .gallery-hero-track {
   display: block;
   font-family: var(--font-display);
   font-size: clamp(32px, 4.2vw, 48px);
   letter-spacing: 0.06em;
   text-transform: none;
+}
+
+body.has-altc .country-hero .gallery-hero-title--region .gallery-hero-track-row .gallery-hero-track {
+  display: inline;
 }
 
 body.has-altc .gallery-stat-chip {
@@ -3515,10 +3625,6 @@ body.has-altc .landing-theme-kicker,
 body.has-altc .bento-kicker--on-photo,
 body.has-altc .bento-street .pill {
   display: none !important;
-}
-
-body.has-altc .country-hero .gallery-hero-title .gallery-hero-track {
-  font-size: clamp(32px, 4.5vw, 52px);
 }
 
 body.has-altc .country-hero .gallery-stat-chip {

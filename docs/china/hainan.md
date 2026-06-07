@@ -24,6 +24,7 @@ web_editor_pick:
   - huangliu_laoya
   - lingao_kaoruzhu
 assets_dir: asserts/
+region_medal: asserts/brand/seals/cn_hainan_medal.png
 gourmet_poster_dir: asserts/Gourmet recipe2/cn/hainan/
 mini_zine_dir: asserts/mini-zine/cn/hainan/
 street_view_dir: asserts/Street View/cn/hainan/haikou/

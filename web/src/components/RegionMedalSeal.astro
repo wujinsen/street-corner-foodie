@@ -1,0 +1,29 @@
+---
+import { regionMedalUrl } from "../lib/region-medals";
+import type { CountryId } from "../lib/types";
+
+interface Props {
+  country: CountryId;
+  regionId: string;
+  alt: string;
+  class?: string;
+  size?: "hero" | "compact";
+}
+
+const { country, regionId, alt, class: className, size = "hero" } = Astro.props as Props;
+const src = regionMedalUrl(country, regionId);
+---
+
+{
+  src && (
+    <img
+      src={src}
+      alt={alt}
+      class:list={["region-medal-seal", `region-medal-seal--${size}`, className]}
+      width={size === "hero" ? 96 : 56}
+      height={size === "hero" ? 96 : 56}
+      loading="lazy"
+      decoding="async"
+    />
+  )
+}
