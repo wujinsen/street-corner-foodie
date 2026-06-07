@@ -64,4 +64,6 @@ meishi/
 
 ---
 
-© 2026 Street Corner Foodie
+## License
+
+[MIT](LICENSE) · © 2026 [Street Corner Foodie](https://streetcornerfoodie.com)

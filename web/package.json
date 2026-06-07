@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "description": "Street Corner Foodie - web (Astro)",
+  "license": "MIT",
   "scripts": {
     "vendor:echarts": "node scripts/vendor-echarts.mjs",
     "dev": "npm run vendor:echarts && npm run images:quick && astro dev",
