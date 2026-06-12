@@ -137,7 +137,16 @@ const prefetchFeatured = featured
 const prefetchHeroUrls = [heroUrlPosters, heroUrlZines]
   .map((u) => scfBannerPrefetchSrc(u))
   .filter((u): u is string => !!u);
+const prefetchPageThumbs = activeRegionPosters
+  .slice(posterPage * posterPageSize, posterPage * posterPageSize + posterPageSize)
+  .map((p) => scfBestSrc(posterImageUrl(p, false)))
+  .filter((u): u is string => !!u);
 const prefetchHero = prefetchHeroUrls[0];
+const eagerPosterKeys = new Set(
+  activeRegionPosters
+    .slice(posterPage * posterPageSize, posterPage * posterPageSize + posterPageSize)
+    .map((p) => `${p.regionId}:${p.slug}`),
+);
 const ogImage =
   resolveOgImage(Astro.site, heroUrl) ??
   (featured ? resolveOgImage(Astro.site, posterImageUrl(featured, false)) : undefined);
@@ -224,7 +233,11 @@ const zineHref = (regionId: string, zSlug: string) =>
   tabScope="country-overview"
   tabRegionId={activeRegionId}
   title={t(c.name, lang)}
-  prefetchImages={[...prefetchHeroUrls, prefetchFeatured].filter((u): u is string => !!u)}
+  prefetchImages={[
+    ...prefetchHeroUrls,
+    ...prefetchPageThumbs,
+    prefetchFeatured,
+  ].filter((u): u is string => !!u)}
   ogImage={ogImage}
 >
   <div
@@ -379,7 +392,12 @@ const zineHref = (regionId: string, zSlug: string) =>
     >
       <section id="posters" class="gallery-main gallery-anchor" aria-label={t(UI.nav.poster, lang)}>
         <div class="gallery-grid country-poster-grid" data-poster-grid>
-          {countryPostersRendered.map(({ poster: p, galleryPageIndex }) => (
+          {countryPostersRendered.map(({ poster: p, galleryPageIndex }) => {
+            const thumbEager =
+              p.regionId === activeRegionId &&
+              galleryPageIndex === posterPage &&
+              eagerPosterKeys.has(`${p.regionId}:${p.slug}`);
+            return (
               <GlassPosterCard
                 poster={p}
                 lang={lang}
@@ -391,8 +409,11 @@ const zineHref = (regionId: string, zSlug: string) =>
                 galleryRegionHidden={p.regionId !== activeRegionId}
                 regionFeatured={isRegionFeaturedPoster(p)}
                 featured={false}
+                thumbLoading={thumbEager ? "eager" : "lazy"}
+                thumbFetchPriority={thumbEager ? "high" : undefined}
               />
-          ))}
+            );
+          })}
         </div>
         {regions.map((r) => {
           const count = getRecipePosters(country, r.id).length;

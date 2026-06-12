@@ -27,6 +27,8 @@ interface Props {
   regionFeatured?: boolean;
   /** SSR default for country overview ?region= */
   galleryRegionHidden?: boolean;
+  thumbLoading?: "lazy" | "eager";
+  thumbFetchPriority?: "high" | "low" | "auto";
 }
 
 const {
@@ -43,6 +45,8 @@ const {
   galleryRegionId,
   regionFeatured = false,
   galleryRegionHidden = false,
+  thumbLoading = "lazy",
+  thumbFetchPriority,
 } = Astro.props as Props;
 const useReveal = galleryRevealMax !== undefined && galleryItemIndex !== undefined;
 const pagHidden = useReveal
@@ -96,7 +100,8 @@ const Tag = href ? "a" : "article";
         <ScfPicture
           src={url}
           alt=""
-          loading="lazy"
+          loading={thumbLoading}
+          fetchpriority={thumbFetchPriority}
           decoding="async"
           sizes="(max-width: 560px) 50vw, (max-width: 1200px) 25vw, 360px"
         />

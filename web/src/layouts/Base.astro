@@ -11,6 +11,7 @@ import { UI, HTML_LANG, t, type Lang } from "../lib/i18n";
 import { countryFavicon } from "../lib/favicon";
 import { countryThemeColor } from "../lib/map-pin-colors";
 import { googleFontsHref } from "../lib/google-fonts";
+import { getPublicAssetOrigin } from "../lib/public-asset-origin";
 import { pageCanonical, resolveOgImage } from "../lib/site-urls";
 import type { CountryId } from "../lib/types";
 
@@ -65,6 +66,10 @@ const ogImage = ogImageProp ?? resolveOgImage(Astro.site, "/favicon.svg");
 const ogLocale = lang === "zh" ? "zh_CN" : lang === "ja" ? "ja_JP" : "en_US";
 const faviconHref = countryFavicon(country);
 const fontsHref = googleFontsHref(lang, country);
+const assetOrigin = getPublicAssetOrigin();
+const prefetchList = prefetchImages?.filter((href): href is string => !!href) ?? [];
+const preloadImage = prefetchList[0];
+const prefetchRest = prefetchList.slice(1);
 ---
 <!doctype html>
 <html lang={HTML_LANG[lang]} data-country={country}>
@@ -93,6 +98,12 @@ const fontsHref = googleFontsHref(lang, country);
     <meta name="theme-color" content={countryThemeColor(country)} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    {assetOrigin && (
+      <>
+        <link rel="preconnect" href={assetOrigin} crossorigin />
+        <link rel="dns-prefetch" href={assetOrigin} />
+      </>
+    )}
     <link rel="preload" href={fontsHref} as="style" />
     <script is:inline define:vars={{ fontsHref }}>
       (function () {
@@ -105,7 +116,8 @@ const fontsHref = googleFontsHref(lang, country);
     <noscript>
       <link rel="stylesheet" href={fontsHref} />
     </noscript>
-    {prefetchImages?.map((href) => (
+    {preloadImage && <link rel="preload" href={preloadImage} as="image" fetchpriority="high" />}
+    {prefetchRest.map((href) => (
       <link rel="prefetch" href={href} as="image" />
     ))}
     <slot name="head" />
