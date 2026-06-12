@@ -20,7 +20,7 @@ import { getRegionAtmosphere } from "./region-atmosphere";
 
 import { assertPublicUrl } from "./assert-path";
 
-import { assertPngExists } from "./assert-fs";
+import { posterListedInGallery } from "./assert-fs";
 
 /** `web/docs/` junction �?repo `docs/` (project-root-relative glob). */
 
@@ -284,7 +284,7 @@ function buildPosters(binding: RegionBinding, fm: RegionFrontmatter): Poster[] {
     if (!p.file) return false;
     const base = p.fromZine ? "/asserts/mini-zine/" : "/asserts/Gourmet recipe2/";
     const url = assertPublicUrl(base, p.path, p.file);
-    return assertPngExists(url);
+    return posterListedInGallery(url);
   });
 
   return sortByEditorPick(withAssets, fm.web_editor_pick);
