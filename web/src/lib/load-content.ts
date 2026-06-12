@@ -18,6 +18,10 @@ import { matchesFlavorChip } from "./flavor-match";
 
 import { getRegionAtmosphere } from "./region-atmosphere";
 
+import { assertPublicUrl } from "./assert-path";
+
+import { assertPngExists } from "./assert-fs";
+
 /** `web/docs/` junction �?repo `docs/` (project-root-relative glob). */
 
 const DOC_MODULES = import.meta.glob("../../../docs/{china,world}/*.md", {
@@ -275,7 +279,15 @@ function buildPosters(binding: RegionBinding, fm: RegionFrontmatter): Poster[] {
     slugs.add(z.slug);
   }
 
-  return sortByEditorPick(posters, fm.web_editor_pick);
+  const withAssets = posters.filter((p) => {
+    if (p.placeholder) return true;
+    if (!p.file) return false;
+    const base = p.fromZine ? "/asserts/mini-zine/" : "/asserts/Gourmet recipe2/";
+    const url = assertPublicUrl(base, p.path, p.file);
+    return assertPngExists(url);
+  });
+
+  return sortByEditorPick(withAssets, fm.web_editor_pick);
 
 }
 
@@ -355,6 +367,8 @@ function buildZines(binding: RegionBinding, fm: RegionFrontmatter): ZineDish[] {
     return {
 
       ...p,
+
+      path: binding.zinePathPrefix ?? p.path,
 
       countryId: binding.countryId,
 

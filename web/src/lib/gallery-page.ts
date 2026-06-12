@@ -17,6 +17,14 @@ export function pageCountFor(total: number, pageSize: number): number {
   return Math.max(1, Math.ceil(total / pageSize));
 }
 
+/** Country overview grids: page index within one region (not global flatMap index). */
+export function regionScopedGalleryPageIndex(
+  localIndexInRegion: number,
+  pageSize: number,
+): number {
+  return Math.floor(localIndexInRegion / pageSize);
+}
+
 export function galleryPageHref(
   pathname: string,
   search: string,

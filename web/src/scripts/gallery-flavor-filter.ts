@@ -4,6 +4,7 @@
 
 import { tagMatchesFlavor } from "../lib/flavor-match";
 import { isGalleryCardVisible } from "./gallery-region-filter";
+import { kickLazyImagesIn } from "./gallery-visible-images";
 
 function flavorFromSearch(search: string): string | null {
   const f = new URLSearchParams(search).get("flavor");
@@ -59,6 +60,34 @@ function updateCountEl(el: HTMLElement | null, visible: number, flavor: string |
   el.textContent = parts.join("").trim();
 }
 
+function resetPageParamsIfNeeded(gallery: HTMLElement): void {
+  const params = new URLSearchParams(location.search);
+  let changed = false;
+  for (const key of ["page", "zpage"] as const) {
+    if (!params.has(key)) continue;
+    const nav = gallery.querySelector<HTMLElement>(
+      `[data-tab-pagination="${key === "zpage" ? "zines" : "posters"}"] .gallery-pagination[data-gallery-paginate]`,
+    );
+    const pageSize = Number(nav?.dataset.pageSize) || 12;
+    const scopeKey = key === "zpage" ? "zines" : "posters";
+    const panel = gallery.querySelector<HTMLElement>(`.gallery-tab-panel[data-tab="${scopeKey}"]`);
+    const cards = panel
+      ? [...panel.querySelectorAll<HTMLElement>("[data-gallery-page]")].filter(
+          (el) => isGalleryCardVisible(el),
+        )
+      : [];
+    const pageCount = cards.length <= 0 ? 1 : Math.max(1, Math.ceil(cards.length / pageSize));
+    const raw = Number(params.get(key) ?? "0");
+    if (!Number.isFinite(raw) || raw < 0 || raw >= pageCount) {
+      params.delete(key);
+      changed = true;
+    }
+  }
+  if (!changed) return;
+  const qs = params.toString();
+  history.replaceState(null, "", location.pathname + (qs ? `?${qs}` : "") + location.hash);
+}
+
 function applyFlavorFilter(gallery: HTMLElement): number {
   const flavor = normalizeFlavor(flavorFromSearch(location.search));
 
@@ -81,6 +110,9 @@ function applyFlavorFilter(gallery: HTMLElement): number {
 
   const zineCount = gallery.querySelector<HTMLElement>(".gallery-items-count[data-count-scope='zines']");
   updateCountEl(zineCount, zineVisible, flavor);
+
+  resetPageParamsIfNeeded(gallery);
+  kickLazyImagesIn(gallery);
 
   gallery.dispatchEvent(
     new CustomEvent("scf-gallery-flavor", { detail: { flavor, posterVisible, zineVisible } }),

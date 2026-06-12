@@ -3,6 +3,8 @@
  * Static build ships one HTML; province/filter state is applied client-side (no reload).
  */
 
+import { kickLazyImagesIn } from "./gallery-visible-images";
+
 type RegionGalleryMeta = Record<
   string,
   {
@@ -161,6 +163,7 @@ export function initGalleryRegionFilter(root: ParentNode = document): void {
       syncRegionScopedLinks(gallery, regionId);
       syncStreetExplorerRegions(gallery, regionId);
       syncHero(gallery, regionId, regionMeta);
+      kickLazyImagesIn(gallery);
       gallery.dispatchEvent(
         new CustomEvent("scf-gallery-region", { detail: { regionId } }),
       );

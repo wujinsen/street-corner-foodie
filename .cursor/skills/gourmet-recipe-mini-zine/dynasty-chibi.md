@@ -232,6 +232,7 @@
 | `boluo_chaofan` | **`ming`** | 4 女 · 5料横木牌 | **boluo清新风主锚** `boluo_chaofan_poster.png`（用户定调清新明亮）；§boluo · `cn/hainan/` ✅ |
 | `lingao_kaoruzhu` | **`republic`** | 4 女 · 4料横木牌 | 临高烤乳猪；boluo清晰风；竖牌**海南味道**；仅 `_poster.png` · `cn/hainan/` ✅ 2026-05-19 重绘 |
 | `gali_chaofan` | **`ming`**（海报） | 4 女 · 5料横木牌 · 咖喱炒饭 | boluo清新风·锅边禁穿模；竖牌**广东味道**；`cn/guangdong/gali_chaofan_poster.png` ✅ 2026-05-19 |
+| `fo_tiao_qiang` | **`qing`** 固定 | 5 女 · 6料横木牌 · 坛煨佛跳墙 | boluo清新风·竖牌**福建味道**；海报 `cn/fujian/fo_tiao_qiang_poster.png` ✅ 2026-06 · zine **p01–p06** `cn/fujian/fo_tiao_qiang_mini_zine_p*.png` · 郑春发/聚春园/福寿全强锚定 · 禁误写宋/乱炖 |
 | `fujian_chaofan` | **`song`** | 宋服 · 4 女 · 底行5碗 | 竖牌**福建味道**；`cn/fujian/` ✅ 2026-05 |
 | `chaoshan_chaofan` | **`contemporary`** | 当代 · 4 女 · 4碗木牌 | 竖牌**广东味道**；`cn/guangdong/` ✅ 2026-05 木牌重绘 |
 | `larou_chaofan` | **`song`** | 宋服 | 竖牌**湖南味道** · `cn/hunan/` |

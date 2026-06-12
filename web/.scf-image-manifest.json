@@ -2566,15 +2566,6 @@
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
-  "/asserts/Gourmet recipe2/cn/sichuan/niurou_chaofan_poster.png": {
-    "sig": "1779472139428.6443:2233493",
-    "hash": "e3f05af4b709",
-    "fallback": "/asserts/Gourmet recipe2/cn/sichuan/niurou_chaofan_poster.png",
-    "avif": "/scf-img/e3f05af4b709/320.avif 320w, /scf-img/e3f05af4b709/720.avif 720w, /scf-img/e3f05af4b709/1280.avif 1280w, /scf-img/e3f05af4b709/1536.avif 1536w",
-    "webp": "/scf-img/e3f05af4b709/320.webp 320w, /scf-img/e3f05af4b709/720.webp 720w, /scf-img/e3f05af4b709/1280.webp 1280w, /scf-img/e3f05af4b709/1536.webp 1536w",
-    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
-    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
-  },
   "/asserts/Gourmet recipe2/cn/xinjiang/yangrou_chaofan_poster.png": {
     "sig": "1779472139428.6443:3346528",
     "hash": "a6a7583921af",
@@ -3166,15 +3157,6 @@
     "fallback": "/asserts/Gourmet recipe2/cn/jiangsu/douhua_xian_poster.png",
     "avif": "/scf-img/038c7ff729a3/320.avif 320w, /scf-img/038c7ff729a3/720.avif 720w, /scf-img/038c7ff729a3/1280.avif 1280w, /scf-img/038c7ff729a3/1536.avif 1536w",
     "webp": "/scf-img/038c7ff729a3/320.webp 320w, /scf-img/038c7ff729a3/720.webp 720w, /scf-img/038c7ff729a3/1280.webp 1280w, /scf-img/038c7ff729a3/1536.webp 1536w",
-    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
-    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
-  },
-  "/asserts/Gourmet recipe2/cn/sichuan/leshan_douhua_poster.png": {
-    "sig": "1779472139428.6443:2211067",
-    "hash": "98396f3be815",
-    "fallback": "/asserts/Gourmet recipe2/cn/sichuan/leshan_douhua_poster.png",
-    "avif": "/scf-img/98396f3be815/320.avif 320w, /scf-img/98396f3be815/720.avif 720w, /scf-img/98396f3be815/1280.avif 1280w, /scf-img/98396f3be815/1536.avif 1536w",
-    "webp": "/scf-img/98396f3be815/320.webp 320w, /scf-img/98396f3be815/720.webp 720w, /scf-img/98396f3be815/1280.webp 1280w, /scf-img/98396f3be815/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   },
@@ -6183,6 +6165,69 @@
     "fallback": "/asserts/brand/seals/cn_hainan_medal.png",
     "avif": "/scf-img/5f0b85f19cef/320.avif 320w, /scf-img/5f0b85f19cef/714.avif 714w",
     "webp": "/scf-img/5f0b85f19cef/320.webp 320w, /scf-img/5f0b85f19cef/714.webp 714w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/Gourmet recipe2/cn/fujian/fo_tiao_qiang_poster.png": {
+    "sig": "1781245034292.7417:3009641",
+    "hash": "88b68ae96fe8",
+    "fallback": "/asserts/Gourmet recipe2/cn/fujian/fo_tiao_qiang_poster.png",
+    "avif": "/scf-img/88b68ae96fe8/320.avif 320w, /scf-img/88b68ae96fe8/720.avif 720w, /scf-img/88b68ae96fe8/1536.avif 1536w",
+    "webp": "/scf-img/88b68ae96fe8/320.webp 320w, /scf-img/88b68ae96fe8/720.webp 720w, /scf-img/88b68ae96fe8/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p01_story_eating.png": {
+    "sig": "1781244486974.2534:3048334",
+    "hash": "37766d2f80b5",
+    "fallback": "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p01_story_eating.png",
+    "avif": "/scf-img/37766d2f80b5/320.avif 320w, /scf-img/37766d2f80b5/720.avif 720w, /scf-img/37766d2f80b5/1536.avif 1536w",
+    "webp": "/scf-img/37766d2f80b5/320.webp 320w, /scf-img/37766d2f80b5/720.webp 720w, /scf-img/37766d2f80b5/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p02_narr_story.png": {
+    "sig": "1781244503968.9824:3121228",
+    "hash": "89efc647009f",
+    "fallback": "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p02_narr_story.png",
+    "avif": "/scf-img/89efc647009f/320.avif 320w, /scf-img/89efc647009f/720.avif 720w, /scf-img/89efc647009f/1536.avif 1536w",
+    "webp": "/scf-img/89efc647009f/320.webp 320w, /scf-img/89efc647009f/720.webp 720w, /scf-img/89efc647009f/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p03_narr_culture.png": {
+    "sig": "1781244473593.8489:3279163",
+    "hash": "e09899df3cb5",
+    "fallback": "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p03_narr_culture.png",
+    "avif": "/scf-img/e09899df3cb5/320.avif 320w, /scf-img/e09899df3cb5/720.avif 720w, /scf-img/e09899df3cb5/1536.avif 1536w",
+    "webp": "/scf-img/e09899df3cb5/320.webp 320w, /scf-img/e09899df3cb5/720.webp 720w, /scf-img/e09899df3cb5/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p04_narr_street.png": {
+    "sig": "1781244830120.173:2746704",
+    "hash": "77e4bf588778",
+    "fallback": "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p04_narr_street.png",
+    "avif": "/scf-img/77e4bf588778/320.avif 320w, /scf-img/77e4bf588778/720.avif 720w, /scf-img/77e4bf588778/1536.avif 1536w",
+    "webp": "/scf-img/77e4bf588778/320.webp 320w, /scf-img/77e4bf588778/720.webp 720w, /scf-img/77e4bf588778/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p05_narr_ingredients.png": {
+    "sig": "1781244807560.6335:3301358",
+    "hash": "8b445ef50f66",
+    "fallback": "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p05_narr_ingredients.png",
+    "avif": "/scf-img/8b445ef50f66/320.avif 320w, /scf-img/8b445ef50f66/720.avif 720w, /scf-img/8b445ef50f66/1536.avif 1536w",
+    "webp": "/scf-img/8b445ef50f66/320.webp 320w, /scf-img/8b445ef50f66/720.webp 720w, /scf-img/8b445ef50f66/1536.webp 1536w",
+    "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
+    "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
+  },
+  "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p06_recipe.png": {
+    "sig": "1781244764130.4353:2895476",
+    "hash": "3e0f616929c6",
+    "fallback": "/asserts/mini-zine/cn/fujian/fo_tiao_qiang_mini_zine_p06_recipe.png",
+    "avif": "/scf-img/3e0f616929c6/320.avif 320w, /scf-img/3e0f616929c6/720.avif 720w, /scf-img/3e0f616929c6/1536.avif 1536w",
+    "webp": "/scf-img/3e0f616929c6/320.webp 320w, /scf-img/3e0f616929c6/720.webp 720w, /scf-img/3e0f616929c6/1536.webp 1536w",
     "sizes": "(max-width: 720px) 100vw, (max-width: 1280px) 50vw, 720px",
     "sizesDisplay": "(max-width: 960px) 100vw, 1280px"
   }

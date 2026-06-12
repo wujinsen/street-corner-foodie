@@ -120,6 +120,7 @@ gourmet_posters:
   - liaoning/baicai_dong_doufu_poster_no_char.png
   - anhui/maodoufu_poster.png
   - anhui/maodoufu_poster_no_char.png
+  - fujian/fo_tiao_qiang_poster.png
   - fujian/you_doufu_niang_poster.png
   - fujian/you_doufu_niang_poster_no_char.png
   - jiangsu/douhua_xian_poster.png
@@ -259,6 +260,7 @@ mini_zine:
 | **海鲜炒饭** | 虾仁、鱿鱼、贝类、蛋 | `haixian_chaofan` | 粤闽琼沿海 | ✅ |
 | **菠萝炒饭** | 菠萝块、咖喱可选、虾仁火腿；常盛菠萝壳 | `boluo_chaofan` | 琼·粤 | ✅ |
 | **咖喱炒饭** | 咖喱粉、鸡块或虾仁、洋葱 | `gali_chaofan` | 粤·港 | ✅ |
+| **佛跳墙** | 福州坛煨；海参鲍鱼花菇鸽蛋火腿黄酒分层入坛，文火慢煨 | `fo_tiao_qiang` | 闽·福州 | ✅ |
 | **福建炒饭** | 虾仁、火腿、香菇、卷心菜等，闽南酒楼常见 | `fujian_chaofan` | 闽 | ✅ |
 | **潮汕炒饭** | 菜脯、海鲜或牛肉、鱼露提鲜 | `chaoshan_chaofan` | 粤·潮汕 | ✅ |
 
@@ -418,6 +420,7 @@ mini_zine:
 | **咖喱炒饭** | `cn/guangdong/` | `gali_chaofan_poster.png` | — | **`ming`** · 4 女 · 5 料横木牌 ✅ · boluo **清新风** · 竖牌**广东味道** · 2026-05-19 重绘（仅有人物·锅边禁穿模） |
 | **潮汕炒饭** | `cn/guangdong/` | `chaoshan_chaofan_poster.png` | `_no_char.png` | **`contemporary`** · 4 女 · 4 碗 · 腊肠炒饭式横排木牌 ✅（2026-05-21） |
 | **菠萝炒饭** | `cn/hainan/` | `boluo_chaofan_poster.png` | — | **`ming`** · **boluo 清新风主锚**（全系列清新范本）· 2026-05-19 |
+| **佛跳墙** | `cn/fujian/` | `fo_tiao_qiang_poster.png` | — | **`qing`** · 5 女 · 6 料横木牌 ✅ · boluo **清新风** · 竖牌**福建味道** · 2026-06 |
 | **福建炒饭** | `cn/fujian/` | `fujian_chaofan_poster.png` | `_no_char.png` | **`song`** · 4 女 · 5 碗 ✅ · 2026-05 重绘 |
 | **腊肉炒饭** | `cn/hunan/` | `larou_chaofan_poster.png` | `_no_char.png` | **`song`** · 3 女 · 4 碗 ✅ |
 | **剁椒炒饭** | `cn/hunan/` | `duojiao_chaofan_poster.png` | — | **`contemporary`** · 3 女 · 4 料横木牌 ✅ · boluo **清新风** · 竖牌**湖南味道** · 2026-05-19 重绘（仅有人物·锅边禁穿模） |

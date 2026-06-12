@@ -3289,8 +3289,11 @@ body.has-altc .glass-poster-media img {
 .gallery-zines .glass-zine-card.is-gallery-page-hidden,
 .gallery-main .glass-poster.is-gallery-flavor-hidden,
 .gallery-zines .glass-zine-card.is-gallery-flavor-hidden,
-.gallery-pagination a.is-gallery-page-hidden {
-  display: none;
+.gallery-pagination[hidden],
+.gallery-pagination a.is-gallery-page-hidden,
+.gallery-pagination a[hidden],
+.gallery-pagination-sep.is-gallery-page-hidden {
+  display: none !important;
 }
 
 .gallery-items-count {

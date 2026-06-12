@@ -18,7 +18,12 @@ import RegionMedalHeroButton from "../components/RegionMedalHeroButton.astro";
 import { regionMedalUrl } from "../lib/region-medals";
 import { getCountryStreetSpots, getCountryZineCards } from "../lib/country-gallery";
 import { countStreetPhotos, getStreetConfig, getStreetScenes } from "../lib/streets";
-import { GALLERY_ZINE_PAGE_SIZE, pageCountFor, pageFromSearch } from "../lib/gallery-page";
+import {
+  GALLERY_ZINE_PAGE_SIZE,
+  pageCountFor,
+  pageFromSearch,
+  regionScopedGalleryPageIndex,
+} from "../lib/gallery-page";
 import { filterTagsAttr } from "../lib/flavor-match";
 import { zineReaderPath } from "../lib/zines";
 import { UI, t } from "../lib/i18n";
@@ -142,6 +147,27 @@ const countryZines = countryZinesAll.filter(({ region: zr }) => zr.id === active
 const zinePageSize = GALLERY_ZINE_PAGE_SIZE;
 const zinePageCount = pageCountFor(countryZines.length, zinePageSize);
 const zinePage = pageFromSearch(search, "zpage", zinePageCount);
+
+const zineRegionOrdinal = new Map<string, number>();
+const countryZinesRendered = countryZinesAll.map((entry) => {
+  const regionId = entry.region.id;
+  const local = zineRegionOrdinal.get(regionId) ?? 0;
+  zineRegionOrdinal.set(regionId, local + 1);
+  return {
+    ...entry,
+    galleryPageIndex: regionScopedGalleryPageIndex(local, zinePageSize),
+  };
+});
+
+const posterRegionOrdinal = new Map<string, number>();
+const countryPostersRendered = allCountryPosters.map((poster) => {
+  const local = posterRegionOrdinal.get(poster.regionId) ?? 0;
+  posterRegionOrdinal.set(poster.regionId, local + 1);
+  return {
+    poster,
+    galleryPageIndex: regionScopedGalleryPageIndex(local, posterPageSize),
+  };
+});
 
 const maxRegionPosterCount = Math.max(
   0,
@@ -353,13 +379,13 @@ const zineHref = (regionId: string, zSlug: string) =>
     >
       <section id="posters" class="gallery-main gallery-anchor" aria-label={t(UI.nav.poster, lang)}>
         <div class="gallery-grid country-poster-grid" data-poster-grid>
-          {allCountryPosters.map((p, i) => (
+          {countryPostersRendered.map(({ poster: p, galleryPageIndex }) => (
               <GlassPosterCard
                 poster={p}
                 lang={lang}
                 href={posterHref(p)}
                 filterTags={filterTagsAttr(p.tags, lang)}
-                galleryPageIndex={Math.floor(i / posterPageSize)}
+                galleryPageIndex={galleryPageIndex}
                 galleryActivePage={posterPage}
                 galleryRegionId={p.regionId}
                 galleryRegionHidden={p.regionId !== activeRegionId}
@@ -390,12 +416,12 @@ const zineHref = (regionId: string, zSlug: string) =>
     <div class="gallery-tab-panel" data-tab="zines" hidden={activeGalleryTab !== "zines"}>
       <section id="zines" class="gallery-zines country-zines gallery-anchor gallery-zines--tab" aria-label={gt(GALLERY_UI.breadcrumb_zines, lang)}>
         <div class="gallery-grid" data-zine-grid>
-          {countryZinesAll.map(({ zine, region: zr }, i) => (
+          {countryZinesRendered.map(({ zine, region: zr, galleryPageIndex }) => (
               <GlassZineCard
                 zine={zine}
                 lang={lang}
                 href={zineHref(zr.id, zine.slug)}
-                galleryPageIndex={Math.floor(i / zinePageSize)}
+                galleryPageIndex={galleryPageIndex}
                 galleryActivePage={zinePage}
                 filterTags={zineFilterTags(zr.id, zine.slug)}
                 galleryRegionId={zr.id}

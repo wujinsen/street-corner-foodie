@@ -15,6 +15,8 @@ export interface RegionBinding {
   streetPathOverride?: string;
   /** Override Gourmet recipe2 relative path (e.g. `cn/jiangsu/` from china.md entries). */
   posterPathPrefix?: string;
+  /** Override mini-zine relative path when china.md entries use province-only prefixes. */
+  zinePathPrefix?: string;
   placeholderSlugs?: string[];
 }
 
@@ -69,6 +71,7 @@ export const REGION_BINDINGS: RegionBinding[] = [
     posterFilter: (e) => e.startsWith("jiangsu/"),
     zineFilter: (e) => e.startsWith("jiangsu/"),
     posterPathPrefix: "cn/jiangsu/",
+    zinePathPrefix: "cn/jiangsu/",
   },
   {
     docSuffix: "china/china.md",
@@ -88,6 +91,7 @@ export const REGION_BINDINGS: RegionBinding[] = [
     posterFilter: (e) => e.startsWith("guangdong/"),
     zineFilter: (e) => e.startsWith("guangdong/"),
     posterPathPrefix: "cn/guangdong/",
+    zinePathPrefix: "cn/guangdong/",
   },
   {
     docSuffix: "china/china.md",
@@ -107,6 +111,7 @@ export const REGION_BINDINGS: RegionBinding[] = [
     posterFilter: (e) => e.startsWith("sichuan/"),
     zineFilter: (e) => e.startsWith("sichuan/"),
     posterPathPrefix: "cn/sichuan/",
+    zinePathPrefix: "cn/sichuan/",
   },
   {
     docSuffix: "china/beijing.md",

@@ -31,6 +31,19 @@ function normalizeZineDir(dir: string | undefined): string {
   return joinAssertRelDir(stripped);
 }
 
+/** Resolve per-dish directory under `/asserts/mini-zine/`. */
+function resolveZineEntryPath(entry: string, defaultPath: string): string {
+  const entryDir = dirname(entry);
+  if (!entryDir) return defaultPath;
+  const dir = joinAssertRelDir(entryDir);
+  // Full geo path from mini-zine root (e.g. cn/hainan/, jp/).
+  if (/^(cn|jp|us|fr|uk|de|za|nz)\//.test(dir)) {
+    return dir;
+  }
+  // Province-only prefix in country overview docs (e.g. sichuan/ under mini_zine_dir cn/).
+  return joinAssertRelDir(defaultPath, dir);
+}
+
 function extractSlug(filename: string): string | null {
   const numbered = filename.match(/^(.+?)_mini_zine_p\d{2}_/);
   if (numbered) return numbered[1]!;
@@ -65,7 +78,7 @@ export function parseZineEntries(
     const base = basename(raw);
     if (!base.endsWith(".png")) continue;
 
-    const path = dirname(raw) ? joinAssertRelDir(dirname(raw)) : defaultPath;
+    const path = resolveZineEntryPath(raw, defaultPath);
     const slug = extractSlug(base);
     if (!slug) continue;
 

@@ -174,8 +174,24 @@ async function main() {
     }
   }
 
+  const liveKeys = new Set(files.map(toPublicAssertPath));
+  let pruned = 0;
+  for (const key of Object.keys(manifest)) {
+    if (liveKeys.has(key)) continue;
+    const orphanHash = manifest[key]?.hash;
+    if (orphanHash) {
+      const orphan = path.join(OUT_DIR, orphanHash);
+      if (fs.existsSync(orphan)) fs.rmSync(orphan, { recursive: true, force: true });
+    }
+    delete manifest[key];
+    pruned++;
+  }
+
   writeManifest(manifest);
-  console.log(`[optimize-images] processed ${processed} png → ${OUT_DIR}`);
+  console.log(
+    `[optimize-images] processed ${processed} png → ${OUT_DIR}` +
+      (pruned ? `; pruned ${pruned} stale manifest entries` : ""),
+  );
 }
 
 main().catch((e) => {

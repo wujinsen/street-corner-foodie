@@ -5,6 +5,7 @@
  */
 
 import { isGalleryCardVisible } from "./gallery-region-filter";
+import { kickLazyImagesIn } from "./gallery-visible-images";
 
 function pageFromSearch(search: string, pageParam: string, pageCount: number): number {
   const raw = new URLSearchParams(search).get(pageParam) ?? "0";
@@ -59,6 +60,31 @@ function effectivePageCount(cardCount: number, pageSize: number): number {
   return Math.max(1, Math.ceil(cardCount / pageSize));
 }
 
+function syncPaginationSeparators(
+  nav: HTMLElement,
+  pageLinks: HTMLAnchorElement[],
+): void {
+  pageLinks.forEach((a, i) => {
+    if (i === 0) return;
+    const prev = pageLinks[i - 1];
+    const sep = a.previousElementSibling;
+    if (!sep?.classList.contains("gallery-pagination-sep")) return;
+    const hide =
+      a.classList.contains("is-gallery-page-hidden") ||
+      prev.classList.contains("is-gallery-page-hidden");
+    sep.classList.toggle("is-gallery-page-hidden", hide);
+  });
+
+  const next = nav.querySelector<HTMLAnchorElement>("a[data-gallery-next]");
+  const sepBeforeNext = next?.previousElementSibling;
+  if (sepBeforeNext?.classList.contains("gallery-pagination-sep")) {
+    const lastLink = pageLinks[pageLinks.length - 1];
+    const hideNext = next?.classList.contains("is-gallery-page-hidden") ?? true;
+    const hideLast = lastLink?.classList.contains("is-gallery-page-hidden") ?? true;
+    sepBeforeNext.classList.toggle("is-gallery-page-hidden", hideNext || hideLast);
+  }
+}
+
 function applyGalleryPage(
   pageIndex: number,
   nav: HTMLElement,
@@ -89,10 +115,12 @@ function applyGalleryPage(
     el.classList.toggle("is-gallery-page-hidden", pg !== active);
   });
 
-  nav.querySelectorAll<HTMLAnchorElement>("a[data-gallery-page]").forEach((a) => {
+  const pageLinks = [...nav.querySelectorAll<HTMLAnchorElement>("a[data-gallery-page]")];
+  pageLinks.forEach((a) => {
     const idx = Number(a.dataset.galleryPage);
     const inRange = Number.isFinite(idx) && idx < pageCount;
     a.hidden = !inRange;
+    a.classList.toggle("is-gallery-page-hidden", !inRange);
     a.classList.toggle("active", inRange && idx === active);
     if (inRange) {
       a.href = pageHrefFor(pathname, search, pageParam, idx, hashAnchor);
@@ -109,8 +137,14 @@ function applyGalleryPage(
     }
   }
 
-  nav.hidden = pageCount <= 1;
+  syncPaginationSeparators(nav, pageLinks);
+
+  const singlePage = pageCount <= 1;
+  nav.hidden = singlePage;
+  nav.classList.toggle("is-gallery-pagination-inactive", singlePage);
   nav.dataset.livePageCount = String(pageCount);
+
+  kickLazyImagesIn(scope);
 
   return active;
 }
@@ -155,7 +189,14 @@ function initOnePagination(nav: HTMLElement): void {
     const link = (e.target as HTMLElement).closest<HTMLAnchorElement>(
       "a[data-gallery-page], a[data-gallery-next]",
     );
-    if (!link || !nav.contains(link) || link.hidden) return;
+    if (
+      !link ||
+      !nav.contains(link) ||
+      link.hidden ||
+      link.classList.contains("is-gallery-page-hidden")
+    ) {
+      return;
+    }
     e.preventDefault();
 
     const url = new URL(location.href);

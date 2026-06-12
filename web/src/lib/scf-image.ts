@@ -107,11 +107,11 @@ export function hasOptimizedVariants(src: string | null | undefined): boolean {
   return Boolean(p?.avif || p?.webp);
 }
 
-/** True when optimize-images has registered this `/asserts/…` PNG (file on disk at last build). */
+/** True when optimize-images manifest still maps this `/asserts/…` PNG (run `npm run images` after deletes). */
 export function scfSourceExists(src: string | null | undefined): boolean {
   if (!src || src.startsWith("data:") || src.startsWith("blob:")) return false;
   const key = manifestLookupKey(src);
-  if (!key.startsWith("/asserts/") && !key.startsWith("/scf-img/")) return false;
+  if (!key.startsWith("/asserts/")) return false;
   return Object.prototype.hasOwnProperty.call(MANIFEST, key);
 }
 
